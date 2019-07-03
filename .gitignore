@@ -1,0 +1,32 @@
+# Generated files
+**/bin/
+**/gen/
+
+# Android Studio captures folder
+**/captures/
+
+#Binary Files
+*.apk
+*.ap_
+*.class
+*.dex
+*.war
+*.ear
+###############
+
+#IntelliJ
+*.iml
+**/.idea/
+################
+
+# Local configuration file (sdk path, etc)
+local.properties
+################
+
+#Gradle files:
+**/.gradle/
+**/build/
+################
+
+.DS_Store
+.externalNativeBuild

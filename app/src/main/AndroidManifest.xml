@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:dist="http://schemas.android.com/apk/distribution"
+          package="top.easelink.lcg">
+
+    <dist:module dist:instant="true"/>
+
+    <application
+            android:allowBackup="false"
+            android:icon="@drawable/ic_logo_24dp"
+            android:label="@string/app_name"
+            android:name=".LCGApp"
+            android:roundIcon="@drawable/ic_logo_24dp"
+            android:supportsRtl="true"
+            android:theme="@style/AppTheme">
+        <activity android:name=".ui.main.view.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

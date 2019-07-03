@@ -1,0 +1,77 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    dataBinding {
+        enabled = true
+    }
+}
+
+dependencies {
+    api fileTree(dir: 'libs', include: ['*.jar'])
+
+    // android support libraries
+    api "androidx.appcompat:appcompat:$rootProject.supportLibraryVersion"
+    api "androidx.recyclerview:recyclerview:$rootProject.recyclerViewVersion"
+    api "androidx.cardview:cardview:$rootProject.cardViewVersion"
+    api "com.google.android.material:material:$rootProject.materialVersion"
+    api "androidx.vectordrawable:vectordrawable:$rootProject.vectorDrawableVersion"
+    api "androidx.vectordrawable:vectordrawable-animated:$rootProject.animatedVectorDrawableVersion"
+    api "androidx.constraintlayout:constraintlayout:$rootProject.constraintLayoutVersion"
+
+    // font
+    api "uk.co.chrisjenx:calligraphy:$rootProject.calligraphyVersion"
+    // image
+    api "com.github.bumptech.glide:glide:$rootProject.glideVersion"
+    // parser
+    api "com.google.code.gson:gson:$rootProject.gsonVersion"
+
+    // dependency injection
+    api "com.google.dagger:dagger:$rootProject.dagger2Version"
+    annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.dagger2Version"
+    annotationProcessor "com.google.dagger:dagger-android-processor:$rootProject.dagger2Version"
+    api "com.google.dagger:dagger-android-support:$rootProject.dagger2Version"
+
+    // swipe view
+    api "com.mindorks:placeholderview:$rootProject.placeholderviewVersion"
+    // logger
+    api "com.jakewharton.timber:timber:$rootProject.timberVersion"
+
+    // reactive
+    api "io.reactivex.rxjava2:rxjava:$rootProject.rxjava2Version"
+    api "io.reactivex.rxjava2:rxandroid:$rootProject.rxandroidVersion"
+
+    // view model
+    api "androidx.lifecycle:lifecycle-extensions:$rootProject.lifecycleVersion"
+    annotationProcessor "androidx.lifecycle:lifecycle-compiler:$rootProject.lifecycleVersion"
+
+    // jsoup
+    api group: 'org.jsoup', name: 'jsoup', version: '1.12.1'
+
+    // test related
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+}
