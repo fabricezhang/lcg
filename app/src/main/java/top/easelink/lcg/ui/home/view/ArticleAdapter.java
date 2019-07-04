@@ -25,8 +25,8 @@ import java.util.List;
 public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     private static final int VIEW_TYPE_EMPTY = 0;
-
     private static final int VIEW_TYPE_NORMAL = 1;
+    private static final int VIEW_TYPE_LOAD_MORE = 2;
 
     private List<Article> mArticleList;
 
@@ -55,7 +55,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     @Override
     public int getItemCount() {
         if (mArticleList != null && mArticleList.size() > 0) {
-            return mArticleList.size();
+            return mArticleList.size() + 1;
         } else {
             return 1;
         }
@@ -64,6 +64,9 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     @Override
     public int getItemViewType(int position) {
         if (mArticleList != null && !mArticleList.isEmpty()) {
+            if (position == mArticleList.size() + 1) {
+                return VIEW_TYPE_LOAD_MORE;
+            }
             return VIEW_TYPE_NORMAL;
         } else {
             return VIEW_TYPE_EMPTY;
@@ -83,6 +86,8 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                 ItemArticleViewBinding articleViewBinding = ItemArticleViewBinding.inflate(LayoutInflater.from(parent.getContext()),
                         parent, false);
                 return new ArticleViewHolder(articleViewBinding);
+            case VIEW_TYPE_LOAD_MORE:
+
             case VIEW_TYPE_EMPTY:
             default:
                 ItemArticleEmptyViewBinding emptyViewBinding = ItemArticleEmptyViewBinding.inflate(LayoutInflater.from(parent.getContext()),
@@ -171,4 +176,16 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             }
         }
     }
+
+//    public class LoadMoreViewHolder extends BaseViewHolder{
+//
+//        LoadMoreViewHolder() {
+//
+//        }
+//
+//        @Override
+//        public void onBind(int position) {
+//
+//        }
+//    }
 }
