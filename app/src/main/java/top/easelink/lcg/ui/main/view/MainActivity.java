@@ -27,8 +27,10 @@ import top.easelink.lcg.R;
 import top.easelink.lcg.databinding.ActivityMainBinding;
 import top.easelink.lcg.databinding.NavHeaderMainBinding;
 import top.easelink.lcg.ui.ViewModelProviderFactory;
-import top.easelink.lcg.ui.main.viewmodel.MainNavigator;
+import top.easelink.lcg.ui.about.view.AboutFragment;
+import top.easelink.lcg.ui.home.view.HomeFragment;
 import top.easelink.lcg.ui.main.viewmodel.MainViewModel;
+import top.easelink.lcg.utils.ActivityUtils;
 
 import javax.inject.Inject;
 
@@ -45,8 +47,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
     private Toolbar mToolbar;
 
     public static Intent newIntent(Context context) {
-        Intent intent = new Intent(context, MainActivity.class);
-        return intent;
+        return new Intent(context, MainActivity.class);
     }
 
     @Override
@@ -172,6 +173,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
         String version = getString(R.string.version) + " " + BuildConfig.VERSION_NAME;
         mMainViewModel.updateAppVersion(version);
         mMainViewModel.onNavMenuCreated();
+        setupViewFragment();
     }
 
     private void setupNavMenu() {
@@ -196,14 +198,22 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
                 });
     }
 
+    private void setupViewFragment() {
+        HomeFragment homeFragment =
+                (HomeFragment) getSupportFragmentManager().findFragmentByTag(HomeFragment.TAG);
+        if (homeFragment == null) {
+            ActivityUtils.replaceFragmentInActivity(getSupportFragmentManager(), HomeFragment.newInstance(), R.id.innerFragmentView);
+        }
+    }
+
     private void showAboutFragment() {
-//        lockDrawer();
-//        getSupportFragmentManager()
-//                .beginTransaction()
-//                .disallowAddToBackStack()
-//                .setCustomAnimations(R.anim.slide_left, R.anim.slide_right)
-//                .add(R.id.clRootView, AboutFragment.newInstance(), AboutFragment.TAG)
-//                .commit();
+        lockDrawer();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .disallowAddToBackStack()
+                .setCustomAnimations(R.anim.slide_left, R.anim.slide_right)
+                .add(R.id.clRootView, AboutFragment.newInstance(), AboutFragment.TAG)
+                .commit();
     }
 
     private void unlockDrawer() {

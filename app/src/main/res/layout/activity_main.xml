@@ -39,7 +39,7 @@
                     <com.google.android.material.appbar.AppBarLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:elevation="5dp">
+                            app:elevation="@dimen/dp_5">
 
                         <androidx.appcompat.widget.Toolbar
                                 android:id="@+id/toolbar"
@@ -51,8 +51,14 @@
 
                         <View
                                 android:layout_width="match_parent"
-                                android:layout_height="1dp"
+                                android:layout_height="@dimen/dp_1"
                                 android:background="@color/light_gray" />
+                        <androidx.coordinatorlayout.widget.CoordinatorLayout
+                                android:id="@+id/innerFragmentView"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:clipChildren="false">
+                        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
                     </com.google.android.material.appbar.AppBarLayout>
 

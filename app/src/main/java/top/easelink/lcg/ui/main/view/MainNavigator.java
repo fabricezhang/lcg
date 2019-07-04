@@ -1,4 +1,4 @@
-package top.easelink.lcg.ui.main.viewmodel;
+package top.easelink.lcg.ui.main.view;
 
 public interface MainNavigator {
 

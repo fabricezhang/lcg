@@ -67,8 +67,14 @@ dependencies {
     api "androidx.lifecycle:lifecycle-extensions:$rootProject.lifecycleVersion"
     annotationProcessor "androidx.lifecycle:lifecycle-compiler:$rootProject.lifecycleVersion"
 
+    // guava
+    api "com.google.guava:guava:$guavaVersion"
+
     // jsoup
-    api group: 'org.jsoup', name: 'jsoup', version: '1.12.1'
+    api "org.jsoup:jsoup:$jsoupVersion"
+
+    // database
+    api "androidx.room:room-runtime:$roomVersion"
 
     // test related
     testImplementation 'junit:junit:4.12'

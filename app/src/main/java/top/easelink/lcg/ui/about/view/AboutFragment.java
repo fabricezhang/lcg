@@ -8,7 +8,6 @@ import top.easelink.framework.base.BaseFragment;
 import top.easelink.lcg.R;
 import top.easelink.lcg.databinding.FragmentAboutBinding;
 import top.easelink.lcg.ui.ViewModelProviderFactory;
-import top.easelink.lcg.ui.about.viewmodel.AboutNavigator;
 import top.easelink.lcg.ui.about.viewmodel.AboutViewModel;
 
 import javax.inject.Inject;

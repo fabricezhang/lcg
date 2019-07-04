@@ -3,6 +3,7 @@ package top.easelink.lcg.ui.main.viewmodel;
 import androidx.databinding.ObservableField;
 import top.easelink.framework.base.BaseViewModel;
 import top.easelink.framework.utils.rx.SchedulerProvider;
+import top.easelink.lcg.ui.main.view.MainNavigator;
 
 public class MainViewModel extends BaseViewModel<MainNavigator> {
 
