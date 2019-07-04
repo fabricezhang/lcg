@@ -24,6 +24,7 @@ public class ArticleItemViewModel {
     private final ArticleItemViewModelListener mListener;
 
     public final ObservableField<String> title;
+    public final ObservableField<String> author;
 
     private final Article article;
 
@@ -31,6 +32,7 @@ public class ArticleItemViewModel {
         this.article = article;
         this.mListener = listener;
         title = new ObservableField<>(article.getTitle());
+        author = new ObservableField<>(article.getAuthor());
     }
 
     public void onItemClick() {

@@ -6,7 +6,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dagger.Module;
 import dagger.Provides;
-import top.easelink.framework.utils.rx.AppSchedulerProvider;
 import top.easelink.framework.utils.rx.SchedulerProvider;
 import top.easelink.lcg.R;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
@@ -39,7 +38,7 @@ public class AppModule {
 
     @Provides
     SchedulerProvider provideSchedulerProvider() {
-        return new AppSchedulerProvider();
+        return new SchedulerProvider();
     }
 
 }

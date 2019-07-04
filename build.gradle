@@ -48,7 +48,6 @@ ext {
     calligraphyVersion = '2.2.0'
     glideVersion = '3.7.0'
     roomDatabaseVersion = '2.0.0'
-    rx2FastAndroidNetworking = '1.0.1'
 
     dagger2Version = '2.16'
     rxjava2Version = '2.1.9'

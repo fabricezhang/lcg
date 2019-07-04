@@ -2,7 +2,7 @@ package top.easelink.lcg.ui.home.view;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ListView;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
@@ -14,9 +14,9 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import top.easelink.framework.BR;
 import top.easelink.framework.base.BaseFragment;
 import top.easelink.framework.customview.ScrollChildSwipeRefreshLayout;
+import top.easelink.framework.utils.CommonUtils;
 import top.easelink.lcg.R;
 import top.easelink.lcg.databinding.FragmentHomeBinding;
-import top.easelink.lcg.ui.ViewModelProviderFactory;
 import top.easelink.lcg.ui.home.viewmodel.HomeViewModel;
 
 import javax.inject.Inject;
@@ -26,8 +26,6 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
 
     public static final String TAG = HomeFragment.class.getSimpleName();
 
-    @Inject
-    ViewModelProviderFactory factory;
     @Inject
     ArticleAdapter articleAdapter;
     @Inject
@@ -54,13 +52,18 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
 
     @Override
     public HomeViewModel getViewModel() {
-        mHomeViewModel = ViewModelProviders.of(this,factory).get(HomeViewModel.class);
+        mHomeViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
         return mHomeViewModel;
     }
 
     @Override
     public void goBack() {
         getBaseActivity().onFragmentDetached(TAG);
+    }
+
+    @Override
+    public void handleError(Throwable t) {
+        Toast.makeText(getContext(), R.string.error, Toast.LENGTH_SHORT).show();
     }
 
     @Override

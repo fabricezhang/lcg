@@ -1,12 +1,33 @@
 package top.easelink.framework.utils.rx;
 
 import io.reactivex.Scheduler;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
-public interface SchedulerProvider {
+public class SchedulerProvider {
 
-    Scheduler computation();
+    private static SchedulerProvider mInstance;
 
-    Scheduler io();
+    public static SchedulerProvider getInstance() {
+        if (mInstance == null) {
+            synchronized (SchedulerProvider.class) {
+                if (mInstance == null) {
+                    mInstance = new SchedulerProvider();
+                }
+            }
+        }
+        return mInstance;
+    }
 
-    Scheduler ui();
+    public Scheduler computation() {
+        return Schedulers.computation();
+    }
+
+    public Scheduler io() {
+        return Schedulers.io();
+    }
+
+    public Scheduler ui() {
+        return AndroidSchedulers.mainThread();
+    }
 }

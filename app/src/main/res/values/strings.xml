@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">LCG</string>
 
+
+    <string name="error">Error</string>
     <!--Toolbar menus-->
     <string name="clear">Clear</string>
     <string name="share">Share</string>

@@ -13,26 +13,27 @@ import androidx.room.PrimaryKey;
  */
 @Entity(tableName = "tasks")
 public class Article {
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
+    private String mId;
+
     @NonNull
-    @ColumnInfo(name = "entryid")
-    private final String mId;
+    @ColumnInfo(name = "title")
+    private String mTitle;
 
     @Nullable
-    @ColumnInfo(name = "title")
-    private final String mTitle;
+    @ColumnInfo(name = "author")
+    private String mAuthor;
 
     /**
      * Use this constructor to specify a completed Task if the Task already has an id (copy of
      * another Task).
      *
      * @param title       title of the task
-     * @param id          id of the task
+     * @param author      author of the task
      */
-    public Article(@Nullable String title,
-                @NonNull String id) {
-        mId = id;
+    public Article(@NonNull String title, @NonNull String author) {
         mTitle = title;
+        mAuthor = author;
     }
 
     @NonNull
@@ -40,8 +41,13 @@ public class Article {
         return mId;
     }
 
-    @Nullable
+    @NonNull
     public String getTitle() {
         return mTitle;
+    }
+
+    @Nullable
+    public String getAuthor() {
+        return mAuthor;
     }
 }

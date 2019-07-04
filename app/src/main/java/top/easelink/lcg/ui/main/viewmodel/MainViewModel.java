@@ -15,8 +15,8 @@ public class MainViewModel extends BaseViewModel<MainNavigator> {
 
     private final ObservableField<String> userProfilePicUrl = new ObservableField<>();
 
-    public MainViewModel(SchedulerProvider schedulerProvider) {
-        super(schedulerProvider);
+    public MainViewModel() {
+
     }
 
     public ObservableField<String> getAppVersion() {

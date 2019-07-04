@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.Application;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasActivityInjector;
+import timber.log.Timber;
+import top.easelink.framework.BuildConfig;
 import top.easelink.lcg.di.component.DaggerAppComponent;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
@@ -32,5 +34,8 @@ public class LCGApp extends Application implements HasActivityInjector {
                 .inject(this);
 
         CalligraphyConfig.initDefault(mCalligraphyConfig);
+        if (BuildConfig.DEBUG) {
+            Timber.plant(new Timber.DebugTree());
+        }
     }
 }

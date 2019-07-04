@@ -58,7 +58,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentLeft="true"
-                            android:text="Author"
+                            android:text="@{viewModel.author}"
                             tools:text="Author" />
 
                     <TextView
@@ -71,16 +71,16 @@
                             tools:text="2019-07-04" />
                 </RelativeLayout>
 
-                <TextView
-                        android:id="@+id/contentTextView"
-                        style="@style/TextStyle.Title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginRight="20dp"
-                        android:text="For test"
-                        android:textStyle="normal"
-                        tools:text="This repository contains a detailed sample app that implements MVP architecture using Dagger2, GreenDao, RxJava2, FastAndroidNetworking and PlaceholderView" />
+                <!--<TextView-->
+                        <!--android:id="@+id/contentTextView"-->
+                        <!--style="@style/TextStyle.Title"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginLeft="20dp"-->
+                        <!--android:layout_marginRight="20dp"-->
+                        <!--android:text="For test"-->
+                        <!--android:textStyle="normal"-->
+                        <!--tools:text="This repository contains a detailed sample app that implements MVP architecture using Dagger2, GreenDao, RxJava2, FastAndroidNetworking and PlaceholderView" />-->
             </LinearLayout>
         </androidx.cardview.widget.CardView>
     </RelativeLayout>

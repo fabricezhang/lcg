@@ -1,6 +1,8 @@
 package top.easelink.framework.base;
 
 import androidx.databinding.ObservableBoolean;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import io.reactivex.disposables.CompositeDisposable;
 import top.easelink.framework.utils.rx.SchedulerProvider;
@@ -9,7 +11,7 @@ import java.lang.ref.WeakReference;
 
 public abstract class BaseViewModel<N> extends ViewModel {
 
-    private final ObservableBoolean mIsLoading = new ObservableBoolean();
+    private final MutableLiveData<Boolean> mIsLoading = new MutableLiveData<>();
 
     private final SchedulerProvider mSchedulerProvider;
 
@@ -17,8 +19,8 @@ public abstract class BaseViewModel<N> extends ViewModel {
 
     private WeakReference<N> mNavigator;
 
-    public BaseViewModel(SchedulerProvider schedulerProvider) {
-        this.mSchedulerProvider = schedulerProvider;
+    public BaseViewModel() {
+        this.mSchedulerProvider = SchedulerProvider.getInstance();
         this.mCompositeDisposable = new CompositeDisposable();
     }
 
@@ -32,12 +34,12 @@ public abstract class BaseViewModel<N> extends ViewModel {
         return mCompositeDisposable;
     }
 
-    public ObservableBoolean getIsLoading() {
+    public LiveData<Boolean> getIsLoading() {
         return mIsLoading;
     }
 
     public void setIsLoading(boolean isLoading) {
-        mIsLoading.set(isLoading);
+        mIsLoading.setValue(isLoading);
     }
 
     public N getNavigator() {

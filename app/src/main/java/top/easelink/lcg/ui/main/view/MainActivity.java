@@ -26,7 +26,6 @@ import top.easelink.lcg.BuildConfig;
 import top.easelink.lcg.R;
 import top.easelink.lcg.databinding.ActivityMainBinding;
 import top.easelink.lcg.databinding.NavHeaderMainBinding;
-import top.easelink.lcg.ui.ViewModelProviderFactory;
 import top.easelink.lcg.ui.about.view.AboutFragment;
 import top.easelink.lcg.ui.home.view.HomeFragment;
 import top.easelink.lcg.ui.main.viewmodel.MainViewModel;
@@ -38,8 +37,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
 
     @Inject
     DispatchingAndroidInjector<Fragment> fragmentDispatchingAndroidInjector;
-    @Inject
-    ViewModelProviderFactory factory;
+
     private ActivityMainBinding mActivityMainBinding;
     private DrawerLayout mDrawer;
     private MainViewModel mMainViewModel;
@@ -62,7 +60,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
 
     @Override
     public MainViewModel getViewModel() {
-        mMainViewModel = ViewModelProviders.of(this, factory).get(MainViewModel.class);
+        mMainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         return mMainViewModel;
     }
 
