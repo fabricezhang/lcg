@@ -166,7 +166,9 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
         @Override
         public void onRetryClick() {
-            mListener.onRetryClick();
+            if (mListener != null) {
+                mListener.onRetryClick();
+            }
         }
     }
 }

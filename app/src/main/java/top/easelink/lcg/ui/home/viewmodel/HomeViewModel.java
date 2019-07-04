@@ -24,7 +24,7 @@ public class HomeViewModel extends BaseViewModel<HomeNavigator> {
 
     public void fetchArticles() {
         setIsLoading(true);
-        getCompositeDisposable().add(articleService.getArticles()
+        getCompositeDisposable().add(articleService.getArticles(1)
                 .subscribeOn(getSchedulerProvider().io())
                 .observeOn(getSchedulerProvider().ui())
                 .subscribe(articleList -> {
