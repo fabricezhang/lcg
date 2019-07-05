@@ -22,7 +22,8 @@
             android:roundIcon="@drawable/ic_logo_24dp"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".ui.main.view.MainActivity">
+        <activity android:name=".ui.main.view.MainActivity"
+                  android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>

@@ -55,7 +55,7 @@ public class RxArticleService {
                             list.add(new Article(title, author, date, view, reply));
                         }
                     } catch (NumberFormatException nbe) {
-                        Timber.i(nbe);
+                        Timber.v(nbe);
                     } catch (Exception e) {
                         Timber.e(e);
                     }

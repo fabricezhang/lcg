@@ -19,6 +19,8 @@ import top.easelink.lcg.ui.home.viewmodel.HomeViewModel;
 
 import javax.inject.Inject;
 
+import static top.easelink.lcg.ui.home.viewmodel.HomeViewModel.FETCH_INIT;
+
 public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewModel>
         implements HomeNavigator, ArticleAdapter.ArticleAdapterListener {
 
@@ -74,6 +76,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
         super.onViewCreated(view, savedInstanceState);
         mFragmentHomeBinding = getViewDataBinding();
         setUp();
+        fetchArticles(FETCH_INIT);
     }
 
     @Override
@@ -97,7 +100,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
     }
 
     @Override
-    public void fetchArticles(Integer pageNum) {
-        mHomeViewModel.fetchArticles(pageNum);
+    public void fetchArticles(int type) {
+        mHomeViewModel.fetchArticles(type);
     }
 }

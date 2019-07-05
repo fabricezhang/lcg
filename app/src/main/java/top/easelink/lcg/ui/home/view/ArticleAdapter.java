@@ -117,7 +117,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     public interface ArticleAdapterListener {
 
-        void fetchArticles(Integer type);
+        void fetchArticles(int type);
     }
 
     public class ArticleViewHolder extends BaseViewHolder implements ArticleItemViewModel.ArticleItemViewModelListener {
