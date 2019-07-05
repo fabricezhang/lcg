@@ -2,6 +2,7 @@ package top.easelink.lcg;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.Context;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasActivityInjector;
 import timber.log.Timber;
@@ -24,6 +25,8 @@ public class LCGApp extends Application implements HasActivityInjector {
         return activityDispatchingAndroidInjector;
     }
 
+    private static Context mContext;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -32,10 +35,14 @@ public class LCGApp extends Application implements HasActivityInjector {
                 .application(this)
                 .build()
                 .inject(this);
-
+        mContext = this;
         CalligraphyConfig.initDefault(mCalligraphyConfig);
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
         }
+    }
+
+    public static Context getContext() {
+        return mContext;
     }
 }

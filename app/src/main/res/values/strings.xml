@@ -22,13 +22,19 @@
     <string name="connection_error">Internet connection lost!</string>
 
     <!--Login-->
-    <string name="login_dummy">Login Dummy</string>
     <string name="login">Login</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
 
     <!--Login Validation-->
     <string name="invalid_email_password">Please provide a valid email and password.</string>
+
+
+    <!--home fragment-->
+    <string name="tab_title_hot">人气热门</string>
+    <string name="tab_title_tech">技术新帖</string>
+    <string name="tab_title_new_thread">最新发表</string>
+    <string name="tab_title_digest">最新精华</string>
 
     <!--about fragment-->
     <string name="project_info">This sample app implements MVVM architecture using Dagger2, GreenDao, RxJava, FastAndroidNetworking and PlaceholderView</string>

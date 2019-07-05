@@ -6,10 +6,6 @@ import dagger.Provides;
 import top.easelink.lcg.ui.home.view.HomeFragment;
 
 @Module
-public class HomeFragmentModule {
+class HomeFragmentModule {
 
-    @Provides
-    LinearLayoutManager provideLinearLayoutManager(HomeFragment fragment) {
-        return new LinearLayoutManager(fragment.getActivity());
-    }
 }

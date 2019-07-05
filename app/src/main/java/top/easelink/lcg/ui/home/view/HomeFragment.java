@@ -1,5 +1,6 @@
 package top.easelink.lcg.ui.home.view;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -13,9 +14,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import top.easelink.framework.BR;
 import top.easelink.framework.base.BaseFragment;
 import top.easelink.framework.customview.ScrollChildSwipeRefreshLayout;
+import top.easelink.lcg.LCGApp;
 import top.easelink.lcg.R;
 import top.easelink.lcg.databinding.FragmentHomeBinding;
 import top.easelink.lcg.ui.home.viewmodel.HomeViewModel;
+import top.easelink.lcg.ui.ViewModelProviderFactory;
 
 import javax.inject.Inject;
 
@@ -24,16 +27,20 @@ import static top.easelink.lcg.ui.home.viewmodel.HomeViewModel.FETCH_INIT;
 public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewModel>
         implements HomeNavigator, ArticleAdapter.ArticleAdapterListener {
 
-    public static final String TAG = HomeFragment.class.getSimpleName();
+    public static String TAG = HomeFragment.class.getSimpleName();
+    private static final String ARG_PARAM = "param";
 
     @Inject
-    LinearLayoutManager mLayoutManager;
-    private ArticleAdapter articleAdapter = new ArticleAdapter(this);
+    ViewModelProviderFactory factory;
+    private LinearLayoutManager mLayoutManager;
+    private ArticleAdapter mArticleAdapter;
     private FragmentHomeBinding mFragmentHomeBinding;
     private HomeViewModel mHomeViewModel;
+    private String mParam;
 
-    public static HomeFragment newInstance() {
+    public static HomeFragment newInstance(String param) {
         Bundle args = new Bundle();
+        args.putString(ARG_PARAM, param);
         HomeFragment fragment = new HomeFragment();
         fragment.setArguments(args);
         return fragment;
@@ -51,7 +58,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
 
     @Override
     public HomeViewModel getViewModel() {
-        mHomeViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
+        mHomeViewModel = ViewModelProviders.of(this, factory).get(HomeViewModel.class);
         return mHomeViewModel;
     }
 
@@ -85,22 +92,30 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
     }
 
     private void setUp() {
-        mLayoutManager .setOrientation(RecyclerView.VERTICAL);
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            mParam = getArguments().getString(ARG_PARAM);
+        }
+        mArticleAdapter = new ArticleAdapter(this, mParam);
+        mLayoutManager = new LinearLayoutManager(getContext());
+        mLayoutManager.setOrientation(RecyclerView.VERTICAL);
         mFragmentHomeBinding.recyclerView.setLayoutManager(mLayoutManager);
         mFragmentHomeBinding.recyclerView.setItemAnimator(new DefaultItemAnimator());
-        mFragmentHomeBinding.recyclerView.setAdapter(articleAdapter);
+        mFragmentHomeBinding.recyclerView.setAdapter(mArticleAdapter);
         final ScrollChildSwipeRefreshLayout swipeRefreshLayout = getViewDataBinding().refreshLayout;
+        Context context = LCGApp.getContext();
         swipeRefreshLayout.setColorSchemeColors(
-                ContextCompat.getColor(getActivity(), R.color.colorPrimary),
-                ContextCompat.getColor(getActivity(), R.color.colorAccent),
-                ContextCompat.getColor(getActivity(), R.color.colorPrimaryDark)
+                ContextCompat.getColor(context, R.color.colorPrimary),
+                ContextCompat.getColor(context, R.color.colorAccent),
+                ContextCompat.getColor(context, R.color.colorPrimaryDark)
         );
         // Set the scrolling view in the custom SwipeRefreshLayout.
         swipeRefreshLayout.setScrollUpChild(mFragmentHomeBinding.recyclerView);
+        swipeRefreshLayout.setOnRefreshListener(() -> mHomeViewModel.fetchArticles(mParam, FETCH_INIT));
     }
 
     @Override
     public void fetchArticles(int type) {
-        mHomeViewModel.fetchArticles(type);
+        mHomeViewModel.fetchArticles(mParam, type);
     }
 }

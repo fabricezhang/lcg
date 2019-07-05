@@ -11,8 +11,6 @@
                 name="viewModel"
                 type="top.easelink.lcg.ui.main.viewmodel.MainViewModel" />
     </data>
-
-
     <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -48,17 +46,25 @@
                                 app:title="@string/app_name"
                                 app:titleTextAppearance="@style/Toolbar.TitleText"
                                 app:titleTextColor="@color/white" />
-
-                        <View
+                        <com.google.android.material.tabs.TabLayout
+                                android:id="@+id/main_tab"
                                 android:layout_width="match_parent"
-                                android:layout_height="@dimen/dp_1"
-                                android:background="@color/light_gray" />
-                        <androidx.coordinatorlayout.widget.CoordinatorLayout
-                                android:id="@+id/innerFragmentView"
+                                android:layout_height="wrap_content"
+                                android:minHeight="@dimen/dp_40"
+                                android:background="@color/white"
+                                app:tabIndicatorColor="@color/colorAccent"
+                                app:tabIndicatorHeight="@dimen/dp_3"
+                                app:tabTextColor="@color/gray"
+                                app:tabSelectedTextColor="@color/colorAccent"
+                                app:tabMode="fixed"
+                                app:tabTextAppearance="@style/Widget.Design.TabLayout"
+                        />
+                        <androidx.viewpager.widget.ViewPager
+                                android:id="@+id/main_view_pager"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:clipChildren="false">
-                        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+                                android:focusableInTouchMode="true"
+                                android:focusable="true"/>
 
                     </com.google.android.material.appbar.AppBarLayout>
 

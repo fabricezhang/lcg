@@ -1,6 +1,5 @@
 package top.easelink.framework.base;
 
-import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -19,8 +18,8 @@ public abstract class BaseViewModel<N> extends ViewModel {
 
     private WeakReference<N> mNavigator;
 
-    public BaseViewModel() {
-        this.mSchedulerProvider = SchedulerProvider.getInstance();
+    public BaseViewModel(SchedulerProvider schedulerProvider) {
+        this.mSchedulerProvider = schedulerProvider;
         this.mCompositeDisposable = new CompositeDisposable();
     }
 

@@ -1,6 +1,7 @@
 package top.easelink.lcg.ui.home.source.remote;
 
 import android.text.TextUtils;
+import androidx.annotation.NonNull;
 import io.reactivex.Observable;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -20,8 +21,9 @@ import java.util.List;
  */
 public class RxArticleService {
 
-    private static final String BASE_URL = "https://www.52pojie.cn/forum.php?mod=guide&view=";
-    private static final String HOT = "hot";
+    private static final String SERVER_BASE_URL = "https://www.52pojie.cn/";
+    private static final String FORUM_BASE_URL = "forum.php?mod=guide&view=";
+
     private static RxArticleService mInstance;
 
     public static RxArticleService getInstance() {
@@ -36,10 +38,10 @@ public class RxArticleService {
     private RxArticleService() {
 
     }
-    public Observable<List<Article>> getArticles(@Nullable final Integer pageNum){
+    public Observable<List<Article>> getArticles(@NonNull final String param, @Nullable final Integer pageNum){
         return Observable.create(emitter -> {
             try {
-                Document doc = Jsoup.connect(BASE_URL+HOT + "&page=" + pageNum).get();
+                Document doc = Jsoup.connect(SERVER_BASE_URL + FORUM_BASE_URL + param + "&page=" + pageNum).get();
                 Elements elements = doc.select("tbody");
                 List<Article> list = new ArrayList<>();
                 String title, author, date;

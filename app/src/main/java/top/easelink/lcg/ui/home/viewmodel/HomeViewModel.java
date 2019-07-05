@@ -3,6 +3,7 @@ package top.easelink.lcg.ui.home.viewmodel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import top.easelink.framework.base.BaseViewModel;
+import top.easelink.framework.utils.rx.SchedulerProvider;
 import top.easelink.lcg.ui.home.model.Article;
 import top.easelink.lcg.ui.home.source.remote.RxArticleService;
 import top.easelink.lcg.ui.home.view.HomeNavigator;
@@ -18,15 +19,15 @@ public class HomeViewModel extends BaseViewModel<HomeNavigator> {
     private final MutableLiveData<List<Article>> articles = new MutableLiveData<>();
     private final RxArticleService articleService = RxArticleService.getInstance();
 
-    public HomeViewModel() {
-
+    public HomeViewModel(SchedulerProvider schedulerProvider) {
+        super(schedulerProvider);
     }
 
     public void onNavBackClick() {
         getNavigator().goBack();
     }
 
-    public void fetchArticles(int type) {
+    public void fetchArticles(String param, int type) {
         int pageNum;
         switch (type) {
             case FETCH_MORE:
@@ -38,7 +39,7 @@ public class HomeViewModel extends BaseViewModel<HomeNavigator> {
                 break;
         }
         setIsLoading(true);
-        getCompositeDisposable().add(articleService.getArticles(pageNum)
+        getCompositeDisposable().add(articleService.getArticles(param, pageNum)
                 .subscribeOn(getSchedulerProvider().io())
                 .observeOn(getSchedulerProvider().ui())
                 .subscribe(articleList -> {

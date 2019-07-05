@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -15,8 +16,11 @@ import androidx.databinding.DataBindingUtil;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.tabs.TabLayout;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
@@ -26,15 +30,20 @@ import top.easelink.lcg.BuildConfig;
 import top.easelink.lcg.R;
 import top.easelink.lcg.databinding.ActivityMainBinding;
 import top.easelink.lcg.databinding.NavHeaderMainBinding;
+import top.easelink.lcg.ui.ViewModelProviderFactory;
 import top.easelink.lcg.ui.about.view.AboutFragment;
 import top.easelink.lcg.ui.home.view.HomeFragment;
+import top.easelink.lcg.ui.main.model.TabModel;
 import top.easelink.lcg.ui.main.viewmodel.MainViewModel;
-import top.easelink.lcg.utils.ActivityUtils;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewModel> implements MainNavigator, HasSupportFragmentInjector {
 
+    @Inject
+    ViewModelProviderFactory factory;
     @Inject
     DispatchingAndroidInjector<Fragment> fragmentDispatchingAndroidInjector;
 
@@ -43,6 +52,8 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
     private MainViewModel mMainViewModel;
     private NavigationView mNavigationView;
     private Toolbar mToolbar;
+    private ViewPager mViewPager;
+    private TabLayout mTabLayout;
 
     public static Intent newIntent(Context context) {
         return new Intent(context, MainActivity.class);
@@ -60,7 +71,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
 
     @Override
     public MainViewModel getViewModel() {
-        mMainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        mMainViewModel = ViewModelProviders.of(this, factory).get(MainViewModel.class);
         return mMainViewModel;
     }
 
@@ -146,6 +157,8 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
         mDrawer = mActivityMainBinding.drawerView;
         mToolbar = mActivityMainBinding.toolbar;
         mNavigationView = mActivityMainBinding.navigationView;
+        mViewPager = mActivityMainBinding.mainViewPager;
+        mTabLayout = mActivityMainBinding.mainTab;
 
         setSupportActionBar(mToolbar);
         ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(
@@ -171,7 +184,10 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
         String version = getString(R.string.version) + " " + BuildConfig.VERSION_NAME;
         mMainViewModel.updateAppVersion(version);
         mMainViewModel.onNavMenuCreated();
-        setupViewFragment();
+
+        mViewPager.setAdapter(new MainViewPagerAdapter(
+                getSupportFragmentManager(), getBaseContext()));
+        mTabLayout.setupWithViewPager(mViewPager);
     }
 
     private void setupNavMenu() {
@@ -196,14 +212,6 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
                 });
     }
 
-    private void setupViewFragment() {
-        HomeFragment homeFragment =
-                (HomeFragment) getSupportFragmentManager().findFragmentByTag(HomeFragment.TAG);
-        if (homeFragment == null) {
-            ActivityUtils.replaceFragmentInActivity(getSupportFragmentManager(), HomeFragment.newInstance(), R.id.innerFragmentView);
-        }
-    }
-
     private void showAboutFragment() {
         lockDrawer();
         getSupportFragmentManager()
@@ -219,4 +227,35 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
             mDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
         }
     }
+
+    public static class MainViewPagerAdapter extends FragmentPagerAdapter {
+
+        private List<TabModel> tabModels;
+
+        MainViewPagerAdapter(FragmentManager fm, Context context) {
+            super(fm);
+            tabModels = new ArrayList<>();
+            tabModels.add(new TabModel(context.getString(R.string.tab_title_hot), "hot"));
+            tabModels.add(new TabModel(context.getString(R.string.tab_title_new_thread), "newthread"));
+            tabModels.add(new TabModel(context.getString(R.string.tab_title_tech), "tech"));
+            tabModels.add(new TabModel(context.getString(R.string.tab_title_digest), "digest"));
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return HomeFragment.newInstance(tabModels.get(position).getUrl());
+        }
+
+        @Override
+        public int getCount() {
+            return tabModels.size();
+        }
+
+        @Nullable
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return tabModels.get(position).getTitle();
+        }
+    }
+
 }

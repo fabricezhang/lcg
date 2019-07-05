@@ -7,10 +7,15 @@ import top.easelink.framework.BR;
 import top.easelink.framework.base.BaseFragment;
 import top.easelink.lcg.R;
 import top.easelink.lcg.databinding.FragmentAboutBinding;
+import top.easelink.lcg.ui.ViewModelProviderFactory;
 import top.easelink.lcg.ui.about.viewmodel.AboutViewModel;
+
+import javax.inject.Inject;
 
 public class AboutFragment extends BaseFragment<FragmentAboutBinding, AboutViewModel> implements AboutNavigator {
 
+    @Inject
+    ViewModelProviderFactory factory;
     public static final String TAG = AboutFragment.class.getSimpleName();
 
     private AboutViewModel mAboutViewModel;
@@ -34,7 +39,7 @@ public class AboutFragment extends BaseFragment<FragmentAboutBinding, AboutViewM
 
     @Override
     public AboutViewModel getViewModel() {
-        mAboutViewModel = ViewModelProviders.of(this).get(AboutViewModel.class);
+        mAboutViewModel = ViewModelProviders.of(this, factory).get(AboutViewModel.class);
         return mAboutViewModel;
     }
 

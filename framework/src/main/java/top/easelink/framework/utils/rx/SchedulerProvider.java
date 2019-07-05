@@ -6,19 +6,6 @@ import io.reactivex.schedulers.Schedulers;
 
 public class SchedulerProvider {
 
-    private static SchedulerProvider mInstance;
-
-    public static SchedulerProvider getInstance() {
-        if (mInstance == null) {
-            synchronized (SchedulerProvider.class) {
-                if (mInstance == null) {
-                    mInstance = new SchedulerProvider();
-                }
-            }
-        }
-        return mInstance;
-    }
-
     public Scheduler computation() {
         return Schedulers.computation();
     }

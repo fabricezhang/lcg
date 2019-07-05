@@ -34,9 +34,11 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     private List<Article> mArticleList = new ArrayList<>();
 
     private ArticleAdapterListener mListener;
+    private String mParam;
 
-    ArticleAdapter(ArticleAdapterListener listener) {
+    ArticleAdapter(ArticleAdapterListener listener, String param) {
         mListener = listener;
+        mParam = param;
     }
 
     @BindingAdapter({"adapter"})
@@ -46,12 +48,6 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             adapter.clearItems();
             adapter.addItems(articles);
         }
-    }
-
-    @BindingAdapter("android:onRefresh")
-    public static void setRefreshListener(ScrollChildSwipeRefreshLayout view,
-                                          final HomeViewModel viewModel) {
-        view.setOnRefreshListener(() -> viewModel.fetchArticles(FETCH_INIT));
     }
 
     @Override
