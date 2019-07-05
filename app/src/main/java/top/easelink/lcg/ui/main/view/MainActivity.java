@@ -2,11 +2,7 @@ package top.easelink.lcg.ui.main.view;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Animatable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -98,13 +94,6 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
         super.onBackPressed();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
     public void onFragmentDetached(String tag) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment fragment = fragmentManager.findFragmentByTag(tag);
@@ -120,24 +109,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        Drawable drawable = item.getIcon();
-        if (drawable instanceof Animatable) {
-            ((Animatable) drawable).start();
-        }
-        switch (item.getItemId()) {
-            case R.id.action_share:
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    @Override
-    public void openLoginActivity() {
-//        startActivity(LoginActivity.newIntent(this));
-        finish();
-    }
+    public void openLoginActivity() { }
 
     @Override
     public AndroidInjector<Fragment> supportFragmentInjector() {
@@ -250,9 +222,9 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
             super(fm);
             tabModels = new ArrayList<>();
             tabModels.add(new TabModel(context.getString(R.string.tab_title_hot), "hot"));
-            tabModels.add(new TabModel(context.getString(R.string.tab_title_new_thread), "newthread"));
             tabModels.add(new TabModel(context.getString(R.string.tab_title_tech), "tech"));
             tabModels.add(new TabModel(context.getString(R.string.tab_title_digest), "digest"));
+            tabModels.add(new TabModel(context.getString(R.string.tab_title_new_thread), "newthread"));
         }
 
         @Override
