@@ -72,4 +72,8 @@
     <string name="empty_screen">We do not have anything\nhere right now.</string>
     <string name="please_retry">Please Retry</string>
     <string name="retry">Retry</string>
+
+    <!--share template-->
+    <string name="share_template">分享文章 %s %s</string>
+    <string name="share_title">快来看这篇</string>
 </resources>

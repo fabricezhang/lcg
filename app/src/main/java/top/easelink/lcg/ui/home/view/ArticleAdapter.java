@@ -16,6 +16,7 @@ import top.easelink.lcg.databinding.ItemArticleViewBinding;
 import top.easelink.lcg.ui.home.model.Article;
 import top.easelink.lcg.ui.home.viewmodel.ArticleEmptyItemViewModel;
 import top.easelink.lcg.ui.home.viewmodel.ArticleItemViewModel;
+import top.easelink.lcg.ui.webview.ui.WebViewActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,7 @@ import java.util.List;
 import static top.easelink.lcg.ui.home.source.remote.RxArticleService.SERVER_BASE_URL;
 import static top.easelink.lcg.ui.home.viewmodel.HomeViewModel.FETCH_INIT;
 import static top.easelink.lcg.ui.home.viewmodel.HomeViewModel.FETCH_MORE;
+import static top.easelink.lcg.ui.webview.WebViewConstants.*;
 
 public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
@@ -143,11 +145,16 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         public void onItemClick(String articleUrl) {
             if (articleUrl != null) {
                 try {
-                    Intent intent = new Intent();
-                    intent.setAction(Intent.ACTION_VIEW);
-                    intent.addCategory(Intent.CATEGORY_BROWSABLE);
-                    intent.setData(Uri.parse(SERVER_BASE_URL + articleUrl));
+                    Intent intent = new Intent(itemView.getContext(), WebViewActivity.class);
+                    intent.putExtra(URL_KEY, SERVER_BASE_URL + articleUrl)
+                            .putExtra(FORCE_ENABLE_JS_KEY, true)
+                            .putExtra(TITLE_KEY, "Article");
                     itemView.getContext().startActivity(intent);
+//                    Intent intent = new Intent();
+//                    intent.setAction(Intent.ACTION_VIEW);
+//                    intent.addCategory(Intent.CATEGORY_BROWSABLE);
+//                    intent.setData(Uri.parse(SERVER_BASE_URL + articleUrl));
+//                    itemView.getContext().startActivity(intent);
                 } catch (Exception e) {
                     Timber.e("url error");
                 }

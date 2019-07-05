@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -230,7 +229,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
         lockDrawer();
         getSupportFragmentManager()
                 .beginTransaction()
-                // TODO: 2019-07-05 need to study fragment management 
+                // TODO: 2019-07-05 need to study fragment management
                 .addToBackStack(null)
                 .setCustomAnimations(R.anim.slide_left, R.anim.slide_right)
                 .add(R.id.clRootView, AboutFragment.newInstance(), AboutFragment.TAG)

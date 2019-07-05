@@ -96,7 +96,7 @@
         </androidx.drawerlayout.widget.DrawerLayout>
 
         <androidx.core.widget.ContentLoadingProgressBar
-                android:id="@+id/address_looking_up"
+                android:id="@+id/fetching_progress_bar"
                 style="?android:attr/progressBarStyleLarge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -29,6 +29,8 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity android:name=".ui.webview.ui.WebViewActivity"
+                  android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
