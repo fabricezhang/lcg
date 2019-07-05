@@ -36,6 +36,11 @@ public class Article {
     @ColumnInfo(name = "reply")
     private Integer mReply;
 
+    @NonNull
+    @ColumnInfo(name = "url")
+    private String mUrl;
+
+
     /**
      * Use this constructor to specify a completed Task if the Task already has an id (copy of
      * another Task).
@@ -46,11 +51,13 @@ public class Article {
     public Article(@NonNull String title,
                    @NonNull String author,
                    @NonNull String date,
+                   @NonNull String url,
                    @NonNull Integer view,
                    @NonNull Integer reply) {
         mTitle = title;
         mAuthor = author;
         mDate = date;
+        mUrl = url;
         mView = view;
         mReply = reply;
     }
@@ -78,5 +85,10 @@ public class Article {
     @Nullable
     public String getDate() {
         return mDate;
+    }
+
+    @NonNull
+    public String getUrl() {
+        return mUrl;
     }
 }

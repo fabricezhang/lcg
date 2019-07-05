@@ -38,10 +38,11 @@ public class ArticleItemViewModel {
     }
 
     public void onItemClick() {
+        mListener.onItemClick(article.getUrl());
     }
 
     public interface ArticleItemViewModelListener {
 
-        void onItemClick(String blogUrl);
+        void onItemClick(String articleUrl);
     }
 }

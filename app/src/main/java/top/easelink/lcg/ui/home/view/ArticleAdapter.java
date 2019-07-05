@@ -20,6 +20,7 @@ import top.easelink.lcg.ui.home.viewmodel.ArticleItemViewModel;
 import java.util.ArrayList;
 import java.util.List;
 
+import static top.easelink.lcg.ui.home.source.remote.RxArticleService.SERVER_BASE_URL;
 import static top.easelink.lcg.ui.home.viewmodel.HomeViewModel.FETCH_INIT;
 import static top.easelink.lcg.ui.home.viewmodel.HomeViewModel.FETCH_MORE;
 
@@ -139,16 +140,16 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         }
 
         @Override
-        public void onItemClick(String blogUrl) {
-            if (blogUrl != null) {
+        public void onItemClick(String articleUrl) {
+            if (articleUrl != null) {
                 try {
                     Intent intent = new Intent();
                     intent.setAction(Intent.ACTION_VIEW);
                     intent.addCategory(Intent.CATEGORY_BROWSABLE);
-                    intent.setData(Uri.parse(blogUrl));
+                    intent.setData(Uri.parse(SERVER_BASE_URL + articleUrl));
                     itemView.getContext().startActivity(intent);
                 } catch (Exception e) {
-                    Timber.d("url error");
+                    Timber.e("url error");
                 }
             }
         }

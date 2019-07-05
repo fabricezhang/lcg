@@ -21,7 +21,7 @@ import java.util.List;
  */
 public class RxArticleService {
 
-    private static final String SERVER_BASE_URL = "https://www.52pojie.cn/";
+    public static final String SERVER_BASE_URL = "https://www.52pojie.cn/";
     private static final String FORUM_BASE_URL = "forum.php?mod=guide&view=";
 
     private static RxArticleService mInstance;
@@ -44,17 +44,18 @@ public class RxArticleService {
                 Document doc = Jsoup.connect(SERVER_BASE_URL + FORUM_BASE_URL + param + "&page=" + pageNum).get();
                 Elements elements = doc.select("tbody");
                 List<Article> list = new ArrayList<>();
-                String title, author, date;
+                String title, author, date, url;
                 Integer view, reply;
                 for (Element element : elements) {
                     try {
+                        reply = Integer.valueOf(extractFrom(element, "td.num", "a.xi2"));
+                        view = Integer.valueOf(extractFrom(element, "td.num", "em"));
                         title = extractFrom(element, "th.common", ".xst");
                         author = extractFrom(element, "td.by", "a[href*=uid]");
                         date = extractFrom(element, "td.by", "span");
-                        reply = Integer.valueOf(extractFrom(element, "td.num", "a.xi2"));
-                        view = Integer.valueOf(extractFrom(element, "td.num", "em"));
+                        url = extractAttrFrom(element, "href","th.common", "a.xst");
                         if (!TextUtils.isEmpty(title) && !TextUtils.isEmpty(author)) {
-                            list.add(new Article(title, author, date, view, reply));
+                            list.add(new Article(title, author, date, url, view, reply));
                         }
                     } catch (NumberFormatException nbe) {
                         Timber.v(nbe);
@@ -83,5 +84,19 @@ public class RxArticleService {
             }
         }
         return e.text();
+    }
+
+    private String extractAttrFrom(Element element, String attr, String...tags) {
+        if (tags == null || tags.length == 0) {
+            return element == null? null : element.text();
+        }
+        Elements e = new Elements(element);
+        for (String tag : tags) {
+            e = e.select(tag);
+            if (e.isEmpty()) {
+                break;
+            }
+        }
+        return e.attr(attr);
     }
 }
