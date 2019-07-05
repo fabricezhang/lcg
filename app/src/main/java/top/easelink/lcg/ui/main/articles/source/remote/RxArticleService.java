@@ -1,4 +1,4 @@
-package top.easelink.lcg.ui.home.source.remote;
+package top.easelink.lcg.ui.main.articles.source.remote;
 
 import android.text.TextUtils;
 import androidx.annotation.NonNull;
@@ -8,7 +8,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import timber.log.Timber;
-import top.easelink.lcg.ui.home.model.Article;
+import top.easelink.lcg.ui.main.articles.model.Article;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -44,7 +44,7 @@ public class RxArticleService {
                 Document doc = Jsoup.connect(SERVER_BASE_URL + FORUM_BASE_URL + param + "&page=" + pageNum).get();
                 Elements elements = doc.select("tbody");
                 List<Article> list = new ArrayList<>();
-                String title, author, date, url;
+                String title, author, date, url, origin;
                 Integer view, reply;
                 for (Element element : elements) {
                     try {
@@ -54,8 +54,9 @@ public class RxArticleService {
                         author = extractFrom(element, "td.by", "a[href*=uid]");
                         date = extractFrom(element, "td.by", "span");
                         url = extractAttrFrom(element, "href","th.common", "a.xst");
+                        origin = extractFrom(element, "td.by", "a[target]");
                         if (!TextUtils.isEmpty(title) && !TextUtils.isEmpty(author)) {
-                            list.add(new Article(title, author, date, url, view, reply));
+                            list.add(new Article(title, author, date, url, view, reply, origin));
                         }
                     } catch (NumberFormatException nbe) {
                         Timber.v(nbe);

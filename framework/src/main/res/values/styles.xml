@@ -58,11 +58,11 @@
 
     <style name="TextStyle.Title.Sub" parent="TextStyle.Title">
         <item name="android:textAppearance">@style/TextAppearance.Text.Light</item>
-        <item name="android:textSize">@dimen/sp_14</item>
+        <item name="android:textSize">@dimen/sp_12</item>
     </style>
 
     <style name="TextStyle.Heading" parent="TextStyle">
-        <item name="android:textSize">@dimen/dp_16</item>
+        <item name="android:textSize">@dimen/sp_16</item>
         <item name="android:textAppearance">@style/TextAppearance.Text.Bold</item>
     </style>
 

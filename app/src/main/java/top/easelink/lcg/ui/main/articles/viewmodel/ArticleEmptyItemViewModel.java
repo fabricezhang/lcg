@@ -1,4 +1,4 @@
-package top.easelink.lcg.ui.home.viewmodel;
+package top.easelink.lcg.ui.main.articles.viewmodel;
 
 public class ArticleEmptyItemViewModel {
 

@@ -1,4 +1,4 @@
-package top.easelink.lcg.ui.home.view;
+package top.easelink.lcg.ui.main.articles.view;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -18,16 +18,16 @@ import top.easelink.lcg.LCGApp;
 import top.easelink.lcg.R;
 import top.easelink.lcg.databinding.FragmentHomeBinding;
 import top.easelink.lcg.ui.ViewModelProviderFactory;
-import top.easelink.lcg.ui.home.viewmodel.HomeViewModel;
+import top.easelink.lcg.ui.main.articles.viewmodel.ArticlesViewModel;
 
 import javax.inject.Inject;
 
-import static top.easelink.lcg.ui.home.viewmodel.HomeViewModel.FETCH_INIT;
+import static top.easelink.lcg.ui.main.articles.viewmodel.ArticlesViewModel.FETCH_INIT;
 
-public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewModel>
-        implements HomeNavigator, ArticleAdapter.ArticleAdapterListener {
+public class ArticlesFragment extends BaseFragment<FragmentHomeBinding, ArticlesViewModel>
+        implements ArticlesNavigator, ArticleAdapter.ArticleAdapterListener {
 
-    public static String TAG = HomeFragment.class.getSimpleName();
+    public static String TAG = ArticlesFragment.class.getSimpleName();
     private static final String ARG_PARAM = "param";
 
     @Inject
@@ -35,13 +35,13 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
     private LinearLayoutManager mLayoutManager;
     private ArticleAdapter mArticleAdapter;
     private FragmentHomeBinding mFragmentHomeBinding;
-    private HomeViewModel mHomeViewModel;
+    private ArticlesViewModel mHomeViewModel;
     private String mParam;
 
-    public static HomeFragment newInstance(String param) {
+    public static ArticlesFragment newInstance(String param) {
         Bundle args = new Bundle();
         args.putString(ARG_PARAM, param);
-        HomeFragment fragment = new HomeFragment();
+        ArticlesFragment fragment = new ArticlesFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -57,8 +57,8 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
     }
 
     @Override
-    public HomeViewModel getViewModel() {
-        mHomeViewModel = ViewModelProviders.of(this, factory).get(HomeViewModel.class);
+    public ArticlesViewModel getViewModel() {
+        mHomeViewModel = ViewModelProviders.of(this, factory).get(ArticlesViewModel.class);
         return mHomeViewModel;
     }
 

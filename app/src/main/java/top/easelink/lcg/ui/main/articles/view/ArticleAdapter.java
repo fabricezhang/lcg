@@ -1,7 +1,6 @@
-package top.easelink.lcg.ui.home.view;
+package top.easelink.lcg.ui.main.articles.view;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,17 +12,17 @@ import top.easelink.framework.base.BaseViewHolder;
 import top.easelink.lcg.R;
 import top.easelink.lcg.databinding.ItemArticleEmptyViewBinding;
 import top.easelink.lcg.databinding.ItemArticleViewBinding;
-import top.easelink.lcg.ui.home.model.Article;
-import top.easelink.lcg.ui.home.viewmodel.ArticleEmptyItemViewModel;
-import top.easelink.lcg.ui.home.viewmodel.ArticleItemViewModel;
+import top.easelink.lcg.ui.main.articles.model.Article;
+import top.easelink.lcg.ui.main.articles.viewmodel.ArticleEmptyItemViewModel;
+import top.easelink.lcg.ui.main.articles.viewmodel.ArticleItemViewModel;
 import top.easelink.lcg.ui.webview.ui.WebViewActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static top.easelink.lcg.ui.home.source.remote.RxArticleService.SERVER_BASE_URL;
-import static top.easelink.lcg.ui.home.viewmodel.HomeViewModel.FETCH_INIT;
-import static top.easelink.lcg.ui.home.viewmodel.HomeViewModel.FETCH_MORE;
+import static top.easelink.lcg.ui.main.articles.source.remote.RxArticleService.SERVER_BASE_URL;
+import static top.easelink.lcg.ui.main.articles.viewmodel.ArticlesViewModel.FETCH_INIT;
+import static top.easelink.lcg.ui.main.articles.viewmodel.ArticlesViewModel.FETCH_MORE;
 import static top.easelink.lcg.ui.webview.WebViewConstants.*;
 
 public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {

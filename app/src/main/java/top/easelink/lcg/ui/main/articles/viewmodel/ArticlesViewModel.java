@@ -1,16 +1,16 @@
-package top.easelink.lcg.ui.home.viewmodel;
+package top.easelink.lcg.ui.main.articles.viewmodel;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import top.easelink.framework.base.BaseViewModel;
 import top.easelink.framework.utils.rx.SchedulerProvider;
-import top.easelink.lcg.ui.home.model.Article;
-import top.easelink.lcg.ui.home.source.remote.RxArticleService;
-import top.easelink.lcg.ui.home.view.HomeNavigator;
+import top.easelink.lcg.ui.main.articles.model.Article;
+import top.easelink.lcg.ui.main.articles.source.remote.RxArticleService;
+import top.easelink.lcg.ui.main.articles.view.ArticlesNavigator;
 
 import java.util.List;
 
-public class HomeViewModel extends BaseViewModel<HomeNavigator> {
+public class ArticlesViewModel extends BaseViewModel<ArticlesNavigator> {
 
     public static final int FETCH_INIT = 0;
     public static final int FETCH_MORE = 1;
@@ -19,7 +19,7 @@ public class HomeViewModel extends BaseViewModel<HomeNavigator> {
     private final MutableLiveData<List<Article>> articles = new MutableLiveData<>();
     private final RxArticleService articleService = RxArticleService.getInstance();
 
-    public HomeViewModel(SchedulerProvider schedulerProvider) {
+    public ArticlesViewModel(SchedulerProvider schedulerProvider) {
         super(schedulerProvider);
     }
 

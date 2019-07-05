@@ -5,7 +5,7 @@
     <data>
         <variable
                 name="viewModel"
-                type="top.easelink.lcg.ui.home.viewmodel.ArticleEmptyItemViewModel" />
+                type="top.easelink.lcg.ui.main.articles.viewmodel.ArticleEmptyItemViewModel" />
     </data>
 
     <LinearLayout

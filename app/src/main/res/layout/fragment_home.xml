@@ -7,7 +7,7 @@
     <data>
         <variable
                 name="viewModel"
-                type="top.easelink.lcg.ui.home.viewmodel.HomeViewModel"/>
+                type="top.easelink.lcg.ui.main.articles.viewmodel.ArticlesViewModel"/>
 
     </data>
 

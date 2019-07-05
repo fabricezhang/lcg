@@ -1,4 +1,4 @@
-package top.easelink.lcg.ui.home.model;
+package top.easelink.lcg.ui.main.articles.model;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,7 +20,7 @@ public class Article {
     @ColumnInfo(name = "title")
     private String mTitle;
 
-    @Nullable
+    @NonNull
     @ColumnInfo(name = "author")
     private String mAuthor;
 
@@ -40,6 +40,10 @@ public class Article {
     @ColumnInfo(name = "url")
     private String mUrl;
 
+    @NonNull
+    @ColumnInfo(name = "origin")
+    private String mOrigin;
+
 
     /**
      * Use this constructor to specify a completed Task if the Task already has an id (copy of
@@ -53,13 +57,15 @@ public class Article {
                    @NonNull String date,
                    @NonNull String url,
                    @NonNull Integer view,
-                   @NonNull Integer reply) {
+                   @NonNull Integer reply,
+                   @NonNull String origin) {
         mTitle = title;
         mAuthor = author;
         mDate = date;
         mUrl = url;
         mView = view;
         mReply = reply;
+        mOrigin = origin;
     }
 
     @NonNull
@@ -72,17 +78,22 @@ public class Article {
         return mTitle;
     }
 
-    @Nullable
+    @NonNull
     public String getAuthor() {
         return mAuthor;
     }
 
-    @NonNull
+    @Nullable
     public Integer getView() {
         return mView;
     }
 
     @Nullable
+    public Integer getReply() {
+        return mReply;
+    }
+
+    @NonNull
     public String getDate() {
         return mDate;
     }
@@ -90,5 +101,10 @@ public class Article {
     @NonNull
     public String getUrl() {
         return mUrl;
+    }
+
+    @NonNull
+    public String getOrigin() {
+        return mOrigin;
     }
 }

@@ -28,7 +28,7 @@ import top.easelink.lcg.databinding.ActivityMainBinding;
 import top.easelink.lcg.databinding.NavHeaderMainBinding;
 import top.easelink.lcg.ui.ViewModelProviderFactory;
 import top.easelink.lcg.ui.about.view.AboutFragment;
-import top.easelink.lcg.ui.home.view.HomeFragment;
+import top.easelink.lcg.ui.main.articles.view.ArticlesFragment;
 import top.easelink.lcg.ui.main.model.TabModel;
 import top.easelink.lcg.ui.main.viewmodel.MainViewModel;
 
@@ -229,7 +229,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
 
         @Override
         public Fragment getItem(int position) {
-            return HomeFragment.newInstance(tabModels.get(position).getUrl());
+            return ArticlesFragment.newInstance(tabModels.get(position).getUrl());
         }
 
         @Override

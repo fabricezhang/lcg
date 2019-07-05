@@ -1,23 +1,7 @@
-/*
- *  Copyright (C) 2017 MINDORKS NEXTGEN PRIVATE LIMITED
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *      https://mindorks.com/license/apache-v2
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License
- */
-
-package top.easelink.lcg.ui.home.viewmodel;
+package top.easelink.lcg.ui.main.articles.viewmodel;
 
 import androidx.databinding.ObservableField;
-import top.easelink.lcg.ui.home.model.Article;
+import top.easelink.lcg.ui.main.articles.model.Article;
 
 public class ArticleItemViewModel {
 
@@ -26,6 +10,8 @@ public class ArticleItemViewModel {
     public final ObservableField<String> title;
     public final ObservableField<String> author;
     public final ObservableField<String> date;
+    public final ObservableField<String> replyAndView;
+    public final ObservableField<String> origin;
 
     private final Article article;
 
@@ -35,6 +21,10 @@ public class ArticleItemViewModel {
         title = new ObservableField<>(article.getTitle());
         author = new ObservableField<>(article.getAuthor());
         date = new ObservableField<>(article.getDate());
+        int reply = article.getReply() != null? article.getReply() : 0;
+        int view = article.getView() != null? article.getView() : 0;
+        replyAndView = new ObservableField<>(reply + " / " + view);
+        origin = new ObservableField<>(article.getOrigin());
     }
 
     public void onItemClick() {
