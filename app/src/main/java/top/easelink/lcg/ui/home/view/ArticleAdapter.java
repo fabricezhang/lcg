@@ -10,14 +10,12 @@ import androidx.databinding.BindingAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 import timber.log.Timber;
 import top.easelink.framework.base.BaseViewHolder;
-import top.easelink.framework.customview.ScrollChildSwipeRefreshLayout;
 import top.easelink.lcg.R;
 import top.easelink.lcg.databinding.ItemArticleEmptyViewBinding;
 import top.easelink.lcg.databinding.ItemArticleViewBinding;
 import top.easelink.lcg.ui.home.model.Article;
 import top.easelink.lcg.ui.home.viewmodel.ArticleEmptyItemViewModel;
 import top.easelink.lcg.ui.home.viewmodel.ArticleItemViewModel;
-import top.easelink.lcg.ui.home.viewmodel.HomeViewModel;
 
 import java.util.ArrayList;
 import java.util.List;

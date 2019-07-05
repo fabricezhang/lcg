@@ -17,8 +17,8 @@ import top.easelink.framework.customview.ScrollChildSwipeRefreshLayout;
 import top.easelink.lcg.LCGApp;
 import top.easelink.lcg.R;
 import top.easelink.lcg.databinding.FragmentHomeBinding;
-import top.easelink.lcg.ui.home.viewmodel.HomeViewModel;
 import top.easelink.lcg.ui.ViewModelProviderFactory;
+import top.easelink.lcg.ui.home.viewmodel.HomeViewModel;
 
 import javax.inject.Inject;
 

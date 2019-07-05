@@ -1,5 +1,6 @@
 package top.easelink.lcg;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
@@ -25,6 +26,7 @@ public class LCGApp extends Application implements HasActivityInjector {
         return activityDispatchingAndroidInjector;
     }
 
+    @SuppressLint("StaticFieldLeak")
     private static Context mContext;
 
     @Override
