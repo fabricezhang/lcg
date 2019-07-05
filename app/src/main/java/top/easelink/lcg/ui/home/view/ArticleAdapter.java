@@ -3,15 +3,15 @@ package top.easelink.lcg.ui.home.view;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.databinding.BindingAdapter;
-import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import timber.log.Timber;
 import top.easelink.framework.base.BaseViewHolder;
 import top.easelink.framework.customview.ScrollChildSwipeRefreshLayout;
+import top.easelink.lcg.R;
 import top.easelink.lcg.databinding.ItemArticleEmptyViewBinding;
 import top.easelink.lcg.databinding.ItemArticleViewBinding;
 import top.easelink.lcg.ui.home.model.Article;
@@ -19,8 +19,11 @@ import top.easelink.lcg.ui.home.viewmodel.ArticleEmptyItemViewModel;
 import top.easelink.lcg.ui.home.viewmodel.ArticleItemViewModel;
 import top.easelink.lcg.ui.home.viewmodel.HomeViewModel;
 
-import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.List;
+
+import static top.easelink.lcg.ui.home.viewmodel.HomeViewModel.FETCH_INIT;
+import static top.easelink.lcg.ui.home.viewmodel.HomeViewModel.FETCH_MORE;
 
 public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
@@ -28,13 +31,12 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     private static final int VIEW_TYPE_NORMAL = 1;
     private static final int VIEW_TYPE_LOAD_MORE = 2;
 
-    private List<Article> mArticleList;
+    private List<Article> mArticleList = new ArrayList<>();
 
     private ArticleAdapterListener mListener;
 
-    @Inject
-    public ArticleAdapter(List<Article> articleList) {
-        this.mArticleList = articleList;
+    ArticleAdapter(ArticleAdapterListener listener) {
+        mListener = listener;
     }
 
     @BindingAdapter({"adapter"})
@@ -49,7 +51,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     @BindingAdapter("android:onRefresh")
     public static void setRefreshListener(ScrollChildSwipeRefreshLayout view,
                                           final HomeViewModel viewModel) {
-        view.setOnRefreshListener(viewModel::fetchArticles);
+        view.setOnRefreshListener(() -> viewModel.fetchArticles(FETCH_INIT));
     }
 
     @Override
@@ -64,7 +66,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     @Override
     public int getItemViewType(int position) {
         if (mArticleList != null && !mArticleList.isEmpty()) {
-            if (position == mArticleList.size() + 1) {
+            if (position == mArticleList.size()) {
                 return VIEW_TYPE_LOAD_MORE;
             }
             return VIEW_TYPE_NORMAL;
@@ -83,11 +85,15 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     public BaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         switch (viewType) {
             case VIEW_TYPE_NORMAL:
-                ItemArticleViewBinding articleViewBinding = ItemArticleViewBinding.inflate(LayoutInflater.from(parent.getContext()),
+                ItemArticleViewBinding articleViewBinding
+                        = ItemArticleViewBinding.inflate(LayoutInflater.from(parent.getContext()),
                         parent, false);
                 return new ArticleViewHolder(articleViewBinding);
             case VIEW_TYPE_LOAD_MORE:
-
+                return new LoadMoreViewHolder(
+                        LayoutInflater.from(parent.getContext())
+                                .inflate(R.layout.item_article_load_more_view
+                                        , parent, false));
             case VIEW_TYPE_EMPTY:
             default:
                 ItemArticleEmptyViewBinding emptyViewBinding = ItemArticleEmptyViewBinding.inflate(LayoutInflater.from(parent.getContext()),
@@ -96,12 +102,12 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         }
     }
 
-    public void addItems(List<Article> blogList) {
-        mArticleList.addAll(blogList);
+    private void addItems(List<Article> articleList) {
+        mArticleList.addAll(articleList);
         notifyDataSetChanged();
     }
 
-    public void clearItems() {
+    private void clearItems() {
         mArticleList.clear();
     }
 
@@ -111,7 +117,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     public interface ArticleAdapterListener {
 
-        void onRetryClick();
+        void fetchArticles(Integer type);
     }
 
     public class ArticleViewHolder extends BaseViewHolder implements ArticleItemViewModel.ArticleItemViewModelListener {
@@ -172,20 +178,20 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         @Override
         public void onRetryClick() {
             if (mListener != null) {
-                mListener.onRetryClick();
+                mListener.fetchArticles(FETCH_INIT);
             }
         }
     }
 
-//    public class LoadMoreViewHolder extends BaseViewHolder{
-//
-//        LoadMoreViewHolder() {
-//
-//        }
-//
-//        @Override
-//        public void onBind(int position) {
-//
-//        }
-//    }
+    public class LoadMoreViewHolder extends BaseViewHolder{
+
+        LoadMoreViewHolder(View view) {
+            super(view);
+        }
+
+        @Override
+        public void onBind(int position) {
+            mListener.fetchArticles(FETCH_MORE);
+        }
+    }
 }

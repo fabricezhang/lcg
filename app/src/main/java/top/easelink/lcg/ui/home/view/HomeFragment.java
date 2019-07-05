@@ -10,11 +10,9 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import top.easelink.framework.BR;
 import top.easelink.framework.base.BaseFragment;
 import top.easelink.framework.customview.ScrollChildSwipeRefreshLayout;
-import top.easelink.framework.utils.CommonUtils;
 import top.easelink.lcg.R;
 import top.easelink.lcg.databinding.FragmentHomeBinding;
 import top.easelink.lcg.ui.home.viewmodel.HomeViewModel;
@@ -27,9 +25,8 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
     public static final String TAG = HomeFragment.class.getSimpleName();
 
     @Inject
-    ArticleAdapter articleAdapter;
-    @Inject
     LinearLayoutManager mLayoutManager;
+    private ArticleAdapter articleAdapter = new ArticleAdapter(this);
     private FragmentHomeBinding mFragmentHomeBinding;
     private HomeViewModel mHomeViewModel;
 
@@ -82,11 +79,9 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
     @Override
     public void onResume() {
         super.onResume();
-        mHomeViewModel.fetchArticles();
     }
 
     private void setUp() {
-
         mLayoutManager .setOrientation(RecyclerView.VERTICAL);
         mFragmentHomeBinding.recyclerView.setLayoutManager(mLayoutManager);
         mFragmentHomeBinding.recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -99,16 +94,10 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
         );
         // Set the scrolling view in the custom SwipeRefreshLayout.
         swipeRefreshLayout.setScrollUpChild(mFragmentHomeBinding.recyclerView);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                mHomeViewModel.fetchArticles();
-            }
-        });
     }
 
     @Override
-    public void onRetryClick() {
-        mHomeViewModel.fetchArticles();
+    public void fetchArticles(Integer pageNum) {
+        mHomeViewModel.fetchArticles(pageNum);
     }
 }

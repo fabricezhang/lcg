@@ -54,6 +54,8 @@ public class RxArticleService {
                         if (!TextUtils.isEmpty(title) && !TextUtils.isEmpty(author)) {
                             list.add(new Article(title, author, date, view, reply));
                         }
+                    } catch (NumberFormatException nbe) {
+                        Timber.i(nbe);
                     } catch (Exception e) {
                         Timber.e(e);
                     }

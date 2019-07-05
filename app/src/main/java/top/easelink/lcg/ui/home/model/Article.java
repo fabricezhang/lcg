@@ -11,7 +11,7 @@ import androidx.room.PrimaryKey;
  * date   : 2019-07-04 11:38
  * desc   :
  */
-@Entity(tableName = "tasks")
+@Entity(tableName = "articles")
 public class Article {
     @PrimaryKey(autoGenerate = true)
     private String mId;
@@ -28,11 +28,11 @@ public class Article {
     @ColumnInfo(name = "date")
     private String mDate;
 
-    @Nullable
+    @NonNull
     @ColumnInfo(name = "view")
     private Integer mView;
 
-    @Nullable
+    @NonNull
     @ColumnInfo(name = "reply")
     private Integer mReply;
 
