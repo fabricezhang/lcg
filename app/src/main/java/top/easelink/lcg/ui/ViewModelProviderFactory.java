@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import top.easelink.framework.utils.rx.SchedulerProvider;
+import top.easelink.lcg.ui.about.viewmodel.AboutViewModel;
 import top.easelink.lcg.ui.home.viewmodel.HomeViewModel;
 import top.easelink.lcg.ui.main.viewmodel.MainViewModel;
 
@@ -28,6 +29,8 @@ public class ViewModelProviderFactory extends ViewModelProvider.NewInstanceFacto
             return (T) new HomeViewModel(schedulerProvider);
         } else if (modelClass.isAssignableFrom(MainViewModel.class)) {
             return (T) new MainViewModel(schedulerProvider);
+        } else if (modelClass.isAssignableFrom(AboutViewModel.class)) {
+            return (T) new AboutViewModel(schedulerProvider);
         }
         throw new IllegalArgumentException("Unknown ViewModel class: " + modelClass.getName());
     }
