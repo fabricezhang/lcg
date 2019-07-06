@@ -1,31 +1,26 @@
 package top.easelink.lcg.ui.main.articles.view;
 
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.databinding.BindingAdapter;
 import androidx.recyclerview.widget.RecyclerView;
-import timber.log.Timber;
 import top.easelink.framework.base.BaseViewHolder;
 import top.easelink.lcg.R;
 import top.easelink.lcg.databinding.ItemArticleEmptyViewBinding;
 import top.easelink.lcg.databinding.ItemArticleViewBinding;
-import top.easelink.lcg.ui.main.articles.model.Article;
 import top.easelink.lcg.ui.main.articles.viewmodel.ArticleEmptyItemViewModel;
 import top.easelink.lcg.ui.main.articles.viewmodel.ArticleItemViewModel;
-import top.easelink.lcg.ui.webview.ui.WebViewActivity;
+import top.easelink.lcg.ui.main.model.Article;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static top.easelink.lcg.ui.main.articles.source.remote.RxArticleService.SERVER_BASE_URL;
 import static top.easelink.lcg.ui.main.articles.viewmodel.ArticlesViewModel.FETCH_INIT;
 import static top.easelink.lcg.ui.main.articles.viewmodel.ArticlesViewModel.FETCH_MORE;
-import static top.easelink.lcg.ui.webview.WebViewConstants.*;
 
-public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
+public class ArticlesAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     private static final int VIEW_TYPE_EMPTY = 0;
     private static final int VIEW_TYPE_NORMAL = 1;
@@ -34,16 +29,14 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     private List<Article> mArticleList = new ArrayList<>();
 
     private ArticleAdapterListener mListener;
-    private String mParam;
 
-    ArticleAdapter(ArticleAdapterListener listener, String param) {
+    ArticlesAdapter(ArticleAdapterListener listener) {
         mListener = listener;
-        mParam = param;
     }
 
     @BindingAdapter({"adapter"})
     public static void addArticleItems(RecyclerView recyclerView, List<Article> articles) {
-        ArticleAdapter adapter = (ArticleAdapter) recyclerView.getAdapter();
+        ArticlesAdapter adapter = (ArticlesAdapter) recyclerView.getAdapter();
         if (adapter != null) {
             adapter.clearItems();
             adapter.addItems(articles);
@@ -116,7 +109,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         void fetchArticles(int type);
     }
 
-    public class ArticleViewHolder extends BaseViewHolder implements ArticleItemViewModel.ArticleItemViewModelListener {
+    public class ArticleViewHolder extends BaseViewHolder {
 
         private ItemArticleViewBinding mBinding;
 
@@ -130,7 +123,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         @Override
         public void onBind(int position) {
             final Article article = mArticleList.get(position);
-            articleItemViewModel = new ArticleItemViewModel(article, this);
+            articleItemViewModel = new ArticleItemViewModel(article);
             mBinding.setViewModel(articleItemViewModel);
 
             // Immediate Binding
@@ -138,26 +131,6 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             // the next frame. There are times, however, when binding must be executed immediately.
             // To force execution, use the executePendingBindings() method.
             mBinding.executePendingBindings();
-        }
-
-        @Override
-        public void onItemClick(String articleUrl) {
-            if (articleUrl != null) {
-                try {
-                    Intent intent = new Intent(itemView.getContext(), WebViewActivity.class);
-                    intent.putExtra(URL_KEY, SERVER_BASE_URL + articleUrl)
-                            .putExtra(FORCE_ENABLE_JS_KEY, true)
-                            .putExtra(TITLE_KEY, "Article");
-                    itemView.getContext().startActivity(intent);
-//                    Intent intent = new Intent();
-//                    intent.setAction(Intent.ACTION_VIEW);
-//                    intent.addCategory(Intent.CATEGORY_BROWSABLE);
-//                    intent.setData(Uri.parse(SERVER_BASE_URL + articleUrl));
-//                    itemView.getContext().startActivity(intent);
-                } catch (Exception e) {
-                    Timber.e("url error");
-                }
-            }
         }
     }
 

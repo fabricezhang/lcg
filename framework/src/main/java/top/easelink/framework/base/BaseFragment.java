@@ -113,6 +113,6 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseView
 
         void onFragmentAttached();
 
-        void onFragmentDetached(String tag);
+        boolean onFragmentDetached(String tag);
     }
 }

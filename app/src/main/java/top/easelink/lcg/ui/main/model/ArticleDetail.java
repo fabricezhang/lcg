@@ -1,4 +1,4 @@
-package top.easelink.lcg.ui.main.articles.model;
+package top.easelink.lcg.ui.main.model;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,7 +12,7 @@ import androidx.room.PrimaryKey;
  * desc   :
  */
 @Entity(tableName = "articles")
-public class Article {
+public class ArticleDetail {
     @PrimaryKey(autoGenerate = true)
     private String mId;
 
@@ -52,13 +52,13 @@ public class Article {
      * @param title       title of the task
      * @param author      author of the task
      */
-    public Article(@NonNull String title,
-                   @NonNull String author,
-                   @NonNull String date,
-                   @NonNull String url,
-                   @NonNull Integer view,
-                   @NonNull Integer reply,
-                   @NonNull String origin) {
+    public ArticleDetail(@NonNull String title,
+                         @NonNull String author,
+                         @NonNull String date,
+                         @NonNull String url,
+                         @NonNull Integer view,
+                         @NonNull Integer reply,
+                         @NonNull String origin) {
         mTitle = title;
         mAuthor = author;
         mDate = date;

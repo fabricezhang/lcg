@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider;
 import top.easelink.framework.utils.rx.SchedulerProvider;
 import top.easelink.lcg.ui.about.viewmodel.AboutViewModel;
 import top.easelink.lcg.ui.main.articles.viewmodel.ArticlesViewModel;
+import top.easelink.lcg.ui.main.article.viewmodel.ArticleViewModel;
 import top.easelink.lcg.ui.main.viewmodel.MainViewModel;
 
 import javax.inject.Inject;
@@ -31,6 +32,8 @@ public class ViewModelProviderFactory extends ViewModelProvider.NewInstanceFacto
             return (T) new MainViewModel(schedulerProvider);
         } else if (modelClass.isAssignableFrom(AboutViewModel.class)) {
             return (T) new AboutViewModel(schedulerProvider);
+        } else if (modelClass.isAssignableFrom(ArticleViewModel.class)) {
+            return (T) new ArticleViewModel(schedulerProvider);
         }
         throw new IllegalArgumentException("Unknown ViewModel class: " + modelClass.getName());
     }

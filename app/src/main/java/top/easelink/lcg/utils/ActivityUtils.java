@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import top.easelink.lcg.R;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -17,12 +18,15 @@ public class ActivityUtils {
      * performed by the {@code fragmentManager}.
      *
      */
-    public static void replaceFragmentInActivity(@NonNull FragmentManager fragmentManager,
-                                                 @NonNull Fragment fragment, int frameId) {
+    public static void addFragmentInActivity(@NonNull FragmentManager fragmentManager,
+                                                 @NonNull Fragment fragment, int frameId, String tag) {
         checkNotNull(fragmentManager);
         checkNotNull(fragment);
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(frameId, fragment);
+        FragmentTransaction transaction =
+                fragmentManager
+                        .beginTransaction()
+                        .setCustomAnimations(R.anim.slide_left, R.anim.slide_right)
+                        .add(frameId, fragment, tag);
         transaction.commit();
     }
 

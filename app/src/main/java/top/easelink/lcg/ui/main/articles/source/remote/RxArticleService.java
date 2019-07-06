@@ -8,7 +8,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import timber.log.Timber;
-import top.easelink.lcg.ui.main.articles.model.Article;
+import top.easelink.lcg.ui.main.model.Article;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;

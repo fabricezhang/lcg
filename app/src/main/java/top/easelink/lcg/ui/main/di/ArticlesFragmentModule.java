@@ -1,4 +1,4 @@
-package top.easelink.lcg.ui.main.articles.di;
+package top.easelink.lcg.ui.main.di;
 
 import dagger.Module;
 

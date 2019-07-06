@@ -55,8 +55,8 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseView
     }
 
     @Override
-    public void onFragmentDetached(String tag) {
-
+    public boolean onFragmentDetached(String tag) {
+        return false;
     }
 
     @Override

@@ -13,6 +13,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.navigation.NavigationView;
@@ -20,6 +21,10 @@ import com.google.android.material.tabs.TabLayout;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+import timber.log.Timber;
 import top.easelink.framework.BR;
 import top.easelink.framework.base.BaseActivity;
 import top.easelink.lcg.BuildConfig;
@@ -28,9 +33,13 @@ import top.easelink.lcg.databinding.ActivityMainBinding;
 import top.easelink.lcg.databinding.NavHeaderMainBinding;
 import top.easelink.lcg.ui.ViewModelProviderFactory;
 import top.easelink.lcg.ui.about.view.AboutFragment;
+import top.easelink.lcg.ui.main.article.view.ArticleFragment;
 import top.easelink.lcg.ui.main.articles.view.ArticlesFragment;
+import top.easelink.lcg.ui.main.model.OpenArticleEvent;
 import top.easelink.lcg.ui.main.model.TabModel;
+import top.easelink.lcg.ui.main.model.Article;
 import top.easelink.lcg.ui.main.viewmodel.MainViewModel;
+import top.easelink.lcg.utils.ActivityUtils;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -83,29 +92,24 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
             mViewPager.setCurrentItem(0, true);
             return;
         }
-        // check about fragment
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        Fragment fragment = fragmentManager.findFragmentByTag(AboutFragment.TAG);
-        if (fragment == null) {
-            super.onBackPressed();
-        } else {
-            onFragmentDetached(AboutFragment.TAG);
-        }
+        if(onFragmentDetached(ArticleFragment.TAG)) return;
+        if(onFragmentDetached(AboutFragment.TAG)) return;
         super.onBackPressed();
     }
 
-    public void onFragmentDetached(String tag) {
+    public boolean onFragmentDetached(String tag) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment fragment = fragmentManager.findFragmentByTag(tag);
         if (fragment != null) {
             fragmentManager
                     .beginTransaction()
-                    .disallowAddToBackStack()
                     .setCustomAnimations(R.anim.slide_left, R.anim.slide_right)
                     .remove(fragment)
-                    .commitNow();
+                    .commit();
             unlockDrawer();
+            return true;
         }
+        return false;
     }
 
     @Override
@@ -119,6 +123,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
         mActivityMainBinding = getViewDataBinding();
         mMainViewModel.setNavigator(this);
         setUp();
@@ -130,6 +135,12 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
         if (mDrawer != null) {
             mDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     private void lockDrawer() {
@@ -197,15 +208,22 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
                 });
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(OpenArticleEvent event) {
+        showArticleFragment(event.getArticle());
+    }
+
     private void showAboutFragment() {
         lockDrawer();
-        getSupportFragmentManager()
-                .beginTransaction()
-                // TODO: 2019-07-05 need to study fragment management
-                .addToBackStack(null)
-                .setCustomAnimations(R.anim.slide_left, R.anim.slide_right)
-                .add(R.id.clRootView, AboutFragment.newInstance(), AboutFragment.TAG)
-                .commit();
+        ActivityUtils.addFragmentInActivity(getSupportFragmentManager(),
+                AboutFragment.newInstance(),
+                R.id.clRootView, AboutFragment.TAG);
+    }
+
+    private void showArticleFragment(Article article) {
+        ActivityUtils.addFragmentInActivity(getSupportFragmentManager(),
+                ArticleFragment.newInstance(article),
+                R.id.clRootView, ArticleFragment.TAG);
     }
 
     private void unlockDrawer() {

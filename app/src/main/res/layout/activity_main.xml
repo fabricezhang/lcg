@@ -65,7 +65,6 @@
                                 android:layout_height="match_parent"
                                 android:focusableInTouchMode="true"
                                 android:focusable="true"/>
-
                     </com.google.android.material.appbar.AppBarLayout>
 
                 </LinearLayout>
