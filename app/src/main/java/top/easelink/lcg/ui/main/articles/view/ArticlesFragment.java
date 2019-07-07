@@ -33,7 +33,7 @@ public class ArticlesFragment extends BaseFragment<FragmentArticlesBinding, Arti
     @Inject
     ViewModelProviderFactory factory;
     private LinearLayoutManager mLayoutManager;
-    private ArticlesAdapter mArticleAdapter;
+    private ArticlesAdapter mArticlesAdapter;
     private FragmentArticlesBinding mFragmentArticlesBinding;
     private ArticlesViewModel mArticlesViewModel;
     private String mParam;
@@ -81,22 +81,17 @@ public class ArticlesFragment extends BaseFragment<FragmentArticlesBinding, Arti
         fetchArticles(FETCH_INIT);
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
     private void setUp() {
         Bundle bundle = getArguments();
         if (bundle != null) {
             mParam = getArguments().getString(ARG_PARAM);
         }
-        mArticleAdapter = new ArticlesAdapter(this);
+        mArticlesAdapter = new ArticlesAdapter(this);
         mLayoutManager = new LinearLayoutManager(getContext());
         mLayoutManager.setOrientation(RecyclerView.VERTICAL);
         mFragmentArticlesBinding.recyclerView.setLayoutManager(mLayoutManager);
         mFragmentArticlesBinding.recyclerView.setItemAnimator(new DefaultItemAnimator());
-        mFragmentArticlesBinding.recyclerView.setAdapter(mArticleAdapter);
+        mFragmentArticlesBinding.recyclerView.setAdapter(mArticlesAdapter);
         final ScrollChildSwipeRefreshLayout swipeRefreshLayout = getViewDataBinding().refreshLayout;
         Context context = LCGApp.getContext();
         swipeRefreshLayout.setColorSchemeColors(

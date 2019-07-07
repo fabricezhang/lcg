@@ -1,14 +1,20 @@
 package top.easelink.lcg.ui.main.article.view;
 
 import android.os.Bundle;
+import android.view.View;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import top.easelink.framework.BR;
 import top.easelink.framework.base.BaseFragment;
 import top.easelink.lcg.R;
 import top.easelink.lcg.databinding.FragmentArticleBinding;
 import top.easelink.lcg.ui.ViewModelProviderFactory;
 import top.easelink.lcg.ui.main.article.viewmodel.ArticleViewModel;
+import top.easelink.lcg.ui.main.articles.view.ArticlesAdapter;
 import top.easelink.lcg.ui.main.model.Article;
 
 import javax.inject.Inject;
@@ -19,6 +25,11 @@ public class ArticleFragment extends BaseFragment<FragmentArticleBinding, Articl
     ViewModelProviderFactory factory;
     public static final String TAG = ArticleFragment.class.getSimpleName();
     private static final String KEY_URL = "KEY_URL";
+    private LinearLayoutManager mLayoutManager;
+    private ArticleAdapter mArticleAdapter;
+    private FragmentArticleBinding mFragmentArticleBinding;
+
+    private String articleUrl;
 
     private ArticleViewModel mArticleViewModel;
 
@@ -50,5 +61,32 @@ public class ArticleFragment extends BaseFragment<FragmentArticleBinding, Articl
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mArticleViewModel.setNavigator(this);
+        Bundle args = getArguments();
+        if (args != null) {
+            articleUrl = args.getString(KEY_URL);
+        }
     }
+
+    @Override
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mFragmentArticleBinding = getViewDataBinding();
+        setUp();
+        mArticleViewModel.fetchArticle(articleUrl);
+    }
+
+    private void setUp() {
+        mArticleAdapter = new ArticleAdapter();
+        mLayoutManager = new LinearLayoutManager(getContext());
+        mLayoutManager.setOrientation(RecyclerView.VERTICAL);
+        mFragmentArticleBinding.postRecyclerView.setLayoutManager(mLayoutManager);
+        mFragmentArticleBinding.postRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mFragmentArticleBinding.postRecyclerView.setAdapter(mArticleAdapter);
+    }
+
+    @Override
+    public void handleError(Throwable t) {
+
+    }
+
 }

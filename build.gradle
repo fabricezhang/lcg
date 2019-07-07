@@ -49,7 +49,7 @@ ext {
     glideVersion = '3.7.0'
     roomDatabaseVersion = '2.0.0'
 
-    dagger2Version = '2.16'
+    dagger2Version = '2.23.1'
     rxjava2Version = '2.1.9'
     rxandroidVersion = '2.1.1'
     placeholderviewVersion = '0.6.1'

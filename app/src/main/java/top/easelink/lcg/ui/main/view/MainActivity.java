@@ -105,7 +105,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
                     .beginTransaction()
                     .setCustomAnimations(R.anim.slide_left, R.anim.slide_right)
                     .remove(fragment)
-                    .commit();
+                    .commitNow();
             unlockDrawer();
             return true;
         }

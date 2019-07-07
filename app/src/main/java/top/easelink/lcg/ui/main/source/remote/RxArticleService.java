@@ -1,6 +1,8 @@
-package top.easelink.lcg.ui.main.articles.source.remote;
+package top.easelink.lcg.ui.main.source.remote;
 
 import android.text.TextUtils;
+import android.util.ArrayMap;
+import android.util.SparseArray;
 import androidx.annotation.NonNull;
 import io.reactivex.Observable;
 import org.jsoup.Jsoup;
@@ -9,10 +11,13 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import timber.log.Timber;
 import top.easelink.lcg.ui.main.model.Article;
+import top.easelink.lcg.ui.main.model.Post;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * author : junzhang
@@ -73,6 +78,35 @@ public class RxArticleService {
         });
     }
 
+    public Observable<List<Post>> getArticleDetail(@NonNull final String url){
+        return Observable.create(emitter -> {
+            try {
+                Document doc = Jsoup.connect(SERVER_BASE_URL + url).get();
+                List<Map<String, String>> avatarsAndNames = getAvatarAndName(doc);
+                List<String> contents = getContent(doc);
+                List<String> datetimes = getDateTime(doc);
+//                String title = doc.selectFirst("span#thread_subject").text();
+                List<Post> postList = new ArrayList<>(avatarsAndNames.size());
+                for (int i = 0; i< avatarsAndNames.size(); i++) {
+                    try {
+                        Post post = new Post(avatarsAndNames.get(i).get("name"),
+                                avatarsAndNames.get(i).get("avatar"),
+                                datetimes.get(i),
+                                contents.get(i));
+                        postList.add(post);
+                    } catch (NullPointerException npe) {
+                        Timber.e(npe);
+                    }
+                }
+                emitter.onNext(postList);
+            } catch (Exception e) {
+                Timber.e(e);
+                emitter.onError(e);
+            }
+            emitter.onComplete();
+        });
+    }
+
     private String extractFrom(Element element, String...tags) {
         if (tags == null || tags.length == 0) {
             return element == null? null : element.text();
@@ -99,5 +133,45 @@ public class RxArticleService {
             }
         }
         return e.attr(attr);
+    }
+
+    private List<Map<String, String>> getAvatarAndName(Document document) {
+        List<Map<String, String>> list = new ArrayList<>(12);
+        Elements elements = document.select("td[rowspan]");
+        for (Element element: elements) {
+            Map<String, String> avatarAndName = new ArrayMap<>(2);
+            avatarAndName.put("avatar", element.select("div.avatar").select("img").attr("src"));
+            avatarAndName.put("name", element.select("a.xw1").text());
+            list.add(avatarAndName);
+        }
+        return list;
+    }
+
+    private List<String> getDateTime(Document document) {
+        List<String> list = new ArrayList<>();
+        for (Element element : document.select("div.authi").select("em")) {
+            list.add(element.text());
+        }
+        return list;
+    }
+
+    private List<String> getContent(Document doc) {
+        ArrayList<String> list = new ArrayList<>();
+        Elements elements = doc.select("div.t_fsz");
+        if (elements.size() == 0) {
+            elements = doc.select("table").select("td.t_f");
+        }
+        for (Element element : elements) {
+            Elements imgElements = element.getElementsByTag("img");
+            for (int i = 0; i < imgElements.size(); i++) {
+                Element imgElement = imgElements.get(i);
+                String attr = imgElement.attr("file");
+                if (!TextUtils.isEmpty(attr)) {
+                    imgElement.attr("src", attr);
+                }
+            }
+            list.add(element.html());
+        }
+        return list;
     }
 }

@@ -27,7 +27,7 @@ public class ActivityUtils {
                         .beginTransaction()
                         .setCustomAnimations(R.anim.slide_left, R.anim.slide_right)
                         .add(frameId, fragment, tag);
-        transaction.commit();
+        transaction.commitNow();
     }
 
     /**

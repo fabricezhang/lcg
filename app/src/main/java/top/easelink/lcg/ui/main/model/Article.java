@@ -46,8 +46,6 @@ public class Article {
 
 
     /**
-     * Use this constructor to specify a completed Task if the Task already has an id (copy of
-     * another Task).
      *
      * @param title       title of the task
      * @param author      author of the task
