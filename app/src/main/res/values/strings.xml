@@ -5,6 +5,7 @@
     <!--Toolbar menus-->
     <string name="clear">Clear</string>
     <string name="share">Share</string>
+    <string name="open_in_webview">用网页打开</string>
 
     <!--Drawer-->
     <string name="open_drawer">Drawer Open</string>

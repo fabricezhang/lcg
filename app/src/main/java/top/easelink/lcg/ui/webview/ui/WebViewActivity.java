@@ -1,16 +1,20 @@
 package top.easelink.lcg.ui.webview.ui;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.net.http.SslError;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.SslErrorHandler;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -30,6 +34,13 @@ public class WebViewActivity extends AppCompatActivity {
 
     private WebView mWebView;
     private ProgressBar mProgressBar;
+
+    public static void startWebViewWith(String url, Activity activity) {
+        Intent intent = new Intent(activity, WebViewActivity.class);
+        intent.putExtra(URL_KEY, url);
+        intent.putExtra(FORCE_ENABLE_JS_KEY, true);
+        activity.startActivity(intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,6 +146,11 @@ public class WebViewActivity extends AppCompatActivity {
             super.onPageStarted(view, url, favicon);
             setLoading(true);
         }
+
+        @Override
+        public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+            handler.proceed();
+        }
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -145,8 +161,13 @@ public class WebViewActivity extends AppCompatActivity {
         } else {
             settings.setJavaScriptEnabled(false);
         }
+        settings.setBlockNetworkImage(false);
+        settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+        settings.setDefaultTextEncodingName("UTF-8");
         settings.setBuiltInZoomControls(false);
         settings.setAppCacheEnabled(true);
+        settings.setSupportZoom(false);
         settings.setCacheMode(WebSettings.LOAD_DEFAULT);
     }
 }

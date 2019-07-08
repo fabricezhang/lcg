@@ -11,6 +11,8 @@ import org.jsoup.select.Elements;
 import timber.log.Timber;
 import top.easelink.lcg.ui.main.model.Article;
 import top.easelink.lcg.ui.main.model.Post;
+import top.easelink.lcg.ui.main.model.ArticleDetail;
+import top.easelink.lcg.ui.main.model.BlockException;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -76,10 +78,18 @@ public class RxArticleService {
         });
     }
 
-    public Observable<List<Post>> getArticleDetail(@NonNull final String url){
+    public Observable<ArticleDetail> getArticleDetail(@NonNull final String url){
         return Observable.create(emitter -> {
             try {
                 Document doc = Jsoup.connect(SERVER_BASE_URL + url).get();
+                Element titleElement = doc.selectFirst("span#thread_subject");
+                String title;
+                if (titleElement == null) {
+                    emitter.onError(new BlockException());
+                    return;
+                } else {
+                    title = titleElement.text();
+                }
                 List<Map<String, String>> avatarsAndNames = getAvatarAndName(doc);
                 List<String> contents = getContent(doc);
                 List<String> datetimes = getDateTime(doc);
@@ -95,7 +105,8 @@ public class RxArticleService {
                         Timber.e(npe);
                     }
                 }
-                emitter.onNext(postList);
+                ArticleDetail articleDetail = new ArticleDetail(title, postList);
+                emitter.onNext(articleDetail);
             } catch (Exception e) {
                 Timber.e(e);
                 emitter.onError(e);
@@ -167,9 +178,8 @@ public class RxArticleService {
             for (int i = 0; i < imgElements.size(); i++) {
                 Element imgElement = imgElements.get(i);
                 String src = imgElement.attr("src");
-                if (src.contains("https://static.52pojie.cn/static/image/smiley")) {
+                if (src.contains("https://static.52pojie.cn/static/") && !src.contains("none")) {
                     imgElement.remove();
-                    break;
                 }
                 String attr = imgElement.attr("file");
                 if (!TextUtils.isEmpty(attr)) {

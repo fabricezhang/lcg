@@ -1,9 +1,13 @@
 package top.easelink.lcg.ui.main.article.view;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -15,8 +19,12 @@ import top.easelink.lcg.databinding.FragmentArticleBinding;
 import top.easelink.lcg.ui.ViewModelProviderFactory;
 import top.easelink.lcg.ui.main.article.viewmodel.ArticleViewModel;
 import top.easelink.lcg.ui.main.model.Article;
+import top.easelink.lcg.ui.webview.ui.WebViewActivity;
 
 import javax.inject.Inject;
+
+import static top.easelink.lcg.ui.main.source.remote.RxArticleService.SERVER_BASE_URL;
+
 
 public class ArticleFragment extends BaseFragment<FragmentArticleBinding, ArticleViewModel> implements ArticleNavigator {
 
@@ -71,6 +79,8 @@ public class ArticleFragment extends BaseFragment<FragmentArticleBinding, Articl
         super.onViewCreated(view, savedInstanceState);
         mFragmentArticleBinding = getViewDataBinding();
         setUp();
+        setHasOptionsMenu(true);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(mFragmentArticleBinding.articleToolbar);
         mArticleViewModel.fetchArticle(articleUrl);
     }
 
@@ -81,6 +91,24 @@ public class ArticleFragment extends BaseFragment<FragmentArticleBinding, Articl
         mFragmentArticleBinding.postRecyclerView.setLayoutManager(mLayoutManager);
         mFragmentArticleBinding.postRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mFragmentArticleBinding.postRecyclerView.setAdapter(mArticleAdapter);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.article, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_open_in_webview:
+                WebViewActivity.startWebViewWith(SERVER_BASE_URL + articleUrl, getActivity());
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
