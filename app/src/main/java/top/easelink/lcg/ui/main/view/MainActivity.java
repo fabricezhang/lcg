@@ -197,8 +197,11 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
                         case R.id.navItemAbout:
                             showAboutFragment();
                             return true;
-                        case R.id.navItemLogout:
-                            mMainViewModel.logout();
+                        case R.id.navItemFreeChat:
+                            showForumFragment("forum-10-1.html");
+                            return true;
+                        case R.id.navItemMobileSecurity:
+                            showForumFragment("forum-65-1.html");
                             return true;
                         default:
                             return false;
@@ -221,6 +224,12 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
     private void showArticleFragment(Article article) {
         ActivityUtils.addFragmentInActivity(getSupportFragmentManager(),
                 ArticleFragment.newInstance(article),
+                R.id.clRootView, ArticleFragment.TAG);
+    }
+
+    private void showForumFragment(String forumUrl) {
+        ActivityUtils.addFragmentInActivity(getSupportFragmentManager(),
+                ArticlesFragment.newInstance(forumUrl),
                 R.id.clRootView, ArticleFragment.TAG);
     }
 

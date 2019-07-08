@@ -172,7 +172,10 @@ public class RxArticleService {
         } else {
             elements = elements.select("table").select("td.t_f");
         }
+        // remove picture tips
         elements.select("div.tip").remove();
+        // remove user level info etc
+        elements.select("script").remove();
         for (Element element : elements) {
             Elements imgElements = element.getElementsByTag("img");
             for (int i = 0; i < imgElements.size(); i++) {

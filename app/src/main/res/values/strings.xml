@@ -12,9 +12,10 @@
     <string name="close_drawer">Drawer Close</string>
 
     <!--Drawer Menus-->
-    <string name="about">About</string>
-    <string name="logout">Logout</string>
-    <string name="feed">My Feed</string>
+    <string name="about">关于应用</string>
+    <string name="logout">登出</string>
+    <string name="mobile_security">『移动安全区』</string>
+    <string name="free_chat">『水漫金山』</string>
 
     <!--App Message-->
     <string name="api_retry_error">Please retry!</string>
