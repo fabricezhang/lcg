@@ -85,13 +85,13 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
 
     @Override
     public void onBackPressed() {
+        if(onFragmentDetached(ArticleFragment.TAG)) return;
+        if(onFragmentDetached(AboutFragment.TAG)) return;
         // check viewpager
         if (mViewPager.isShown() && mViewPager.getCurrentItem() != 0) {
             mViewPager.setCurrentItem(0, true);
             return;
         }
-        if(onFragmentDetached(ArticleFragment.TAG)) return;
-        if(onFragmentDetached(AboutFragment.TAG)) return;
         super.onBackPressed();
     }
 
