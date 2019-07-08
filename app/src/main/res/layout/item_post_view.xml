@@ -71,6 +71,8 @@
                     android:layout_marginTop="@dimen/dp_8"
                     app:layout_constraintTop_toBottomOf="@id/post_avatar"
                     app:layout_constraintStart_toStartOf="@id/post_avatar"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0"
                     android:textStyle="normal"
                     tools:text="This repository contains a detailed sample app that implements MVVM architecture using Dagger2, Android Room, RxJava2 ,etc" />
         </androidx.constraintlayout.widget.ConstraintLayout>

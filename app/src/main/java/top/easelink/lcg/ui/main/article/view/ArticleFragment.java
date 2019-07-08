@@ -14,7 +14,6 @@ import top.easelink.lcg.R;
 import top.easelink.lcg.databinding.FragmentArticleBinding;
 import top.easelink.lcg.ui.ViewModelProviderFactory;
 import top.easelink.lcg.ui.main.article.viewmodel.ArticleViewModel;
-import top.easelink.lcg.ui.main.articles.view.ArticlesAdapter;
 import top.easelink.lcg.ui.main.model.Article;
 
 import javax.inject.Inject;
@@ -86,6 +85,11 @@ public class ArticleFragment extends BaseFragment<FragmentArticleBinding, Articl
 
     @Override
     public void handleError(Throwable t) {
+
+    }
+
+    @Override
+    public void onPermissionRequired() {
 
     }
 

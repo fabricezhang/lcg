@@ -2,7 +2,6 @@ package top.easelink.lcg.ui.main.source.remote;
 
 import android.text.TextUtils;
 import android.util.ArrayMap;
-import android.util.SparseArray;
 import androidx.annotation.NonNull;
 import io.reactivex.Observable;
 import org.jsoup.Jsoup;
@@ -15,7 +14,6 @@ import top.easelink.lcg.ui.main.model.Post;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -85,7 +83,6 @@ public class RxArticleService {
                 List<Map<String, String>> avatarsAndNames = getAvatarAndName(doc);
                 List<String> contents = getContent(doc);
                 List<String> datetimes = getDateTime(doc);
-//                String title = doc.selectFirst("span#thread_subject").text();
                 List<Post> postList = new ArrayList<>(avatarsAndNames.size());
                 for (int i = 0; i< avatarsAndNames.size(); i++) {
                     try {
@@ -102,8 +99,9 @@ public class RxArticleService {
             } catch (Exception e) {
                 Timber.e(e);
                 emitter.onError(e);
+            } finally {
+                emitter.onComplete();
             }
-            emitter.onComplete();
         });
     }
 
@@ -160,15 +158,24 @@ public class RxArticleService {
         Elements elements = doc.select("div.t_fsz");
         if (elements.size() == 0) {
             elements = doc.select("table").select("td.t_f");
+        } else {
+            elements = elements.select("table").select("td.t_f");
         }
+        elements.select("div.tip").remove();
         for (Element element : elements) {
             Elements imgElements = element.getElementsByTag("img");
             for (int i = 0; i < imgElements.size(); i++) {
                 Element imgElement = imgElements.get(i);
+                String src = imgElement.attr("src");
+                if (src.contains("https://static.52pojie.cn/static/image/smiley")) {
+                    imgElement.remove();
+                    break;
+                }
                 String attr = imgElement.attr("file");
                 if (!TextUtils.isEmpty(attr)) {
                     imgElement.attr("src", attr);
                 }
+
             }
             list.add(element.html());
         }

@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import top.easelink.framework.utils.rx.SchedulerProvider;
 import top.easelink.lcg.ui.about.viewmodel.AboutViewModel;
-import top.easelink.lcg.ui.main.articles.viewmodel.ArticlesViewModel;
 import top.easelink.lcg.ui.main.article.viewmodel.ArticleViewModel;
+import top.easelink.lcg.ui.main.articles.viewmodel.ArticlesViewModel;
 import top.easelink.lcg.ui.main.viewmodel.MainViewModel;
 
 import javax.inject.Inject;

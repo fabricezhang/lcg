@@ -1,6 +1,7 @@
 package top.easelink.lcg.ui.main.article.view;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import androidx.annotation.NonNull;
@@ -8,14 +9,17 @@ import androidx.databinding.BindingAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import org.sufficientlysecure.htmltextview.HtmlHttpImageGetter;
+import timber.log.Timber;
 import top.easelink.framework.base.BaseViewHolder;
 import top.easelink.lcg.R;
 import top.easelink.lcg.databinding.ItemPostViewBinding;
-import top.easelink.lcg.ui.main.model.Post;
 import top.easelink.lcg.ui.main.article.viewmodel.PostViewModel;
+import top.easelink.lcg.ui.main.model.Post;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static top.easelink.lcg.ui.main.source.remote.RxArticleService.SERVER_BASE_URL;
 
 public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
@@ -47,7 +51,14 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     @Override
     public int getItemViewType(int position) {
-        return VIEW_TYPE_NORMAL;
+        if (mPostList != null && !mPostList.isEmpty()) {
+//            if (position == mPostList.size()) {
+//                return VIEW_TYPE_LOAD_MORE;
+//            }
+            return VIEW_TYPE_NORMAL;
+        } else {
+            return VIEW_TYPE_EMPTY;
+        }
     }
 
     @Override
@@ -60,11 +71,16 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     public BaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         switch (viewType) {
             case VIEW_TYPE_NORMAL:
-            default:
                 ItemPostViewBinding itemPostViewBinding
                         = ItemPostViewBinding.inflate(LayoutInflater.from(parent.getContext()),
                         parent, false);
                 return new PostViewHolder(itemPostViewBinding);
+            case VIEW_TYPE_EMPTY:
+            default:
+                return new PostEmptyViewHolder(
+                        LayoutInflater.from(parent.getContext())
+                                .inflate(R.layout.layout_skelton_article
+                                        , parent, false));
         }
     }
 
@@ -93,12 +109,26 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             final Post post = mPostList.get(position);
             postViewModel = new PostViewModel(post);
             mBinding.setViewModel(postViewModel);
-            mBinding.contentTextView.setHtml(post.getContent(), new HtmlHttpImageGetter(mBinding.contentTextView));
-            // Immediate Binding
-            // When a variable or observable changes, the binding will be scheduled to change before
-            // the next frame. There are times, however, when binding must be executed immediately.
-            // To force execution, use the executePendingBindings() method.
+            try {
+                mBinding.contentTextView.setHtml(post.getContent(),
+                        new HtmlHttpImageGetter(mBinding.contentTextView,
+                                SERVER_BASE_URL, true));
+            } catch (Exception e) {
+                Timber.e(e);
+            }
             mBinding.executePendingBindings();
+        }
+    }
+
+    public class PostEmptyViewHolder extends BaseViewHolder{
+
+        PostEmptyViewHolder(View view) {
+            super(view);
+        }
+
+        @Override
+        public void onBind(int position) {
+
         }
     }
 }

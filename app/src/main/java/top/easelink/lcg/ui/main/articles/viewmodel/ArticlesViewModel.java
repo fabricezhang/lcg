@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import top.easelink.framework.base.BaseViewModel;
 import top.easelink.framework.utils.rx.SchedulerProvider;
+import top.easelink.lcg.ui.main.articles.view.ArticlesNavigator;
 import top.easelink.lcg.ui.main.model.Article;
 import top.easelink.lcg.ui.main.source.remote.RxArticleService;
-import top.easelink.lcg.ui.main.articles.view.ArticlesNavigator;
 
 import java.util.List;
 

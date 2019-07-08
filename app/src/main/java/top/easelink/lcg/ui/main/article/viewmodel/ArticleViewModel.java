@@ -12,7 +12,8 @@ import java.util.List;
 
 public class ArticleViewModel extends BaseViewModel<ArticleNavigator> {
 
-    private final MutableLiveData<List<Post>> posts = new MutableLiveData<>();
+    private final MutableLiveData<List<Post>> mPosts = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> mIsBlocked = new MutableLiveData<>();
     private final RxArticleService articleService = RxArticleService.getInstance();
 
     public ArticleViewModel(SchedulerProvider schedulerProvider) {
@@ -26,13 +27,19 @@ public class ArticleViewModel extends BaseViewModel<ArticleNavigator> {
                 .observeOn(getSchedulerProvider().ui())
                 .subscribe(postList -> {
                             if (postList != null && postList.size()!= 0) {
-                                posts.setValue(postList);
+                                mPosts.setValue(postList);
+                                mIsBlocked.setValue(false);
+                            } else {
+                                mIsBlocked.setValue(true);
                             }
                 }, throwable -> getNavigator().handleError(throwable)
                         , () -> setIsLoading(false)));
     }
 
     public LiveData<List<Post>> getPosts() {
-        return posts;
+        return mPosts;
+    }
+    public LiveData<Boolean> getIsBlocked() {
+        return mIsBlocked;
     }
 }
