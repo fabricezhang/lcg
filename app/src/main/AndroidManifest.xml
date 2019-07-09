@@ -30,7 +30,19 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.webview.ui.WebViewActivity"
-                  android:screenOrientation="portrait"/>
+                  android:launchMode="standard"
+                  android:exported="true"
+                  android:screenOrientation="portrait">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                        android:host="ssl.ptlogin2.qq.com"
+                        android:path="/jump"
+                        android:scheme="https" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

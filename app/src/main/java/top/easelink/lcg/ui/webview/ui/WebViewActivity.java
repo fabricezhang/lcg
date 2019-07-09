@@ -2,7 +2,6 @@ package top.easelink.lcg.ui.webview.ui;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Animatable;
@@ -14,21 +13,19 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.webkit.SslErrorHandler;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
+import android.webkit.*;
 import android.widget.ProgressBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ShareCompat;
+import timber.log.Timber;
 import top.easelink.lcg.R;
 
 import static top.easelink.lcg.ui.webview.WebViewConstants.*;
 
 public class WebViewActivity extends AppCompatActivity {
 
-    private boolean mForceEnableJs = false;
+    private boolean mForceEnableJs = true;
 
     protected String mUrl;
 
@@ -59,10 +56,14 @@ public class WebViewActivity extends AppCompatActivity {
     protected void initWebView() {
         mWebView.setWebViewClient(getWebViewClient());
         initUrl();
-        Intent intent = getIntent();
-        mForceEnableJs = intent.getBooleanExtra(FORCE_ENABLE_JS_KEY, false);
         updateWebViewSettings();
-        mWebView.loadUrl(mUrl);
+        Intent intent = getIntent();
+        if (Intent.ACTION_VIEW.equals(intent.getAction()) && intent.getData() != null) {
+            mWebView.loadUrl(intent.getData().toString());
+        } else {
+            mForceEnableJs = intent.getBooleanExtra(FORCE_ENABLE_JS_KEY, false);
+            mWebView.loadUrl(mUrl);
+        }
     }
 
     protected void initUrl() {
@@ -150,6 +151,18 @@ public class WebViewActivity extends AppCompatActivity {
         @Override
         public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
             handler.proceed();
+        }
+
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+            String url = request.getUrl().toString();
+            if (TextUtils.isEmpty(url)) return false;
+            if (url.startsWith("wtloginmqq://ptlogin/qlogin")) {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+                Timber.e(url);
+                return true;
+            }
+            return super.shouldOverrideUrlLoading(view, request);
         }
     }
 
