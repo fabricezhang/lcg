@@ -1,4 +1,4 @@
-package top.easelink.lcg.ui.main.article.view;
+package top.easelink.lcg.ui.main.article.viewmodel;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +13,6 @@ import timber.log.Timber;
 import top.easelink.framework.base.BaseViewHolder;
 import top.easelink.lcg.R;
 import top.easelink.lcg.databinding.ItemPostViewBinding;
-import top.easelink.lcg.ui.main.article.viewmodel.PostViewModel;
 import top.easelink.lcg.ui.main.model.Post;
 
 import java.util.ArrayList;
@@ -26,7 +25,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     private static final int VIEW_TYPE_EMPTY = 0;
     private static final int VIEW_TYPE_NORMAL = 1;
     private static final int VIEW_TYPE_LOAD_MORE = 2;
-
+    private ArticleAdapterListener mListener;
     private List<Post> mPostList = new ArrayList<>();
 
     @BindingAdapter({"adapter"})
@@ -39,22 +38,29 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     }
 
     @BindingAdapter({"imageUrl"})
-    public static void loadimage(ImageView imageView, String url){
+    public static void loadImage(ImageView imageView, String url){
         Glide.with(imageView.getContext()).load(url) .placeholder(R.mipmap.ic_launcher) .into(imageView);
     }
 
+    public ArticleAdapter(ArticleAdapterListener listener) {
+        mListener = listener;
+    }
 
     @Override
     public int getItemCount() {
-        return mPostList.size();
+        if (mPostList != null && mPostList.size() > 0) {
+            return mPostList.size() + 1;
+        } else {
+            return 1;
+        }
     }
 
     @Override
     public int getItemViewType(int position) {
         if (mPostList != null && !mPostList.isEmpty()) {
-//            if (position == mPostList.size()) {
-//                return VIEW_TYPE_LOAD_MORE;
-//            }
+            if (position == mPostList.size()) {
+                return VIEW_TYPE_LOAD_MORE;
+            }
             return VIEW_TYPE_NORMAL;
         } else {
             return VIEW_TYPE_EMPTY;
@@ -75,6 +81,9 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                         = ItemPostViewBinding.inflate(LayoutInflater.from(parent.getContext()),
                         parent, false);
                 return new PostViewHolder(itemPostViewBinding);
+            case VIEW_TYPE_LOAD_MORE:
+                return new LoadMoreViewHolder(LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.item_article_load_more_view, parent, false));
             case VIEW_TYPE_EMPTY:
             default:
                 return new PostEmptyViewHolder(
@@ -129,6 +138,18 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         @Override
         public void onBind(int position) {
 
+        }
+    }
+
+    public class LoadMoreViewHolder extends BaseViewHolder{
+
+        LoadMoreViewHolder(View view) {
+            super(view);
+        }
+
+        @Override
+        public void onBind(int position) {
+            mListener.fetchArticlePost(ArticleViewModel.FETCH_MORE);
         }
     }
 }

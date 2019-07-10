@@ -25,7 +25,7 @@ import javax.inject.Inject;
 import static top.easelink.lcg.ui.main.articles.viewmodel.ArticlesViewModel.FETCH_INIT;
 
 public class ArticlesFragment extends BaseFragment<FragmentArticlesBinding, ArticlesViewModel>
-        implements ArticlesNavigator, ArticlesAdapter.ArticleAdapterListener {
+        implements ArticlesNavigator, ArticlesAdapter.ArticlesAdapterListener {
 
     public static String TAG = ArticlesFragment.class.getSimpleName();
     private static final String ARG_PARAM = "param";

@@ -17,16 +17,19 @@ import top.easelink.framework.base.BaseFragment;
 import top.easelink.lcg.R;
 import top.easelink.lcg.databinding.FragmentArticleBinding;
 import top.easelink.lcg.ui.ViewModelProviderFactory;
+import top.easelink.lcg.ui.main.article.viewmodel.ArticleAdapter;
 import top.easelink.lcg.ui.main.article.viewmodel.ArticleViewModel;
 import top.easelink.lcg.ui.main.model.Article;
 import top.easelink.lcg.ui.webview.ui.WebViewActivity;
 
 import javax.inject.Inject;
 
+import static top.easelink.lcg.ui.main.article.viewmodel.ArticleViewModel.FETCH_INIT;
 import static top.easelink.lcg.ui.main.source.remote.RxArticleService.SERVER_BASE_URL;
 
 
-public class ArticleFragment extends BaseFragment<FragmentArticleBinding, ArticleViewModel> implements ArticleNavigator {
+public class ArticleFragment extends BaseFragment<FragmentArticleBinding, ArticleViewModel>
+        implements ArticleNavigator {
 
     @Inject
     ViewModelProviderFactory factory;
@@ -61,6 +64,7 @@ public class ArticleFragment extends BaseFragment<FragmentArticleBinding, Articl
     @Override
     public ArticleViewModel getViewModel() {
         mArticleViewModel = ViewModelProviders.of(this, factory).get(ArticleViewModel.class);
+        mArticleViewModel.setUrl(articleUrl);
         return mArticleViewModel;
     }
 
@@ -81,11 +85,12 @@ public class ArticleFragment extends BaseFragment<FragmentArticleBinding, Articl
         setUp();
         setHasOptionsMenu(true);
         ((AppCompatActivity) getActivity()).setSupportActionBar(mFragmentArticleBinding.articleToolbar);
-        mArticleViewModel.fetchArticle(articleUrl);
+        mArticleViewModel.setUrl(articleUrl);
+        mArticleViewModel.fetchArticlePost(FETCH_INIT);
     }
 
     private void setUp() {
-        mArticleAdapter = new ArticleAdapter();
+        mArticleAdapter = new ArticleAdapter(mArticleViewModel);
         mLayoutManager = new LinearLayoutManager(getContext());
         mLayoutManager.setOrientation(RecyclerView.VERTICAL);
         mFragmentArticleBinding.postRecyclerView.setLayoutManager(mLayoutManager);
@@ -115,10 +120,4 @@ public class ArticleFragment extends BaseFragment<FragmentArticleBinding, Articl
     public void handleError(Throwable t) {
 
     }
-
-    @Override
-    public void onPermissionRequired() {
-
-    }
-
 }

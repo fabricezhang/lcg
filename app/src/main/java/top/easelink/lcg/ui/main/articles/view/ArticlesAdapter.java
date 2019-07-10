@@ -28,9 +28,9 @@ public class ArticlesAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     private List<Article> mArticleList = new ArrayList<>();
 
-    private ArticleAdapterListener mListener;
+    private ArticlesAdapterListener mListener;
 
-    ArticlesAdapter(ArticleAdapterListener listener) {
+    ArticlesAdapter(ArticlesAdapterListener listener) {
         mListener = listener;
     }
 
@@ -100,12 +100,11 @@ public class ArticlesAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         mArticleList.clear();
     }
 
-    public void setListener(ArticleAdapterListener listener) {
+    public void setListener(ArticlesAdapterListener listener) {
         this.mListener = listener;
     }
 
-    public interface ArticleAdapterListener {
-
+    public interface ArticlesAdapterListener {
         void fetchArticles(int type);
     }
 

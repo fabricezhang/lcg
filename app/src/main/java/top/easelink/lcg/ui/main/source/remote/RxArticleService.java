@@ -73,8 +73,9 @@ public class RxArticleService {
             } catch (Exception e) {
                 Timber.e(e);
                 emitter.onError(e);
+            } finally {
+                emitter.onComplete();
             }
-            emitter.onComplete();
         });
     }
 
@@ -89,6 +90,13 @@ public class RxArticleService {
                     return;
                 } else {
                     title = titleElement.text();
+                }
+                Element nextPageElement = doc.selectFirst("a.nxt");
+                String nextPageUrl;
+                if (nextPageElement != null) {
+                    nextPageUrl = nextPageElement.attr("href");
+                } else {
+                    nextPageUrl = "";
                 }
                 List<Map<String, String>> avatarsAndNames = getAvatarAndName(doc);
                 List<String> contents = getContent(doc);
@@ -105,7 +113,7 @@ public class RxArticleService {
                         Timber.e(npe);
                     }
                 }
-                ArticleDetail articleDetail = new ArticleDetail(title, postList);
+                ArticleDetail articleDetail = new ArticleDetail(title, postList, nextPageUrl);
                 emitter.onNext(articleDetail);
             } catch (Exception e) {
                 Timber.e(e);
