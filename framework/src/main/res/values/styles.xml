@@ -62,12 +62,12 @@
     </style>
 
     <style name="TextStyle.Heading" parent="TextStyle">
-        <item name="android:textSize">@dimen/sp_14</item>
+        <item name="android:textSize">@dimen/sp_16</item>
         <item name="android:textAppearance">@style/TextAppearance.Text.Bold</item>
     </style>
 
     <style name="TextStyle.Comment" parent="TextStyle">
-        <item name="android:textSize">@dimen/sp_14</item>
+        <item name="android:textSize">@dimen/sp_16</item>
         <item name="android:textAppearance">@style/TextAppearance.Text.Italic</item>
     </style>
 
