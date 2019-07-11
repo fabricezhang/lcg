@@ -43,22 +43,22 @@ public class ArticlesAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     @Override
     public int getItemCount() {
-        if (mArticleList != null && mArticleList.size() > 0) {
-            return mArticleList.size() + 1;
-        } else {
+        if (mArticleList.isEmpty()) {
             return 1;
+        } else {
+            return mArticleList.size() + 1;
         }
     }
 
     @Override
     public int getItemViewType(int position) {
-        if (mArticleList != null && !mArticleList.isEmpty()) {
+        if (mArticleList.isEmpty()) {
+            return VIEW_TYPE_EMPTY;
+        } else {
             if (position == mArticleList.size()) {
                 return VIEW_TYPE_LOAD_MORE;
             }
             return VIEW_TYPE_NORMAL;
-        } else {
-            return VIEW_TYPE_EMPTY;
         }
     }
 

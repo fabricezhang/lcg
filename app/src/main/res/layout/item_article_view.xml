@@ -30,11 +30,11 @@
             <TextView
                     android:id="@+id/titleTextView"
                     style="@style/TextStyle.Heading"
-                    android:layout_width="@dimen/dp_0"
-                    android:layout_height="match_parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/dp_10"
                     android:layout_marginTop="@dimen/dp_20"
-                    android:maxLines="3"
+                    android:maxLines="2"
                     android:text="@{viewModel.title}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -51,6 +51,7 @@
                     android:layout_marginStart="@dimen/dp_10"
                     app:layout_constraintTop_toBottomOf="@id/titleTextView"
                     app:layout_constraintStart_toStartOf="@id/titleTextView"
+                    app:layout_constraintHorizontal_bias="0"
                     tools:text="10 / 200"/>
 
             <TextView
@@ -62,12 +63,13 @@
                     android:textColor="@color/colorAccent"
                     app:layout_constraintTop_toBottomOf="@id/replyAndView"
                     app:layout_constraintStart_toStartOf="@id/titleTextView"
+                    app:layout_constraintHorizontal_bias="0"
                     tools:text="『移动安全区』"/>
 
             <TextView
                     android:id="@+id/authorTextView"
                     style="@style/TextStyle.Title.Sub"
-                    android:layout_width="@dimen/dp_0"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@{viewModel.author}"
                     android:layout_marginBottom="@dimen/dp_10"
@@ -75,15 +77,15 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     tools:text="Author"/>
 
-
             <TextView
                     android:id="@+id/dateTextView"
                     style="@style/TextStyle.Title.Sub"
-                    android:layout_width="@dimen/dp_0"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@{viewModel.date}"
                     app:layout_constraintTop_toBottomOf="@id/authorTextView"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1"
                     tools:text="2019-07-04"/>
 
             <!--<TextView-->
