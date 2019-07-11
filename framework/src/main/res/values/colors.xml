@@ -18,6 +18,8 @@
     <color name="fb">#3b5998</color>
     <color name="google">#d34836</color>
 
+    <!--52pojie-->
+    <color name="pojie_logo">#E01720</color>
     <!--Design colors-->
     <color name="red_dark">#F06423</color>
     <color name="red_dark2">#D85A1B</color>

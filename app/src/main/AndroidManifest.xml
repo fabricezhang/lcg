@@ -16,10 +16,10 @@
 
     <application
             android:allowBackup="false"
-            android:icon="@drawable/ic_logo_24dp"
+            android:icon="@drawable/ic_noavatar_middle"
             android:label="@string/app_name"
             android:name=".LCGApp"
-            android:roundIcon="@drawable/ic_logo_24dp"
+            android:roundIcon="@drawable/ic_noavatar_middle"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
         <activity android:name=".ui.main.view.MainActivity"
