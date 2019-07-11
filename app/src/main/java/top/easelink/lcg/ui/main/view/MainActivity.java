@@ -33,15 +33,21 @@ import top.easelink.lcg.ui.ViewModelProviderFactory;
 import top.easelink.lcg.ui.about.view.AboutFragment;
 import top.easelink.lcg.ui.main.article.view.ArticleFragment;
 import top.easelink.lcg.ui.main.articles.view.ArticlesFragment;
+import top.easelink.lcg.ui.main.articles.view.ForumArticlesFragment;
 import top.easelink.lcg.ui.main.model.Article;
 import top.easelink.lcg.ui.main.model.OpenArticleEvent;
 import top.easelink.lcg.ui.main.model.TabModel;
 import top.easelink.lcg.ui.main.viewmodel.MainViewModel;
+import top.easelink.lcg.ui.webview.ui.WebViewActivity;
 import top.easelink.lcg.utils.ActivityUtils;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
+
+import static top.easelink.lcg.ui.main.source.remote.RxArticleService.SERVER_BASE_URL;
+import static top.easelink.lcg.utils.ActivityUtils.TAG_PREFIX;
+import static top.easelink.lcg.utils.WebsiteConstant.*;
 
 public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewModel> implements MainNavigator, HasSupportFragmentInjector {
 
@@ -85,29 +91,19 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
 
     @Override
     public void onBackPressed() {
-        if(onFragmentDetached(ArticleFragment.TAG)) return;
-        if(onFragmentDetached(AboutFragment.TAG)) return;
-        // check viewpager
-        if (mViewPager.isShown() && mViewPager.getCurrentItem() != 0) {
-            mViewPager.setCurrentItem(0, true);
-            return;
+        if (!mFragmentTags.empty()) {
+            String tag = mFragmentTags.pop();
+            if (onFragmentDetached(tag)) {
+                return;
+            } else {
+                // check viewpager
+                if (mViewPager.isShown() && mViewPager.getCurrentItem() != 0) {
+                    mViewPager.setCurrentItem(0, true);
+                    return;
+                }
+            }
         }
         super.onBackPressed();
-    }
-
-    public boolean onFragmentDetached(String tag) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        Fragment fragment = fragmentManager.findFragmentByTag(tag);
-        if (fragment != null) {
-            fragmentManager
-                    .beginTransaction()
-                    .setCustomAnimations(R.anim.slide_left, R.anim.slide_right)
-                    .remove(fragment)
-                    .commitNow();
-            unlockDrawer();
-            return true;
-        }
-        return false;
     }
 
     @Override
@@ -197,11 +193,14 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
                         case R.id.navItemAbout:
                             showAboutFragment();
                             return true;
+                        case R.id.navItemSoftware:
+                            showForumFragment(SOFTWARE_TITLE, SOFTWARE_URL);
+                            return true;
                         case R.id.navItemFreeChat:
-                            showForumFragment("forum-10-1.html");
+                            WebViewActivity.startWebViewWith(SERVER_BASE_URL + FREE_CHAT_URL, this);
                             return true;
                         case R.id.navItemMobileSecurity:
-                            showForumFragment("forum-65-1.html");
+                            showForumFragment(MOB_SECURITY_TITLE, MOB_SECURITY_URL);
                             return true;
                         default:
                             return false;
@@ -215,22 +214,30 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
     }
 
     private void showAboutFragment() {
-        lockDrawer();
         ActivityUtils.addFragmentInActivity(getSupportFragmentManager(),
                 AboutFragment.newInstance(),
-                R.id.clRootView, AboutFragment.TAG);
+                R.id.clRootView);
     }
 
     private void showArticleFragment(Article article) {
         ActivityUtils.addFragmentInActivity(getSupportFragmentManager(),
                 ArticleFragment.newInstance(article),
-                R.id.clRootView, ArticleFragment.TAG);
+                R.id.clRootView);
     }
 
-    private void showForumFragment(String forumUrl) {
+    private void showForumFragment(String title, String forumUrl) {
         ActivityUtils.addFragmentInActivity(getSupportFragmentManager(),
-                ArticlesFragment.newInstance(forumUrl),
-                R.id.clRootView, ArticleFragment.TAG);
+                ForumArticlesFragment.newInstance(title, forumUrl),
+                R.id.clRootView);
+    }
+
+    @Override
+    public boolean onFragmentDetached(String tag) {
+        if (tag != null && tag.startsWith(TAG_PREFIX)) {
+            return super.onFragmentDetached(tag);
+        } else {
+            return false;
+        }
     }
 
     private void unlockDrawer() {

@@ -4,18 +4,20 @@
     <group>
         <item
                 android:id="@+id/navItemAbout"
-                android:checked="true"
                 android:icon="@drawable/ic_info_24px"
                 android:title="@string/about" />
         <item
                 android:id="@+id/navItemMobileSecurity"
                 android:checked="true"
                 android:icon="@drawable/ic_mobile_24dp"
-                android:title="@string/mobile_security" />
+                android:title="@string/mobile_security_title" />
+        <item
+                android:id="@+id/navItemSoftware"
+                android:icon="@drawable/ic_invert_colors_black_24dp"
+                android:title="@string/software_title" />
         <item
                 android:id="@+id/navItemFreeChat"
-                android:checked="true"
                 android:icon="@drawable/ic_invert_colors_black_24dp"
-                android:title="@string/free_chat" />
+                android:title="@string/free_chat_title" />
     </group>
 </menu>

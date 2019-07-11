@@ -14,8 +14,9 @@
     <!--Drawer Menus-->
     <string name="about">关于应用</string>
     <string name="logout">登出</string>
-    <string name="mobile_security">『移动安全区』</string>
-    <string name="free_chat">『水漫金山』</string>
+    <string name="mobile_security_title">『移动安全区』</string>
+    <string name="free_chat_title">『水漫金山』</string>
+    <string name="software_title">『精品软件区』</string>
 
     <!--home fragment-->
     <string name="tab_title_hot">人气热门</string>

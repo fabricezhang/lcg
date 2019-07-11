@@ -45,7 +45,7 @@ public class AboutFragment extends BaseFragment<FragmentAboutBinding, AboutViewM
 
     @Override
     public void goBack() {
-        getBaseActivity().onFragmentDetached(TAG);
+        getBaseActivity().onFragmentDetached(getTag());
     }
 
     @Override

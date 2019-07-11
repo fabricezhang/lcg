@@ -1,4 +1,4 @@
-package top.easelink.lcg.ui.main.articles.view;
+package top.easelink.lcg.ui.main.articles.viewmodel;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,8 +10,6 @@ import top.easelink.framework.base.BaseViewHolder;
 import top.easelink.lcg.R;
 import top.easelink.lcg.databinding.ItemArticleEmptyViewBinding;
 import top.easelink.lcg.databinding.ItemArticleViewBinding;
-import top.easelink.lcg.ui.main.articles.viewmodel.ArticleEmptyItemViewModel;
-import top.easelink.lcg.ui.main.articles.viewmodel.ArticleItemViewModel;
 import top.easelink.lcg.ui.main.model.Article;
 
 import java.util.ArrayList;
@@ -30,7 +28,7 @@ public class ArticlesAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     private ArticlesAdapterListener mListener;
 
-    ArticlesAdapter(ArticlesAdapterListener listener) {
+    public ArticlesAdapter(ArticlesAdapterListener listener) {
         mListener = listener;
     }
 
@@ -105,6 +103,8 @@ public class ArticlesAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     }
 
     public interface ArticlesAdapterListener {
+        int FETCH_INIT = 0;
+        int FETCH_MORE = 1;
         void fetchArticles(int type);
     }
 

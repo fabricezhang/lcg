@@ -16,32 +16,31 @@ import top.easelink.framework.base.BaseFragment;
 import top.easelink.framework.customview.ScrollChildSwipeRefreshLayout;
 import top.easelink.lcg.LCGApp;
 import top.easelink.lcg.R;
-import top.easelink.lcg.databinding.FragmentArticlesBinding;
+import top.easelink.lcg.databinding.FragmentForumArticlesBinding;
 import top.easelink.lcg.ui.ViewModelProviderFactory;
 import top.easelink.lcg.ui.main.articles.viewmodel.ArticlesAdapter;
-import top.easelink.lcg.ui.main.articles.viewmodel.ArticlesViewModel;
+import top.easelink.lcg.ui.main.articles.viewmodel.ForumArticlesViewModel;
 
 import javax.inject.Inject;
 
 import static top.easelink.lcg.ui.main.articles.viewmodel.ArticlesViewModel.FETCH_INIT;
 
-public class ArticlesFragment extends BaseFragment<FragmentArticlesBinding, ArticlesViewModel>
-        implements ArticlesNavigator{
+public class ForumArticlesFragment extends BaseFragment<FragmentForumArticlesBinding, ForumArticlesViewModel>
+        implements ArticlesNavigator {
 
-    private static final String ARG_PARAM = "param";
+    private static final String ARG_PARAM = "url";
+    private static final String ARG_TITLE = "title";
 
     @Inject
     ViewModelProviderFactory factory;
-    private LinearLayoutManager mLayoutManager;
-    private ArticlesAdapter mArticlesAdapter;
-    private FragmentArticlesBinding mFragmentArticlesBinding;
-    private ArticlesViewModel mArticlesViewModel;
-    private String mParam;
+    private FragmentForumArticlesBinding mFragmentArticlesBinding;
+    private ForumArticlesViewModel mArticlesViewModel;
 
-    public static ArticlesFragment newInstance(String param) {
+    public static ForumArticlesFragment newInstance(String title, String param) {
         Bundle args = new Bundle();
         args.putString(ARG_PARAM, param);
-        ArticlesFragment fragment = new ArticlesFragment();
+        args.putString(ARG_TITLE, title);
+        ForumArticlesFragment fragment = new ForumArticlesFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -53,12 +52,12 @@ public class ArticlesFragment extends BaseFragment<FragmentArticlesBinding, Arti
 
     @Override
     public int getLayoutId() {
-        return R.layout.fragment_articles;
+        return R.layout.fragment_forum_articles;
     }
 
     @Override
-    public ArticlesViewModel getViewModel() {
-        mArticlesViewModel = ViewModelProviders.of(this, factory).get(ArticlesViewModel.class);
+    public ForumArticlesViewModel getViewModel() {
+        mArticlesViewModel = ViewModelProviders.of(this, factory).get(ForumArticlesViewModel.class);
         return mArticlesViewModel;
     }
 
@@ -83,11 +82,12 @@ public class ArticlesFragment extends BaseFragment<FragmentArticlesBinding, Arti
     private void setUp() {
         Bundle bundle = getArguments();
         if (bundle != null) {
-            mParam = getArguments().getString(ARG_PARAM);
+            mArticlesViewModel.initUrl(getArguments().getString(ARG_PARAM));
+            mArticlesViewModel.setTitle(getArguments().getString(ARG_TITLE));
         }
-        mArticlesViewModel.initUrl(mParam);
-        mArticlesAdapter = new ArticlesAdapter(mArticlesViewModel);
-        mLayoutManager = new LinearLayoutManager(getContext());
+
+        ArticlesAdapter mArticlesAdapter = new ArticlesAdapter(mArticlesViewModel);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         mLayoutManager.setOrientation(RecyclerView.VERTICAL);
         mFragmentArticlesBinding.recyclerView.setLayoutManager(mLayoutManager);
         mFragmentArticlesBinding.recyclerView.setItemAnimator(new DefaultItemAnimator());

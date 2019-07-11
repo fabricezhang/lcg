@@ -27,7 +27,7 @@ import java.util.Map;
 public class RxArticleService {
 
     public static final String SERVER_BASE_URL = "https://www.52pojie.cn/";
-    private static final String FORUM_BASE_URL = "forum.php?mod=guide&view=";
+    public static final String FORUM_BASE_URL = "forum.php?mod=guide&view=";
 
     private static RxArticleService mInstance;
 
@@ -43,10 +43,12 @@ public class RxArticleService {
     private RxArticleService() {
 
     }
-    public Observable<List<Article>> getArticles(@NonNull final String param, @Nullable final Integer pageNum){
+
+    private Observable<List<Article>> getArticles(@NonNull final String requestUrl){
+        Timber.d("52PoJie : " + requestUrl);
         return Observable.create(emitter -> {
             try {
-                Document doc = Jsoup.connect(SERVER_BASE_URL + FORUM_BASE_URL + param + "&page=" + pageNum).get();
+                Document doc = Jsoup.connect(requestUrl).get();
                 Elements elements = doc.select("tbody");
                 List<Article> list = new ArrayList<>();
                 String title, author, date, url, origin;
@@ -77,6 +79,52 @@ public class RxArticleService {
                 emitter.onComplete();
             }
         });
+    }
+
+    public Observable<List<Article>> getForumArticles(@NonNull final String requestUrl){
+        return Observable.create(emitter -> {
+            try {
+                Document doc = Jsoup.connect(SERVER_BASE_URL + requestUrl).get();
+                Elements elements = doc.select("tbody[id^=normal]");
+                if (elements.isEmpty()) {
+                    String html = doc.html();
+                    Timber.d(html);
+                    elements = doc.select("tbody");
+                }
+                List<Article> list = new ArrayList<>();
+                String title, author, date, url, origin;
+                Integer view, reply;
+                for (Element element : elements) {
+                    try {
+                        reply = Integer.valueOf(extractFrom(element, "td.num", "a.xi2"));
+                        view = Integer.valueOf(extractFrom(element, "td.num", "em"));
+                        title = extractFrom(element, "th.new", ".xst");
+                        author = extractFrom(element, "td.by", "a[href*=uid]");
+                        date = extractFrom(element, "td.by", "span");
+                        url = extractAttrFrom(element, "href","th.new", "a.xst");
+                        origin = extractFrom(element, "td.by", "a[target]");
+                        if (!TextUtils.isEmpty(title) && !TextUtils.isEmpty(author)) {
+                            list.add(new Article(title, author, date, url, view, reply, origin));
+                        }
+                    } catch (NumberFormatException nbe) {
+                        Timber.v(nbe);
+                    } catch (Exception e) {
+                        Timber.e(e);
+                    }
+                }
+                emitter.onNext(list);
+            } catch (Exception e) {
+                Timber.e(e);
+                emitter.onError(e);
+            } finally {
+                emitter.onComplete();
+            }
+        });
+    }
+
+    public Observable<List<Article>> getHomePageArticles(@NonNull final String param, @Nullable final Integer pageNum){
+        String requestUrl = SERVER_BASE_URL + FORUM_BASE_URL + param + "&page=" + pageNum;
+        return getArticles(requestUrl);
     }
 
     public Observable<ArticleDetail> getArticleDetail(@NonNull final String url){

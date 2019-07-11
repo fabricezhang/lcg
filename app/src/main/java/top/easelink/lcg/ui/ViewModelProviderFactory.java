@@ -7,6 +7,7 @@ import top.easelink.framework.utils.rx.SchedulerProvider;
 import top.easelink.lcg.ui.about.viewmodel.AboutViewModel;
 import top.easelink.lcg.ui.main.article.viewmodel.ArticleViewModel;
 import top.easelink.lcg.ui.main.articles.viewmodel.ArticlesViewModel;
+import top.easelink.lcg.ui.main.articles.viewmodel.ForumArticlesViewModel;
 import top.easelink.lcg.ui.main.viewmodel.MainViewModel;
 
 import javax.inject.Inject;
@@ -34,6 +35,8 @@ public class ViewModelProviderFactory extends ViewModelProvider.NewInstanceFacto
             return (T) new AboutViewModel(schedulerProvider);
         } else if (modelClass.isAssignableFrom(ArticleViewModel.class)) {
             return (T) new ArticleViewModel(schedulerProvider);
+        } else if (modelClass.isAssignableFrom(ForumArticlesViewModel.class)) {
+            return (T) new ForumArticlesViewModel(schedulerProvider);
         }
         throw new IllegalArgumentException("Unknown ViewModel class: " + modelClass.getName());
     }

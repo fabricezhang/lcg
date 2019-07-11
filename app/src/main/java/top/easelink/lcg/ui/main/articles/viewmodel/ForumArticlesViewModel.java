@@ -10,37 +10,32 @@ import top.easelink.lcg.ui.main.source.remote.RxArticleService;
 
 import java.util.List;
 
-public class ArticlesViewModel extends BaseViewModel<ArticlesNavigator> implements ArticlesAdapter.ArticlesAdapterListener  {
+public class ForumArticlesViewModel extends BaseViewModel<ArticlesNavigator>
+        implements ArticlesAdapter.ArticlesAdapterListener  {
 
-    private int mCurrentPage = 0;
     private String mUrl;
+    private MutableLiveData<String> mTitle = new MutableLiveData<>();
 
     private final MutableLiveData<List<Article>> articles = new MutableLiveData<>();
     private final RxArticleService articleService = RxArticleService.getInstance();
 
-    public ArticlesViewModel(SchedulerProvider schedulerProvider) {
+    public ForumArticlesViewModel(SchedulerProvider schedulerProvider) {
         super(schedulerProvider);
     }
 
     public void initUrl(String url) {
-        this.mUrl = url;
+        mUrl = url;
         fetchArticles(FETCH_INIT);
+    }
+
+    public void setTitle(String title) {
+        mTitle.setValue(title);
     }
 
     @Override
     public void fetchArticles(int type) {
-        int pageNum;
-        switch (type) {
-            case FETCH_MORE:
-                pageNum = mCurrentPage+1;
-                break;
-            case FETCH_INIT:
-            default:
-                pageNum = 1;
-                break;
-        }
         setIsLoading(true);
-        getCompositeDisposable().add(articleService.getHomePageArticles(mUrl, pageNum)
+        getCompositeDisposable().add(articleService.getForumArticles(mUrl)
                 .subscribeOn(getSchedulerProvider().io())
                 .observeOn(getSchedulerProvider().ui())
                 .subscribe(articleList -> {
@@ -52,8 +47,6 @@ public class ArticlesViewModel extends BaseViewModel<ArticlesNavigator> implemen
                         } else {
                             articles.setValue(articleList);
                         }
-                        // current page fetch successfully, record current page
-                        mCurrentPage = pageNum;
                     }
                     setIsLoading(false);
                 }, throwable -> {
@@ -64,5 +57,9 @@ public class ArticlesViewModel extends BaseViewModel<ArticlesNavigator> implemen
 
     public LiveData<List<Article>> getArticles() {
         return articles;
+    }
+
+    public LiveData<String> getTitle() {
+        return mTitle;
     }
 }

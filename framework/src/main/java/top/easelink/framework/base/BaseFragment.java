@@ -12,6 +12,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
 import dagger.android.support.AndroidSupportInjection;
+import timber.log.Timber;
 
 public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseViewModel> extends Fragment {
 
@@ -47,7 +48,8 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseView
         if (context instanceof BaseActivity) {
             BaseActivity activity = (BaseActivity) context;
             this.mActivity = activity;
-            activity.onFragmentAttached();
+            Timber.d("TAG" + getTag());
+            activity.onFragmentAttached(getTag());
         }
     }
 
@@ -99,19 +101,13 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseView
         return mActivity != null && mActivity.isNetworkConnected();
     }
 
-    public void openActivityOnTokenExpire() {
-        if (mActivity != null) {
-            mActivity.openActivityOnTokenExpire();
-        }
-    }
-
     private void performDependencyInjection() {
         AndroidSupportInjection.inject(this);
     }
 
     public interface Callback {
 
-        void onFragmentAttached();
+        void onFragmentAttached(String tag);
 
         boolean onFragmentDetached(String tag);
     }

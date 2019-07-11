@@ -19,7 +19,6 @@ public class ArticleViewModel extends BaseViewModel<ArticleNavigator>
 
     public static final int FETCH_INIT = 0;
     public static final int FETCH_MORE = 1;
-    private int pageNum = 1;
 
     private final MutableLiveData<List<Post>> mPosts = new MutableLiveData<>();
     private final MutableLiveData<Boolean> mIsBlocked = new MutableLiveData<>();

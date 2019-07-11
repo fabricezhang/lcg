@@ -24,6 +24,7 @@
 
             <androidx.appcompat.widget.Toolbar
                     android:id="@+id/article_toolbar"
+                    android:textSize="@dimen/sp_12"
                     style="@style/Toolbar"
                     app:title="@{viewModel.articleTitle}"
                     app:subtitleTextColor="@color/white"

@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import top.easelink.framework.base.BaseFragment;
 import top.easelink.lcg.R;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -13,20 +14,21 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class ActivityUtils {
 
+    public static final String TAG_PREFIX = "lcg-";
     /**
      * The {@code fragment} is added to the container view with id {@code frameId}. The operation is
      * performed by the {@code fragmentManager}.
      *
      */
     public static void addFragmentInActivity(@NonNull FragmentManager fragmentManager,
-                                                 @NonNull Fragment fragment, int frameId, String tag) {
+                                             @NonNull BaseFragment fragment, int frameId) {
         checkNotNull(fragmentManager);
         checkNotNull(fragment);
         FragmentTransaction transaction =
                 fragmentManager
                         .beginTransaction()
                         .setCustomAnimations(R.anim.slide_left, R.anim.slide_right)
-                        .add(frameId, fragment, tag);
+                        .add(frameId, fragment, TAG_PREFIX + fragment.getClass().getSimpleName());
         transaction.commitNow();
     }
 

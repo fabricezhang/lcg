@@ -24,7 +24,7 @@ public abstract class BaseDialog extends DialogFragment {
         if (context instanceof BaseActivity) {
             BaseActivity mActivity = (BaseActivity) context;
             this.mActivity = mActivity;
-            mActivity.onFragmentAttached();
+            mActivity.onFragmentAttached(getTag());
         }
     }
 
@@ -91,12 +91,6 @@ public abstract class BaseDialog extends DialogFragment {
 
     public boolean isNetworkConnected() {
         return mActivity != null && mActivity.isNetworkConnected();
-    }
-
-    public void openActivityOnTokenExpire() {
-        if (mActivity != null) {
-            mActivity.openActivityOnTokenExpire();
-        }
     }
 
     public void showLoading() {

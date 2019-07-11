@@ -13,10 +13,15 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import dagger.android.AndroidInjection;
+import top.easelink.framework.R;
 import top.easelink.framework.utils.CommonUtils;
 import top.easelink.framework.utils.NetworkUtils;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
+import java.util.Stack;
 
 public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseViewModel> extends AppCompatActivity
         implements BaseFragment.Callback {
@@ -27,6 +32,8 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseView
     private ProgressDialog mProgressDialog;
     private T mViewDataBinding;
     private V mViewModel;
+
+    protected Stack<String> mFragmentTags = new Stack<>();
 
     /**
      * Override for set binding variable
@@ -50,12 +57,22 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseView
     public abstract V getViewModel();
 
     @Override
-    public void onFragmentAttached() {
-
+    public void onFragmentAttached(String tag) {
+        mFragmentTags.push(tag);
     }
 
     @Override
     public boolean onFragmentDetached(String tag) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment fragment = fragmentManager.findFragmentByTag(tag);
+        if (fragment != null) {
+            fragmentManager
+                    .beginTransaction()
+                    .setCustomAnimations(R.anim.slide_left, R.anim.slide_right)
+                    .remove(fragment)
+                    .commitNow();
+            return true;
+        }
         return false;
     }
 
@@ -99,11 +116,6 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseView
 
     public boolean isNetworkConnected() {
         return NetworkUtils.isNetworkConnected(getApplicationContext());
-    }
-
-    public void openActivityOnTokenExpire() {
-//        startActivity(LoginActivity.newIntent(this));
-        finish();
     }
 
     public void performDependencyInjection() {

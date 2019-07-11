@@ -56,14 +56,14 @@ public class Article {
                    @NonNull String url,
                    @NonNull Integer view,
                    @NonNull Integer reply,
-                   @NonNull String origin) {
+                   @Nullable String origin) {
         mTitle = title;
         mAuthor = author;
         mDate = date;
         mUrl = url;
         mView = view;
         mReply = reply;
-        mOrigin = origin;
+        mOrigin = origin == null? "":origin;
     }
 
     @NonNull
