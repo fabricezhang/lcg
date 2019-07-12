@@ -38,6 +38,7 @@
                     <androidx.appcompat.widget.Toolbar
                             android:id="@+id/toolbar"
                             style="@style/Toolbar"
+                            android:elevation="@dimen/dp_4"
                             app:subtitleTextColor="@color/white"
                             app:title="@string/app_name"
                             app:titleTextAppearance="@style/Toolbar.TitleText"

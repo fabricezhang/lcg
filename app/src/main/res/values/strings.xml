@@ -5,6 +5,7 @@
     <!--Toolbar menus-->
     <string name="clear">Clear</string>
     <string name="share">Share</string>
+    <string name="search">搜索</string>
     <string name="open_in_webview">网页打开</string>
     <string name="extract_urls">提取下载链接</string>
 
