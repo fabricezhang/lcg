@@ -41,11 +41,10 @@ public class RxArticleService {
     }
 
     private RxArticleService() {
-
+        // should avoid to instantiating RxArticleService from outside
     }
 
     private Observable<List<Article>> getArticles(@NonNull final String requestUrl){
-        Timber.d("52PoJie : " + requestUrl);
         return Observable.create(emitter -> {
             try {
                 Document doc = Jsoup.connect(requestUrl).get();
@@ -147,7 +146,6 @@ public class RxArticleService {
                     nextPageUrl = "";
                 }
                 List<Map<String, String>> avatarsAndNames = getAvatarAndName(doc);
-                // TODO: 2019-07-12 blocked by admin check for content
                 List<String> contents = getContent(doc);
                 List<String> datetimes = getDateTime(doc);
                 List<Post> postList = new ArrayList<>(avatarsAndNames.size());
@@ -159,6 +157,7 @@ public class RxArticleService {
                                 contents.get(i));
                         postList.add(post);
                     } catch (NullPointerException npe) {
+                        // will skip a loop if there's any npe occurs
                         Timber.e(npe);
                     }
                 }
@@ -223,32 +222,44 @@ public class RxArticleService {
 
     private List<String> getContent(Document doc) {
         ArrayList<String> list = new ArrayList<>();
-        Elements elements = doc.select("div.t_fsz");
-        if (elements.size() == 0) {
-            elements = doc.select("table").select("td.t_f");
-        } else {
-            elements = elements.select("table").select("td.t_f");
-        }
-        // remove picture tips
-        elements.select("div.tip").remove();
-        // remove user level info etc
-        elements.select("script").remove();
-        for (Element element : elements) {
-            Elements imgElements = element.getElementsByTag("img");
-            for (int i = 0; i < imgElements.size(); i++) {
-                Element imgElement = imgElements.get(i);
-                String src = imgElement.attr("src");
-                if (src.contains("https://static.52pojie.cn/static/") && !src.contains("none")) {
-                    imgElement.remove();
-                }
-                String attr = imgElement.attr("file");
-                if (!TextUtils.isEmpty(attr)) {
-                    imgElement.attr("src", attr);
-                }
-
+        Elements elements = doc.select("div.pcb");
+        Element tmpElement;
+        String content;
+        for (Element e: elements) {
+            tmpElement = e.selectFirst("td.t_f");
+            if (tmpElement == null) {
+                content = e.selectFirst("div.locked").html();
+            } else {
+                content = processContentElement(tmpElement);
             }
-            list.add(element.html());
+            list.add(content);
         }
         return list;
+    }
+
+    private String processContentElement(Element element) {
+        // remove picture tips
+        element.select("div.tip").remove();
+        // remove user level info etc
+        element.select("script").remove();
+        // convert all code
+        for(Element e: element.getElementsByTag("pre")) {
+            e.tagName("div");
+            e.html("<font color=\"#ff0000\">代码暂时无法显示</font>");
+        }
+
+        Elements imgElements = element.getElementsByTag("img");
+        for (int i = 0; i < imgElements.size(); i++) {
+            Element imgElement = imgElements.get(i);
+            String src = imgElement.attr("src");
+            if (src.contains("https://static.52pojie.cn/static/") && !src.contains("none")) {
+                imgElement.remove();
+            }
+            String attr = imgElement.attr("file");
+            if (!TextUtils.isEmpty(attr)) {
+                imgElement.attr("src", attr);
+            }
+        }
+        return element.html();
     }
 }

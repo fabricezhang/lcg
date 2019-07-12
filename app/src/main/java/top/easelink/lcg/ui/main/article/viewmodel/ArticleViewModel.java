@@ -74,8 +74,8 @@ public class ArticleViewModel extends BaseViewModel<ArticleNavigator>
                 }, throwable -> {
                     if (throwable instanceof BlockException) {
                         mIsBlocked.setValue(true);
-                        setIsLoading(false);
                     }
+                    setIsLoading(false);
                     getNavigator().handleError(throwable);
                 }, () -> setIsLoading(false)));
 }

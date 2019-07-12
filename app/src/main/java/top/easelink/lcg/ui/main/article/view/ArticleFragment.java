@@ -33,7 +33,6 @@ public class ArticleFragment extends BaseFragment<FragmentArticleBinding, Articl
 
     @Inject
     ViewModelProviderFactory factory;
-    public static final String TAG = ArticleFragment.class.getSimpleName();
     private static final String KEY_URL = "KEY_URL";
     private LinearLayoutManager mLayoutManager;
     private ArticleAdapter mArticleAdapter;
