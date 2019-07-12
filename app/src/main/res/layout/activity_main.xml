@@ -81,6 +81,7 @@
                     app:itemBackground="@color/white"
                     app:itemIconTint="@color/black_effective"
                     app:itemTextColor="@color/black_effective"
+                    app:itemIconPadding="@dimen/dp_5"
                     app:menu="@menu/drawer">
 
                 <TextView

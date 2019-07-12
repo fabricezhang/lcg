@@ -13,8 +13,12 @@
                 android:title="@string/mobile_security_title" />
         <item
                 android:id="@+id/navItemSoftware"
-                android:icon="@drawable/ic_invert_colors_black_24dp"
+                android:icon="@drawable/ic_important_devices_black_24dp"
                 android:title="@string/software_title" />
+        <item
+                android:id="@+id/navItemOrigin"
+                android:icon="@drawable/ic_chart_24dp"
+                android:title="@string/original_title" />
         <item
                 android:id="@+id/navItemFreeChat"
                 android:icon="@drawable/ic_invert_colors_black_24dp"

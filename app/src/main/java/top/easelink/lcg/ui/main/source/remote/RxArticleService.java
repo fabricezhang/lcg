@@ -11,8 +11,9 @@ import org.jsoup.select.Elements;
 import timber.log.Timber;
 import top.easelink.lcg.ui.main.model.Article;
 import top.easelink.lcg.ui.main.model.Post;
-import top.easelink.lcg.ui.main.model.ArticleDetail;
+import top.easelink.lcg.ui.main.model.dto.ArticleDetail;
 import top.easelink.lcg.ui.main.model.BlockException;
+import top.easelink.lcg.ui.main.model.dto.ForumPage;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ import java.util.Map;
 public class RxArticleService {
 
     public static final String SERVER_BASE_URL = "https://www.52pojie.cn/";
-    public static final String FORUM_BASE_URL = "forum.php?mod=guide&view=";
+    private static final String FORUM_BASE_URL = "forum.php?mod=guide&view=";
 
     private static RxArticleService mInstance;
 
@@ -80,8 +81,9 @@ public class RxArticleService {
         });
     }
 
-    public Observable<List<Article>> getForumArticles(@NonNull final String requestUrl){
+    public Observable<ForumPage> getForumArticles(@NonNull final String requestUrl){
         return Observable.create(emitter -> {
+            Timber.d("52pojie " + requestUrl);
             try {
                 Document doc = Jsoup.connect(SERVER_BASE_URL + requestUrl).get();
                 Elements elements = doc.select("tbody[id^=normal]");
@@ -98,9 +100,15 @@ public class RxArticleService {
                         reply = Integer.valueOf(extractFrom(element, "td.num", "a.xi2"));
                         view = Integer.valueOf(extractFrom(element, "td.num", "em"));
                         title = extractFrom(element, "th.new", ".xst");
+                        if (TextUtils.isEmpty(title)) {
+                            title = extractFrom(element, "th.common", ".xst");
+                        }
                         author = extractFrom(element, "td.by", "a[href*=uid]");
                         date = extractFrom(element, "td.by", "span");
                         url = extractAttrFrom(element, "href","th.new", "a.xst");
+                        if (TextUtils.isEmpty(url)) {
+                            url = extractAttrFrom(element, "href","th.common", "a.xst");
+                        }
                         origin = extractFrom(element, "td.by", "a[target]");
                         if (!TextUtils.isEmpty(title) && !TextUtils.isEmpty(author)) {
                             list.add(new Article(title, author, date, url, view, reply, origin));
@@ -111,7 +119,8 @@ public class RxArticleService {
                         Timber.e(e);
                     }
                 }
-                emitter.onNext(list);
+                ForumPage forumPage = new ForumPage(list);
+                emitter.onNext(forumPage);
             } catch (Exception e) {
                 Timber.e(e);
                 emitter.onError(e);

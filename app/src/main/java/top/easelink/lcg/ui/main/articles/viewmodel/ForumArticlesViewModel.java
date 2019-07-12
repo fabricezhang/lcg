@@ -14,6 +14,7 @@ public class ForumArticlesViewModel extends BaseViewModel<ArticlesNavigator>
         implements ArticlesAdapter.ArticlesAdapterListener  {
 
     private String mUrl;
+    private int mCurrentPage = 1;
     private MutableLiveData<String> mTitle = new MutableLiveData<>();
 
     private final MutableLiveData<List<Article>> articles = new MutableLiveData<>();
@@ -35,24 +36,34 @@ public class ForumArticlesViewModel extends BaseViewModel<ArticlesNavigator>
     @Override
     public void fetchArticles(int type) {
         setIsLoading(true);
-        getCompositeDisposable().add(articleService.getForumArticles(mUrl)
+        switch (type) {
+            case FETCH_MORE:
+                nextPage();
+                break;
+            case FETCH_INIT:
+            default:
+                rewindPageNum();
+                break;
+        }
+        getCompositeDisposable().add(articleService.getForumArticles(String.format(mUrl, mCurrentPage))
                 .subscribeOn(getSchedulerProvider().io())
                 .observeOn(getSchedulerProvider().ui())
-                .subscribe(articleList -> {
-                    if (articleList != null && articleList.size()!= 0) {
-                        List<Article> list = articles.getValue();
-                        if (type == FETCH_MORE && list != null && list.size() != 0) {
-                            list.addAll(articleList);
-                            articles.setValue(list);
-                        } else {
-                            articles.setValue(articleList);
+                .subscribe(forumPage -> {
+                    if (forumPage != null) {
+                        List<Article> articleList = forumPage.getArticleList();
+                        if (articleList != null && articleList.size()!= 0) {
+                            List<Article> list = articles.getValue();
+                            if (type == FETCH_MORE && list != null && list.size() != 0) {
+                                list.addAll(articleList);
+                                articles.setValue(list);
+                            } else {
+                                articles.setValue(articleList);
+                            }
                         }
                     }
-                    setIsLoading(false);
                 }, throwable -> {
-                    setIsLoading(false);
                     getNavigator().handleError(throwable);
-                }));
+                }, () -> setIsLoading(false)));
     }
 
     public LiveData<List<Article>> getArticles() {
@@ -61,5 +72,13 @@ public class ForumArticlesViewModel extends BaseViewModel<ArticlesNavigator>
 
     public LiveData<String> getTitle() {
         return mTitle;
+    }
+
+    private void rewindPageNum() {
+        mCurrentPage = 1;
+    }
+
+    private void nextPage() {
+        mCurrentPage++;
     }
 }

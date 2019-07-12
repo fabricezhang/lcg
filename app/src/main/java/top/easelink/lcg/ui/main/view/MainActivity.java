@@ -36,7 +36,7 @@ import top.easelink.lcg.ui.main.articles.view.ArticlesFragment;
 import top.easelink.lcg.ui.main.articles.view.ForumArticlesFragment;
 import top.easelink.lcg.ui.main.model.Article;
 import top.easelink.lcg.ui.main.model.OpenArticleEvent;
-import top.easelink.lcg.ui.main.model.TabModel;
+import top.easelink.lcg.ui.main.model.dto.TabModel;
 import top.easelink.lcg.ui.main.viewmodel.MainViewModel;
 import top.easelink.lcg.ui.webview.ui.WebViewActivity;
 import top.easelink.lcg.utils.ActivityUtils;
@@ -201,6 +201,9 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
                             return true;
                         case R.id.navItemMobileSecurity:
                             showForumFragment(MOB_SECURITY_TITLE, MOB_SECURITY_URL);
+                            return true;
+                        case R.id.navItemOrigin:
+                            showForumFragment(ORIGINAL_TITLE, ORIGINAL_URL);
                             return true;
                         default:
                             return false;

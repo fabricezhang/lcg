@@ -1,4 +1,6 @@
-package top.easelink.lcg.ui.main.model;
+package top.easelink.lcg.ui.main.model.dto;
+
+import top.easelink.lcg.ui.main.model.Post;
 
 import java.util.List;
 

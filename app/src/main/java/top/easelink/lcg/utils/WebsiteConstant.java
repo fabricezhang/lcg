@@ -11,10 +11,12 @@ import top.easelink.lcg.R;
 public class WebsiteConstant {
 
     public static final String FREE_CHAT_URL = "forum-10-1.html";
-    public static final String MOB_SECURITY_URL = "forum-65-1.html";
-    public static final String SOFTWARE_URL = "forum-16-1.html";
+    public static final String MOB_SECURITY_URL = "forum-65-%d.html";
+    public static final String SOFTWARE_URL = "forum-16-%d.html";
+    public static final String ORIGINAL_URL = "forum-2-%d.html";
 
     public static final String MOB_SECURITY_TITLE = LCGApp.getContext().getString(R.string.mobile_security_title);
     public static final String FREE_CHAT_TITLE = LCGApp.getContext().getString(R.string.free_chat_title);
     public static final String SOFTWARE_TITLE = LCGApp.getContext().getString(R.string.software_title);
+    public static final String ORIGINAL_TITLE = LCGApp.getContext().getString(R.string.software_title);
 }

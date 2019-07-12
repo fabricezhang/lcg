@@ -1,4 +1,4 @@
-package top.easelink.lcg.ui.main.model;
+package top.easelink.lcg.ui.main.model.dto;
 
 import androidx.annotation.NonNull;
 
