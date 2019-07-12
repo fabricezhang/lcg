@@ -13,7 +13,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/black_effective">
+        android:background="@color/black_effective"
+        android:focusable="true"
+        android:clickable="true">
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

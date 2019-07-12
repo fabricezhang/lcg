@@ -83,7 +83,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                 return new PostViewHolder(itemPostViewBinding);
             case VIEW_TYPE_LOAD_MORE:
                 return new LoadMoreViewHolder(LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.item_article_load_more_view, parent, false));
+                        .inflate(R.layout.item_load_more_view, parent, false));
             case VIEW_TYPE_EMPTY:
             default:
                 return new PostEmptyViewHolder(
@@ -105,12 +105,14 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     public class PostViewHolder extends BaseViewHolder {
 
         private ItemPostViewBinding mBinding;
-
         private PostViewModel postViewModel;
+        private HtmlHttpImageGetter htmlHttpImageGetter;
 
         PostViewHolder(ItemPostViewBinding binding) {
             super(binding.getRoot());
             this.mBinding = binding;
+            this.htmlHttpImageGetter = new HtmlHttpImageGetter(mBinding.contentTextView,
+                    SERVER_BASE_URL, true);
         }
 
         @Override
@@ -119,9 +121,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             postViewModel = new PostViewModel(post);
             mBinding.setViewModel(postViewModel);
             try {
-                mBinding.contentTextView.setHtml(post.getContent(),
-                        new HtmlHttpImageGetter(mBinding.contentTextView,
-                                SERVER_BASE_URL, true));
+                mBinding.contentTextView.setHtml(post.getContent(),htmlHttpImageGetter);
             } catch (Exception e) {
                 Timber.e(e);
             }

@@ -1,5 +1,6 @@
 package top.easelink.lcg.ui.main.article.viewmodel;
 
+import android.view.View;
 import androidx.databinding.ObservableField;
 import timber.log.Timber;
 import top.easelink.lcg.ui.main.model.Post;
@@ -17,14 +18,14 @@ public class PostViewModel {
 
     private final Post post;
 
-    public PostViewModel(Post post) {
+    PostViewModel(Post post) {
         this.post = post;
         url = new ObservableField<>(post.getAvatar());
         author = new ObservableField<>(post.getAuthor());
         date = new ObservableField<>(post.getDate());
     }
 
-    public void onItemClick() {
+    public boolean onItemClick(View view) {
         String content = post.getContent();
         String patternStr = "https://www.lanzous.com/[a-zA-Z0-9]{4,10}";
         Pattern pattern = Pattern.compile(patternStr);
@@ -36,5 +37,6 @@ public class PostViewModel {
         for(String s: urls) {
             Timber.d(s);
         }
+        return true;
     }
 }

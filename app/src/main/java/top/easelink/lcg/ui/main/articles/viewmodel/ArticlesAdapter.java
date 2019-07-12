@@ -79,7 +79,7 @@ public class ArticlesAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             case VIEW_TYPE_LOAD_MORE:
                 return new LoadMoreViewHolder(
                         LayoutInflater.from(parent.getContext())
-                                .inflate(R.layout.item_article_load_more_view
+                                .inflate(R.layout.item_load_more_view
                                         , parent, false));
             case VIEW_TYPE_EMPTY:
             default:

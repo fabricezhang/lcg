@@ -147,6 +147,7 @@ public class RxArticleService {
                     nextPageUrl = "";
                 }
                 List<Map<String, String>> avatarsAndNames = getAvatarAndName(doc);
+                // TODO: 2019-07-12 blocked by admin check for content
                 List<String> contents = getContent(doc);
                 List<String> datetimes = getDateTime(doc);
                 List<Post> postList = new ArrayList<>(avatarsAndNames.size());

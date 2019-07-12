@@ -48,7 +48,6 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseView
         if (context instanceof BaseActivity) {
             BaseActivity activity = (BaseActivity) context;
             this.mActivity = activity;
-            Timber.d("TAG" + getTag());
             activity.onFragmentAttached(getTag());
         }
     }
@@ -87,7 +86,7 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseView
         return mActivity;
     }
 
-    public T getViewDataBinding() {
+    protected T getViewDataBinding() {
         return mViewDataBinding;
     }
 

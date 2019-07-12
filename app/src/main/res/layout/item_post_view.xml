@@ -36,6 +36,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:imageUrl="@{viewModel.url}"
+                    android:contentDescription="@null"
                     tools:src="@drawable/ic_noavatar_middle"/>
 
             <TextView
@@ -73,7 +74,6 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0"
                     android:textStyle="normal"
-                    android:onClick="@{() -> viewModel.onItemClick()}"
                     tools:text="This repository contains a detailed sample app that implements MVVM architecture using Dagger2, Android Room, RxJava2 ,etc" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

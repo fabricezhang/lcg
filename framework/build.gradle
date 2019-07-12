@@ -58,6 +58,7 @@ dependencies {
     api 'com.ethanhua:skeleton:1.1.2'
     api 'io.supercharge:shimmerlayout:2.1.0'
     api 'org.sufficientlysecure:html-textview:3.6'
+    api "com.airbnb.android:lottie:$rootProject.lottieVersion"
     // logger
     api "com.jakewharton.timber:timber:$rootProject.timberVersion"
     // reactive
