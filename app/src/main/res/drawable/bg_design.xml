@@ -6,7 +6,7 @@
             <solid android:color="@color/cyan_light" />
         </shape>
     </item>
-    <item android:bottom="300dp">
+    <item android:bottom="@dimen/dp_300">
         <rotate
             android:fromDegrees="0"
             android:pivotX="0%"
@@ -17,7 +17,7 @@
             </shape>
         </rotate>
     </item>
-    <item android:top="150dp">
+    <item android:top="@dimen/dp_150">
         <rotate
             android:fromDegrees="25"
             android:pivotX="100%"
@@ -28,7 +28,7 @@
             </shape>
         </rotate>
     </item>
-    <item android:top="100dp">
+    <item android:top="@dimen/dp_100">
         <rotate
             android:fromDegrees="-45"
             android:pivotX="60%"
@@ -39,7 +39,7 @@
             </shape>
         </rotate>
     </item>
-    <item android:top="100dp">
+    <item android:top="@dimen/dp_100">
         <rotate
             android:fromDegrees="-25"
             android:pivotX="90%"
@@ -50,7 +50,7 @@
             </shape>
         </rotate>
     </item>
-    <item android:top="100dp">
+    <item android:top="@dimen/dp_100">
         <rotate
             android:fromDegrees="-25"
             android:pivotX="90%"
@@ -61,7 +61,7 @@
             </shape>
         </rotate>
     </item>
-    <item android:top="200dp">
+    <item android:top="@dimen/dp_200">
         <rotate
             android:fromDegrees="-35"
             android:pivotX="90%"
@@ -72,7 +72,7 @@
             </shape>
         </rotate>
     </item>
-    <item android:top="40dp">
+    <item android:top="@dimen/dp_40">
         <rotate
             android:fromDegrees="-45"
             android:pivotX="145%"

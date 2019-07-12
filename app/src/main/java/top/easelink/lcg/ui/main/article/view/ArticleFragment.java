@@ -110,6 +110,9 @@ public class ArticleFragment extends BaseFragment<FragmentArticleBinding, Articl
             case R.id.action_open_in_webview:
                 WebViewActivity.startWebViewWith(SERVER_BASE_URL + articleUrl, getActivity());
                 break;
+            case R.id.action_extract_urls:
+                mArticleViewModel.extractDownloadUrl();
+                break;
             default:
                 break;
         }

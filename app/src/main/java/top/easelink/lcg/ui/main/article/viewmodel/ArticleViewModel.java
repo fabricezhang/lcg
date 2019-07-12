@@ -9,6 +9,7 @@ import top.easelink.lcg.ui.main.article.view.ArticleNavigator;
 import top.easelink.lcg.ui.main.model.BlockException;
 import top.easelink.lcg.ui.main.model.Post;
 import top.easelink.lcg.ui.main.source.remote.RxArticleService;
+import top.easelink.lcg.utils.RegexUtils;
 
 import java.util.List;
 
@@ -78,7 +79,15 @@ public class ArticleViewModel extends BaseViewModel<ArticleNavigator>
                     setIsLoading(false);
                     getNavigator().handleError(throwable);
                 }, () -> setIsLoading(false)));
-}
+    }
+
+    public void extractDownloadUrl() {
+        String patternStr = "https://www.lanzous.com/[a-zA-Z0-9]{4,10}";
+        List<Post> list = mPosts.getValue();
+        if (list != null && !list.isEmpty()) {
+            List<String> resList = RegexUtils.extractInfoFrom(list.get(0).getContent(), patternStr);
+        }
+    }
 
     public LiveData<List<Post>> getPosts() {
         return mPosts;

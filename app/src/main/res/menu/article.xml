@@ -2,13 +2,14 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <group>
-        <item
-                android:id="@+id/action_open_in_webview"
-                android:icon="@drawable/ic_web_white_24dp"
-                android:title="@string/open_in_webview"
-                app:showAsAction="ifRoom"/>
-    </group>
+    <item
+            android:id="@+id/action_open_in_webview"
+            android:icon="@drawable/ic_open_in_browser_white_24dp"
+            android:title="@string/open_in_webview"
+            app:showAsAction="collapseActionView"/>
+    <item
+            android:id="@+id/action_extract_urls"
+            android:title="@string/extract_urls"
+            app:showAsAction="collapseActionView"/>
 
 </menu>
