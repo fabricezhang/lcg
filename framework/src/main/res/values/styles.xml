@@ -16,10 +16,17 @@
         <item name="android:textAppearance">@style/TextAppearance.Text.Regular</item>
         <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24px</item>
         <item name="actionOverflowButtonStyle">@style/LCGOverflowButtonStyle</item>
+        <item name="searchViewStyle">@style/LCGSearchView</item>
     </style>
 
     <style name="LCGOverflowButtonStyle" parent="Widget.AppCompat.ActionButton.Overflow">
         <item name="android:tint">@color/white</item>
+    </style>
+
+    <style name="LCGSearchView" parent="Widget.AppCompat.SearchView">
+        <item name="defaultQueryHint">@string/input_key_word</item>
+        <item name="queryBackground">@color/gray</item>
+        <item name="submitBackground">@color/gray</item>
     </style>
 
     <style name="AppThemeFullScreen" parent="AppTheme">

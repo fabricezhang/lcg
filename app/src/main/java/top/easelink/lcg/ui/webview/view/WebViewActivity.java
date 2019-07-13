@@ -1,7 +1,7 @@
-package top.easelink.lcg.ui.webview.ui;
+package top.easelink.lcg.ui.webview.view;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Animatable;
@@ -32,11 +32,11 @@ public class WebViewActivity extends AppCompatActivity {
     private WebView mWebView;
     private ProgressBar mProgressBar;
 
-    public static void startWebViewWith(String url, Activity activity) {
-        Intent intent = new Intent(activity, WebViewActivity.class);
+    public static void startWebViewWith(String url, Context context) {
+        Intent intent = new Intent(context, WebViewActivity.class);
         intent.putExtra(URL_KEY, url);
         intent.putExtra(FORCE_ENABLE_JS_KEY, true);
-        activity.startActivity(intent);
+        context.startActivity(intent);
     }
 
     @Override
@@ -78,6 +78,7 @@ public class WebViewActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
+        menu.clear();
         getMenuInflater().inflate(R.menu.webview, menu);
         return true;
     }
@@ -92,7 +93,10 @@ public class WebViewActivity extends AppCompatActivity {
             case R.id.action_share:
                 Intent shareIntent = getShareIntent();
                 startActivity(shareIntent);
-                break;
+                return true;
+            case android.R.id.home:
+                finish();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -120,6 +124,8 @@ public class WebViewActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeButtonEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
             int title = getIntent().getIntExtra(TITLE_KEY, 0);
             if (title != 0) {
                 getSupportActionBar().setTitle(title);

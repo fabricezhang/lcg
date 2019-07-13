@@ -59,7 +59,7 @@ ext {
     roomVersion = '2.1.0'
     guavaVersion = '27.0.1-android'
     jsoupVersion = '1.12.1'
-    lottieVersion = '3.0.1'
+    lottieVersion = '3.0.7'
 
     // Test dependencies
     junitVersion = '4.12'

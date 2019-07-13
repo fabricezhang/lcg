@@ -1,13 +1,11 @@
 package top.easelink.lcg.ui.main.view;
 
-import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.SearchView;
@@ -43,14 +41,17 @@ import top.easelink.lcg.ui.main.model.Article;
 import top.easelink.lcg.ui.main.model.OpenArticleEvent;
 import top.easelink.lcg.ui.main.model.dto.TabModel;
 import top.easelink.lcg.ui.main.viewmodel.MainViewModel;
-import top.easelink.lcg.ui.webview.ui.WebViewActivity;
+import top.easelink.lcg.ui.webview.view.WebViewActivity;
 import top.easelink.lcg.utils.ActivityUtils;
 
 import javax.inject.Inject;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
 import static top.easelink.lcg.ui.main.source.remote.RxArticleService.SERVER_BASE_URL;
+import static top.easelink.lcg.ui.webview.WebViewConstants.FORCE_ENABLE_JS_KEY;
+import static top.easelink.lcg.ui.webview.WebViewConstants.URL_KEY;
 import static top.easelink.lcg.utils.ActivityUtils.TAG_PREFIX;
 import static top.easelink.lcg.utils.WebsiteConstant.*;
 
@@ -68,6 +69,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
     private Toolbar mToolbar;
     private ViewPager mViewPager;
     private TabLayout mTabLayout;
+    private static WeakReference<MainActivity> mainActivityWeakReference;
 
     public static Intent newIntent(Context context) {
         return new Intent(context, MainActivity.class);
@@ -125,6 +127,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
         EventBus.getDefault().register(this);
         mActivityMainBinding = getViewDataBinding();
         mMainViewModel.setNavigator(this);
+        mainActivityWeakReference = new WeakReference<>(this);
         setUp();
     }
 
@@ -172,7 +175,6 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
                 hideKeyboard();
             }
         };
-//        setSupportActionBar(mToolbar);
         mDrawer.addDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
         setupNavMenu();
@@ -203,7 +205,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
                             showForumFragment(SOFTWARE_TITLE, SOFTWARE_URL);
                             return true;
                         case R.id.navItemFreeChat:
-                            WebViewActivity.startWebViewWith(SERVER_BASE_URL + FREE_CHAT_URL, this);
+                            WebViewActivity.startWebViewWith(SERVER_BASE_URL + FREE_CHAT_URL, MainActivity.this);
                             return true;
                         case R.id.navItemMobileSecurity:
                             showForumFragment(MOB_SECURITY_TITLE, MOB_SECURITY_URL);
@@ -255,15 +257,24 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.search, menu);
         // Get the SearchView and set the searchable configuration
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+//        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
-        // Assumes current activity is the searchable activity
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setSubmitButtonEnabled(true);
+//        // Assumes current activity is the searchable activity
+//        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener(){
+
             @Override
             public boolean onQueryTextSubmit(String query) {
-                Toast.makeText(MainActivity.this, query, Toast.LENGTH_SHORT).show();
-                return false;
+                hideKeyboard();
+                Context context = mainActivityWeakReference.get();
+                if (context != null) {
+                    Intent intent = new Intent(context, WebViewActivity.class);
+                    intent.putExtra(URL_KEY, String.format(SEARCH_URL, query));
+                    intent.putExtra(FORCE_ENABLE_JS_KEY, true);
+                    context.startActivity(intent);
+                }
+                return true;
             }
 
             @Override
@@ -277,7 +288,6 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.search) {
-            Toast.makeText(MainActivity.this, "search", Toast.LENGTH_SHORT).show();
             return true;
         }
         return super.onOptionsItemSelected(item);

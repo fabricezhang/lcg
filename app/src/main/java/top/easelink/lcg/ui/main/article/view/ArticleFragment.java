@@ -20,7 +20,7 @@ import top.easelink.lcg.ui.ViewModelProviderFactory;
 import top.easelink.lcg.ui.main.article.viewmodel.ArticleAdapter;
 import top.easelink.lcg.ui.main.article.viewmodel.ArticleViewModel;
 import top.easelink.lcg.ui.main.model.Article;
-import top.easelink.lcg.ui.webview.ui.WebViewActivity;
+import top.easelink.lcg.ui.webview.view.WebViewActivity;
 
 import javax.inject.Inject;
 
@@ -108,7 +108,7 @@ public class ArticleFragment extends BaseFragment<FragmentArticleBinding, Articl
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_open_in_webview:
-                WebViewActivity.startWebViewWith(SERVER_BASE_URL + articleUrl, getActivity());
+                WebViewActivity.startWebViewWith(SERVER_BASE_URL + articleUrl, getContext());
                 break;
             case R.id.action_extract_urls:
                 mArticleViewModel.extractDownloadUrl();
