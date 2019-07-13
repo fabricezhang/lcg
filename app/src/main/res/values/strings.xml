@@ -15,7 +15,6 @@
 
     <!--Drawer Menus-->
     <string name="about">关于应用</string>
-    <string name="logout">登出</string>
     <string name="mobile_security_title">『移动安全区』</string>
     <string name="free_chat_title">『水漫金山』</string>
     <string name="software_title">『精品软件区』</string>
@@ -29,6 +28,10 @@
 
     <!--about fragment-->
     <string name="version">"version"</string>
+    <string name="github_title">Github源码地址</string>
+    <string name="github_url">https://github.com/fabricezhang/lcg/</string>
+    <string name="author_title">问题反馈邮箱</string>
+    <string name="author_email">fabircez@163.com</string>
 
      <!--feed-->
     <string name="load_more">加载更多</string>

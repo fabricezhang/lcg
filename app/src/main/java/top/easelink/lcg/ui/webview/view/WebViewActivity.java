@@ -18,6 +18,7 @@ import android.widget.ProgressBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ShareCompat;
+import com.airbnb.lottie.LottieAnimationView;
 import timber.log.Timber;
 import top.easelink.lcg.R;
 
@@ -30,7 +31,7 @@ public class WebViewActivity extends AppCompatActivity {
     protected String mUrl;
 
     private WebView mWebView;
-    private ProgressBar mProgressBar;
+    private LottieAnimationView animationView;
 
     public static void startWebViewWith(String url, Context context) {
         Intent intent = new Intent(context, WebViewActivity.class);
@@ -50,7 +51,7 @@ public class WebViewActivity extends AppCompatActivity {
     protected void initContentView() {
         setContentView(R.layout.activity_web_view);
         mWebView = findViewById(R.id.web_view);
-        mProgressBar = findViewById(R.id.loading_progress_bar);
+        animationView = findViewById(R.id.searching_file);
     }
 
     protected void initWebView() {
@@ -138,7 +139,8 @@ public class WebViewActivity extends AppCompatActivity {
     }
 
     protected void setLoading(boolean isLoading) {
-        mProgressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
+        animationView.setVisibility(isLoading ? View.VISIBLE : View.GONE);
+        mWebView.setVisibility(isLoading ? View.INVISIBLE : View.VISIBLE);
     }
 
     private class InnerWebViewClient extends WebViewClient {
@@ -168,7 +170,8 @@ public class WebViewActivity extends AppCompatActivity {
                 Timber.e(url);
                 return true;
             }
-            return super.shouldOverrideUrlLoading(view, request);
+            return false;
+//            return super.shouldOverrideUrlLoading(view, request);
         }
     }
 

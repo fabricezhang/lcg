@@ -4,12 +4,6 @@
         xmlns:tools="http://schemas.android.com/tools"
         tools:context="com.mindorks.framework.mvvm.ui.main.MainActivity">
 
-    <data>
-        <import type="android.view.View" />
-        <variable
-                name="viewModel"
-                type="top.easelink.lcg.ui.main.viewmodel.MainViewModel" />
-    </data>
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -23,7 +17,6 @@
                 app:titleTextAppearance="@style/Toolbar.TitleText"
                 app:titleTextColor="@color/white" />
 
-
         <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -31,16 +24,20 @@
             <top.easelink.framework.customview.HorizontalScrollDisableWebView
                     android:id="@+id/web_view"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:visibility="invisible"/>
 
-            <androidx.core.widget.ContentLoadingProgressBar
-                    android:id="@+id/loading_progress_bar"
-                    style="?android:attr/progressBarStyleLarge"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+            <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/searching_file"
                     android:layout_gravity="center"
-                    android:visibility="invisible" />
-
+                    android:layout_marginStart="@dimen/dp_20"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitCenter"
+                    android:visibility="invisible"
+                    app:lottie_rawRes="@raw/search_file"
+                    app:lottie_loop="true"
+                    app:lottie_autoPlay="true"/>
         </FrameLayout>
     </LinearLayout>
 
