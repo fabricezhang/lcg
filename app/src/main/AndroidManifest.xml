@@ -34,14 +34,21 @@
                   android:launchMode="singleTop"
                   android:screenOrientation="portrait">
             <!--<intent-filter>-->
-                <!--<category android:name="android.intent.category.DEFAULT" />-->
-                <!--<action android:name="android.intent.action.VIEW" />-->
-                <!--<category android:name="android.intent.category.BROWSABLE" />-->
-                <!--<data-->
-                        <!--android:host="ssl.ptlogin2.qq.com"-->
-                        <!--android:path="/jump"-->
-                        <!--android:scheme="https" />-->
+            <!--<category android:name="android.intent.category.DEFAULT" />-->
+            <!--<action android:name="android.intent.action.VIEW" />-->
+            <!--<category android:name="android.intent.category.BROWSABLE" />-->
+            <!--<data-->
+            <!--android:host="ssl.ptlogin2.qq.com"-->
+            <!--android:path="/jump"-->
+            <!--android:scheme="https" />-->
             <!--</intent-filter>-->
+            <intent-filter android:priority="1">
+                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data   android:scheme="http" />
+                <data   android:scheme="https" />
+            </intent-filter>
         </activity>
         <activity android:name=".ui.search.view.SearchActivity"
                   android:screenOrientation="portrait">

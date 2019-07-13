@@ -11,10 +11,10 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.airbnb.lottie.LottieAnimationView;
 import top.easelink.framework.BR;
 import top.easelink.framework.base.BaseFragment;
 import top.easelink.framework.customview.ScrollChildSwipeRefreshLayout;
-import top.easelink.lcg.LCGApp;
 import top.easelink.lcg.R;
 import top.easelink.lcg.databinding.FragmentArticlesBinding;
 import top.easelink.lcg.ui.ViewModelProviderFactory;
@@ -33,7 +33,6 @@ public class ArticlesFragment extends BaseFragment<FragmentArticlesBinding, Arti
     @Inject
     ViewModelProviderFactory factory;
     private LinearLayoutManager mLayoutManager;
-    private ArticlesAdapter mArticlesAdapter;
     private FragmentArticlesBinding mFragmentArticlesBinding;
     private ArticlesViewModel mArticlesViewModel;
     private String mParam;
@@ -68,6 +67,12 @@ public class ArticlesFragment extends BaseFragment<FragmentArticlesBinding, Arti
     }
 
     @Override
+    public void scrollToTop() {
+        mFragmentArticlesBinding.backToTop.playAnimation();
+        mFragmentArticlesBinding.recyclerView.smoothScrollToPosition(0);
+    }
+
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mArticlesViewModel.setNavigator(this);
@@ -85,15 +90,10 @@ public class ArticlesFragment extends BaseFragment<FragmentArticlesBinding, Arti
         if (bundle != null) {
             mParam = getArguments().getString(ARG_PARAM);
         }
+        setupRecyclerView();
         mArticlesViewModel.initUrl(mParam);
-        mArticlesAdapter = new ArticlesAdapter(mArticlesViewModel);
-        mLayoutManager = new LinearLayoutManager(getContext());
-        mLayoutManager.setOrientation(RecyclerView.VERTICAL);
-        mFragmentArticlesBinding.recyclerView.setLayoutManager(mLayoutManager);
-        mFragmentArticlesBinding.recyclerView.setItemAnimator(new DefaultItemAnimator());
-        mFragmentArticlesBinding.recyclerView.setAdapter(mArticlesAdapter);
         final ScrollChildSwipeRefreshLayout swipeRefreshLayout = getViewDataBinding().refreshLayout;
-        Context context = LCGApp.getContext();
+        Context context = getContext();
         swipeRefreshLayout.setColorSchemeColors(
                 ContextCompat.getColor(context, R.color.colorPrimary),
                 ContextCompat.getColor(context, R.color.colorAccent),
@@ -102,5 +102,33 @@ public class ArticlesFragment extends BaseFragment<FragmentArticlesBinding, Arti
         // Set the scrolling view in the custom SwipeRefreshLayout.
         swipeRefreshLayout.setScrollUpChild(mFragmentArticlesBinding.recyclerView);
         swipeRefreshLayout.setOnRefreshListener(() -> mArticlesViewModel.fetchArticles(FETCH_INIT));
+    }
+
+    private void setupRecyclerView() {
+        ArticlesAdapter mArticlesAdapter = new ArticlesAdapter(mArticlesViewModel);
+        mLayoutManager = new LinearLayoutManager(getContext());
+        mLayoutManager.setOrientation(RecyclerView.VERTICAL);
+        RecyclerView rv = mFragmentArticlesBinding.recyclerView;
+        rv.setLayoutManager(mLayoutManager);
+        rv.setItemAnimator(new DefaultItemAnimator());
+        rv.setAdapter(mArticlesAdapter);
+        rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                int firstVisibleItemPosition = mLayoutManager.findFirstVisibleItemPosition();
+                LottieAnimationView backToTop = mFragmentArticlesBinding.backToTop;
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    if (firstVisibleItemPosition == 0) {
+                        backToTop.setVisibility(View.GONE);
+                        backToTop.pauseAnimation();
+                    } else {
+                        backToTop.setVisibility(View.VISIBLE);
+                    }
+                } else if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
+                    backToTop.setVisibility(View.GONE);
+                    backToTop.pauseAnimation();
+                }
+            }
+        });
     }
 }

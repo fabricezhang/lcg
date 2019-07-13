@@ -184,7 +184,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
         mMainViewModel.onNavMenuCreated();
 
         mViewPager.setAdapter(new MainViewPagerAdapter(
-                getSupportFragmentManager(), getBaseContext()));
+                getSupportFragmentManager(), MainActivity.this));
         mTabLayout.setupWithViewPager(mViewPager);
     }
 

@@ -67,6 +67,11 @@ public class ForumArticlesFragment extends BaseFragment<FragmentForumArticlesBin
     }
 
     @Override
+    public void scrollToTop() {
+        mFragmentArticlesBinding.recyclerView.smoothScrollToPosition(0);
+    }
+
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mArticlesViewModel.setNavigator(this);

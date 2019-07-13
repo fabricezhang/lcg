@@ -65,4 +65,8 @@ public class ArticlesViewModel extends BaseViewModel<ArticlesNavigator> implemen
     public LiveData<List<Article>> getArticles() {
         return articles;
     }
+
+    public void scrollToTop() {
+        getNavigator().scrollToTop();
+    }
 }

@@ -9,6 +9,7 @@ import top.easelink.lcg.ui.main.article.viewmodel.ArticleViewModel;
 import top.easelink.lcg.ui.main.articles.viewmodel.ArticlesViewModel;
 import top.easelink.lcg.ui.main.articles.viewmodel.ForumArticlesViewModel;
 import top.easelink.lcg.ui.main.viewmodel.MainViewModel;
+import top.easelink.lcg.ui.search.viewmodel.SearchViewModel;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -37,6 +38,8 @@ public class ViewModelProviderFactory extends ViewModelProvider.NewInstanceFacto
             return (T) new ArticleViewModel(schedulerProvider);
         } else if (modelClass.isAssignableFrom(ForumArticlesViewModel.class)) {
             return (T) new ForumArticlesViewModel(schedulerProvider);
+        } else if (modelClass.isAssignableFrom(SearchViewModel.class)) {
+            return (T) new SearchViewModel(schedulerProvider);
         }
         throw new IllegalArgumentException("Unknown ViewModel class: " + modelClass.getName());
     }

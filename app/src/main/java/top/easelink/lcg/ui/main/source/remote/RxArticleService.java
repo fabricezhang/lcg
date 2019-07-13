@@ -10,9 +10,9 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import timber.log.Timber;
 import top.easelink.lcg.ui.main.model.Article;
+import top.easelink.lcg.ui.main.model.BlockException;
 import top.easelink.lcg.ui.main.model.Post;
 import top.easelink.lcg.ui.main.model.dto.ArticleDetail;
-import top.easelink.lcg.ui.main.model.BlockException;
 import top.easelink.lcg.ui.main.model.dto.ForumPage;
 
 import javax.annotation.Nullable;

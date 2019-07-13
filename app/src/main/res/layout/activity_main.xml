@@ -24,54 +24,47 @@
                 android:layout_height="match_parent"
                 android:clipChildren="false">
 
-            <LinearLayout
-                    android:id="@+id/activityMain"
+            <com.google.android.material.appbar.AppBarLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:layout_height="wrap_content"
+                    app:elevation="@dimen/dp_5">
 
-                <com.google.android.material.appbar.AppBarLayout
+                <androidx.appcompat.widget.Toolbar
+                        android:id="@+id/toolbar"
+                        style="@style/Toolbar"
+                        android:elevation="@dimen/dp_4"
+                        app:subtitleTextColor="@color/white"
+                        app:title="@string/app_name"
+                        app:titleTextAppearance="@style/Toolbar.TitleText"
+                        app:titleTextColor="@color/white"
+                        app:layout_scrollFlags="scroll|enterAlways"/>
+                <com.google.android.material.tabs.TabLayout
+                        android:id="@+id/main_tab"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:elevation="@dimen/dp_5">
-
-                    <androidx.appcompat.widget.Toolbar
-                            android:id="@+id/toolbar"
-                            style="@style/Toolbar"
-                            android:elevation="@dimen/dp_4"
-                            app:subtitleTextColor="@color/white"
-                            app:title="@string/app_name"
-                            app:titleTextAppearance="@style/Toolbar.TitleText"
-                            app:titleTextColor="@color/white" />
-                    <com.google.android.material.tabs.TabLayout
-                            android:id="@+id/main_tab"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:minHeight="@dimen/dp_40"
-                            android:background="@color/white"
-                            app:tabIndicatorColor="@color/colorAccent"
-                            app:tabIndicatorHeight="@dimen/dp_3"
-                            app:tabTextColor="@color/gray"
-                            app:tabSelectedTextColor="@color/colorAccent"
-                            app:tabMode="fixed"
-                            app:tabTextAppearance="@style/Widget.Design.TabLayout"
-                    />
-                    <androidx.viewpager.widget.ViewPager
-                            android:id="@+id/main_view_pager"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:focusableInTouchMode="true"
-                            android:focusable="true"/>
-
-                </com.google.android.material.appbar.AppBarLayout>
-
-            </LinearLayout>
+                        android:minHeight="@dimen/dp_40"
+                        android:background="@color/white"
+                        app:tabIndicatorColor="@color/colorAccent"
+                        app:tabIndicatorHeight="@dimen/dp_3"
+                        app:tabTextColor="@color/gray"
+                        app:tabSelectedTextColor="@color/colorAccent"
+                        app:tabMode="fixed"
+                        app:tabTextAppearance="@style/Widget.Design.TabLayout"
+                />
+            </com.google.android.material.appbar.AppBarLayout>
+            <androidx.viewpager.widget.ViewPager
+                    android:id="@+id/main_view_pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusableInTouchMode="true"
+                    android:focusable="true"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         <com.google.android.material.navigation.NavigationView
                 android:id="@+id/navigationView"
                 style="@style/Widget.Design.NavigationView"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/dp_200"
                 android:layout_height="match_parent"
                 android:layout_gravity="start"
                 android:background="@color/white"
