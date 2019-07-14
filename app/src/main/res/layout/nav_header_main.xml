@@ -15,7 +15,7 @@
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_200"
-            android:background="@drawable/launch_bg"
+            android:background="@drawable/nav_header_bg"
             android:orientation="vertical"
             android:padding="@dimen/dp_16">
 
@@ -28,20 +28,20 @@
                 android:src="@mipmap/logo"
                 android:contentDescription="@null"/>
 
-        <TextView
-                android:id="@+id/tv_name"
-                style="@style/TextStyle.Title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_10"
-                android:text="@{viewModel.userName}" />
+        <!--<TextView-->
+                <!--android:id="@+id/tv_name"-->
+                <!--style="@style/TextStyle.Title"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="@dimen/dp_10"-->
+                <!--android:text="@{viewModel.userName}" />-->
 
-        <TextView
-                android:id="@+id/tv_email"
-                style="@style/TextStyle.Title.Sub"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{viewModel.userEmail}" />
+        <!--<TextView-->
+                <!--android:id="@+id/tv_email"-->
+                <!--style="@style/TextStyle.Title.Sub"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="@{viewModel.userEmail}" />-->
 
     </LinearLayout>
 

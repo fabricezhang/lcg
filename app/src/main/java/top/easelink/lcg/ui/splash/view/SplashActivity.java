@@ -43,6 +43,7 @@ public class SplashActivity extends BaseActivity<ActivitySplashBinding, SplashVi
         super.onCreate(savedInstanceState);
 //        mSplashBinding = getViewDataBinding();
         startActivity(new Intent(this, MainActivity.class));
+        overridePendingTransition(0, 0);
         finish();
     }
 }
