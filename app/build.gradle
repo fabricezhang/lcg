@@ -12,16 +12,35 @@ android {
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+    signingConfigs {
+        releaseConfig {
+            keyAlias 'lcg'
+            keyPassword '52pojie'
+            storeFile file('../keystore.jks')
+            storePassword 'easelink'
+        }
+    }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            debuggable false
+            minifyEnabled true    //开启混淆
+            zipAlignEnabled true  //压缩优化
+            shrinkResources true  //移出无用资源
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.releaseConfig
         }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
         incremental false
+    }
+    // Generate Version Info
+    android.applicationVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "lcg-${variant.versionName}.apk"
+        }
     }
     dataBinding {
         enabled = true

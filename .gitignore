@@ -1,7 +1,7 @@
 # Generated files
 **/bin/
 **/gen/
-
+**/release/
 # Android Studio captures folder
 **/captures/
 
