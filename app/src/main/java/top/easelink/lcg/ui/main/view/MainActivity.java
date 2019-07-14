@@ -33,7 +33,7 @@ import top.easelink.lcg.R;
 import top.easelink.lcg.databinding.ActivityMainBinding;
 import top.easelink.lcg.databinding.NavHeaderMainBinding;
 import top.easelink.lcg.ui.ViewModelProviderFactory;
-import top.easelink.lcg.ui.about.view.AboutFragment;
+import top.easelink.lcg.ui.main.about.view.AboutFragment;
 import top.easelink.lcg.ui.main.article.view.ArticleFragment;
 import top.easelink.lcg.ui.main.articles.view.ArticlesFragment;
 import top.easelink.lcg.ui.main.articles.view.ForumArticlesFragment;
@@ -41,8 +41,8 @@ import top.easelink.lcg.ui.main.model.Article;
 import top.easelink.lcg.ui.main.model.OpenArticleEvent;
 import top.easelink.lcg.ui.main.model.dto.TabModel;
 import top.easelink.lcg.ui.main.viewmodel.MainViewModel;
-import top.easelink.lcg.ui.webview.view.WebViewActivity;
 import top.easelink.lcg.ui.search.view.SearchActivity;
+import top.easelink.lcg.ui.webview.view.WebViewActivity;
 import top.easelink.lcg.utils.ActivityUtils;
 
 import javax.inject.Inject;
@@ -51,7 +51,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static top.easelink.lcg.ui.main.source.remote.RxArticleService.SERVER_BASE_URL;
-import static top.easelink.lcg.utils.WebsiteConstant.URL_KEY;
 import static top.easelink.lcg.utils.ActivityUtils.TAG_PREFIX;
 import static top.easelink.lcg.utils.WebsiteConstant.*;
 

@@ -19,6 +19,12 @@
         <item name="searchViewStyle">@style/LCGSearchView</item>
     </style>
 
+    <style name="SplashTheme" parent="AppTheme">
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowBackground">@drawable/launch_bg</item>
+    </style>
+
     <style name="LCGOverflowButtonStyle" parent="Widget.AppCompat.ActionButton.Overflow">
         <item name="android:tint">@color/white</item>
     </style>

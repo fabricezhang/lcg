@@ -25,10 +25,6 @@
             android:theme="@style/AppTheme">
         <activity android:name=".ui.main.view.MainActivity"
                   android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
         </activity>
         <activity android:name=".ui.webview.view.WebViewActivity"
                   android:launchMode="singleTop"
@@ -52,6 +48,15 @@
         </activity>
         <activity android:name=".ui.search.view.SearchActivity"
                   android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".ui.splash.view.SplashActivity"
+                  android:theme="@style/SplashTheme"
+                  android:launchMode="singleInstance"
+                  android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
     </application>
 

@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="top.easelink.lcg.ui.about.viewmodel.AboutViewModel" />
+            type="top.easelink.lcg.ui.main.about.viewmodel.AboutViewModel" />
 
     </data>
     <LinearLayout

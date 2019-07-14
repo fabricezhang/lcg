@@ -44,12 +44,13 @@
 
             <TextView
                     android:id="@+id/contentTextView"
-                    style="@style/TextStyle.Title"
+                    style="@style/TextStyle.Comment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dp_20"
                     android:layout_marginRight="@dimen/dp_20"
                     android:text="@{viewModel.content}"
+                    android:textSize="@dimen/sp_14"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/titleTextView"
                     tools:text="This repository contains a detailed sample app that implements MVP architecture using Dagger2, GreenDao, RxJava2, FastAndroidNetworking and PlaceholderView" />

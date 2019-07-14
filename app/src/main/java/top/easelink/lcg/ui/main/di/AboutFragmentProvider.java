@@ -1,8 +1,8 @@
-package top.easelink.lcg.ui.about.di;
+package top.easelink.lcg.ui.main.di;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
-import top.easelink.lcg.ui.about.view.AboutFragment;
+import top.easelink.lcg.ui.main.about.view.AboutFragment;
 
 @Module
 public abstract class AboutFragmentProvider {

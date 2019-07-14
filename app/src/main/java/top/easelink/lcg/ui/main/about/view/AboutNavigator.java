@@ -1,4 +1,4 @@
-package top.easelink.lcg.ui.about.view;
+package top.easelink.lcg.ui.main.about.view;
 
 public interface AboutNavigator {
 

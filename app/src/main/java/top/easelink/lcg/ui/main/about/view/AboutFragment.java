@@ -1,4 +1,4 @@
-package top.easelink.lcg.ui.about.view;
+package top.easelink.lcg.ui.main.about.view;
 
 import android.os.Bundle;
 import androidx.annotation.Nullable;
@@ -8,7 +8,7 @@ import top.easelink.framework.base.BaseFragment;
 import top.easelink.lcg.R;
 import top.easelink.lcg.databinding.FragmentAboutBinding;
 import top.easelink.lcg.ui.ViewModelProviderFactory;
-import top.easelink.lcg.ui.about.viewmodel.AboutViewModel;
+import top.easelink.lcg.ui.main.about.viewmodel.AboutViewModel;
 
 import javax.inject.Inject;
 
