@@ -8,7 +8,6 @@ package top.easelink.lcg.ui.webview;
 public class WebViewConstants {
 
     public static final String FORCE_ENABLE_JS_KEY = "FORCE_ENABLE_JS_KEY";
-    public static final String URL_KEY = "URL_KEY";
     public static final String TITLE_KEY = "TITLE_KEY";
 
     private WebViewConstants() { }

@@ -14,7 +14,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.*;
-import android.widget.ProgressBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ShareCompat;
@@ -22,7 +21,9 @@ import com.airbnb.lottie.LottieAnimationView;
 import timber.log.Timber;
 import top.easelink.lcg.R;
 
-import static top.easelink.lcg.ui.webview.WebViewConstants.*;
+import static top.easelink.lcg.ui.webview.WebViewConstants.FORCE_ENABLE_JS_KEY;
+import static top.easelink.lcg.ui.webview.WebViewConstants.TITLE_KEY;
+import static top.easelink.lcg.utils.WebsiteConstant.URL_KEY;
 
 public class WebViewActivity extends AppCompatActivity {
 

@@ -42,6 +42,7 @@ import top.easelink.lcg.ui.main.model.OpenArticleEvent;
 import top.easelink.lcg.ui.main.model.dto.TabModel;
 import top.easelink.lcg.ui.main.viewmodel.MainViewModel;
 import top.easelink.lcg.ui.webview.view.WebViewActivity;
+import top.easelink.lcg.ui.search.view.SearchActivity;
 import top.easelink.lcg.utils.ActivityUtils;
 
 import javax.inject.Inject;
@@ -50,8 +51,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static top.easelink.lcg.ui.main.source.remote.RxArticleService.SERVER_BASE_URL;
-import static top.easelink.lcg.ui.webview.WebViewConstants.FORCE_ENABLE_JS_KEY;
-import static top.easelink.lcg.ui.webview.WebViewConstants.URL_KEY;
+import static top.easelink.lcg.utils.WebsiteConstant.URL_KEY;
 import static top.easelink.lcg.utils.ActivityUtils.TAG_PREFIX;
 import static top.easelink.lcg.utils.WebsiteConstant.*;
 
@@ -70,10 +70,6 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
     private ViewPager mViewPager;
     private TabLayout mTabLayout;
     private static WeakReference<MainActivity> mainActivityWeakReference;
-
-    public static Intent newIntent(Context context) {
-        return new Intent(context, MainActivity.class);
-    }
 
     @Override
     public int getBindingVariable() {
@@ -269,9 +265,8 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
                 hideKeyboard();
                 Context context = mainActivityWeakReference.get();
                 if (context != null) {
-                    Intent intent = new Intent(context, WebViewActivity.class);
+                    Intent intent = new Intent(context, SearchActivity.class);
                     intent.putExtra(URL_KEY, String.format(SEARCH_URL, query));
-                    intent.putExtra(FORCE_ENABLE_JS_KEY, true);
                     context.startActivity(intent);
                 }
                 return true;

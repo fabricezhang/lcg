@@ -42,7 +42,7 @@ public class RxArticleService {
     }
 
     private RxArticleService() {
-        // should avoid to instantiating RxArticleService from outside
+        // should avoid to instantiating RxSearchService from outside
     }
 
     private Observable<List<Article>> getArticles(@NonNull final String requestUrl){
