@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider;
 import top.easelink.framework.utils.rx.SchedulerProvider;
 import top.easelink.lcg.ui.main.about.viewmodel.AboutViewModel;
 import top.easelink.lcg.ui.main.article.viewmodel.ArticleViewModel;
+import top.easelink.lcg.ui.main.article.viewmodel.DownloadLinkViewModel;
 import top.easelink.lcg.ui.main.articles.viewmodel.ArticlesViewModel;
 import top.easelink.lcg.ui.main.articles.viewmodel.ForumArticlesViewModel;
 import top.easelink.lcg.ui.main.viewmodel.MainViewModel;
@@ -43,6 +44,8 @@ public class ViewModelProviderFactory extends ViewModelProvider.NewInstanceFacto
             return (T) new SearchViewModel(schedulerProvider);
         } else if (modelClass.isAssignableFrom(SplashViewModel.class)) {
             return (T) new SplashViewModel(schedulerProvider);
+        } else if (modelClass.isAssignableFrom(DownloadLinkViewModel.class)) {
+            return (T) new DownloadLinkViewModel(schedulerProvider);
         }
         throw new IllegalArgumentException("Unknown ViewModel class: " + modelClass.getName());
     }

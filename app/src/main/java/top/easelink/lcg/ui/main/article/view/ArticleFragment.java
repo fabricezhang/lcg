@@ -5,6 +5,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,6 +24,8 @@ import top.easelink.lcg.ui.main.model.Article;
 import top.easelink.lcg.ui.webview.view.WebViewActivity;
 
 import javax.inject.Inject;
+
+import java.util.ArrayList;
 
 import static top.easelink.lcg.ui.main.article.viewmodel.ArticleViewModel.FETCH_INIT;
 import static top.easelink.lcg.ui.main.source.remote.RxArticleService.SERVER_BASE_URL;
@@ -111,7 +114,12 @@ public class ArticleFragment extends BaseFragment<FragmentArticleBinding, Articl
                 WebViewActivity.startWebViewWith(SERVER_BASE_URL + articleUrl, getContext());
                 break;
             case R.id.action_extract_urls:
-                mArticleViewModel.extractDownloadUrl();
+                ArrayList<String> linkList = mArticleViewModel.extractDownloadUrl();
+                if (linkList != null && !linkList.isEmpty()) {
+                    DownloadLinkDialog.newInstance(linkList).show(getFragmentManager());
+                } else {
+                    Toast.makeText(getContext(), R.string.download_link_not_found, Toast.LENGTH_SHORT).show();
+                }
                 break;
             default:
                 break;

@@ -22,7 +22,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/dp_16"
                 android:gravity="center"
                 android:text="@string/empty_screen"
                 android:textColor="@color/gray" />
@@ -32,20 +32,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="@dimen/dp_20"
                 android:text="@string/please_retry"
                 android:textColor="@color/gray" />
 
         <Button
                 android:id="@+id/btn_retry"
                 style="@style/Button.Primary.Quiz.Empty"
-                android:layout_width="150dp"
+                android:layout_width="@dimen/dp_120"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/dp_25"
                 android:onClick="@{() -> viewModel.onRetryClick()}"
                 android:text="@string/retry"
-                android:textSize="20sp" />
+                android:textSize="@dimen/sp_20" />
     </LinearLayout>
 
 </layout>

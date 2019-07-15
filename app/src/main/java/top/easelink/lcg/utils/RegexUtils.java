@@ -17,13 +17,13 @@ import java.util.regex.Pattern;
 public class RegexUtils {
 
     @Nullable
-    public static List<String> extractInfoFrom(String content, String patternStr) {
+    public static ArrayList<String> extractInfoFrom(String content, String patternStr) {
         if (TextUtils.isEmpty(content) || TextUtils.isEmpty(patternStr)) {
             return null;
         }
         Pattern pattern = Pattern.compile(patternStr);
         Matcher matcher = pattern.matcher(content);
-        List<String> urls = new ArrayList<>();
+        ArrayList<String> urls = new ArrayList<>();
         while (matcher.find()) {
             urls.add(matcher.group());
         }

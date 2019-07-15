@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">吾爱破解</string>
 
-    <string name="error">Error</string>
+    <string name="error">请求页面失败，请稍后再试</string>
     <!--Toolbar menus-->
     <string name="clear">Clear</string>
     <string name="share">Share</string>
@@ -37,10 +37,14 @@
     <string name="load_more">加载更多</string>
     <string name="no_more_content">没有更多了</string>
 
+    <!--download link dialog-->
+    <string name="download_title">下载链接</string>
+    <string name="download_link_not_found">未找到下载链接</string>
+
     <!--empty state-->
-    <string name="empty_screen">We do not have anything\nhere right now.</string>
-    <string name="please_retry">Please Retry</string>
-    <string name="retry">Retry</string>
+    <string name="empty_screen">目前没有内容可供展示</string>
+    <string name="please_retry">请重试</string>
+    <string name="retry">重试</string>
 
     <!--share template-->
     <string name="share_template">分享文章 %s %s</string>

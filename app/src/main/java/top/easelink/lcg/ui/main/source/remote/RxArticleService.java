@@ -83,7 +83,6 @@ public class RxArticleService {
 
     public Observable<ForumPage> getForumArticles(@NonNull final String requestUrl){
         return Observable.create(emitter -> {
-            Timber.d("52pojie " + requestUrl);
             try {
                 Document doc = Jsoup.connect(SERVER_BASE_URL + requestUrl).get();
                 Elements elements = doc.select("tbody[id^=normal]");

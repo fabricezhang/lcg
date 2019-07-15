@@ -22,5 +22,5 @@ public class WebsiteConstant {
     public static final String MOB_SECURITY_TITLE = LCGApp.getContext().getString(R.string.mobile_security_title);
     public static final String FREE_CHAT_TITLE = LCGApp.getContext().getString(R.string.free_chat_title);
     public static final String SOFTWARE_TITLE = LCGApp.getContext().getString(R.string.software_title);
-    public static final String ORIGINAL_TITLE = LCGApp.getContext().getString(R.string.software_title);
+    public static final String ORIGINAL_TITLE = LCGApp.getContext().getString(R.string.original_title);
 }
