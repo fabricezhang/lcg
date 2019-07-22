@@ -83,11 +83,16 @@ public class ArticleViewModel extends BaseViewModel<ArticleNavigator>
     }
 
     public ArrayList<String> extractDownloadUrl() {
-        String patternStr = "https://www.lanzous.com/[a-zA-Z0-9]{4,10}";
+        String patternLanzous = "https://www.lanzous.com/[a-zA-Z0-9]{4,10}";
+        String patternBaidu = "https://pan.baidu.com/s/.{23}";
+        String patternT = "http://t.cn/[a-zA-Z0-9]{8}";
         List<Post> list = mPosts.getValue();
         ArrayList<String> resList = null;
         if (list != null && !list.isEmpty()) {
-            resList = RegexUtils.extractInfoFrom(list.get(0).getContent(), patternStr);
+            String content = list.get(0).getContent();
+            resList = RegexUtils.extractInfoFrom(content, patternLanzous);
+            resList.addAll(RegexUtils.extractInfoFrom(content, patternBaidu));
+            resList.addAll(RegexUtils.extractInfoFrom(content, patternT));
         }
         return resList;
     }
