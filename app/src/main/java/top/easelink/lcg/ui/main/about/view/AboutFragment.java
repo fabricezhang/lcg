@@ -16,7 +16,6 @@ public class AboutFragment extends BaseFragment<FragmentAboutBinding, AboutViewM
 
     @Inject
     ViewModelProviderFactory factory;
-    public static final String TAG = AboutFragment.class.getSimpleName();
 
     private AboutViewModel mAboutViewModel;
 

@@ -6,6 +6,9 @@ import android.app.Application;
 import android.content.Context;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasActivityInjector;
+import io.reactivex.android.plugins.RxAndroidPlugins;
+import io.reactivex.exceptions.UndeliverableException;
+import io.reactivex.plugins.RxJavaPlugins;
 import timber.log.Timber;
 import top.easelink.framework.BuildConfig;
 import top.easelink.lcg.di.component.DaggerAppComponent;
@@ -42,9 +45,22 @@ public class LCGApp extends Application implements HasActivityInjector {
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
         }
+        initRx();
     }
 
     public static Context getContext() {
         return mContext;
+    }
+
+    private void initRx() {
+        RxJavaPlugins.setErrorHandler(e -> {
+            if (e instanceof UndeliverableException) {
+                Timber.e(e);
+            } else {
+                Thread.currentThread()
+                        .getUncaughtExceptionHandler()
+                        .uncaughtException(Thread.currentThread(), e);
+            }
+        });
     }
 }

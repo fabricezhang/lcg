@@ -1,11 +1,9 @@
 package top.easelink.lcg.utils;
 
 import android.text.TextUtils;
-import androidx.annotation.Nullable;
-import timber.log.Timber;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,19 +14,16 @@ import java.util.regex.Pattern;
  */
 public class RegexUtils {
 
-    @Nullable
-    public static List<String> extractInfoFrom(String content, String patternStr) {
+    @Nonnull
+    public static ArrayList<String> extractInfoFrom(String content, String patternStr) {
+        ArrayList<String> urls = new ArrayList<>();
         if (TextUtils.isEmpty(content) || TextUtils.isEmpty(patternStr)) {
-            return null;
+            return urls;
         }
         Pattern pattern = Pattern.compile(patternStr);
         Matcher matcher = pattern.matcher(content);
-        List<String> urls = new ArrayList<>();
         while (matcher.find()) {
             urls.add(matcher.group());
-        }
-        for(String s: urls) {
-            Timber.d(s);
         }
         return urls;
     }

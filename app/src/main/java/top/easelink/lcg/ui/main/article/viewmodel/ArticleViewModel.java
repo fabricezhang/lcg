@@ -11,6 +11,7 @@ import top.easelink.lcg.ui.main.model.Post;
 import top.easelink.lcg.ui.main.source.remote.RxArticleService;
 import top.easelink.lcg.utils.RegexUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ArticleViewModel extends BaseViewModel<ArticleNavigator>
@@ -81,12 +82,19 @@ public class ArticleViewModel extends BaseViewModel<ArticleNavigator>
                 }, () -> setIsLoading(false)));
     }
 
-    public void extractDownloadUrl() {
-        String patternStr = "https://www.lanzous.com/[a-zA-Z0-9]{4,10}";
+    public ArrayList<String> extractDownloadUrl() {
+        String patternLanzous = "https://www.lanzous.com/[a-zA-Z0-9]{4,10}";
+        String patternBaidu = "https://pan.baidu.com/s/.{23}";
+        String patternT = "http://t.cn/[a-zA-Z0-9]{8}";
         List<Post> list = mPosts.getValue();
+        ArrayList<String> resList = null;
         if (list != null && !list.isEmpty()) {
-            List<String> resList = RegexUtils.extractInfoFrom(list.get(0).getContent(), patternStr);
+            String content = list.get(0).getContent();
+            resList = RegexUtils.extractInfoFrom(content, patternLanzous);
+            resList.addAll(RegexUtils.extractInfoFrom(content, patternBaidu));
+            resList.addAll(RegexUtils.extractInfoFrom(content, patternT));
         }
+        return resList;
     }
 
     public LiveData<List<Post>> getPosts() {
@@ -97,5 +105,9 @@ public class ArticleViewModel extends BaseViewModel<ArticleNavigator>
     }
     public LiveData<String> getArticleTitle() {
         return mArticleTitle;
+    }
+
+    public void scrollToTop() {
+        getNavigator().scrollToTop();
     }
 }

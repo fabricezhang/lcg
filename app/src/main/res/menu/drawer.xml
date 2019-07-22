@@ -7,6 +7,10 @@
                 android:icon="@drawable/ic_info_24px"
                 android:title="@string/about" />
         <item
+                android:id="@+id/navItemRelease"
+                android:icon="@drawable/ic_get_app_black_24dp"
+                android:title="@string/thread_about_app" />
+        <item
                 android:id="@+id/navItemMobileSecurity"
                 android:checked="true"
                 android:icon="@drawable/ic_mobile_24dp"

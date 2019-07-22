@@ -5,6 +5,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,6 +13,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.airbnb.lottie.LottieAnimationView;
 import top.easelink.framework.BR;
 import top.easelink.framework.base.BaseFragment;
 import top.easelink.lcg.R;
@@ -23,6 +25,8 @@ import top.easelink.lcg.ui.main.model.Article;
 import top.easelink.lcg.ui.webview.view.WebViewActivity;
 
 import javax.inject.Inject;
+
+import java.util.ArrayList;
 
 import static top.easelink.lcg.ui.main.article.viewmodel.ArticleViewModel.FETCH_INIT;
 import static top.easelink.lcg.ui.main.source.remote.RxArticleService.SERVER_BASE_URL;
@@ -92,9 +96,28 @@ public class ArticleFragment extends BaseFragment<FragmentArticleBinding, Articl
         mArticleAdapter = new ArticleAdapter(mArticleViewModel);
         mLayoutManager = new LinearLayoutManager(getContext());
         mLayoutManager.setOrientation(RecyclerView.VERTICAL);
-        mFragmentArticleBinding.postRecyclerView.setLayoutManager(mLayoutManager);
-        mFragmentArticleBinding.postRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mFragmentArticleBinding.postRecyclerView.setAdapter(mArticleAdapter);
+        RecyclerView rv = mFragmentArticleBinding.postRecyclerView;
+        rv.setLayoutManager(mLayoutManager);
+        rv.setItemAnimator(new DefaultItemAnimator());
+        rv.setAdapter(mArticleAdapter);
+        rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                int firstVisibleItemPosition = mLayoutManager.findFirstVisibleItemPosition();
+                LottieAnimationView backToTop = mFragmentArticleBinding.backToTop;
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    if (firstVisibleItemPosition == 0) {
+                        backToTop.setVisibility(View.GONE);
+                        backToTop.pauseAnimation();
+                    } else {
+                        backToTop.setVisibility(View.VISIBLE);
+                    }
+                } else if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
+                    backToTop.setVisibility(View.GONE);
+                    backToTop.pauseAnimation();
+                }
+            }
+        });
     }
 
     @Override
@@ -111,7 +134,12 @@ public class ArticleFragment extends BaseFragment<FragmentArticleBinding, Articl
                 WebViewActivity.startWebViewWith(SERVER_BASE_URL + articleUrl, getContext());
                 break;
             case R.id.action_extract_urls:
-                mArticleViewModel.extractDownloadUrl();
+                ArrayList<String> linkList = mArticleViewModel.extractDownloadUrl();
+                if (linkList != null && !linkList.isEmpty()) {
+                    DownloadLinkDialog.newInstance(linkList).show(getFragmentManager());
+                } else {
+                    Toast.makeText(getContext(), R.string.download_link_not_found, Toast.LENGTH_SHORT).show();
+                }
                 break;
             default:
                 break;
@@ -122,5 +150,10 @@ public class ArticleFragment extends BaseFragment<FragmentArticleBinding, Articl
     @Override
     public void handleError(Throwable t) {
 
+    }
+
+    @Override
+    public void scrollToTop() {
+        mFragmentArticleBinding.postRecyclerView.smoothScrollToPosition(0);
     }
 }

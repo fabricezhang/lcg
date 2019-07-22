@@ -208,6 +208,9 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
                         case R.id.navItemOrigin:
                             showForumFragment(ORIGINAL_TITLE, ORIGINAL_URL);
                             return true;
+                        case R.id.navItemRelease:
+                            WebViewActivity.startWebViewWith(SERVER_BASE_URL + APP_RELEASE_PAGE, MainActivity.this);
+                            return true;
                         default:
                             return false;
                     }
@@ -239,6 +242,11 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
 
     @Override
     public boolean onFragmentDetached(String tag) {
+        // FIXME: 2019-07-22 a temporary fix method for manage fragment stack
+        int d = mFragmentTags.search(tag);
+        while (d-- > 0) {
+            mFragmentTags.pop();
+        }
         if (tag != null && tag.startsWith(TAG_PREFIX)) {
             return super.onFragmentDetached(tag);
         } else {
