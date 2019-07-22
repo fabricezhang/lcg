@@ -40,6 +40,8 @@
     <!--download link dialog-->
     <string name="download_title">下载链接</string>
     <string name="download_link_not_found">未找到下载链接</string>
+    <string name="download_link_copy_succeed">已复制到剪贴板</string>
+    <string name="download_link_copy_failed">复制失败</string>
 
     <!--empty state-->
     <string name="empty_screen">目前没有内容可供展示</string>

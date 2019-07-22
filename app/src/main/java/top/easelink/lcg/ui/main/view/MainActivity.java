@@ -239,6 +239,11 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
 
     @Override
     public boolean onFragmentDetached(String tag) {
+        // FIXME: 2019-07-22 a temporary fix method for manage fragment stack
+        int d = mFragmentTags.search(tag);
+        while (d-- > 0) {
+            mFragmentTags.pop();
+        }
         if (tag != null && tag.startsWith(TAG_PREFIX)) {
             return super.onFragmentDetached(tag);
         } else {

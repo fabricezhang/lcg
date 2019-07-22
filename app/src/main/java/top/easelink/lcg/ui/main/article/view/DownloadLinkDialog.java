@@ -8,7 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.FragmentManager;
@@ -68,7 +70,11 @@ public class DownloadLinkDialog extends BaseDialog implements DownloadLinkCallBa
             if (linkList != null && !linkList.isEmpty()) {
                 ArrayAdapter<String> adapter = new ArrayAdapter<>(getBaseActivity(),
                         R.layout.download_link_item_view, linkList);
-                mViewBinding.dowloandLinkList.setAdapter(adapter);
+                mViewBinding.downloadLinkList.setAdapter(adapter);
+                mViewBinding.downloadLinkList.setOnItemClickListener( (parent, itemView, position, id) -> {
+                    copy(linkList.get(position));
+                    itemView.setBackgroundColor(getBaseActivity().getResources().getColor(R.color.colorAccent));
+                });
             }
         }
     }
@@ -82,6 +88,13 @@ public class DownloadLinkDialog extends BaseDialog implements DownloadLinkCallBa
         ClipData mClipData = ClipData.newPlainText("DownloadLink", clipString);
         if (cm != null) {
             cm.setPrimaryClip(mClipData);
+            showMessage(R.string.download_link_copy_succeed);
+        } else {
+            showMessage(R.string.download_link_copy_failed);
         }
+    }
+
+    private void showMessage(@StringRes int resId) {
+        Toast.makeText(getContext(), resId, Toast.LENGTH_SHORT).show();
     }
 }

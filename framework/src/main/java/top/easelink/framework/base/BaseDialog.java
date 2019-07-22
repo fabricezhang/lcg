@@ -69,10 +69,11 @@ public abstract class BaseDialog extends DialogFragment {
     }
 
     public void dismissDialog(String tag) {
+        getBaseActivity().onFragmentDetached(tag);
         dismiss();
     }
 
-    public BaseActivity getBaseActivity() {
+    protected BaseActivity getBaseActivity() {
         return mActivity;
     }
 
