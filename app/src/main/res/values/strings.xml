@@ -14,7 +14,8 @@
     <string name="close_drawer">Drawer Close</string>
 
     <!--Drawer Menus-->
-    <string name="about">关于应用</string>
+    <string name="about">『关于应用』</string>
+    <string name="thread_about_app">『App发布页』</string>
     <string name="mobile_security_title">『移动安全区』</string>
     <string name="free_chat_title">『水漫金山』</string>
     <string name="software_title">『精品软件区』</string>

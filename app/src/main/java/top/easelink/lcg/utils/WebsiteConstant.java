@@ -18,6 +18,7 @@ public class WebsiteConstant {
     public static final String MOB_SECURITY_URL = "forum-65-%d.html";
     public static final String SOFTWARE_URL = "forum-16-%d.html";
     public static final String ORIGINAL_URL = "forum-2-%d.html";
+    public static final String APP_RELEASE_PAGE = "forum.php?mod=viewthread&tid=990363&page=1";
 
     public static final String MOB_SECURITY_TITLE = LCGApp.getContext().getString(R.string.mobile_security_title);
     public static final String FREE_CHAT_TITLE = LCGApp.getContext().getString(R.string.free_chat_title);

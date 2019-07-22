@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.airbnb.lottie.LottieAnimationView;
 import top.easelink.framework.BR;
 import top.easelink.framework.base.BaseFragment;
 import top.easelink.lcg.R;
@@ -95,9 +96,28 @@ public class ArticleFragment extends BaseFragment<FragmentArticleBinding, Articl
         mArticleAdapter = new ArticleAdapter(mArticleViewModel);
         mLayoutManager = new LinearLayoutManager(getContext());
         mLayoutManager.setOrientation(RecyclerView.VERTICAL);
-        mFragmentArticleBinding.postRecyclerView.setLayoutManager(mLayoutManager);
-        mFragmentArticleBinding.postRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mFragmentArticleBinding.postRecyclerView.setAdapter(mArticleAdapter);
+        RecyclerView rv = mFragmentArticleBinding.postRecyclerView;
+        rv.setLayoutManager(mLayoutManager);
+        rv.setItemAnimator(new DefaultItemAnimator());
+        rv.setAdapter(mArticleAdapter);
+        rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                int firstVisibleItemPosition = mLayoutManager.findFirstVisibleItemPosition();
+                LottieAnimationView backToTop = mFragmentArticleBinding.backToTop;
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    if (firstVisibleItemPosition == 0) {
+                        backToTop.setVisibility(View.GONE);
+                        backToTop.pauseAnimation();
+                    } else {
+                        backToTop.setVisibility(View.VISIBLE);
+                    }
+                } else if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
+                    backToTop.setVisibility(View.GONE);
+                    backToTop.pauseAnimation();
+                }
+            }
+        });
     }
 
     @Override
@@ -130,5 +150,10 @@ public class ArticleFragment extends BaseFragment<FragmentArticleBinding, Articl
     @Override
     public void handleError(Throwable t) {
 
+    }
+
+    @Override
+    public void scrollToTop() {
+        mFragmentArticleBinding.postRecyclerView.smoothScrollToPosition(0);
     }
 }
