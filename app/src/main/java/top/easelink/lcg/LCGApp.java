@@ -12,6 +12,7 @@ import io.reactivex.plugins.RxJavaPlugins;
 import timber.log.Timber;
 import top.easelink.framework.BuildConfig;
 import top.easelink.lcg.di.component.DaggerAppComponent;
+import top.easelink.lcg.service.web.WebViewWrapper;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 import javax.inject.Inject;
@@ -46,6 +47,7 @@ public class LCGApp extends Application implements HasActivityInjector {
             Timber.plant(new Timber.DebugTree());
         }
         initRx();
+        WebViewWrapper.init();
     }
 
     public static Context getContext() {

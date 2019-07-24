@@ -36,7 +36,7 @@
                     android:id="@+id/post_recycler_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:visibility="@{viewModel.isBlocked ? View.GONE:View.VISIBLE, default = visible}"
+                    android:visibility="@{viewModel.shouldDisplayPosts? View.VISIBLE:View.GONE, default = gone}"
                     app:adapter="@{viewModel.posts}"/>
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -52,7 +52,7 @@
                     android:layout_width="@dimen/dp_200"
                     android:layout_height="@dimen/dp_200"
                     android:scaleType="fitCenter"
-                    app:lottie_rawRes="@raw/face_unhappy"
+                    app:lottie_rawRes="@raw/face_sorry"
                     app:lottie_loop="true"
                     app:lottie_autoPlay="true" />
             <TextView
@@ -60,6 +60,27 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/block_info"/>
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:visibility="@{viewModel.isNotFound ? View.VISIBLE : View.GONE, default = gone}">
+            <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/notfound_view"
+                    android:layout_width="@dimen/dp_200"
+                    android:layout_height="@dimen/dp_200"
+                    android:scaleType="fitCenter"
+                    app:lottie_rawRes="@raw/face_not_found"
+                    app:lottie_loop="true"
+                    app:lottie_autoPlay="true" />
+            <TextView
+                    style="@style/TextStyle.Heading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/not_found_info"/>
         </LinearLayout>
 
         <com.airbnb.lottie.LottieAnimationView

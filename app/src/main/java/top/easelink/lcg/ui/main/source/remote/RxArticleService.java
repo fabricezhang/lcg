@@ -2,13 +2,18 @@ package top.easelink.lcg.ui.main.source.remote;
 
 import android.text.TextUtils;
 import android.util.ArrayMap;
+import android.webkit.JavascriptInterface;
 import androidx.annotation.NonNull;
 import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import timber.log.Timber;
+import top.easelink.lcg.service.web.HookInterface;
+import top.easelink.lcg.service.web.WebViewWrapper;
 import top.easelink.lcg.ui.main.model.Article;
 import top.easelink.lcg.ui.main.model.BlockException;
 import top.easelink.lcg.ui.main.model.Post;
@@ -81,51 +86,64 @@ public class RxArticleService {
         });
     }
 
+    private void forumArticlesDocumentProcessor(Document doc, ObservableEmitter<ForumPage> emitter) {
+        try {
+            Elements elements = doc.select("tbody[id^=normal]");
+            if (elements.isEmpty()) {
+                String htmls = doc.html();
+                Timber.d(htmls);
+                elements = doc.select("tbody");
+            }
+            List<Article> list = new ArrayList<>();
+            String title, author, date, url, origin;
+            Integer view, reply;
+            for (Element element : elements) {
+                try {
+                    reply = Integer.valueOf(extractFrom(element, "td.num", "a.xi2"));
+                    view = Integer.valueOf(extractFrom(element, "td.num", "em"));
+                    title = extractFrom(element, "th.new", ".xst");
+                    if (TextUtils.isEmpty(title)) {
+                        title = extractFrom(element, "th.common", ".xst");
+                    }
+                    author = extractFrom(element, "td.by", "a[href*=uid]");
+                    date = extractFrom(element, "td.by", "span");
+                    url = extractAttrFrom(element, "href","th.new", "a.xst");
+                    if (TextUtils.isEmpty(url)) {
+                        url = extractAttrFrom(element, "href","th.common", "a.xst");
+                    }
+                    origin = extractFrom(element, "td.by", "a[target]");
+                    if (!TextUtils.isEmpty(title) && !TextUtils.isEmpty(author)) {
+                        list.add(new Article(title, author, date, url, view, reply, origin));
+                    }
+                } catch (NumberFormatException nbe) {
+                    Timber.v(nbe);
+                } catch (Exception e) {
+                    Timber.e(e);
+                }
+            }
+            ForumPage forumPage = new ForumPage(list);
+            emitter.onNext(forumPage);
+        } catch (Exception e) {
+            Timber.e(e);
+            emitter.onError(e);
+        } finally {
+            emitter.onComplete();
+        }
+    }
+
     public Observable<ForumPage> getForumArticles(@NonNull final String requestUrl){
         return Observable.create(emitter -> {
-            try {
-                Document doc = Jsoup.connect(SERVER_BASE_URL + requestUrl).get();
-                Elements elements = doc.select("tbody[id^=normal]");
-                if (elements.isEmpty()) {
-                    String html = doc.html();
-                    Timber.d(html);
-                    elements = doc.select("tbody");
+            String url = SERVER_BASE_URL + requestUrl;
+//            Document doc = Jsoup.connect(url).get();
+            // TODO: 2019-07-24 Add a check here to choose webivew or jsoup in case of anti-scraper
+            WebViewWrapper.getInstance().loadUrl(url, new HookInterface() {
+                @Override
+                @JavascriptInterface
+                public void processHtml(String html) {
+                    Document doc = Jsoup.parse(html);
+                    forumArticlesDocumentProcessor(doc, emitter);
                 }
-                List<Article> list = new ArrayList<>();
-                String title, author, date, url, origin;
-                Integer view, reply;
-                for (Element element : elements) {
-                    try {
-                        reply = Integer.valueOf(extractFrom(element, "td.num", "a.xi2"));
-                        view = Integer.valueOf(extractFrom(element, "td.num", "em"));
-                        title = extractFrom(element, "th.new", ".xst");
-                        if (TextUtils.isEmpty(title)) {
-                            title = extractFrom(element, "th.common", ".xst");
-                        }
-                        author = extractFrom(element, "td.by", "a[href*=uid]");
-                        date = extractFrom(element, "td.by", "span");
-                        url = extractAttrFrom(element, "href","th.new", "a.xst");
-                        if (TextUtils.isEmpty(url)) {
-                            url = extractAttrFrom(element, "href","th.common", "a.xst");
-                        }
-                        origin = extractFrom(element, "td.by", "a[target]");
-                        if (!TextUtils.isEmpty(title) && !TextUtils.isEmpty(author)) {
-                            list.add(new Article(title, author, date, url, view, reply, origin));
-                        }
-                    } catch (NumberFormatException nbe) {
-                        Timber.v(nbe);
-                    } catch (Exception e) {
-                        Timber.e(e);
-                    }
-                }
-                ForumPage forumPage = new ForumPage(list);
-                emitter.onNext(forumPage);
-            } catch (Exception e) {
-                Timber.e(e);
-                emitter.onError(e);
-            } finally {
-                emitter.onComplete();
-            }
+            });
         });
     }
 
@@ -137,7 +155,11 @@ public class RxArticleService {
     public Observable<ArticleDetail> getArticleDetail(@NonNull final String url){
         return Observable.create(emitter -> {
             try {
-                Document doc = Jsoup.connect(SERVER_BASE_URL + url).get();
+                Connection connection = Jsoup
+                        .connect(SERVER_BASE_URL + url)
+                        .method(Connection.Method.GET);
+                Connection.Response response = connection.execute();
+                Document doc = response.parse();
                 Element titleElement = doc.selectFirst("span#thread_subject");
                 String title;
                 if (titleElement == null) {
