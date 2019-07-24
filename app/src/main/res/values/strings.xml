@@ -54,5 +54,6 @@
     <string name="share_title">快来看这篇</string>
 
     <!--block-->
+    <string name="not_found_info">抱歉，文章可能已经被删除了</string>
     <string name="block_info">抱歉，本帖要求阅读权限高于 10 才能浏览</string>
 </resources>

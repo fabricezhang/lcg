@@ -71,6 +71,8 @@ dependencies {
     api "com.google.guava:guava:$rootProject.guavaVersion"
     // jsoup
     api "org.jsoup:jsoup:$rootProject.jsoupVersion"
+    // java script engine
+    api 'io.apisense:rhino-android:1.1.1'
     // database
     api "androidx.room:room-runtime:$rootProject.roomVersion"
     // event-bus

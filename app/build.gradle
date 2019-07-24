@@ -5,7 +5,7 @@ apply plugin: 'kotlin-android-extensions'
 // App Version is composed by Major * 10000 + Minor * 100 + Patch
 // each version starts from 0
 def versionMajor = 1
-def versionMinor = 1
+def versionMinor = 2
 def versionPatch = 0
 
 android {
@@ -60,4 +60,9 @@ dependencies {
     implementation project(':framework')
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    // test related
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }

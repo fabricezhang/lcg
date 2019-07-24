@@ -19,6 +19,7 @@ public class ForumArticlesViewModel extends BaseViewModel<ArticlesNavigator>
 
     private final MutableLiveData<List<Article>> articles = new MutableLiveData<>();
     private final RxArticleService articleService = RxArticleService.getInstance();
+    private final MutableLiveData<Boolean> mShouldDisplayArticles = new MutableLiveData<>();
 
     public ForumArticlesViewModel(SchedulerProvider schedulerProvider) {
         super(schedulerProvider);
@@ -46,7 +47,7 @@ public class ForumArticlesViewModel extends BaseViewModel<ArticlesNavigator>
                 break;
         }
         getCompositeDisposable().add(articleService.getForumArticles(String.format(mUrl, mCurrentPage))
-                .subscribeOn(getSchedulerProvider().io())
+                .subscribeOn(getSchedulerProvider().ui())
                 .observeOn(getSchedulerProvider().ui())
                 .subscribe(forumPage -> {
                     if (forumPage != null) {
@@ -60,6 +61,7 @@ public class ForumArticlesViewModel extends BaseViewModel<ArticlesNavigator>
                                 articles.setValue(articleList);
                             }
                         }
+                        mShouldDisplayArticles.setValue(true);
                     }
                 }, throwable -> {
                     getNavigator().handleError(throwable);
@@ -69,7 +71,9 @@ public class ForumArticlesViewModel extends BaseViewModel<ArticlesNavigator>
     public LiveData<List<Article>> getArticles() {
         return articles;
     }
-
+    public LiveData<Boolean> getShouldDisplayArticles() {
+        return mShouldDisplayArticles;
+    }
     public LiveData<String> getTitle() {
         return mTitle;
     }

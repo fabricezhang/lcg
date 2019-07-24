@@ -3,6 +3,7 @@ package top.easelink.lcg.ui.main.article.viewmodel;
 import android.text.TextUtils;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import org.jsoup.HttpStatusException;
 import top.easelink.framework.base.BaseViewModel;
 import top.easelink.framework.utils.rx.SchedulerProvider;
 import top.easelink.lcg.ui.main.article.view.ArticleNavigator;
@@ -22,6 +23,8 @@ public class ArticleViewModel extends BaseViewModel<ArticleNavigator>
 
     private final MutableLiveData<List<Post>> mPosts = new MutableLiveData<>();
     private final MutableLiveData<Boolean> mIsBlocked = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> mIsNotFound = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> mShouldDisplayPosts = new MutableLiveData<>();
     private final MutableLiveData<String> mArticleTitle = new MutableLiveData<>();
     private final RxArticleService articleService = RxArticleService.getInstance();
     private String mUrl;
@@ -73,9 +76,12 @@ public class ArticleViewModel extends BaseViewModel<ArticleNavigator>
                             }
                         }
                     }
+                    mShouldDisplayPosts.setValue(true);
                 }, throwable -> {
                     if (throwable instanceof BlockException) {
-                        mIsBlocked.setValue(true);
+                        setArticleBlocked();
+                    } else if (throwable instanceof HttpStatusException) {
+                        setArticleNotFound();
                     }
                     setIsLoading(false);
                     getNavigator().handleError(throwable);
@@ -106,8 +112,24 @@ public class ArticleViewModel extends BaseViewModel<ArticleNavigator>
     public LiveData<String> getArticleTitle() {
         return mArticleTitle;
     }
+    public LiveData<Boolean> getIsNotFound() {
+        return mIsNotFound;
+    }
+    public LiveData<Boolean> getShouldDisplayPosts() {
+        return mShouldDisplayPosts;
+    }
 
     public void scrollToTop() {
         getNavigator().scrollToTop();
+    }
+
+    private void setArticleNotFound() {
+        mIsNotFound.setValue(true);
+        mShouldDisplayPosts.setValue(false);
+    }
+
+    private void setArticleBlocked() {
+        mIsBlocked.setValue(true);
+        mShouldDisplayPosts.setValue(false);
     }
 }
