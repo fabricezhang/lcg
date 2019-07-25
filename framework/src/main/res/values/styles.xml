@@ -115,7 +115,7 @@
 
     <style name="Toolbar.TitleText" parent="TextStyle.Heading">
         <item name="android:textColor">@color/dark_gray</item>
-        <item name="android:textSize">@dimen/sp_18</item>
+        <item name="android:textSize">@dimen/sp_16</item>
     </style>
 
     <style name="Button" parent="Widget.AppCompat.Button">
