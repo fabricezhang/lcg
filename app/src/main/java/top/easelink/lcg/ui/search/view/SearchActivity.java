@@ -1,6 +1,7 @@
 package top.easelink.lcg.ui.search.view;
 
 import android.os.Bundle;
+import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProviders;
@@ -26,7 +27,8 @@ import javax.inject.Inject;
 import static top.easelink.lcg.ui.search.viewmodel.SearchResultAdapter.SearchAdapterListener.FETCH_INIT;
 import static top.easelink.lcg.utils.WebsiteConstant.URL_KEY;
 
-public class SearchActivity extends BaseActivity<ActivitySearchBinding, SearchViewModel> {
+public class SearchActivity extends BaseActivity<ActivitySearchBinding, SearchViewModel>
+        implements SearchNavigator {
 
     @Inject
     ViewModelProviderFactory factory;
@@ -56,6 +58,7 @@ public class SearchActivity extends BaseActivity<ActivitySearchBinding, SearchVi
         EventBus.getDefault().register(this);
         mSearchActivityBinding = getViewDataBinding();
         setupRecyclerView();
+        mSearchViewModel.setNavigator(this);
         mSearchViewModel.initUrl(getIntent().getStringExtra(URL_KEY));
     }
 
@@ -90,5 +93,13 @@ public class SearchActivity extends BaseActivity<ActivitySearchBinding, SearchVi
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(OpenSearchResultEvent event) {
         WebViewActivity.startWebViewWith(event.getSearchResult().getUrl(), this);
+    }
+
+    @Override
+    public void handleError(Throwable throwable) {
+        Toast.makeText(SearchActivity.this,
+                getString(R.string.error),
+                Toast.LENGTH_SHORT)
+                .show();
     }
 }

@@ -3,6 +3,7 @@ package top.easelink.lcg.ui.search.viewmodel;
 import android.text.TextUtils;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import timber.log.Timber;
 import top.easelink.framework.base.BaseViewModel;
 import top.easelink.framework.utils.rx.SchedulerProvider;
 import top.easelink.lcg.ui.search.model.SearchResult;
@@ -59,8 +60,12 @@ public class SearchViewModel extends BaseViewModel<SearchNavigator> implements S
                             searchResults.setValue(searchResultList);
                         }
                     }
-                }, throwable -> getNavigator().handleError(throwable),
-                        () -> setIsLoading(false)));
+                }, throwable -> {
+                    setIsLoading(false);
+                    getNavigator().handleError(throwable);
+                }, () -> {
+                    setIsLoading(false);
+                }));
     }
 
     public LiveData<List<SearchResult>> getSearchResults() {
