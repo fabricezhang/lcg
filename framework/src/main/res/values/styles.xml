@@ -189,4 +189,12 @@
         <item name="android:textAllCaps">true</item>
         <item name="android:background">@drawable/button_primary_bg</item>
     </style>
+
+    <style name="BottomNavigationView" parent="@style/TextAppearance.AppCompat.Caption">
+        <item name="android:textSize">@dimen/sp_10</item>
+    </style>
+
+    <style name="BottomNavigationView.Active" parent="@style/TextAppearance.AppCompat.Caption">
+        <item name="android:textSize">@dimen/sp_12</item>
+    </style>
 </resources>
