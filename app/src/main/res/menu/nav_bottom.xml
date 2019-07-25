@@ -3,17 +3,22 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-            android:id="@+id/action_open_in_webview"
+            android:id="@+id/action_home"
             android:icon="@drawable/ic_home_black_24dp"
             android:title="@string/home_page"
             app:showAsAction="ifRoom"/>
     <item
-            android:id="@+id/action_extract_urls"
+            android:id="@+id/action_forum"
+            android:icon="@drawable/ic_message_black_24dp"
+            android:title="@string/forum_page"
+            app:showAsAction="ifRoom"/>
+    <item
+            android:id="@+id/action_favorite"
             android:icon="@drawable/ic_favorite_black_24dp"
             android:title="@string/my_favorite"
             app:showAsAction="ifRoom"/>
     <item
-            android:id="@+id/action_extract"
+            android:id="@+id/action_about_me"
             android:title="@string/about_me"
             android:icon="@drawable/ic_person_black_24dp"
             app:showAsAction="ifRoom"/>

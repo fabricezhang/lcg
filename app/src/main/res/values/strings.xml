@@ -12,6 +12,7 @@
     <!--Toolbar menus-->
     <string name="about_me">我的</string>
     <string name="my_favorite">收藏</string>
+    <string name="forum_page">专区</string>
     <string name="home_page">首页</string>
 
     <!--Drawer-->
