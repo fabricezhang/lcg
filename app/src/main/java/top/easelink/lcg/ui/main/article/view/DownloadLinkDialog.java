@@ -34,7 +34,6 @@ public class DownloadLinkDialog extends BaseDialog implements DownloadLinkCallBa
     private static final String KEY_LINK_LIST = "KEY_LINK_LIST";
     @Inject
     ViewModelProviderFactory factory;
-    private DownloadLinkViewModel mDownloadLinkViewModel;
     private DialogDownloadLinkBinding mViewBinding;
 
     static DownloadLinkDialog newInstance(ArrayList<String> downloadLinkList) {
@@ -47,7 +46,7 @@ public class DownloadLinkDialog extends BaseDialog implements DownloadLinkCallBa
 
     @Override
     public void dismissDialog() {
-        dismissDialog(TAG);
+        super.dismissDialog();
     }
 
     @Override
@@ -55,7 +54,7 @@ public class DownloadLinkDialog extends BaseDialog implements DownloadLinkCallBa
         mViewBinding = DataBindingUtil.inflate(inflater, R.layout.dialog_download_link, container, false);
         View view = mViewBinding.getRoot();
         AndroidSupportInjection.inject(this);
-        mDownloadLinkViewModel = ViewModelProviders.of(this,factory).get(DownloadLinkViewModel.class);
+        DownloadLinkViewModel mDownloadLinkViewModel = ViewModelProviders.of(this,factory).get(DownloadLinkViewModel.class);
         mViewBinding.setViewModel(mDownloadLinkViewModel);
         mDownloadLinkViewModel.setNavigator(this);
         return view;

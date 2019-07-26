@@ -60,7 +60,7 @@
                     android:focusable="true"
                     app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
             <com.google.android.material.bottomnavigation.BottomNavigationView
-                    android:id="@+id/navigation"
+                    android:id="@+id/bottom_navigation"
                     android:layout_gravity="bottom"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

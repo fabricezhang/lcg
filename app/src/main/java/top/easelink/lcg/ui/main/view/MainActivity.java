@@ -65,9 +65,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
     private DrawerLayout mDrawer;
     private MainViewModel mMainViewModel;
     private NavigationView mNavigationView;
-    private Toolbar mToolbar;
     private ViewPager mViewPager;
-    private TabLayout mTabLayout;
     private static WeakReference<MainActivity> mainActivityWeakReference;
 
     @Override
@@ -148,10 +146,10 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
 
     private void setUp() {
         mDrawer = mActivityMainBinding.drawerView;
-        mToolbar = mActivityMainBinding.toolbar;
+        Toolbar mToolbar = mActivityMainBinding.toolbar;
         mNavigationView = mActivityMainBinding.navigationView;
         mViewPager = mActivityMainBinding.mainViewPager;
-        mTabLayout = mActivityMainBinding.mainTab;
+        TabLayout mTabLayout = mActivityMainBinding.mainTab;
         setSupportActionBar(mToolbar);
         ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(
                 this,
@@ -172,7 +170,8 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
         };
         mDrawer.addDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
-        setupNavMenu();
+        setupDrawerNavMenu();
+        setupBottomNavMenu();
 
         String version = getString(R.string.version) + " " + BuildConfig.VERSION_NAME;
         mMainViewModel.updateAppVersion(version);
@@ -183,7 +182,23 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
         mTabLayout.setupWithViewPager(mViewPager);
     }
 
-    private void setupNavMenu() {
+    private void setupBottomNavMenu() {
+        mActivityMainBinding.bottomNavigation
+                .setOnNavigationItemSelectedListener(menuItem -> {
+                    switch (menuItem.getItemId()) {
+                        case R.id.action_home:
+                           while (!mFragmentTags.isEmpty()) {
+                               onFragmentDetached(mFragmentTags.pop());
+                           }
+                           break;
+                        case R.id.action_about_me:
+                            break;
+                    }
+                    return true;
+        });
+    }
+
+    private void setupDrawerNavMenu() {
         NavHeaderMainBinding navHeaderMainBinding = DataBindingUtil.inflate(getLayoutInflater(),
                 R.layout.nav_header_main, mActivityMainBinding.navigationView, false);
         mActivityMainBinding.navigationView.addHeaderView(navHeaderMainBinding.getRoot());
@@ -242,11 +257,6 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
 
     @Override
     public boolean onFragmentDetached(String tag) {
-        // FIXME: 2019-07-22 a temporary fix method for manage fragment stack
-        int d = mFragmentTags.search(tag);
-        while (d-- > 0) {
-            mFragmentTags.pop();
-        }
         if (tag != null && tag.startsWith(TAG_PREFIX)) {
             return super.onFragmentDetached(tag);
         } else {
