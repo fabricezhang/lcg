@@ -40,6 +40,9 @@
     <string name="author_title">问题反馈邮箱</string>
     <string name="author_email">fabircez@163.com</string>
 
+    <!--favorite fragment-->
+    <string name="empty_favorite">收藏夹目前是空的。</string>
+
      <!--feed-->
     <string name="load_more">加载更多</string>
     <string name="no_more_content">没有更多了</string>

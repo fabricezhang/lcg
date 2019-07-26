@@ -36,6 +36,7 @@ import top.easelink.lcg.ui.ViewModelProviderFactory;
 import top.easelink.lcg.ui.main.about.view.AboutFragment;
 import top.easelink.lcg.ui.main.article.view.ArticleFragment;
 import top.easelink.lcg.ui.main.articles.view.ArticlesFragment;
+import top.easelink.lcg.ui.main.articles.view.FavoriteArticlesFragment;
 import top.easelink.lcg.ui.main.articles.view.ForumArticlesFragment;
 import top.easelink.lcg.ui.main.source.model.Article;
 import top.easelink.lcg.ui.main.model.OpenArticleEvent;
@@ -191,6 +192,9 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
                                onFragmentDetached(mFragmentTags.pop());
                            }
                            break;
+                        case R.id.action_favorite:
+                            showFavoriteFragment();
+                            break;
                         case R.id.action_about_me:
                             break;
                     }
@@ -252,6 +256,12 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
     private void showForumFragment(String title, String forumUrl) {
         ActivityUtils.addFragmentInActivity(getSupportFragmentManager(),
                 ForumArticlesFragment.newInstance(title, forumUrl),
+                R.id.clRootView);
+    }
+
+    private void showFavoriteFragment() {
+        ActivityUtils.addFragmentInActivity(getSupportFragmentManager(),
+                FavoriteArticlesFragment.newInstance(),
                 R.id.clRootView);
     }
 

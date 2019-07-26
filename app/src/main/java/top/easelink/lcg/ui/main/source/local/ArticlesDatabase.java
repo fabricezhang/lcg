@@ -3,6 +3,7 @@ package top.easelink.lcg.ui.main.source.local;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import top.easelink.lcg.BuildConfig;
 import top.easelink.lcg.LCGApp;
 import top.easelink.lcg.ui.main.source.model.ArticleEntity;
 
@@ -25,7 +26,7 @@ public abstract class ArticlesDatabase extends RoomDatabase {
                 mInstance = Room.databaseBuilder(
                         LCGApp.getContext(),
                         ArticlesDatabase.class,
-                        "Articles.db").build();
+                        BuildConfig.DB_NAME).build();
             }
         }
         return mInstance;

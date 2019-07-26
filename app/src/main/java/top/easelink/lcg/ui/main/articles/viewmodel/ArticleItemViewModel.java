@@ -15,7 +15,7 @@ public class ArticleItemViewModel {
 
     private final Article article;
 
-    public ArticleItemViewModel(Article article) {
+    ArticleItemViewModel(Article article) {
         this.article = article;
         title = new ObservableField<>(article.getTitle());
         author = new ObservableField<>(article.getAuthor());

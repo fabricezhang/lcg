@@ -6,6 +6,7 @@ import top.easelink.lcg.ui.main.about.view.AboutFragment;
 import top.easelink.lcg.ui.main.article.view.ArticleFragment;
 import top.easelink.lcg.ui.main.article.view.DownloadLinkDialog;
 import top.easelink.lcg.ui.main.articles.view.ArticlesFragment;
+import top.easelink.lcg.ui.main.articles.view.FavoriteArticlesFragment;
 import top.easelink.lcg.ui.main.articles.view.ForumArticlesFragment;
 
 @Module
@@ -19,6 +20,9 @@ public abstract class MainFragmentProvider {
 
     @ContributesAndroidInjector()
     abstract ArticleFragment provideArticleFragmentFactory();
+
+    @ContributesAndroidInjector()
+    abstract FavoriteArticlesFragment provideFavoriteArticleFragmentFactory();
 
     @ContributesAndroidInjector
     abstract AboutFragment provideAboutFragmentFactory();
