@@ -37,9 +37,9 @@ import top.easelink.lcg.ui.main.about.view.AboutFragment;
 import top.easelink.lcg.ui.main.article.view.ArticleFragment;
 import top.easelink.lcg.ui.main.articles.view.ArticlesFragment;
 import top.easelink.lcg.ui.main.articles.view.ForumArticlesFragment;
-import top.easelink.lcg.ui.main.model.Article;
+import top.easelink.lcg.ui.main.source.model.Article;
 import top.easelink.lcg.ui.main.model.OpenArticleEvent;
-import top.easelink.lcg.ui.main.model.dto.TabModel;
+import top.easelink.lcg.ui.main.model.TabModel;
 import top.easelink.lcg.ui.main.viewmodel.MainViewModel;
 import top.easelink.lcg.ui.search.view.SearchActivity;
 import top.easelink.lcg.ui.webview.view.WebViewActivity;
@@ -50,7 +50,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
-import static top.easelink.lcg.ui.main.source.remote.RxArticleService.SERVER_BASE_URL;
+import static top.easelink.lcg.ui.main.source.remote.ArticlesRemoteDataSource.SERVER_BASE_URL;
 import static top.easelink.lcg.utils.ActivityUtils.TAG_PREFIX;
 import static top.easelink.lcg.utils.WebsiteConstant.*;
 

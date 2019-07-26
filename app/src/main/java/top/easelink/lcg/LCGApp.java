@@ -6,7 +6,6 @@ import android.app.Application;
 import android.content.Context;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasActivityInjector;
-import io.reactivex.android.plugins.RxAndroidPlugins;
 import io.reactivex.exceptions.UndeliverableException;
 import io.reactivex.plugins.RxJavaPlugins;
 import timber.log.Timber;

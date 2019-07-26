@@ -8,8 +8,8 @@ import top.easelink.framework.base.BaseViewModel;
 import top.easelink.framework.utils.rx.SchedulerProvider;
 import top.easelink.lcg.ui.main.article.view.ArticleNavigator;
 import top.easelink.lcg.ui.main.model.BlockException;
-import top.easelink.lcg.ui.main.model.Post;
-import top.easelink.lcg.ui.main.source.remote.RxArticleService;
+import top.easelink.lcg.ui.main.source.ArticlesRepository;
+import top.easelink.lcg.ui.main.source.model.Post;
 import top.easelink.lcg.utils.RegexUtils;
 
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ public class ArticleViewModel extends BaseViewModel<ArticleNavigator>
     private final MutableLiveData<Boolean> mIsNotFound = new MutableLiveData<>();
     private final MutableLiveData<Boolean> mShouldDisplayPosts = new MutableLiveData<>();
     private final MutableLiveData<String> mArticleTitle = new MutableLiveData<>();
-    private final RxArticleService articleService = RxArticleService.getInstance();
+    private final ArticlesRepository articlesRepository = ArticlesRepository.getInstance();
     private String mUrl;
     private String nextPageUrl;
 
@@ -53,7 +53,7 @@ public class ArticleViewModel extends BaseViewModel<ArticleNavigator>
                 requestUrl = nextPageUrl;
             }
         }
-        getCompositeDisposable().add(articleService.getArticleDetail(requestUrl)
+        getCompositeDisposable().add(articlesRepository.getArticleDetail(requestUrl)
                 .subscribeOn(getSchedulerProvider().io())
                 .observeOn(getSchedulerProvider().ui())
                 .subscribe(articleDetail -> {

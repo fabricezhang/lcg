@@ -21,15 +21,14 @@ import top.easelink.lcg.databinding.FragmentArticleBinding;
 import top.easelink.lcg.ui.ViewModelProviderFactory;
 import top.easelink.lcg.ui.main.article.viewmodel.ArticleAdapter;
 import top.easelink.lcg.ui.main.article.viewmodel.ArticleViewModel;
-import top.easelink.lcg.ui.main.model.Article;
+import top.easelink.lcg.ui.main.source.model.Article;
 import top.easelink.lcg.ui.webview.view.WebViewActivity;
 
 import javax.inject.Inject;
-
 import java.util.ArrayList;
 
 import static top.easelink.lcg.ui.main.article.viewmodel.ArticleViewModel.FETCH_INIT;
-import static top.easelink.lcg.ui.main.source.remote.RxArticleService.SERVER_BASE_URL;
+import static top.easelink.lcg.ui.main.source.remote.ArticlesRemoteDataSource.SERVER_BASE_URL;
 
 
 public class ArticleFragment extends BaseFragment<FragmentArticleBinding, ArticleViewModel>

@@ -14,11 +14,12 @@ import org.jsoup.select.Elements;
 import timber.log.Timber;
 import top.easelink.lcg.service.web.HookInterface;
 import top.easelink.lcg.service.web.WebViewWrapper;
-import top.easelink.lcg.ui.main.model.Article;
-import top.easelink.lcg.ui.main.model.BlockException;
-import top.easelink.lcg.ui.main.model.Post;
-import top.easelink.lcg.ui.main.model.dto.ArticleDetail;
-import top.easelink.lcg.ui.main.model.dto.ForumPage;
+import top.easelink.lcg.ui.main.model.*;
+import top.easelink.lcg.ui.main.source.ArticlesDataSource;
+import top.easelink.lcg.ui.main.source.model.Article;
+import top.easelink.lcg.ui.main.source.model.ArticleDetail;
+import top.easelink.lcg.ui.main.source.model.ForumPage;
+import top.easelink.lcg.ui.main.source.model.Post;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -30,24 +31,98 @@ import java.util.Map;
  * date   : 2019-07-04 16:22
  * desc   :
  */
-public class RxArticleService {
+public class ArticlesRemoteDataSource implements ArticlesDataSource {
 
     public static final String SERVER_BASE_URL = "https://www.52pojie.cn/";
     private static final String FORUM_BASE_URL = "forum.php?mod=guide&view=";
 
-    private static RxArticleService mInstance;
+    private static ArticlesRemoteDataSource mInstance;
 
-    public static RxArticleService getInstance() {
+    public static ArticlesRemoteDataSource getInstance() {
         if (mInstance == null) {
-            synchronized(RxArticleService.class) {
-                mInstance = new RxArticleService();
+            synchronized(ArticlesRemoteDataSource.class) {
+                mInstance = new ArticlesRemoteDataSource();
             }
         }
         return mInstance;
     }
 
-    private RxArticleService() {
+    private ArticlesRemoteDataSource() {
         // should avoid to instantiating RxSearchService from outside
+    }
+
+    @Override
+    public Observable<ForumPage> getForumArticles(@NonNull final String requestUrl){
+        return Observable.create(emitter -> {
+            String url = SERVER_BASE_URL + requestUrl;
+//            Document doc = Jsoup.connect(url).get();
+            // TODO: 2019-07-24 Add a check here to choose webivew or jsoup in case of anti-scraper
+            WebViewWrapper.getInstance().loadUrl(url, new HookInterface() {
+                @Override
+                @JavascriptInterface
+                public void processHtml(String html) {
+                    Document doc = Jsoup.parse(html);
+                    forumArticlesDocumentProcessor(doc, emitter);
+                }
+            });
+        });
+    }
+
+    @Override
+    public Observable<List<Article>> getHomePageArticles(@NonNull final String param, @Nullable final Integer pageNum){
+        String requestUrl = SERVER_BASE_URL + FORUM_BASE_URL + param + "&page=" + pageNum;
+        return getArticles(requestUrl);
+    }
+
+    @Override
+    public Observable<ArticleDetail> getArticleDetail(@NonNull final String url){
+        return Observable.create(emitter -> {
+            try {
+                Connection connection = Jsoup
+                        .connect(SERVER_BASE_URL + url)
+                        .method(Connection.Method.GET);
+                Connection.Response response = connection.execute();
+                Document doc = response.parse();
+                Element titleElement = doc.selectFirst("span#thread_subject");
+                String title;
+                if (titleElement == null) {
+                    emitter.onError(new BlockException());
+                    return;
+                } else {
+                    title = titleElement.text();
+                }
+                Element nextPageElement = doc.selectFirst("a.nxt");
+                String nextPageUrl;
+                if (nextPageElement != null) {
+                    nextPageUrl = nextPageElement.attr("href");
+                } else {
+                    nextPageUrl = "";
+                }
+                List<Map<String, String>> avatarsAndNames = getAvatarAndName(doc);
+                List<String> contents = getContent(doc);
+                List<String> datetimes = getDateTime(doc);
+                List<Post> postList = new ArrayList<>(avatarsAndNames.size());
+                for (int i = 0; i< avatarsAndNames.size(); i++) {
+                    try {
+                        Post post = new Post(avatarsAndNames.get(i).get("name"),
+                                avatarsAndNames.get(i).get("avatar"),
+                                datetimes.get(i),
+                                contents.get(i));
+                        postList.add(post);
+                    } catch (NullPointerException npe) {
+                        // will skip a loop if there's any npe occurs
+                        Timber.e(npe);
+                    }
+                }
+                ArticleDetail articleDetail = new ArticleDetail(title, postList, nextPageUrl);
+                emitter.onNext(articleDetail);
+            } catch (Exception e) {
+                Timber.e(e);
+                emitter.onError(e);
+            } finally {
+                emitter.onComplete();
+            }
+        });
     }
 
     private Observable<List<Article>> getArticles(@NonNull final String requestUrl){
@@ -131,77 +206,6 @@ public class RxArticleService {
         }
     }
 
-    public Observable<ForumPage> getForumArticles(@NonNull final String requestUrl){
-        return Observable.create(emitter -> {
-            String url = SERVER_BASE_URL + requestUrl;
-//            Document doc = Jsoup.connect(url).get();
-            // TODO: 2019-07-24 Add a check here to choose webivew or jsoup in case of anti-scraper
-            WebViewWrapper.getInstance().loadUrl(url, new HookInterface() {
-                @Override
-                @JavascriptInterface
-                public void processHtml(String html) {
-                    Document doc = Jsoup.parse(html);
-                    forumArticlesDocumentProcessor(doc, emitter);
-                }
-            });
-        });
-    }
-
-    public Observable<List<Article>> getHomePageArticles(@NonNull final String param, @Nullable final Integer pageNum){
-        String requestUrl = SERVER_BASE_URL + FORUM_BASE_URL + param + "&page=" + pageNum;
-        return getArticles(requestUrl);
-    }
-
-    public Observable<ArticleDetail> getArticleDetail(@NonNull final String url){
-        return Observable.create(emitter -> {
-            try {
-                Connection connection = Jsoup
-                        .connect(SERVER_BASE_URL + url)
-                        .method(Connection.Method.GET);
-                Connection.Response response = connection.execute();
-                Document doc = response.parse();
-                Element titleElement = doc.selectFirst("span#thread_subject");
-                String title;
-                if (titleElement == null) {
-                    emitter.onError(new BlockException());
-                    return;
-                } else {
-                    title = titleElement.text();
-                }
-                Element nextPageElement = doc.selectFirst("a.nxt");
-                String nextPageUrl;
-                if (nextPageElement != null) {
-                    nextPageUrl = nextPageElement.attr("href");
-                } else {
-                    nextPageUrl = "";
-                }
-                List<Map<String, String>> avatarsAndNames = getAvatarAndName(doc);
-                List<String> contents = getContent(doc);
-                List<String> datetimes = getDateTime(doc);
-                List<Post> postList = new ArrayList<>(avatarsAndNames.size());
-                for (int i = 0; i< avatarsAndNames.size(); i++) {
-                    try {
-                        Post post = new Post(avatarsAndNames.get(i).get("name"),
-                                avatarsAndNames.get(i).get("avatar"),
-                                datetimes.get(i),
-                                contents.get(i));
-                        postList.add(post);
-                    } catch (NullPointerException npe) {
-                        // will skip a loop if there's any npe occurs
-                        Timber.e(npe);
-                    }
-                }
-                ArticleDetail articleDetail = new ArticleDetail(title, postList, nextPageUrl);
-                emitter.onNext(articleDetail);
-            } catch (Exception e) {
-                Timber.e(e);
-                emitter.onError(e);
-            } finally {
-                emitter.onComplete();
-            }
-        });
-    }
-
     private String extractFrom(Element element, String...tags) {
         if (tags == null || tags.length == 0) {
             return element == null? null : element.text();
@@ -230,6 +234,7 @@ public class RxArticleService {
         return e.attr(attr);
     }
 
+    @NonNull
     private List<Map<String, String>> getAvatarAndName(Document document) {
         List<Map<String, String>> list = new ArrayList<>(12);
         Elements elements = document.select("td[rowspan]");
@@ -242,6 +247,7 @@ public class RxArticleService {
         return list;
     }
 
+    @NonNull
     private List<String> getDateTime(Document document) {
         List<String> list = new ArrayList<>();
         for (Element element : document.select("div.authi").select("em")) {
@@ -250,6 +256,7 @@ public class RxArticleService {
         return list;
     }
 
+    @NonNull
     private List<String> getContent(Document doc) {
         ArrayList<String> list = new ArrayList<>();
         Elements elements = doc.select("div.pcb");

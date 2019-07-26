@@ -5,8 +5,9 @@ import androidx.lifecycle.MutableLiveData;
 import top.easelink.framework.base.BaseViewModel;
 import top.easelink.framework.utils.rx.SchedulerProvider;
 import top.easelink.lcg.ui.main.articles.view.ArticlesNavigator;
-import top.easelink.lcg.ui.main.model.Article;
-import top.easelink.lcg.ui.main.source.remote.RxArticleService;
+import top.easelink.lcg.ui.main.source.ArticlesRepository;
+import top.easelink.lcg.ui.main.source.model.Article;
+import top.easelink.lcg.ui.main.source.remote.ArticlesRemoteDataSource;
 
 import java.util.List;
 
@@ -18,7 +19,7 @@ public class ForumArticlesViewModel extends BaseViewModel<ArticlesNavigator>
     private MutableLiveData<String> mTitle = new MutableLiveData<>();
 
     private final MutableLiveData<List<Article>> articles = new MutableLiveData<>();
-    private final RxArticleService articleService = RxArticleService.getInstance();
+    private final ArticlesRepository articlesRepository = ArticlesRepository.getInstance();
     private final MutableLiveData<Boolean> mShouldDisplayArticles = new MutableLiveData<>();
 
     public ForumArticlesViewModel(SchedulerProvider schedulerProvider) {
@@ -46,7 +47,7 @@ public class ForumArticlesViewModel extends BaseViewModel<ArticlesNavigator>
                 rewindPageNum();
                 break;
         }
-        getCompositeDisposable().add(articleService.getForumArticles(String.format(mUrl, mCurrentPage))
+        getCompositeDisposable().add(articlesRepository.getForumArticles(String.format(mUrl, mCurrentPage))
                 .subscribeOn(getSchedulerProvider().ui())
                 .observeOn(getSchedulerProvider().ui())
                 .subscribe(forumPage -> {

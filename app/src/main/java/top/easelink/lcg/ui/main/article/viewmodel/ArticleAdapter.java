@@ -13,12 +13,12 @@ import timber.log.Timber;
 import top.easelink.framework.base.BaseViewHolder;
 import top.easelink.lcg.R;
 import top.easelink.lcg.databinding.ItemPostViewBinding;
-import top.easelink.lcg.ui.main.model.Post;
+import top.easelink.lcg.ui.main.source.model.Post;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static top.easelink.lcg.ui.main.source.remote.RxArticleService.SERVER_BASE_URL;
+import static top.easelink.lcg.ui.main.source.remote.ArticlesRemoteDataSource.SERVER_BASE_URL;
 
 public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 

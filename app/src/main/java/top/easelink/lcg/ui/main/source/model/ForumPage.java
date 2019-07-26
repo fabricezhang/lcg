@@ -1,6 +1,4 @@
-package top.easelink.lcg.ui.main.model.dto;
-
-import top.easelink.lcg.ui.main.model.Article;
+package top.easelink.lcg.ui.main.source.model;
 
 import java.util.List;
 

@@ -2,7 +2,7 @@ package top.easelink.lcg.ui.main.articles.viewmodel;
 
 import androidx.databinding.ObservableField;
 import org.greenrobot.eventbus.EventBus;
-import top.easelink.lcg.ui.main.model.Article;
+import top.easelink.lcg.ui.main.source.model.Article;
 import top.easelink.lcg.ui.main.model.OpenArticleEvent;
 
 public class ArticleItemViewModel {
