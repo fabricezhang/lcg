@@ -23,31 +23,25 @@ public class FavoriteArticlesViewModel extends BaseViewModel<ArticlesNavigator>
 
     @Override
     public void fetchArticles(int type) {
-        setIsLoading(true);
         switch (type) {
             case FETCH_MORE:
-                nextPage();
-                break;
+                return;
             case FETCH_INIT:
             default:
                 rewindPageNum();
                 break;
         }
+        setIsLoading(true);
         getCompositeDisposable().add(articlesRepository.getAllFavoriteArticles()
                 .subscribeOn(getSchedulerProvider().io())
                 .observeOn(getSchedulerProvider().ui())
                 .subscribe(articleEntityList -> {
                     if (articleEntityList != null && !articleEntityList.isEmpty()) {
-                        List<ArticleEntity> list = articles.getValue();
-                        if (type == FETCH_MORE && list != null && list.size() != 0) {
-                            list.addAll(articleEntityList);
-                            articles.setValue(list);
-                        } else {
-                            articles.setValue(articleEntityList);
-                        }
+                        articles.setValue(articleEntityList);
                     }
                 }, throwable -> {
                     getNavigator().handleError(throwable);
+                    setIsLoading(false);
                 }, () -> setIsLoading(false)));
     }
 

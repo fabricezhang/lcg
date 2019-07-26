@@ -9,6 +9,7 @@ import top.easelink.framework.utils.rx.SchedulerProvider;
 import top.easelink.lcg.ui.main.article.view.ArticleNavigator;
 import top.easelink.lcg.ui.main.model.BlockException;
 import top.easelink.lcg.ui.main.source.ArticlesRepository;
+import top.easelink.lcg.ui.main.source.model.ArticleEntity;
 import top.easelink.lcg.ui.main.source.model.Post;
 import top.easelink.lcg.utils.RegexUtils;
 
@@ -101,6 +102,24 @@ public class ArticleViewModel extends BaseViewModel<ArticleNavigator>
             resList.addAll(RegexUtils.extractInfoFrom(content, patternT));
         }
         return resList;
+    }
+
+    public void addToFavorite() {
+        List<Post> posts = getPosts().getValue();
+        if (posts == null || posts.isEmpty()) {
+            getNavigator().onAddToFavoriteFinished(false);
+            return;
+        }
+        String title = mArticleTitle.getValue();
+        String author = posts.get(0).getAuthor();
+        String content = posts.get(0).getContent();
+        ArticleEntity articleEntity = new ArticleEntity(title == null?"未知标题":title, author, mUrl, content, System.currentTimeMillis());
+        getCompositeDisposable().add(articlesRepository.addArticleToFavorite(articleEntity)
+                .subscribeOn(getSchedulerProvider().io())
+                .observeOn(getSchedulerProvider().ui())
+                .subscribe(
+                        res -> getNavigator().onAddToFavoriteFinished(res),
+                        throwable -> getNavigator().handleError(throwable)));
     }
 
     public LiveData<List<Post>> getPosts() {

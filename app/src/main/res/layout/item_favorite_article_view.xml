@@ -62,6 +62,8 @@
                     android:layout_marginStart="@dimen/dp_10"
                     android:text="@{viewModel.content}"
                     android:textStyle="normal"
+                    android:maxLines="3"
+                    android:ellipsize="start"
                     app:layout_constraintTop_toBottomOf="@id/authorTextView"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

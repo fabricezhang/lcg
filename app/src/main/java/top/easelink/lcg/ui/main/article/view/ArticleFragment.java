@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.airbnb.lottie.LottieAnimationView;
+import timber.log.Timber;
 import top.easelink.framework.BR;
 import top.easelink.framework.base.BaseFragment;
 import top.easelink.lcg.R;
@@ -140,6 +141,9 @@ public class ArticleFragment extends BaseFragment<FragmentArticleBinding, Articl
                     Toast.makeText(getContext(), R.string.download_link_not_found, Toast.LENGTH_SHORT).show();
                 }
                 break;
+            case R.id.action_add_to_my_favorite:
+                mArticleViewModel.addToFavorite();
+                break;
             default:
                 break;
         }
@@ -148,7 +152,15 @@ public class ArticleFragment extends BaseFragment<FragmentArticleBinding, Articl
 
     @Override
     public void handleError(Throwable t) {
+        Timber.e(t);
+    }
 
+    @Override
+    public void onAddToFavoriteFinished(boolean res) {
+        Toast.makeText(getContext(),
+                res?R.string.add_to_favorite_successfully:R.string.add_to_favorite_failed,
+                Toast.LENGTH_SHORT)
+                .show();
     }
 
     @Override

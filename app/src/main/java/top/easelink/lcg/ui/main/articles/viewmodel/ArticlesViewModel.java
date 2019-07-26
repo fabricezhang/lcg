@@ -7,7 +7,6 @@ import top.easelink.framework.utils.rx.SchedulerProvider;
 import top.easelink.lcg.ui.main.articles.view.ArticlesNavigator;
 import top.easelink.lcg.ui.main.source.ArticlesRepository;
 import top.easelink.lcg.ui.main.source.model.Article;
-import top.easelink.lcg.ui.main.source.remote.ArticlesRemoteDataSource;
 
 import java.util.List;
 

@@ -8,6 +8,7 @@
     <string name="search">搜索</string>
     <string name="open_in_webview">网页打开</string>
     <string name="extract_urls">提取下载链接</string>
+    <string name="add_to_my_favorite">添加到收藏</string>
 
     <!--Toolbar menus-->
     <string name="about_me">我的</string>
@@ -42,6 +43,8 @@
 
     <!--favorite fragment-->
     <string name="empty_favorite">收藏夹目前是空的。</string>
+    <string name="add_to_favorite_successfully">收藏成功</string>
+    <string name="add_to_favorite_failed">收藏失败</string>
 
      <!--feed-->
     <string name="load_more">加载更多</string>
