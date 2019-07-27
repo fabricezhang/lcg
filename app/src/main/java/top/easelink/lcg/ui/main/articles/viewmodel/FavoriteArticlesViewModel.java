@@ -17,6 +17,7 @@ public class FavoriteArticlesViewModel extends BaseViewModel<ArticlesNavigator>
 
     private final MutableLiveData<List<ArticleEntity>> articles = new MutableLiveData<>();
     private final ArticlesRepository articlesRepository = ArticlesRepository.getInstance();
+    // TODO: 2019-07-27 add pagination for favorites 
     private int mCurrentPage = 0;
 
     public FavoriteArticlesViewModel(SchedulerProvider schedulerProvider) {

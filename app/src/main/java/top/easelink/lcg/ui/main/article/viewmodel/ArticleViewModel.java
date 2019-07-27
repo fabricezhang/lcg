@@ -1,6 +1,7 @@
 package top.easelink.lcg.ui.main.article.viewmodel;
 
 import android.text.TextUtils;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import org.jsoup.HttpStatusException;
@@ -16,6 +17,7 @@ import top.easelink.lcg.ui.main.source.model.Post;
 import top.easelink.lcg.utils.RegexUtils;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 public class ArticleViewModel extends BaseViewModel<ArticleNavigator>
@@ -93,19 +95,20 @@ public class ArticleViewModel extends BaseViewModel<ArticleNavigator>
                 }, () -> setIsLoading(false)));
     }
 
+    @Nullable
     public ArrayList<String> extractDownloadUrl() {
         String patternLanzous = "https://www.lanzous.com/[a-zA-Z0-9]{4,10}";
         String patternBaidu = "https://pan.baidu.com/s/.{23}";
         String patternT = "http://t.cn/[a-zA-Z0-9]{8}";
         List<Post> list = mPosts.getValue();
-        ArrayList<String> resList = null;
+        HashSet<String> resSet = null;
         if (list != null && !list.isEmpty()) {
             String content = list.get(0).getContent();
-            resList = RegexUtils.extractInfoFrom(content, patternLanzous);
-            resList.addAll(RegexUtils.extractInfoFrom(content, patternBaidu));
-            resList.addAll(RegexUtils.extractInfoFrom(content, patternT));
+            resSet = RegexUtils.extractInfoFrom(content, patternLanzous);
+            resSet.addAll(RegexUtils.extractInfoFrom(content, patternBaidu));
+            resSet.addAll(RegexUtils.extractInfoFrom(content, patternT));
         }
-        return resList;
+        return resSet != null? new ArrayList<>(resSet):null;
     }
 
     public void addToFavorite() {

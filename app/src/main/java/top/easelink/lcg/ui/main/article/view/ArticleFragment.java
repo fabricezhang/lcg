@@ -28,6 +28,7 @@ import top.easelink.lcg.ui.webview.view.WebViewActivity;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import static top.easelink.lcg.ui.main.article.viewmodel.ArticleViewModel.FETCH_INIT;
 import static top.easelink.lcg.ui.main.source.remote.ArticlesRemoteDataSource.SERVER_BASE_URL;

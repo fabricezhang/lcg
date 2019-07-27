@@ -4,6 +4,7 @@ import android.text.TextUtils;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,8 +16,8 @@ import java.util.regex.Pattern;
 public class RegexUtils {
 
     @Nonnull
-    public static ArrayList<String> extractInfoFrom(String content, String patternStr) {
-        ArrayList<String> urls = new ArrayList<>();
+    public static HashSet<String> extractInfoFrom(String content, String patternStr) {
+        HashSet<String> urls = new HashSet<>();
         if (TextUtils.isEmpty(content) || TextUtils.isEmpty(patternStr)) {
             return urls;
         }
