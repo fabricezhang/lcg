@@ -4,10 +4,12 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import top.easelink.framework.base.BaseViewModel;
 import top.easelink.framework.utils.rx.SchedulerProvider;
+import top.easelink.lcg.R;
 import top.easelink.lcg.ui.main.articles.view.ArticlesNavigator;
 import top.easelink.lcg.ui.main.source.ArticlesRepository;
 import top.easelink.lcg.ui.main.source.model.ArticleEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FavoriteArticlesViewModel extends BaseViewModel<ArticlesNavigator>
@@ -43,6 +45,20 @@ public class FavoriteArticlesViewModel extends BaseViewModel<ArticlesNavigator>
                     getNavigator().handleError(throwable);
                     setIsLoading(false);
                 }, () -> setIsLoading(false)));
+    }
+
+    public void removeAllFavorites() {
+        getCompositeDisposable().add(articlesRepository.delAllArticlesFromFavorite()
+                .subscribeOn(getSchedulerProvider().io())
+                .observeOn(getSchedulerProvider().ui())
+                .subscribe(
+                        res -> {
+                            getNavigator().showMessage(res?
+                                    R.string.remove_all_favorites_successfully:
+                                    R.string.remove_all_favorites_failed);
+                            articles.setValue(new ArrayList<>(0));
+                        },
+                        throwable -> getNavigator().handleError(throwable)));
     }
 
     public LiveData<List<ArticleEntity>> getArticles() {

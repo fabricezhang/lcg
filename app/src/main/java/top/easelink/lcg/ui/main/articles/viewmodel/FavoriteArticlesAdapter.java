@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.databinding.BindingAdapter;
 import androidx.recyclerview.widget.RecyclerView;
+import timber.log.Timber;
 import top.easelink.framework.base.BaseViewHolder;
 import top.easelink.lcg.R;
 import top.easelink.lcg.databinding.ItemFavoriteArticleViewBinding;
@@ -122,6 +123,11 @@ public class FavoriteArticlesAdapter extends RecyclerView.Adapter<BaseViewHolder
         public void onBind(int position) {
             final ArticleEntity articleEntity = mArticleEntities.get(position);
             favoriteArticleItemViewModel = new FavoriteArticleItemViewModel(articleEntity);
+            try {
+                mBinding.contentTextView.setHtml(articleEntity.getContent().trim());
+            } catch (Exception e) {
+                Timber.e(e);
+            }
             mBinding.setViewModel(favoriteArticleItemViewModel);
             mBinding.executePendingBindings();
         }

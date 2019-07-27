@@ -57,7 +57,7 @@
                 android:layout_marginStart="@dimen/dp_30"
                 android:scaleType="fitCenter"
                 android:visibility="@{viewModel.articles == null? View.VISIBLE:View.GONE, default = gone}"
-                app:lottie_rawRes="@raw/search_file"
+                app:lottie_rawRes="@raw/search_file_2"
                 app:lottie_loop="true"
                 app:lottie_autoPlay="true"/>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

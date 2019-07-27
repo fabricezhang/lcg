@@ -31,8 +31,8 @@
             <TextView
                     android:id="@+id/titleTextView"
                     style="@style/TextStyle.Heading"
-                    android:layout_width="356dp"
-                    android:layout_height="26dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/dp_10"
                     android:layout_marginTop="@dimen/dp_20"
                     android:maxLines="2"
@@ -54,20 +54,19 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     tools:text="Author"/>
 
-            <TextView
+            <org.sufficientlysecure.htmltextview.HtmlTextView
                     android:id="@+id/contentTextView"
                     style="@style/TextStyle.Title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/dp_10"
-                    android:text="@{viewModel.content}"
-                    android:textStyle="normal"
-                    android:maxLines="3"
                     android:ellipsize="start"
+                    android:maxLines="3"
                     app:layout_constraintTop_toBottomOf="@id/authorTextView"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    tools:text="This repository contains a detailed sample app that implements MVP architecture using Dagger2, GreenDao, RxJava2, FastAndroidNetworking and PlaceholderView" />
+                    android:textStyle="normal"
+                    tools:text="This repository contains a detailed sample app that implements MVVM architecture using Dagger2, Android Room, RxJava2 ,etc" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 

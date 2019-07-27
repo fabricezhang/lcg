@@ -6,9 +6,11 @@ import androidx.lifecycle.MutableLiveData;
 import org.jsoup.HttpStatusException;
 import top.easelink.framework.base.BaseViewModel;
 import top.easelink.framework.utils.rx.SchedulerProvider;
+import top.easelink.lcg.R;
 import top.easelink.lcg.ui.main.article.view.ArticleNavigator;
 import top.easelink.lcg.ui.main.model.BlockException;
 import top.easelink.lcg.ui.main.source.ArticlesRepository;
+import top.easelink.lcg.ui.main.source.model.ArticleAbstractResponse;
 import top.easelink.lcg.ui.main.source.model.ArticleEntity;
 import top.easelink.lcg.ui.main.source.model.Post;
 import top.easelink.lcg.utils.RegexUtils;
@@ -30,6 +32,7 @@ public class ArticleViewModel extends BaseViewModel<ArticleNavigator>
     private final ArticlesRepository articlesRepository = ArticlesRepository.getInstance();
     private String mUrl;
     private String nextPageUrl;
+    private ArticleAbstractResponse articleAbstract;
 
     public ArticleViewModel(SchedulerProvider schedulerProvider) {
         super(schedulerProvider);
@@ -58,6 +61,7 @@ public class ArticleViewModel extends BaseViewModel<ArticleNavigator>
                 .subscribeOn(getSchedulerProvider().io())
                 .observeOn(getSchedulerProvider().ui())
                 .subscribe(articleDetail -> {
+                    articleAbstract = articleDetail.getArticleAbstractResponse();
                     String title = articleDetail.getArticleTitle();
                     if (!TextUtils.isEmpty(title)) {
                         mArticleTitle.setValue(title);
@@ -107,18 +111,24 @@ public class ArticleViewModel extends BaseViewModel<ArticleNavigator>
     public void addToFavorite() {
         List<Post> posts = getPosts().getValue();
         if (posts == null || posts.isEmpty()) {
-            getNavigator().onAddToFavoriteFinished(false);
+            getNavigator().showMessage(R.string.add_to_favorite_failed);
             return;
         }
         String title = mArticleTitle.getValue();
+        if (title == null) {
+            // if title is null, use abstract's title, this rarely happens
+            title = articleAbstract.title;
+        }
         String author = posts.get(0).getAuthor();
-        String content = posts.get(0).getContent();
+        String content = articleAbstract==null?"":articleAbstract.description;
         ArticleEntity articleEntity = new ArticleEntity(title == null?"未知标题":title, author, mUrl, content, System.currentTimeMillis());
         getCompositeDisposable().add(articlesRepository.addArticleToFavorite(articleEntity)
                 .subscribeOn(getSchedulerProvider().io())
                 .observeOn(getSchedulerProvider().ui())
                 .subscribe(
-                        res -> getNavigator().onAddToFavoriteFinished(res),
+                        res -> getNavigator().showMessage(res?
+                                R.string.add_to_favorite_successfully:
+                                R.string.add_to_favorite_failed),
                         throwable -> getNavigator().handleError(throwable)));
     }
 

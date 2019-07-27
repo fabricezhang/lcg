@@ -1,5 +1,7 @@
 package top.easelink.lcg.ui.main.source.model;
 
+import androidx.annotation.Nullable;
+
 import java.util.List;
 
 public class ArticleDetail {
@@ -7,11 +9,16 @@ public class ArticleDetail {
     private List<Post> mPostList;
     private String mArticleTitle;
     private String mNextPageUrl;
+    private ArticleAbstractResponse mArticleAbstractResponse;
 
-    public ArticleDetail(String articleTitle, List<Post> postList, String nextPageUrl) {
+    public ArticleDetail(String articleTitle,
+                         List<Post> postList,
+                         String nextPageUrl,
+                         @Nullable ArticleAbstractResponse articleAbstractResponse) {
         mArticleTitle = articleTitle;
         mPostList = postList;
         mNextPageUrl = nextPageUrl;
+        mArticleAbstractResponse = articleAbstractResponse;
     }
 
     public List<Post> getPostList() {
@@ -24,5 +31,10 @@ public class ArticleDetail {
 
     public String getNextPageUrl() {
         return mNextPageUrl;
+    }
+
+    @Nullable
+    public ArticleAbstractResponse getArticleAbstractResponse() {
+        return mArticleAbstractResponse;
     }
 }

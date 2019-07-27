@@ -4,6 +4,8 @@ import android.text.TextUtils;
 import android.util.ArrayMap;
 import android.webkit.JavascriptInterface;
 import androidx.annotation.NonNull;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import org.jsoup.Connection;
@@ -16,10 +18,7 @@ import top.easelink.lcg.service.web.HookInterface;
 import top.easelink.lcg.service.web.WebViewWrapper;
 import top.easelink.lcg.ui.main.model.BlockException;
 import top.easelink.lcg.ui.main.source.ArticlesDataSource;
-import top.easelink.lcg.ui.main.source.model.Article;
-import top.easelink.lcg.ui.main.source.model.ArticleDetail;
-import top.easelink.lcg.ui.main.source.model.ForumPage;
-import top.easelink.lcg.ui.main.source.model.Post;
+import top.easelink.lcg.ui.main.source.model.*;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -47,8 +46,12 @@ public class ArticlesRemoteDataSource implements ArticlesDataSource {
         return mInstance;
     }
 
+    private Gson gson;
+
     private ArticlesRemoteDataSource() {
         // should avoid to instantiating RxSearchService from outside
+        // FIXME: 2019-07-27 should use dagger2 to inject this field
+        gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
     }
 
     @Override
@@ -83,6 +86,13 @@ public class ArticlesRemoteDataSource implements ArticlesDataSource {
                         .method(Connection.Method.GET);
                 Connection.Response response = connection.execute();
                 Document doc = response.parse();
+                Element baiduJsonElement = doc.selectFirst("script");
+                ArticleAbstractResponse articleAbstract = null;
+                if (baiduJsonElement != null) {
+                    String json = baiduJsonElement.html().trim();
+                    json = json.replaceAll("\u00a0", "");
+                    articleAbstract = gson.fromJson(json, ArticleAbstractResponse.class);
+                }
                 Element titleElement = doc.selectFirst("span#thread_subject");
                 String title;
                 if (titleElement == null) {
@@ -114,7 +124,7 @@ public class ArticlesRemoteDataSource implements ArticlesDataSource {
                         Timber.e(npe);
                     }
                 }
-                ArticleDetail articleDetail = new ArticleDetail(title, postList, nextPageUrl);
+                ArticleDetail articleDetail = new ArticleDetail(title, postList, nextPageUrl, articleAbstract);
                 emitter.onNext(articleDetail);
             } catch (Exception e) {
                 Timber.e(e);

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.SearchView;
@@ -18,6 +19,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import dagger.android.AndroidInjector;
@@ -26,6 +28,7 @@ import dagger.android.support.HasSupportFragmentInjector;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import timber.log.Timber;
 import top.easelink.framework.BR;
 import top.easelink.framework.base.BaseActivity;
 import top.easelink.lcg.BuildConfig;
@@ -49,13 +52,15 @@ import top.easelink.lcg.utils.ActivityUtils;
 import javax.inject.Inject;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.EmptyStackException;
 import java.util.List;
 
 import static top.easelink.lcg.ui.main.source.remote.ArticlesRemoteDataSource.SERVER_BASE_URL;
 import static top.easelink.lcg.utils.ActivityUtils.TAG_PREFIX;
 import static top.easelink.lcg.utils.WebsiteConstant.*;
 
-public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewModel> implements MainNavigator, HasSupportFragmentInjector {
+public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewModel>
+        implements MainNavigator, HasSupportFragmentInjector, BottomNavigationView.OnNavigationItemSelectedListener {
 
     @Inject
     ViewModelProviderFactory factory;
@@ -93,8 +98,10 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
     @Override
     public void onBackPressed() {
         if (!mFragmentTags.empty()) {
-            String tag = mFragmentTags.pop();
+            String tag = mFragmentTags.peek();
             if (onFragmentDetached(tag)) {
+                mFragmentTags.pop();
+                syncBottomViewNavItemState();
                 return;
             } else {
                 // check viewpager
@@ -145,6 +152,30 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
         }
     }
 
+    /**
+     * manage the bottom navigation view item selected state
+     * depends on current top fragment
+     * */
+    private void syncBottomViewNavItemState() {
+        BottomNavigationView view = mActivityMainBinding.bottomNavigation;
+        try {
+            String topFragment = mFragmentTags.peek();
+            Timber.d(topFragment);
+            if (topFragment.startsWith("android")) {
+                // means that current top fragment is the tab-layout
+                view.setSelectedItemId(R.id.action_home);
+                unlockDrawer();
+            } else if (topFragment.endsWith(FavoriteArticlesFragment.class.getSimpleName())) {
+                view.setOnNavigationItemSelectedListener(null);
+                view.setSelectedItemId(R.id.action_favorite);
+            }
+        } catch (EmptyStackException ese) {
+            view.setSelectedItemId(R.id.action_home);
+        } finally {
+            view.setOnNavigationItemSelectedListener(this);
+        }
+    }
+
     private void setUp() {
         mDrawer = mActivityMainBinding.drawerView;
         Toolbar mToolbar = mActivityMainBinding.toolbar;
@@ -184,22 +215,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
     }
 
     private void setupBottomNavMenu() {
-        mActivityMainBinding.bottomNavigation
-                .setOnNavigationItemSelectedListener(menuItem -> {
-                    switch (menuItem.getItemId()) {
-                        case R.id.action_home:
-                           while (!mFragmentTags.isEmpty()) {
-                               onFragmentDetached(mFragmentTags.pop());
-                           }
-                           break;
-                        case R.id.action_favorite:
-                            showFavoriteFragment();
-                            break;
-                        case R.id.action_about_me:
-                            break;
-                    }
-                    return true;
-        });
+        mActivityMainBinding.bottomNavigation.setOnNavigationItemSelectedListener(this);
     }
 
     private void setupDrawerNavMenu() {
@@ -319,6 +335,29 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
         if (mDrawer != null) {
             mDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
         }
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        if (mActivityMainBinding.bottomNavigation.getSelectedItemId() == menuItem.getItemId()) {
+            return false;
+        }
+        switch (menuItem.getItemId()) {
+            case R.id.action_home:
+                while (!mFragmentTags.isEmpty()
+                        && mFragmentTags.peek().startsWith(TAG_PREFIX)) {
+                    onFragmentDetached(mFragmentTags.pop());
+                }
+                unlockDrawer();
+                break;
+            case R.id.action_favorite:
+                showFavoriteFragment();
+                lockDrawer();
+                break;
+            case R.id.action_about_me:
+                break;
+        }
+        return true;
     }
 
     public static class MainViewPagerAdapter extends FragmentPagerAdapter {

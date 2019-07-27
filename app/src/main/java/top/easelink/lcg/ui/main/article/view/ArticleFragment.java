@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -156,11 +157,8 @@ public class ArticleFragment extends BaseFragment<FragmentArticleBinding, Articl
     }
 
     @Override
-    public void onAddToFavoriteFinished(boolean res) {
-        Toast.makeText(getContext(),
-                res?R.string.add_to_favorite_successfully:R.string.add_to_favorite_failed,
-                Toast.LENGTH_SHORT)
-                .show();
+    public void showMessage(@StringRes int resId) {
+        Toast.makeText(getContext(), resId, Toast.LENGTH_SHORT).show();
     }
 
     @Override

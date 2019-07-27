@@ -1,10 +1,15 @@
 package top.easelink.lcg.ui.main.articles.view;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -69,16 +74,46 @@ public class FavoriteArticlesFragment extends BaseFragment<FragmentFavoriteArtic
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mFragmentArticlesBinding = getViewDataBinding();
-        setUp();
+        setUpRecyclerView();
+        setupMenu();
         mArticlesViewModel.fetchArticles(FETCH_INIT);
     }
 
-    private void setUp() {
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.clear();
+        inflater.inflate(R.menu.favorite_articles, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_remove_all:
+                mArticlesViewModel.removeAllFavorites();
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void showMessage(@StringRes int resId) {
+        Toast.makeText(getContext(), resId, Toast.LENGTH_SHORT).show();
+    }
+
+    private void setUpRecyclerView() {
         FavoriteArticlesAdapter mArticlesAdapter = new FavoriteArticlesAdapter(mArticlesViewModel);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         mLayoutManager.setOrientation(RecyclerView.VERTICAL);
         mFragmentArticlesBinding.recyclerView.setLayoutManager(mLayoutManager);
         mFragmentArticlesBinding.recyclerView.setItemAnimator(new DefaultItemAnimator());
         mFragmentArticlesBinding.recyclerView.setAdapter(mArticlesAdapter);
+    }
+
+    private void setupMenu() {
+        setHasOptionsMenu(true);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(mFragmentArticlesBinding.articleToolbar);
     }
 }
