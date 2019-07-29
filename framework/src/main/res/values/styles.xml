@@ -20,7 +20,7 @@
     </style>
 
     <style name="SplashTheme" parent="AppTheme">
-        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowFullscreen">false</item>
         <item name="android:windowIsTranslucent">false</item>
         <item name="android:windowBackground">@drawable/launch_bg</item>
         <item name="android:windowAnimationStyle">@style/NoAnimation</item>
