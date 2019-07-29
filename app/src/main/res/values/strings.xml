@@ -24,16 +24,13 @@
     <!--Drawer Menus-->
     <string name="about">『关于应用』</string>
     <string name="thread_about_app">『App发布页』</string>
-    <string name="mobile_security_title">『移动安全区』</string>
     <string name="free_chat_title">『水漫金山』</string>
-    <string name="software_title">『精品软件区』</string>
-    <string name="original_title">『原创发布区』</string>
 
     <!--home fragment-->
     <string name="tab_title_hot">人气热门</string>
-    <string name="tab_title_tech">技术新帖</string>
-    <string name="tab_title_new_thread">最新发表</string>
-    <string name="tab_title_digest">最新精华</string>
+    <string name="tab_title_tech">技术分享</string>
+    <string name="tab_title_new_thread">新鲜出炉</string>
+    <string name="tab_title_digest">精华采撷</string>
 
     <!--about fragment-->
     <string name="version">"version"</string>
@@ -67,6 +64,18 @@
     <!--share template-->
     <string name="share_template">分享文章 %s %s</string>
     <string name="share_title">快来看这篇</string>
+
+    <!--forum grid-->
+    <string name="forum_mobile_security">『移动安全区』</string>
+    <string name="forum_software">『精品软件区』</string>
+    <string name="forum_original_release">『原创发布区』</string>
+    <string name="forum_program_language">『编程语言区』</string>
+    <string name="forum_animation_release">『动画发布区』</string>
+    <string name="forum_reverse_resource">『逆向资源区』</string>
+    <string name="forum_qa">『悬赏问答区』</string>
+    <string name="forum_virus_analysis">『病毒分析区』</string>
+    <string name="forum_virus_sample">『病毒样本区』</string>
+    <string name="forum_virus_rescue">『病毒救援区』</string>
 
     <!--block-->
     <string name="not_found_info">抱歉，文章可能已经被删除了</string>

@@ -89,9 +89,13 @@ public class ArticlesRemoteDataSource implements ArticlesDataSource {
                 Element baiduJsonElement = doc.selectFirst("script");
                 ArticleAbstractResponse articleAbstract = null;
                 if (baiduJsonElement != null) {
-                    String json = baiduJsonElement.html().trim();
-                    json = json.replaceAll("\u00a0", "");
-                    articleAbstract = gson.fromJson(json, ArticleAbstractResponse.class);
+                    try {
+                        String json = baiduJsonElement.html().trim();
+                        json = json.replaceAll("\u00a0", "");
+                        articleAbstract = gson.fromJson(json, ArticleAbstractResponse.class);
+                    } catch (Exception e) {
+                        Timber.w(e);
+                    }
                 }
                 Element titleElement = doc.selectFirst("span#thread_subject");
                 String title;

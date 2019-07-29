@@ -123,14 +123,14 @@ public class ArticleFragment extends BaseFragment<FragmentArticleBinding, Articl
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         menu.clear();
         inflater.inflate(R.menu.article, menu);
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_open_in_webview:
                 WebViewActivity.startWebViewWith(SERVER_BASE_URL + articleUrl, getContext());

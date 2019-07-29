@@ -8,7 +8,7 @@
             android:title="@string/home_page"
             app:showAsAction="ifRoom"/>
     <item
-            android:id="@+id/action_forum"
+            android:id="@+id/action_forum_navigation"
             android:icon="@drawable/ic_message_black_24dp"
             android:title="@string/forum_page"
             app:showAsAction="ifRoom"/>

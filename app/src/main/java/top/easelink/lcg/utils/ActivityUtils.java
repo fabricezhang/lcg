@@ -27,7 +27,7 @@ public class ActivityUtils {
         FragmentTransaction transaction =
                 fragmentManager
                         .beginTransaction()
-                        .setCustomAnimations(R.anim.slide_left, R.anim.slide_right)
+//                        .setCustomAnimations(R.anim.slide_left, R.anim.slide_right)
                         .add(frameId, fragment, TAG_PREFIX + fragment.getClass().getSimpleName());
         transaction.commitNow();
     }

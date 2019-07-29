@@ -28,7 +28,6 @@ import dagger.android.support.HasSupportFragmentInjector;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import timber.log.Timber;
 import top.easelink.framework.BR;
 import top.easelink.framework.base.BaseActivity;
 import top.easelink.lcg.BuildConfig;
@@ -41,7 +40,9 @@ import top.easelink.lcg.ui.main.article.view.ArticleFragment;
 import top.easelink.lcg.ui.main.articles.view.ArticlesFragment;
 import top.easelink.lcg.ui.main.articles.view.FavoriteArticlesFragment;
 import top.easelink.lcg.ui.main.articles.view.ForumArticlesFragment;
+import top.easelink.lcg.ui.main.forumnav.view.ForumNavigationFragment;
 import top.easelink.lcg.ui.main.model.OpenArticleEvent;
+import top.easelink.lcg.ui.main.model.OpenForumEvent;
 import top.easelink.lcg.ui.main.model.TabModel;
 import top.easelink.lcg.ui.main.source.model.Article;
 import top.easelink.lcg.ui.main.viewmodel.MainViewModel;
@@ -59,6 +60,7 @@ import static top.easelink.lcg.ui.main.source.remote.ArticlesRemoteDataSource.SE
 import static top.easelink.lcg.utils.ActivityUtils.TAG_PREFIX;
 import static top.easelink.lcg.utils.WebsiteConstant.*;
 
+@SuppressWarnings("unused")
 public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewModel>
         implements MainNavigator, HasSupportFragmentInjector, BottomNavigationView.OnNavigationItemSelectedListener {
 
@@ -160,14 +162,15 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
         BottomNavigationView view = mActivityMainBinding.bottomNavigation;
         try {
             String topFragment = mFragmentTags.peek();
-            Timber.d(topFragment);
+            view.setOnNavigationItemSelectedListener(null);
             if (topFragment.startsWith("android")) {
                 // means that current top fragment is the tab-layout
                 view.setSelectedItemId(R.id.action_home);
                 unlockDrawer();
             } else if (topFragment.endsWith(FavoriteArticlesFragment.class.getSimpleName())) {
-                view.setOnNavigationItemSelectedListener(null);
                 view.setSelectedItemId(R.id.action_favorite);
+            } else if (topFragment.endsWith(ForumNavigationFragment.class.getSimpleName())) {
+                view.setSelectedItemId(R.id.action_forum_navigation);
             }
         } catch (EmptyStackException ese) {
             view.setSelectedItemId(R.id.action_home);
@@ -231,17 +234,8 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
                         case R.id.navItemAbout:
                             showAboutFragment();
                             return true;
-                        case R.id.navItemSoftware:
-                            showForumFragment(SOFTWARE_TITLE, SOFTWARE_URL);
-                            return true;
                         case R.id.navItemFreeChat:
                             WebViewActivity.startWebViewWith(SERVER_BASE_URL + FREE_CHAT_URL, MainActivity.this);
-                            return true;
-                        case R.id.navItemMobileSecurity:
-                            showForumFragment(MOB_SECURITY_TITLE, MOB_SECURITY_URL);
-                            return true;
-                        case R.id.navItemOrigin:
-                            showForumFragment(ORIGINAL_TITLE, ORIGINAL_URL);
                             return true;
                         case R.id.navItemRelease:
                             WebViewActivity.startWebViewWith(SERVER_BASE_URL + APP_RELEASE_PAGE, MainActivity.this);
@@ -257,9 +251,20 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
         showArticleFragment(event.getArticle());
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(OpenForumEvent event) {
+        showForumFragment(event.getTitle(), event.getUrl());
+    }
+
     private void showAboutFragment() {
         ActivityUtils.addFragmentInActivity(getSupportFragmentManager(),
                 AboutFragment.newInstance(),
+                R.id.clRootView);
+    }
+
+    private void showForumNavigationFragment() {
+        ActivityUtils.addFragmentInActivity(getSupportFragmentManager(),
+                ForumNavigationFragment.newInstance(),
                 R.id.clRootView);
     }
 
@@ -342,6 +347,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
         if (mActivityMainBinding.bottomNavigation.getSelectedItemId() == menuItem.getItemId()) {
             return false;
         }
+        lockDrawer();
         switch (menuItem.getItemId()) {
             case R.id.action_home:
                 while (!mFragmentTags.isEmpty()
@@ -352,7 +358,9 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
                 break;
             case R.id.action_favorite:
                 showFavoriteFragment();
-                lockDrawer();
+                break;
+            case R.id.action_forum_navigation:
+                showForumNavigationFragment();
                 break;
             case R.id.action_about_me:
                 break;
@@ -374,6 +382,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
         }
 
         @Override
+        @NonNull
         public Fragment getItem(int position) {
             return ArticlesFragment.newInstance(tabModels.get(position).getUrl());
         }
