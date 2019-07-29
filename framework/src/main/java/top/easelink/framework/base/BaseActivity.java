@@ -17,7 +17,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import dagger.android.AndroidInjection;
 import timber.log.Timber;
-import top.easelink.framework.R;
 import top.easelink.framework.utils.CommonUtils;
 import top.easelink.framework.utils.NetworkUtils;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -70,7 +69,7 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseView
         if (fragment != null) {
             fragmentManager
                     .beginTransaction()
-                    .setCustomAnimations(R.anim.slide_left, R.anim.slide_right)
+//                    .setCustomAnimations(R.anim.slide_left, R.anim.slide_right)
                     .remove(fragment)
                     .commitNow();
             return true;

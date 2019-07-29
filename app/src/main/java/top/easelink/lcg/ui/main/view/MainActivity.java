@@ -40,6 +40,7 @@ import top.easelink.lcg.ui.main.articles.view.ArticlesFragment;
 import top.easelink.lcg.ui.main.articles.view.FavoriteArticlesFragment;
 import top.easelink.lcg.ui.main.articles.view.ForumArticlesFragment;
 import top.easelink.lcg.ui.main.forumnav.view.ForumNavigationFragment;
+import top.easelink.lcg.ui.main.me.view.MeFragment;
 import top.easelink.lcg.ui.main.model.OpenArticleEvent;
 import top.easelink.lcg.ui.main.model.OpenForumEvent;
 import top.easelink.lcg.ui.main.model.TabModel;
@@ -67,7 +68,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
     ViewModelProviderFactory factory;
     @Inject
     DispatchingAndroidInjector<Fragment> fragmentDispatchingAndroidInjector;
-    
+
     private DrawerLayout mDrawer;
     private static WeakReference<MainActivity> mainActivityWeakReference;
 
@@ -254,6 +255,12 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
                 R.id.clRootView);
     }
 
+    private void showMeFragment() {
+        ActivityUtils.addFragmentInActivity(getSupportFragmentManager(),
+                MeFragment.newInstance(),
+                R.id.clRootView);
+    }
+
     private void showForumNavigationFragment() {
         ActivityUtils.addFragmentInActivity(getSupportFragmentManager(),
                 ForumNavigationFragment.newInstance(),
@@ -339,15 +346,11 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
         if (getViewDataBinding().bottomNavigation.getSelectedItemId() == menuItem.getItemId()) {
             return false;
         }
-        lockDrawer();
+        while (!mFragmentTags.isEmpty()
+                && mFragmentTags.peek().startsWith(TAG_PREFIX)) {
+            onFragmentDetached(mFragmentTags.pop());
+        }
         switch (menuItem.getItemId()) {
-            case R.id.action_home:
-                while (!mFragmentTags.isEmpty()
-                        && mFragmentTags.peek().startsWith(TAG_PREFIX)) {
-                    onFragmentDetached(mFragmentTags.pop());
-                }
-                unlockDrawer();
-                break;
             case R.id.action_favorite:
                 showFavoriteFragment();
                 break;
@@ -355,6 +358,10 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
                 showForumNavigationFragment();
                 break;
             case R.id.action_about_me:
+                showMeFragment();
+                break;
+            case R.id.action_home:
+            default:
                 break;
         }
         return true;

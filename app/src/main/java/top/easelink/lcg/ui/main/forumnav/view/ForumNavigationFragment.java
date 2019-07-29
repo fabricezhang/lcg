@@ -2,7 +2,6 @@ package top.easelink.lcg.ui.main.forumnav.view;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
@@ -57,13 +56,10 @@ public class ForumNavigationFragment extends BaseFragment<FragmentForumsNavigati
 
     private void setUp() {
         getViewDataBinding().navigationGrid.setAdapter(new CustomGridViewAdapter(getBaseActivity(), R.layout.item_forums_grid));
-        getViewDataBinding().navigationGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ForumNavigationModel item = ((CustomGridViewAdapter) parent.getAdapter()).getItem(position);
-                EventBus.getDefault().post(new OpenForumEvent(item.getTitle(), item.getUrl()));
-            }
-        });
+        getViewDataBinding().navigationGrid.setOnItemClickListener(((parent, view, position, id) -> {
+            ForumNavigationModel item = ((CustomGridViewAdapter) parent.getAdapter()).getItem(position);
+            EventBus.getDefault().post(new OpenForumEvent(item.getTitle(), item.getUrl()));
+        }));
         getViewModel().initOptions(getContext());
     }
 }

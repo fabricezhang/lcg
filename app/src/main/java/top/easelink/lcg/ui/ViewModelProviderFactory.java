@@ -11,6 +11,7 @@ import top.easelink.lcg.ui.main.articles.viewmodel.ArticlesViewModel;
 import top.easelink.lcg.ui.main.articles.viewmodel.FavoriteArticlesViewModel;
 import top.easelink.lcg.ui.main.articles.viewmodel.ForumArticlesViewModel;
 import top.easelink.lcg.ui.main.forumnav.viewmodel.ForumNavigationViewModel;
+import top.easelink.lcg.ui.main.me.viewmodel.MeViewModel;
 import top.easelink.lcg.ui.main.viewmodel.MainViewModel;
 import top.easelink.lcg.ui.search.viewmodel.SearchViewModel;
 import top.easelink.lcg.ui.splash.viewmodel.SplashViewModel;
@@ -52,6 +53,8 @@ public class ViewModelProviderFactory extends ViewModelProvider.NewInstanceFacto
             return (T) new FavoriteArticlesViewModel(schedulerProvider);
         } else if (modelClass.isAssignableFrom(ForumNavigationViewModel.class)) {
             return (T) new ForumNavigationViewModel(schedulerProvider);
+        } else if (modelClass.isAssignableFrom(MeViewModel.class)) {
+            return (T) new MeViewModel(schedulerProvider);
         }
         throw new IllegalArgumentException("Unknown ViewModel class: " + modelClass.getName());
     }
