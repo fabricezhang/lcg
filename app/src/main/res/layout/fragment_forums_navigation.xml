@@ -24,7 +24,7 @@
                 android:layout_gravity="center_vertical"
                 android:gravity="center"
                 android:verticalSpacing="@dimen/dp_30"
-                android:horizontalSpacing="@dimen/dp_10"
+                android:horizontalSpacing="@dimen/dp_8"
                 android:stretchMode="columnWidth"
                 app:adapter="@{viewModel.navigation}"/>
     </FrameLayout>
