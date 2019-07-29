@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -32,9 +33,6 @@ public class ArticlesFragment extends BaseFragment<FragmentArticlesBinding, Arti
 
     @Inject
     ViewModelProviderFactory factory;
-    private LinearLayoutManager mLayoutManager;
-    private FragmentArticlesBinding mFragmentArticlesBinding;
-    private ArticlesViewModel mArticlesViewModel;
     private String mParam;
 
     public static ArticlesFragment newInstance(String param) {
@@ -57,8 +55,7 @@ public class ArticlesFragment extends BaseFragment<FragmentArticlesBinding, Arti
 
     @Override
     public ArticlesViewModel getViewModel() {
-        mArticlesViewModel = ViewModelProviders.of(this, factory).get(ArticlesViewModel.class);
-        return mArticlesViewModel;
+        return ViewModelProviders.of(this, factory).get(ArticlesViewModel.class);
     }
 
     @Override
@@ -68,20 +65,24 @@ public class ArticlesFragment extends BaseFragment<FragmentArticlesBinding, Arti
 
     @Override
     public void scrollToTop() {
-        mFragmentArticlesBinding.backToTop.playAnimation();
-        mFragmentArticlesBinding.recyclerView.smoothScrollToPosition(0);
+        getViewDataBinding().backToTop.playAnimation();
+        getViewDataBinding().recyclerView.smoothScrollToPosition(0);
+    }
+
+    @Override
+    public void showMessage(@StringRes int resId) {
+        Toast.makeText(getContext(), resId, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mArticlesViewModel.setNavigator(this);
+        getViewModel().setNavigator(this);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mFragmentArticlesBinding = getViewDataBinding();
         setUp();
     }
 
@@ -91,7 +92,7 @@ public class ArticlesFragment extends BaseFragment<FragmentArticlesBinding, Arti
             mParam = getArguments().getString(ARG_PARAM);
         }
         setupRecyclerView();
-        mArticlesViewModel.initUrl(mParam);
+        getViewModel().initUrl(mParam);
         final ScrollChildSwipeRefreshLayout swipeRefreshLayout = getViewDataBinding().refreshLayout;
         Context context = getContext();
         swipeRefreshLayout.setColorSchemeColors(
@@ -100,15 +101,15 @@ public class ArticlesFragment extends BaseFragment<FragmentArticlesBinding, Arti
                 ContextCompat.getColor(context, R.color.colorPrimaryDark)
         );
         // Set the scrolling view in the custom SwipeRefreshLayout.
-        swipeRefreshLayout.setScrollUpChild(mFragmentArticlesBinding.recyclerView);
-        swipeRefreshLayout.setOnRefreshListener(() -> mArticlesViewModel.fetchArticles(FETCH_INIT));
+        swipeRefreshLayout.setScrollUpChild(getViewDataBinding().recyclerView);
+        swipeRefreshLayout.setOnRefreshListener(() -> getViewModel().fetchArticles(FETCH_INIT));
     }
 
     private void setupRecyclerView() {
-        ArticlesAdapter mArticlesAdapter = new ArticlesAdapter(mArticlesViewModel);
-        mLayoutManager = new LinearLayoutManager(getContext());
+        ArticlesAdapter mArticlesAdapter = new ArticlesAdapter(getViewModel());
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         mLayoutManager.setOrientation(RecyclerView.VERTICAL);
-        RecyclerView rv = mFragmentArticlesBinding.recyclerView;
+        RecyclerView rv = getViewDataBinding().recyclerView;
         rv.setLayoutManager(mLayoutManager);
         rv.setItemAnimator(new DefaultItemAnimator());
         rv.setAdapter(mArticlesAdapter);
@@ -116,7 +117,7 @@ public class ArticlesFragment extends BaseFragment<FragmentArticlesBinding, Arti
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 int firstVisibleItemPosition = mLayoutManager.findFirstVisibleItemPosition();
-                LottieAnimationView backToTop = mFragmentArticlesBinding.backToTop;
+                LottieAnimationView backToTop = getViewDataBinding().backToTop;
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     if (firstVisibleItemPosition == 0) {
                         backToTop.setVisibility(View.GONE);

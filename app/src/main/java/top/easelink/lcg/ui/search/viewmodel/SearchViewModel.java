@@ -59,8 +59,12 @@ public class SearchViewModel extends BaseViewModel<SearchNavigator> implements S
                             searchResults.setValue(searchResultList);
                         }
                     }
-                }, throwable -> getNavigator().handleError(throwable),
-                        () -> setIsLoading(false)));
+                }, throwable -> {
+                    setIsLoading(false);
+                    getNavigator().handleError(throwable);
+                }, () -> {
+                    setIsLoading(false);
+                }));
     }
 
     public LiveData<List<SearchResult>> getSearchResults() {

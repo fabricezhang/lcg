@@ -1,18 +1,23 @@
 package top.easelink.lcg.ui.main.article.viewmodel;
 
 import android.text.TextUtils;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import org.jsoup.HttpStatusException;
 import top.easelink.framework.base.BaseViewModel;
 import top.easelink.framework.utils.rx.SchedulerProvider;
+import top.easelink.lcg.R;
 import top.easelink.lcg.ui.main.article.view.ArticleNavigator;
 import top.easelink.lcg.ui.main.model.BlockException;
-import top.easelink.lcg.ui.main.model.Post;
-import top.easelink.lcg.ui.main.source.remote.RxArticleService;
+import top.easelink.lcg.ui.main.source.ArticlesRepository;
+import top.easelink.lcg.ui.main.source.model.ArticleAbstractResponse;
+import top.easelink.lcg.ui.main.source.model.ArticleEntity;
+import top.easelink.lcg.ui.main.source.model.Post;
 import top.easelink.lcg.utils.RegexUtils;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 public class ArticleViewModel extends BaseViewModel<ArticleNavigator>
@@ -26,9 +31,10 @@ public class ArticleViewModel extends BaseViewModel<ArticleNavigator>
     private final MutableLiveData<Boolean> mIsNotFound = new MutableLiveData<>();
     private final MutableLiveData<Boolean> mShouldDisplayPosts = new MutableLiveData<>();
     private final MutableLiveData<String> mArticleTitle = new MutableLiveData<>();
-    private final RxArticleService articleService = RxArticleService.getInstance();
+    private final ArticlesRepository articlesRepository = ArticlesRepository.getInstance();
     private String mUrl;
     private String nextPageUrl;
+    private ArticleAbstractResponse articleAbstract;
 
     public ArticleViewModel(SchedulerProvider schedulerProvider) {
         super(schedulerProvider);
@@ -53,10 +59,11 @@ public class ArticleViewModel extends BaseViewModel<ArticleNavigator>
                 requestUrl = nextPageUrl;
             }
         }
-        getCompositeDisposable().add(articleService.getArticleDetail(requestUrl)
+        getCompositeDisposable().add(articlesRepository.getArticleDetail(requestUrl)
                 .subscribeOn(getSchedulerProvider().io())
                 .observeOn(getSchedulerProvider().ui())
                 .subscribe(articleDetail -> {
+                    articleAbstract = articleDetail.getArticleAbstractResponse();
                     String title = articleDetail.getArticleTitle();
                     if (!TextUtils.isEmpty(title)) {
                         mArticleTitle.setValue(title);
@@ -88,19 +95,44 @@ public class ArticleViewModel extends BaseViewModel<ArticleNavigator>
                 }, () -> setIsLoading(false)));
     }
 
+    @Nullable
     public ArrayList<String> extractDownloadUrl() {
         String patternLanzous = "https://www.lanzous.com/[a-zA-Z0-9]{4,10}";
         String patternBaidu = "https://pan.baidu.com/s/.{23}";
         String patternT = "http://t.cn/[a-zA-Z0-9]{8}";
         List<Post> list = mPosts.getValue();
-        ArrayList<String> resList = null;
+        HashSet<String> resSet = null;
         if (list != null && !list.isEmpty()) {
             String content = list.get(0).getContent();
-            resList = RegexUtils.extractInfoFrom(content, patternLanzous);
-            resList.addAll(RegexUtils.extractInfoFrom(content, patternBaidu));
-            resList.addAll(RegexUtils.extractInfoFrom(content, patternT));
+            resSet = RegexUtils.extractInfoFrom(content, patternLanzous);
+            resSet.addAll(RegexUtils.extractInfoFrom(content, patternBaidu));
+            resSet.addAll(RegexUtils.extractInfoFrom(content, patternT));
         }
-        return resList;
+        return resSet != null? new ArrayList<>(resSet):null;
+    }
+
+    public void addToFavorite() {
+        List<Post> posts = getPosts().getValue();
+        if (posts == null || posts.isEmpty()) {
+            getNavigator().showMessage(R.string.add_to_favorite_failed);
+            return;
+        }
+        String title = mArticleTitle.getValue();
+        if (title == null) {
+            // if title is null, use abstract's title, this rarely happens
+            title = articleAbstract.title;
+        }
+        String author = posts.get(0).getAuthor();
+        String content = articleAbstract==null?"":articleAbstract.description;
+        ArticleEntity articleEntity = new ArticleEntity(title == null?"未知标题":title, author, mUrl, content, System.currentTimeMillis());
+        getCompositeDisposable().add(articlesRepository.addArticleToFavorite(articleEntity)
+                .subscribeOn(getSchedulerProvider().io())
+                .observeOn(getSchedulerProvider().ui())
+                .subscribe(
+                        res -> getNavigator().showMessage(res?
+                                R.string.add_to_favorite_successfully:
+                                R.string.add_to_favorite_failed),
+                        throwable -> getNavigator().handleError(throwable)));
     }
 
     public LiveData<List<Post>> getPosts() {

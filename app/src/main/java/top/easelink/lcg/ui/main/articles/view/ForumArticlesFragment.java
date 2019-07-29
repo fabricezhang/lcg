@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -107,5 +108,10 @@ public class ForumArticlesFragment extends BaseFragment<FragmentForumArticlesBin
         // Set the scrolling view in the custom SwipeRefreshLayout.
         swipeRefreshLayout.setScrollUpChild(mFragmentArticlesBinding.recyclerView);
         swipeRefreshLayout.setOnRefreshListener(() -> mArticlesViewModel.fetchArticles(FETCH_INIT));
+    }
+
+    @Override
+    public void showMessage(@StringRes int resId) {
+        Toast.makeText(getContext(), resId, Toast.LENGTH_SHORT).show();
     }
 }

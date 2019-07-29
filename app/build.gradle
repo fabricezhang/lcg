@@ -5,7 +5,7 @@ apply plugin: 'kotlin-android-extensions'
 // App Version is composed by Major * 10000 + Minor * 100 + Patch
 // each version starts from 0
 def versionMajor = 1
-def versionMinor = 2
+def versionMinor = 3
 def versionPatch = 0
 
 android {
@@ -16,6 +16,8 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode versionMajor * 10000 + versionMinor * 100 + versionPatch
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
+        buildConfigField("String", "DB_NAME", "\"articles.db\"")
+        buildConfigField("String", "BUGLY_APP_ID", "\"b9441ed548\"")
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     signingConfigs {
@@ -54,13 +56,18 @@ android {
 }
 
 dependencies {
+    // database
     annotationProcessor "androidx.room:room-compiler:$roomVersion"
+    annotationProcessor "com.android.databinding:compiler:$dataBindingVersion"
+    annotationProcessor "androidx.lifecycle:lifecycle-compiler:$rootProject.lifecycleVersion"
+
     annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.dagger2Version"
     annotationProcessor "com.google.dagger:dagger-android-processor:$rootProject.dagger2Version"
     implementation project(':framework')
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
+    debugImplementation "com.amitshekhar.android:debug-db:1.0.4"
     // test related
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'

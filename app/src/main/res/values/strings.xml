@@ -8,6 +8,14 @@
     <string name="search">搜索</string>
     <string name="open_in_webview">网页打开</string>
     <string name="extract_urls">提取下载链接</string>
+    <string name="add_to_my_favorite">添加到收藏</string>
+    <string name="clear_all_from_my_favorite">清空收藏夹</string>
+
+    <!--Toolbar menus-->
+    <string name="about_me">我的</string>
+    <string name="my_favorite">收藏</string>
+    <string name="forum_page">专区</string>
+    <string name="home_page">首页</string>
 
     <!--Drawer-->
     <string name="open_drawer">Drawer Open</string>
@@ -16,16 +24,14 @@
     <!--Drawer Menus-->
     <string name="about">『关于应用』</string>
     <string name="thread_about_app">『App发布页』</string>
-    <string name="mobile_security_title">『移动安全区』</string>
     <string name="free_chat_title">『水漫金山』</string>
-    <string name="software_title">『精品软件区』</string>
-    <string name="original_title">『原创发布区』</string>
 
     <!--home fragment-->
     <string name="tab_title_hot">人气热门</string>
-    <string name="tab_title_tech">技术新帖</string>
-    <string name="tab_title_new_thread">最新发表</string>
-    <string name="tab_title_digest">最新精华</string>
+    <string name="tab_title_tech">技术分享</string>
+    <string name="tab_title_new_thread">新鲜出炉</string>
+    <string name="tab_title_digest">精华采撷</string>
+    <string name="app_exit_tip">再按一次退出应用</string>
 
     <!--about fragment-->
     <string name="version">"version"</string>
@@ -33,6 +39,14 @@
     <string name="github_url">https://github.com/fabricezhang/lcg/</string>
     <string name="author_title">问题反馈邮箱</string>
     <string name="author_email">fabircez@163.com</string>
+    <string name="under_construction">页面施工中&#8230;</string>
+
+    <!--favorite fragment-->
+    <string name="empty_favorite">收藏夹目前是空的。</string>
+    <string name="add_to_favorite_successfully">收藏成功</string>
+    <string name="add_to_favorite_failed">收藏失败</string>
+    <string name="remove_all_favorites_successfully">清空收藏成功</string>
+    <string name="remove_all_favorites_failed">清空收藏失败</string>
 
      <!--feed-->
     <string name="load_more">加载更多</string>
@@ -52,6 +66,18 @@
     <!--share template-->
     <string name="share_template">分享文章 %s %s</string>
     <string name="share_title">快来看这篇</string>
+
+    <!--forum grid-->
+    <string name="forum_mobile_security">『移动安全区』</string>
+    <string name="forum_software">『精品软件区』</string>
+    <string name="forum_original_release">『原创发布区』</string>
+    <string name="forum_program_language">『编程语言区』</string>
+    <string name="forum_animation_release">『动画发布区』</string>
+    <string name="forum_reverse_resource">『逆向资源区』</string>
+    <string name="forum_qa">『悬赏问答区』</string>
+    <string name="forum_virus_analysis">『病毒分析区』</string>
+    <string name="forum_virus_sample">『病毒样本区』</string>
+    <string name="forum_virus_rescue">『病毒救援区』</string>
 
     <!--block-->
     <string name="not_found_info">抱歉，文章可能已经被删除了</string>

@@ -8,10 +8,12 @@ import top.easelink.lcg.ui.main.about.viewmodel.AboutViewModel;
 import top.easelink.lcg.ui.main.article.viewmodel.ArticleViewModel;
 import top.easelink.lcg.ui.main.article.viewmodel.DownloadLinkViewModel;
 import top.easelink.lcg.ui.main.articles.viewmodel.ArticlesViewModel;
+import top.easelink.lcg.ui.main.articles.viewmodel.FavoriteArticlesViewModel;
 import top.easelink.lcg.ui.main.articles.viewmodel.ForumArticlesViewModel;
+import top.easelink.lcg.ui.main.forumnav.viewmodel.ForumNavigationViewModel;
+import top.easelink.lcg.ui.main.me.viewmodel.MeViewModel;
 import top.easelink.lcg.ui.main.viewmodel.MainViewModel;
 import top.easelink.lcg.ui.search.viewmodel.SearchViewModel;
-import top.easelink.lcg.ui.splash.viewmodel.SplashViewModel;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -42,10 +44,14 @@ public class ViewModelProviderFactory extends ViewModelProvider.NewInstanceFacto
             return (T) new ForumArticlesViewModel(schedulerProvider);
         } else if (modelClass.isAssignableFrom(SearchViewModel.class)) {
             return (T) new SearchViewModel(schedulerProvider);
-        } else if (modelClass.isAssignableFrom(SplashViewModel.class)) {
-            return (T) new SplashViewModel(schedulerProvider);
         } else if (modelClass.isAssignableFrom(DownloadLinkViewModel.class)) {
             return (T) new DownloadLinkViewModel(schedulerProvider);
+        } else if (modelClass.isAssignableFrom(FavoriteArticlesViewModel.class)) {
+            return (T) new FavoriteArticlesViewModel(schedulerProvider);
+        } else if (modelClass.isAssignableFrom(ForumNavigationViewModel.class)) {
+            return (T) new ForumNavigationViewModel(schedulerProvider);
+        } else if (modelClass.isAssignableFrom(MeViewModel.class)) {
+            return (T) new MeViewModel(schedulerProvider);
         }
         throw new IllegalArgumentException("Unknown ViewModel class: " + modelClass.getName());
     }

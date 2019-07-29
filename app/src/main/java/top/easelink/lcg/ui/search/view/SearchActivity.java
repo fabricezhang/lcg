@@ -1,6 +1,7 @@
 package top.easelink.lcg.ui.search.view;
 
 import android.os.Bundle;
+import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProviders;
@@ -26,13 +27,11 @@ import javax.inject.Inject;
 import static top.easelink.lcg.ui.search.viewmodel.SearchResultAdapter.SearchAdapterListener.FETCH_INIT;
 import static top.easelink.lcg.utils.WebsiteConstant.URL_KEY;
 
-public class SearchActivity extends BaseActivity<ActivitySearchBinding, SearchViewModel> {
+public class SearchActivity extends BaseActivity<ActivitySearchBinding, SearchViewModel>
+        implements SearchNavigator {
 
     @Inject
     ViewModelProviderFactory factory;
-
-    private SearchViewModel mSearchViewModel;
-    private ActivitySearchBinding mSearchActivityBinding;
 
     @Override
     public int getBindingVariable() {
@@ -46,17 +45,16 @@ public class SearchActivity extends BaseActivity<ActivitySearchBinding, SearchVi
 
     @Override
     public SearchViewModel getViewModel() {
-        mSearchViewModel = ViewModelProviders.of(this, factory).get(SearchViewModel.class);
-        return mSearchViewModel;
+        return ViewModelProviders.of(this, factory).get(SearchViewModel.class);
     }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
-        mSearchActivityBinding = getViewDataBinding();
         setupRecyclerView();
-        mSearchViewModel.initUrl(getIntent().getStringExtra(URL_KEY));
+        getViewModel().setNavigator(this);
+        getViewModel().initUrl(getIntent().getStringExtra(URL_KEY));
     }
 
     @Override
@@ -66,11 +64,11 @@ public class SearchActivity extends BaseActivity<ActivitySearchBinding, SearchVi
     }
 
     private void setupRecyclerView(){
-        SearchResultAdapter searchResultAdapter = new SearchResultAdapter(mSearchViewModel);
+        SearchResultAdapter searchResultAdapter = new SearchResultAdapter(getViewModel());
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(SearchActivity.this);
         mLayoutManager.setOrientation(RecyclerView.VERTICAL);
-        RecyclerView rv = mSearchActivityBinding.recyclerView;
-        mSearchActivityBinding.setLifecycleOwner(this);
+        RecyclerView rv = getViewDataBinding().recyclerView;
+        getViewDataBinding().setLifecycleOwner(this);
 
         rv.setLayoutManager(mLayoutManager);
         rv.setItemAnimator(new DefaultItemAnimator());
@@ -83,12 +81,20 @@ public class SearchActivity extends BaseActivity<ActivitySearchBinding, SearchVi
                 ContextCompat.getColor(this, R.color.colorPrimaryDark)
         );
         // Set the scrolling view in the custom SwipeRefreshLayout.
-        swipeRefreshLayout.setScrollUpChild(mSearchActivityBinding.recyclerView);
-        swipeRefreshLayout.setOnRefreshListener(() -> mSearchViewModel.doSearchQuery(FETCH_INIT));
+        swipeRefreshLayout.setScrollUpChild(getViewDataBinding().recyclerView);
+        swipeRefreshLayout.setOnRefreshListener(() -> getViewModel().doSearchQuery(FETCH_INIT));
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(OpenSearchResultEvent event) {
         WebViewActivity.startWebViewWith(event.getSearchResult().getUrl(), this);
+    }
+
+    @Override
+    public void handleError(Throwable throwable) {
+        Toast.makeText(SearchActivity.this,
+                getString(R.string.error),
+                Toast.LENGTH_SHORT)
+                .show();
     }
 }

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.RelativeLayout;
@@ -48,7 +49,13 @@ public abstract class BaseDialog extends DialogFragment {
                     ViewGroup.LayoutParams.WRAP_CONTENT);
         }
         dialog.setCanceledOnTouchOutside(false);
-
+        dialog.setOnKeyListener((dialogInterface, keyCode, event) -> {
+            if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+                dismissDialog();
+                return true;
+            }
+            return false;
+        });
         return dialog;
     }
 
@@ -68,8 +75,8 @@ public abstract class BaseDialog extends DialogFragment {
         show(transaction, tag);
     }
 
-    public void dismissDialog(String tag) {
-        getBaseActivity().onFragmentDetached(tag);
+    protected void dismissDialog() {
+        getBaseActivity().onBackPressed();
         dismiss();
     }
 

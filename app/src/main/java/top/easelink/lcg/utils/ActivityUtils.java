@@ -5,7 +5,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import top.easelink.framework.base.BaseFragment;
-import top.easelink.lcg.R;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -27,7 +26,7 @@ public class ActivityUtils {
         FragmentTransaction transaction =
                 fragmentManager
                         .beginTransaction()
-                        .setCustomAnimations(R.anim.slide_left, R.anim.slide_right)
+//                        .setCustomAnimations(R.anim.slide_left, R.anim.slide_right)
                         .add(frameId, fragment, TAG_PREFIX + fragment.getClass().getSimpleName());
         transaction.commitNow();
     }
