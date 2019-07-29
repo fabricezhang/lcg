@@ -20,7 +20,7 @@
     </style>
 
     <style name="SplashTheme" parent="AppTheme">
-        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowFullscreen">false</item>
         <item name="android:windowIsTranslucent">false</item>
         <item name="android:windowBackground">@drawable/launch_bg</item>
         <item name="android:windowAnimationStyle">@style/NoAnimation</item>
@@ -115,7 +115,7 @@
 
     <style name="Toolbar.TitleText" parent="TextStyle.Heading">
         <item name="android:textColor">@color/dark_gray</item>
-        <item name="android:textSize">@dimen/sp_18</item>
+        <item name="android:textSize">@dimen/sp_16</item>
     </style>
 
     <style name="Button" parent="Widget.AppCompat.Button">
@@ -188,5 +188,13 @@
         <item name="android:textColor">@color/white</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:background">@drawable/button_primary_bg</item>
+    </style>
+
+    <style name="BottomNavigationView" parent="@style/TextAppearance.AppCompat.Caption">
+        <item name="android:textSize">@dimen/sp_10</item>
+    </style>
+
+    <style name="BottomNavigationView.Active" parent="@style/TextAppearance.AppCompat.Caption">
+        <item name="android:textSize">@dimen/sp_12</item>
     </style>
 </resources>

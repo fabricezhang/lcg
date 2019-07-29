@@ -44,6 +44,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@color/white"
+                        android:divider="@color/white"
+                        android:dividerHeight="@dimen/dp_6"
                 />
 
                 <ImageButton
@@ -53,6 +55,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom|end"
                         android:src="@drawable/ic_close_black_24dp"
+                        android:padding="@dimen/dp_10"
                         android:onClick="@{()-> viewModel.onExitClick()}"
                         android:contentDescription="@null"/>
 

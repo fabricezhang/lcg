@@ -5,6 +5,7 @@
         xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.view.View" />
         <variable
                 name="viewModel"
                 type="top.easelink.lcg.ui.main.articles.viewmodel.ArticlesViewModel"/>
@@ -26,6 +27,7 @@
                     android:id="@+id/recycler_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:visibility="@{viewModel.articles == null ? View.GONE : View.VISIBLE, default = gone}"
                     app:adapter="@{viewModel.articles}"/>
             <com.airbnb.lottie.LottieAnimationView
                     android:layout_gravity="bottom|end"

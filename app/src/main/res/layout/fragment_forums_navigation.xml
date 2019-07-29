@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+                name="viewModel"
+                type="top.easelink.lcg.ui.main.forumnav.viewmodel.ForumNavigationViewModel" />
+    </data>
+    <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:focusable="true"
+            android:clickable="true"
+            android:background="@color/white">
+        <GridView
+                android:id="@+id/navigation_grid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dp_30"
+                android:numColumns="3"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+                android:verticalSpacing="@dimen/dp_30"
+                android:horizontalSpacing="@dimen/dp_8"
+                android:stretchMode="columnWidth"
+                app:adapter="@{viewModel.navigation}"/>
+    </FrameLayout>
+
+</layout>

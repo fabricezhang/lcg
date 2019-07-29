@@ -3,7 +3,7 @@ package top.easelink.lcg.ui.main.article.viewmodel;
 import android.view.View;
 import androidx.databinding.ObservableField;
 import timber.log.Timber;
-import top.easelink.lcg.ui.main.model.Post;
+import top.easelink.lcg.ui.main.source.model.Post;
 
 import java.util.ArrayList;
 import java.util.List;

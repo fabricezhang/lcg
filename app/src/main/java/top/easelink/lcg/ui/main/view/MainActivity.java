@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.SearchView;
@@ -18,7 +20,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
-import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
@@ -29,6 +31,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import top.easelink.framework.BR;
 import top.easelink.framework.base.BaseActivity;
 import top.easelink.lcg.BuildConfig;
+import top.easelink.lcg.LCGApp;
 import top.easelink.lcg.R;
 import top.easelink.lcg.databinding.ActivityMainBinding;
 import top.easelink.lcg.databinding.NavHeaderMainBinding;
@@ -36,10 +39,13 @@ import top.easelink.lcg.ui.ViewModelProviderFactory;
 import top.easelink.lcg.ui.main.about.view.AboutFragment;
 import top.easelink.lcg.ui.main.article.view.ArticleFragment;
 import top.easelink.lcg.ui.main.articles.view.ArticlesFragment;
+import top.easelink.lcg.ui.main.articles.view.FavoriteArticlesFragment;
 import top.easelink.lcg.ui.main.articles.view.ForumArticlesFragment;
-import top.easelink.lcg.ui.main.model.Article;
+import top.easelink.lcg.ui.main.forumnav.view.ForumNavigationFragment;
+import top.easelink.lcg.ui.main.me.view.MeFragment;
 import top.easelink.lcg.ui.main.model.OpenArticleEvent;
-import top.easelink.lcg.ui.main.model.dto.TabModel;
+import top.easelink.lcg.ui.main.model.OpenForumEvent;
+import top.easelink.lcg.ui.main.model.TabModel;
 import top.easelink.lcg.ui.main.viewmodel.MainViewModel;
 import top.easelink.lcg.ui.search.view.SearchActivity;
 import top.easelink.lcg.ui.webview.view.WebViewActivity;
@@ -48,27 +54,24 @@ import top.easelink.lcg.utils.ActivityUtils;
 import javax.inject.Inject;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.EmptyStackException;
 import java.util.List;
 
-import static top.easelink.lcg.ui.main.source.remote.RxArticleService.SERVER_BASE_URL;
+import static top.easelink.lcg.ui.main.source.remote.ArticlesRemoteDataSource.SERVER_BASE_URL;
 import static top.easelink.lcg.utils.ActivityUtils.TAG_PREFIX;
 import static top.easelink.lcg.utils.WebsiteConstant.*;
 
-public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewModel> implements MainNavigator, HasSupportFragmentInjector {
+@SuppressWarnings("unused")
+public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewModel>
+        implements MainNavigator, HasSupportFragmentInjector, BottomNavigationView.OnNavigationItemSelectedListener {
 
     @Inject
     ViewModelProviderFactory factory;
     @Inject
     DispatchingAndroidInjector<Fragment> fragmentDispatchingAndroidInjector;
-
-    private ActivityMainBinding mActivityMainBinding;
-    private DrawerLayout mDrawer;
-    private MainViewModel mMainViewModel;
-    private NavigationView mNavigationView;
-    private Toolbar mToolbar;
-    private ViewPager mViewPager;
-    private TabLayout mTabLayout;
     private static WeakReference<MainActivity> mainActivityWeakReference;
+    private DrawerLayout mDrawer;
+    private Long lastBackPressed = 0l;
 
     @Override
     public int getBindingVariable() {
@@ -82,8 +85,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
 
     @Override
     public MainViewModel getViewModel() {
-        mMainViewModel = ViewModelProviders.of(this, factory).get(MainViewModel.class);
-        return mMainViewModel;
+        return ViewModelProviders.of(this, factory).get(MainViewModel.class);
     }
 
     @Override
@@ -94,18 +96,27 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
     @Override
     public void onBackPressed() {
         if (!mFragmentTags.empty()) {
-            String tag = mFragmentTags.pop();
+            String tag = mFragmentTags.peek();
             if (onFragmentDetached(tag)) {
+                mFragmentTags.pop();
+                syncBottomViewNavItemState();
                 return;
             } else {
                 // check viewpager
-                if (mViewPager.isShown() && mViewPager.getCurrentItem() != 0) {
-                    mViewPager.setCurrentItem(0, true);
+                ViewPager viewPager = getViewDataBinding().mainViewPager;
+                if (viewPager.isShown() && viewPager.getCurrentItem() != 0) {
+                    viewPager.setCurrentItem(0, true);
                     return;
                 }
             }
         }
-        super.onBackPressed();
+        if (System.currentTimeMillis() - lastBackPressed > 2000) {
+            Toast.makeText(this, R.string.app_exit_tip, Toast.LENGTH_SHORT).show();
+            lastBackPressed = System.currentTimeMillis();
+        } else {
+            finish();
+            System.exit(0);
+        }
     }
 
     @Override
@@ -120,8 +131,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
-        mActivityMainBinding = getViewDataBinding();
-        mMainViewModel.setNavigator(this);
+        getViewModel().setNavigator(this);
         mainActivityWeakReference = new WeakReference<>(this);
         setUp();
     }
@@ -146,12 +156,35 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
         }
     }
 
+    /**
+     * manage the bottom navigation view item selected state
+     * depends on current top fragment
+     * */
+    private void syncBottomViewNavItemState() {
+        BottomNavigationView view = getViewDataBinding().bottomNavigation;
+        try {
+            String topFragment = mFragmentTags.peek();
+            view.setOnNavigationItemSelectedListener(null);
+            if (topFragment.startsWith("android")) {
+                // means that current top fragment is the tab-layout
+                view.setSelectedItemId(R.id.action_home);
+                unlockDrawer();
+            } else if (topFragment.endsWith(FavoriteArticlesFragment.class.getSimpleName())) {
+                view.setSelectedItemId(R.id.action_favorite);
+            } else if (topFragment.endsWith(ForumNavigationFragment.class.getSimpleName())) {
+                view.setSelectedItemId(R.id.action_forum_navigation);
+            }
+        } catch (EmptyStackException ese) {
+            view.setSelectedItemId(R.id.action_home);
+        } finally {
+            view.setOnNavigationItemSelectedListener(this);
+        }
+    }
+
     private void setUp() {
-        mDrawer = mActivityMainBinding.drawerView;
-        mToolbar = mActivityMainBinding.toolbar;
-        mNavigationView = mActivityMainBinding.navigationView;
-        mViewPager = mActivityMainBinding.mainViewPager;
-        mTabLayout = mActivityMainBinding.mainTab;
+        mDrawer = getViewDataBinding().drawerView;
+        Toolbar mToolbar = getViewDataBinding().toolbar;
+        TabLayout mTabLayout = getViewDataBinding().mainTab;
         setSupportActionBar(mToolbar);
         ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(
                 this,
@@ -172,44 +205,40 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
         };
         mDrawer.addDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
-        setupNavMenu();
+        setupDrawerNavMenu();
+        setupBottomNavMenu();
 
         String version = getString(R.string.version) + " " + BuildConfig.VERSION_NAME;
-        mMainViewModel.updateAppVersion(version);
-        mMainViewModel.onNavMenuCreated();
+        getViewModel().updateAppVersion(version);
+        getViewModel().onNavMenuCreated();
 
-        mViewPager.setAdapter(new MainViewPagerAdapter(
+        getViewDataBinding().mainViewPager.setAdapter(new MainViewPagerAdapter(
                 getSupportFragmentManager(), MainActivity.this));
-        mTabLayout.setupWithViewPager(mViewPager);
+        mTabLayout.setupWithViewPager(getViewDataBinding().mainViewPager);
     }
 
-    private void setupNavMenu() {
-        NavHeaderMainBinding navHeaderMainBinding = DataBindingUtil.inflate(getLayoutInflater(),
-                R.layout.nav_header_main, mActivityMainBinding.navigationView, false);
-        mActivityMainBinding.navigationView.addHeaderView(navHeaderMainBinding.getRoot());
-        navHeaderMainBinding.setViewModel(mMainViewModel);
+    private void setupBottomNavMenu() {
+        getViewDataBinding().bottomNavigation.setOnNavigationItemSelectedListener(this);
+    }
 
-        mNavigationView.setNavigationItemSelectedListener(
+    private void setupDrawerNavMenu() {
+        NavHeaderMainBinding navHeaderMainBinding = DataBindingUtil.inflate(getLayoutInflater(),
+                R.layout.nav_header_main, getViewDataBinding().navigationView, false);
+        getViewDataBinding().navigationView.addHeaderView(navHeaderMainBinding.getRoot());
+        navHeaderMainBinding.setViewModel(getViewModel());
+
+        getViewDataBinding().navigationView.setNavigationItemSelectedListener(
                 item -> {
                     mDrawer.closeDrawer(GravityCompat.START);
                     switch (item.getItemId()) {
                         case R.id.navItemAbout:
                             showAboutFragment();
                             return true;
-                        case R.id.navItemSoftware:
-                            showForumFragment(SOFTWARE_TITLE, SOFTWARE_URL);
-                            return true;
                         case R.id.navItemFreeChat:
                             WebViewActivity.startWebViewWith(SERVER_BASE_URL + FREE_CHAT_URL, MainActivity.this);
                             return true;
-                        case R.id.navItemMobileSecurity:
-                            showForumFragment(MOB_SECURITY_TITLE, MOB_SECURITY_URL);
-                            return true;
-                        case R.id.navItemOrigin:
-                            showForumFragment(ORIGINAL_TITLE, ORIGINAL_URL);
-                            return true;
                         case R.id.navItemRelease:
-                            WebViewActivity.startWebViewWith(SERVER_BASE_URL + APP_RELEASE_PAGE, MainActivity.this);
+                            showArticleFragment(APP_RELEASE_PAGE);
                             return true;
                         default:
                             return false;
@@ -219,7 +248,12 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(OpenArticleEvent event) {
-        showArticleFragment(event.getArticle());
+        showArticleFragment(event.getUrl());
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(OpenForumEvent event) {
+        showForumFragment(event.getTitle(), event.getUrl());
     }
 
     private void showAboutFragment() {
@@ -228,9 +262,21 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
                 R.id.clRootView);
     }
 
-    private void showArticleFragment(Article article) {
+    private void showMeFragment() {
         ActivityUtils.addFragmentInActivity(getSupportFragmentManager(),
-                ArticleFragment.newInstance(article),
+                MeFragment.newInstance(),
+                R.id.clRootView);
+    }
+
+    private void showForumNavigationFragment() {
+        ActivityUtils.addFragmentInActivity(getSupportFragmentManager(),
+                ForumNavigationFragment.newInstance(),
+                R.id.clRootView);
+    }
+
+    private void showArticleFragment(String url) {
+        ActivityUtils.addFragmentInActivity(getSupportFragmentManager(),
+                ArticleFragment.newInstance(url),
                 R.id.clRootView);
     }
 
@@ -240,13 +286,14 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
                 R.id.clRootView);
     }
 
+    private void showFavoriteFragment() {
+        ActivityUtils.addFragmentInActivity(getSupportFragmentManager(),
+                FavoriteArticlesFragment.newInstance(),
+                R.id.clRootView);
+    }
+
     @Override
     public boolean onFragmentDetached(String tag) {
-        // FIXME: 2019-07-22 a temporary fix method for manage fragment stack
-        int d = mFragmentTags.search(tag);
-        while (d-- > 0) {
-            mFragmentTags.pop();
-        }
         if (tag != null && tag.startsWith(TAG_PREFIX)) {
             return super.onFragmentDetached(tag);
         } else {
@@ -301,6 +348,32 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
         }
     }
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        if (getViewDataBinding().bottomNavigation.getSelectedItemId() == menuItem.getItemId()) {
+            return false;
+        }
+        while (!mFragmentTags.isEmpty()
+                && mFragmentTags.peek().startsWith(TAG_PREFIX)) {
+            onFragmentDetached(mFragmentTags.pop());
+        }
+        switch (menuItem.getItemId()) {
+            case R.id.action_favorite:
+                showFavoriteFragment();
+                break;
+            case R.id.action_forum_navigation:
+                showForumNavigationFragment();
+                break;
+            case R.id.action_about_me:
+                showMeFragment();
+                break;
+            case R.id.action_home:
+            default:
+                break;
+        }
+        return true;
+    }
+
     public static class MainViewPagerAdapter extends FragmentPagerAdapter {
 
         private List<TabModel> tabModels;
@@ -315,6 +388,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
         }
 
         @Override
+        @NonNull
         public Fragment getItem(int position) {
             return ArticlesFragment.newInstance(tabModels.get(position).getUrl());
         }

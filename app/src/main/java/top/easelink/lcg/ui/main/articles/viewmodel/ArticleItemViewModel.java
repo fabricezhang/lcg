@@ -2,8 +2,8 @@ package top.easelink.lcg.ui.main.articles.viewmodel;
 
 import androidx.databinding.ObservableField;
 import org.greenrobot.eventbus.EventBus;
-import top.easelink.lcg.ui.main.model.Article;
 import top.easelink.lcg.ui.main.model.OpenArticleEvent;
+import top.easelink.lcg.ui.main.source.model.Article;
 
 public class ArticleItemViewModel {
 
@@ -15,7 +15,7 @@ public class ArticleItemViewModel {
 
     private final Article article;
 
-    public ArticleItemViewModel(Article article) {
+    ArticleItemViewModel(Article article) {
         this.article = article;
         title = new ObservableField<>(article.getTitle());
         author = new ObservableField<>(article.getAuthor());
@@ -27,7 +27,7 @@ public class ArticleItemViewModel {
     }
 
     public void onItemClick() {
-        OpenArticleEvent event = new OpenArticleEvent(article);
+        OpenArticleEvent event = new OpenArticleEvent(article.getUrl());
         EventBus.getDefault().post(event);
     }
 }

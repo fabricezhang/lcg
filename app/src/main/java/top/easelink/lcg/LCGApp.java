@@ -4,13 +4,13 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import com.tencent.bugly.Bugly;
+import com.tencent.bugly.beta.Beta;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasActivityInjector;
-import io.reactivex.android.plugins.RxAndroidPlugins;
 import io.reactivex.exceptions.UndeliverableException;
 import io.reactivex.plugins.RxJavaPlugins;
 import timber.log.Timber;
-import top.easelink.framework.BuildConfig;
 import top.easelink.lcg.di.component.DaggerAppComponent;
 import top.easelink.lcg.service.web.WebViewWrapper;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
@@ -42,6 +42,7 @@ public class LCGApp extends Application implements HasActivityInjector {
                 .build()
                 .inject(this);
         mContext = this;
+        initBulgy();
         CalligraphyConfig.initDefault(mCalligraphyConfig);
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
@@ -64,5 +65,11 @@ public class LCGApp extends Application implements HasActivityInjector {
                         .uncaughtException(Thread.currentThread(), e);
             }
         });
+    }
+
+    private void initBulgy() {
+        Bugly.init(getApplicationContext(), BuildConfig.BUGLY_APP_ID, false);
+        Beta.largeIconId = R.drawable.ic_noavatar_middle;
+        Beta.enableHotfix = true;
     }
 }

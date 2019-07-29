@@ -1,6 +1,8 @@
 package top.easelink.lcg.ui.main.about.view;
 
 import android.os.Bundle;
+import android.view.View;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 import top.easelink.framework.BR;
@@ -11,13 +13,12 @@ import top.easelink.lcg.ui.ViewModelProviderFactory;
 import top.easelink.lcg.ui.main.about.viewmodel.AboutViewModel;
 
 import javax.inject.Inject;
+import java.util.Calendar;
 
 public class AboutFragment extends BaseFragment<FragmentAboutBinding, AboutViewModel> implements AboutNavigator {
 
     @Inject
     ViewModelProviderFactory factory;
-
-    private AboutViewModel mAboutViewModel;
 
     public static AboutFragment newInstance() {
         Bundle args = new Bundle();
@@ -38,8 +39,7 @@ public class AboutFragment extends BaseFragment<FragmentAboutBinding, AboutViewM
 
     @Override
     public AboutViewModel getViewModel() {
-        mAboutViewModel = ViewModelProviders.of(this, factory).get(AboutViewModel.class);
-        return mAboutViewModel;
+        return ViewModelProviders.of(this, factory).get(AboutViewModel.class);
     }
 
     @Override
@@ -50,6 +50,29 @@ public class AboutFragment extends BaseFragment<FragmentAboutBinding, AboutViewM
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mAboutViewModel.setNavigator(this);
+        getViewModel().setNavigator(this);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        syncAuthorState();
+    }
+
+    private void syncAuthorState() {
+        int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+        if (0 <= hour && hour < 7) {
+            getViewDataBinding().me.setAnimation(R.raw.moon_stars);
+        } else if (7 <= hour && hour < 12) {
+            getViewDataBinding().me.setAnimation(R.raw.personal_mac_daytime);
+        } else if (12 <= hour && hour < 13) {
+            getViewDataBinding().me.setAnimation(R.raw.sun);
+        } else if (13 <= hour && hour < 18) {
+            getViewDataBinding().me.setAnimation(R.raw.personal_phone_daytime);
+        } else if (18 <= hour && hour < 22) {
+            getViewDataBinding().me.setAnimation(R.raw.personal_mac_night);
+        } else {
+            getViewDataBinding().me.setAnimation(R.raw.personal_phone_night);
+        }
     }
 }

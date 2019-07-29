@@ -10,7 +10,7 @@ import top.easelink.framework.base.BaseViewHolder;
 import top.easelink.lcg.R;
 import top.easelink.lcg.databinding.ItemArticleEmptyViewBinding;
 import top.easelink.lcg.databinding.ItemArticleViewBinding;
-import top.easelink.lcg.ui.main.model.Article;
+import top.easelink.lcg.ui.main.source.model.Article;
 
 import java.util.ArrayList;
 import java.util.List;
