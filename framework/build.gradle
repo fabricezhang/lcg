@@ -77,6 +77,8 @@ dependencies {
     api "androidx.room:room-runtime:$rootProject.roomVersion"
     // event-bus
     api "org.greenrobot:eventbus:$rootProject.eventbusVersion"
+    // bugly
+    api "com.tencent.bugly:crashreport_upgrade:$rootProject.buglyVersion"
 
     // test related
     testImplementation 'junit:junit:4.12'
