@@ -20,7 +20,6 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
@@ -68,12 +67,8 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
     ViewModelProviderFactory factory;
     @Inject
     DispatchingAndroidInjector<Fragment> fragmentDispatchingAndroidInjector;
-
-    private ActivityMainBinding mActivityMainBinding;
+    
     private DrawerLayout mDrawer;
-    private MainViewModel mMainViewModel;
-    private NavigationView mNavigationView;
-    private ViewPager mViewPager;
     private static WeakReference<MainActivity> mainActivityWeakReference;
 
     @Override
@@ -88,8 +83,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
 
     @Override
     public MainViewModel getViewModel() {
-        mMainViewModel = ViewModelProviders.of(this, factory).get(MainViewModel.class);
-        return mMainViewModel;
+        return ViewModelProviders.of(this, factory).get(MainViewModel.class);
     }
 
     @Override
@@ -107,8 +101,9 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
                 return;
             } else {
                 // check viewpager
-                if (mViewPager.isShown() && mViewPager.getCurrentItem() != 0) {
-                    mViewPager.setCurrentItem(0, true);
+                ViewPager viewPager = getViewDataBinding().mainViewPager;
+                if (viewPager.isShown() && viewPager.getCurrentItem() != 0) {
+                    viewPager.setCurrentItem(0, true);
                     return;
                 }
             }
@@ -128,8 +123,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
-        mActivityMainBinding = getViewDataBinding();
-        mMainViewModel.setNavigator(this);
+        getViewModel().setNavigator(this);
         mainActivityWeakReference = new WeakReference<>(this);
         setUp();
     }
@@ -159,7 +153,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
      * depends on current top fragment
      * */
     private void syncBottomViewNavItemState() {
-        BottomNavigationView view = mActivityMainBinding.bottomNavigation;
+        BottomNavigationView view = getViewDataBinding().bottomNavigation;
         try {
             String topFragment = mFragmentTags.peek();
             view.setOnNavigationItemSelectedListener(null);
@@ -180,11 +174,9 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
     }
 
     private void setUp() {
-        mDrawer = mActivityMainBinding.drawerView;
-        Toolbar mToolbar = mActivityMainBinding.toolbar;
-        mNavigationView = mActivityMainBinding.navigationView;
-        mViewPager = mActivityMainBinding.mainViewPager;
-        TabLayout mTabLayout = mActivityMainBinding.mainTab;
+        mDrawer = getViewDataBinding().drawerView;
+        Toolbar mToolbar = getViewDataBinding().toolbar;
+        TabLayout mTabLayout = getViewDataBinding().mainTab;
         setSupportActionBar(mToolbar);
         ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(
                 this,
@@ -209,25 +201,25 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
         setupBottomNavMenu();
 
         String version = getString(R.string.version) + " " + BuildConfig.VERSION_NAME;
-        mMainViewModel.updateAppVersion(version);
-        mMainViewModel.onNavMenuCreated();
+        getViewModel().updateAppVersion(version);
+        getViewModel().onNavMenuCreated();
 
-        mViewPager.setAdapter(new MainViewPagerAdapter(
+        getViewDataBinding().mainViewPager.setAdapter(new MainViewPagerAdapter(
                 getSupportFragmentManager(), MainActivity.this));
-        mTabLayout.setupWithViewPager(mViewPager);
+        mTabLayout.setupWithViewPager(getViewDataBinding().mainViewPager);
     }
 
     private void setupBottomNavMenu() {
-        mActivityMainBinding.bottomNavigation.setOnNavigationItemSelectedListener(this);
+        getViewDataBinding().bottomNavigation.setOnNavigationItemSelectedListener(this);
     }
 
     private void setupDrawerNavMenu() {
         NavHeaderMainBinding navHeaderMainBinding = DataBindingUtil.inflate(getLayoutInflater(),
-                R.layout.nav_header_main, mActivityMainBinding.navigationView, false);
-        mActivityMainBinding.navigationView.addHeaderView(navHeaderMainBinding.getRoot());
-        navHeaderMainBinding.setViewModel(mMainViewModel);
+                R.layout.nav_header_main, getViewDataBinding().navigationView, false);
+        getViewDataBinding().navigationView.addHeaderView(navHeaderMainBinding.getRoot());
+        navHeaderMainBinding.setViewModel(getViewModel());
 
-        mNavigationView.setNavigationItemSelectedListener(
+        getViewDataBinding().navigationView.setNavigationItemSelectedListener(
                 item -> {
                     mDrawer.closeDrawer(GravityCompat.START);
                     switch (item.getItemId()) {
@@ -344,7 +336,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        if (mActivityMainBinding.bottomNavigation.getSelectedItemId() == menuItem.getItemId()) {
+        if (getViewDataBinding().bottomNavigation.getSelectedItemId() == menuItem.getItemId()) {
             return false;
         }
         lockDrawer();

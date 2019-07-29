@@ -28,7 +28,6 @@ import top.easelink.lcg.ui.webview.view.WebViewActivity;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
-import java.util.HashSet;
 
 import static top.easelink.lcg.ui.main.article.viewmodel.ArticleViewModel.FETCH_INIT;
 import static top.easelink.lcg.ui.main.source.remote.ArticlesRemoteDataSource.SERVER_BASE_URL;
@@ -41,12 +40,7 @@ public class ArticleFragment extends BaseFragment<FragmentArticleBinding, Articl
     ViewModelProviderFactory factory;
     private static final String KEY_URL = "KEY_URL";
     private LinearLayoutManager mLayoutManager;
-    private ArticleAdapter mArticleAdapter;
-    private FragmentArticleBinding mFragmentArticleBinding;
-
     private String articleUrl;
-
-    private ArticleViewModel mArticleViewModel;
 
     public static ArticleFragment newInstance(Article article) {
         Bundle args = new Bundle();
@@ -68,15 +62,13 @@ public class ArticleFragment extends BaseFragment<FragmentArticleBinding, Articl
 
     @Override
     public ArticleViewModel getViewModel() {
-        mArticleViewModel = ViewModelProviders.of(this, factory).get(ArticleViewModel.class);
-        mArticleViewModel.setUrl(articleUrl);
-        return mArticleViewModel;
+        return ViewModelProviders.of(this, factory).get(ArticleViewModel.class);
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mArticleViewModel.setNavigator(this);
+        getViewModel().setNavigator(this);
         Bundle args = getArguments();
         if (args != null) {
             articleUrl = args.getString(KEY_URL);
@@ -85,28 +77,26 @@ public class ArticleFragment extends BaseFragment<FragmentArticleBinding, Articl
 
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        mFragmentArticleBinding = getViewDataBinding();
+        super.onViewCreated(view, savedInstanceState);;
         setUp();
         setHasOptionsMenu(true);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(mFragmentArticleBinding.articleToolbar);
-        mArticleViewModel.setUrl(articleUrl);
-        mArticleViewModel.fetchArticlePost(FETCH_INIT);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(getViewDataBinding().articleToolbar);
+        getViewModel().setUrl(articleUrl);
+        getViewModel().fetchArticlePost(FETCH_INIT);
     }
 
     private void setUp() {
-        mArticleAdapter = new ArticleAdapter(mArticleViewModel);
         mLayoutManager = new LinearLayoutManager(getContext());
         mLayoutManager.setOrientation(RecyclerView.VERTICAL);
-        RecyclerView rv = mFragmentArticleBinding.postRecyclerView;
+        RecyclerView rv = getViewDataBinding().postRecyclerView;
         rv.setLayoutManager(mLayoutManager);
         rv.setItemAnimator(new DefaultItemAnimator());
-        rv.setAdapter(mArticleAdapter);
+        rv.setAdapter(new ArticleAdapter(getViewModel()));
         rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 int firstVisibleItemPosition = mLayoutManager.findFirstVisibleItemPosition();
-                LottieAnimationView backToTop = mFragmentArticleBinding.backToTop;
+                LottieAnimationView backToTop = getViewDataBinding().backToTop;
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     if (firstVisibleItemPosition == 0) {
                         backToTop.setVisibility(View.GONE);
@@ -136,7 +126,7 @@ public class ArticleFragment extends BaseFragment<FragmentArticleBinding, Articl
                 WebViewActivity.startWebViewWith(SERVER_BASE_URL + articleUrl, getContext());
                 break;
             case R.id.action_extract_urls:
-                ArrayList<String> linkList = mArticleViewModel.extractDownloadUrl();
+                ArrayList<String> linkList = getViewModel().extractDownloadUrl();
                 if (linkList != null && !linkList.isEmpty()) {
                     DownloadLinkDialog.newInstance(linkList).show(getFragmentManager());
                 } else {
@@ -144,7 +134,7 @@ public class ArticleFragment extends BaseFragment<FragmentArticleBinding, Articl
                 }
                 break;
             case R.id.action_add_to_my_favorite:
-                mArticleViewModel.addToFavorite();
+                getViewModel().addToFavorite();
                 break;
             default:
                 break;
@@ -164,6 +154,6 @@ public class ArticleFragment extends BaseFragment<FragmentArticleBinding, Articl
 
     @Override
     public void scrollToTop() {
-        mFragmentArticleBinding.postRecyclerView.smoothScrollToPosition(0);
+        getViewDataBinding().postRecyclerView.smoothScrollToPosition(0);
     }
 }

@@ -1,8 +1,6 @@
 package top.easelink.lcg.ui.main.forumnav.viewmodel;
 
 import android.content.Context;
-import android.view.View;
-import android.widget.AdapterView;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import top.easelink.framework.base.BaseViewModel;

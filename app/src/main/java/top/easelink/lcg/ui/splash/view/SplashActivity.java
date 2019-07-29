@@ -19,9 +19,6 @@ public class SplashActivity extends BaseActivity<ActivitySplashBinding, SplashVi
     @Inject
     ViewModelProviderFactory factory;
 
-    private SplashViewModel mSplashViewModel;
-    private ActivitySplashBinding mSplashBinding;
-
     @Override
     public int getBindingVariable() {
         return BR.viewModel;
@@ -34,14 +31,12 @@ public class SplashActivity extends BaseActivity<ActivitySplashBinding, SplashVi
 
     @Override
     public SplashViewModel getViewModel() {
-        mSplashViewModel = ViewModelProviders.of(this, factory).get(SplashViewModel.class);
-        return mSplashViewModel;
+        return ViewModelProviders.of(this, factory).get(SplashViewModel.class);
     }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        mSplashBinding = getViewDataBinding();
         startActivity(new Intent(this, MainActivity.class));
         overridePendingTransition(0, 0);
         finish();

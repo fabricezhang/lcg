@@ -33,9 +33,6 @@ public class SearchActivity extends BaseActivity<ActivitySearchBinding, SearchVi
     @Inject
     ViewModelProviderFactory factory;
 
-    private SearchViewModel mSearchViewModel;
-    private ActivitySearchBinding mSearchActivityBinding;
-
     @Override
     public int getBindingVariable() {
         return BR.viewModel;
@@ -48,18 +45,16 @@ public class SearchActivity extends BaseActivity<ActivitySearchBinding, SearchVi
 
     @Override
     public SearchViewModel getViewModel() {
-        mSearchViewModel = ViewModelProviders.of(this, factory).get(SearchViewModel.class);
-        return mSearchViewModel;
+        return ViewModelProviders.of(this, factory).get(SearchViewModel.class);
     }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
-        mSearchActivityBinding = getViewDataBinding();
         setupRecyclerView();
-        mSearchViewModel.setNavigator(this);
-        mSearchViewModel.initUrl(getIntent().getStringExtra(URL_KEY));
+        getViewModel().setNavigator(this);
+        getViewModel().initUrl(getIntent().getStringExtra(URL_KEY));
     }
 
     @Override
@@ -69,11 +64,11 @@ public class SearchActivity extends BaseActivity<ActivitySearchBinding, SearchVi
     }
 
     private void setupRecyclerView(){
-        SearchResultAdapter searchResultAdapter = new SearchResultAdapter(mSearchViewModel);
+        SearchResultAdapter searchResultAdapter = new SearchResultAdapter(getViewModel());
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(SearchActivity.this);
         mLayoutManager.setOrientation(RecyclerView.VERTICAL);
-        RecyclerView rv = mSearchActivityBinding.recyclerView;
-        mSearchActivityBinding.setLifecycleOwner(this);
+        RecyclerView rv = getViewDataBinding().recyclerView;
+        getViewDataBinding().setLifecycleOwner(this);
 
         rv.setLayoutManager(mLayoutManager);
         rv.setItemAnimator(new DefaultItemAnimator());
@@ -86,8 +81,8 @@ public class SearchActivity extends BaseActivity<ActivitySearchBinding, SearchVi
                 ContextCompat.getColor(this, R.color.colorPrimaryDark)
         );
         // Set the scrolling view in the custom SwipeRefreshLayout.
-        swipeRefreshLayout.setScrollUpChild(mSearchActivityBinding.recyclerView);
-        swipeRefreshLayout.setOnRefreshListener(() -> mSearchViewModel.doSearchQuery(FETCH_INIT));
+        swipeRefreshLayout.setScrollUpChild(getViewDataBinding().recyclerView);
+        swipeRefreshLayout.setOnRefreshListener(() -> getViewModel().doSearchQuery(FETCH_INIT));
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

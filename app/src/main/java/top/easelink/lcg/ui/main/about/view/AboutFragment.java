@@ -17,8 +17,6 @@ public class AboutFragment extends BaseFragment<FragmentAboutBinding, AboutViewM
     @Inject
     ViewModelProviderFactory factory;
 
-    private AboutViewModel mAboutViewModel;
-
     public static AboutFragment newInstance() {
         Bundle args = new Bundle();
         AboutFragment fragment = new AboutFragment();
@@ -38,8 +36,7 @@ public class AboutFragment extends BaseFragment<FragmentAboutBinding, AboutViewM
 
     @Override
     public AboutViewModel getViewModel() {
-        mAboutViewModel = ViewModelProviders.of(this, factory).get(AboutViewModel.class);
-        return mAboutViewModel;
+        return ViewModelProviders.of(this, factory).get(AboutViewModel.class);
     }
 
     @Override
@@ -50,6 +47,6 @@ public class AboutFragment extends BaseFragment<FragmentAboutBinding, AboutViewM
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mAboutViewModel.setNavigator(this);
+        getViewModel().setNavigator(this);
     }
 }

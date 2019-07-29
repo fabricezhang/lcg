@@ -39,7 +39,10 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     @BindingAdapter({"imageUrl"})
     public static void loadImage(ImageView imageView, String url){
-        Glide.with(imageView.getContext()).load(url) .placeholder(R.drawable.ic_noavatar_middle) .into(imageView);
+        Glide.with(imageView.getContext())
+                .load(url)
+                .placeholder(R.drawable.ic_noavatar_middle)
+                .into(imageView);
     }
 
     public ArticleAdapter(ArticleAdapterListener listener) {
