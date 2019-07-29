@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -30,6 +31,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import top.easelink.framework.BR;
 import top.easelink.framework.base.BaseActivity;
 import top.easelink.lcg.BuildConfig;
+import top.easelink.lcg.LCGApp;
 import top.easelink.lcg.R;
 import top.easelink.lcg.databinding.ActivityMainBinding;
 import top.easelink.lcg.databinding.NavHeaderMainBinding;
@@ -67,9 +69,9 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
     ViewModelProviderFactory factory;
     @Inject
     DispatchingAndroidInjector<Fragment> fragmentDispatchingAndroidInjector;
-
-    private DrawerLayout mDrawer;
     private static WeakReference<MainActivity> mainActivityWeakReference;
+    private DrawerLayout mDrawer;
+    private Long lastBackPressed = 0l;
 
     @Override
     public int getBindingVariable() {
@@ -108,7 +110,13 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
                 }
             }
         }
-        super.onBackPressed();
+        if (System.currentTimeMillis() - lastBackPressed > 2000) {
+            Toast.makeText(this, R.string.app_exit_tip, Toast.LENGTH_SHORT).show();
+            lastBackPressed = System.currentTimeMillis();
+        } else {
+            finish();
+            System.exit(0);
+        }
     }
 
     @Override
