@@ -69,7 +69,7 @@
                 android:layout_height="@dimen/dp_300"
                 android:scaleType="fitCenter"
                 app:lottie_rawRes="@raw/personal_mac_daytime"
-                app:lottie_loop="true"
+                app:lottie_loop="false"
                 app:lottie_autoPlay="true"/>
     </LinearLayout>
 

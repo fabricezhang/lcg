@@ -23,8 +23,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:textColor="@color/gray"
-                android:textSize="@dimen/sp_20"
-                android:textStyle="bold"
+                android:textSize="@dimen/sp_18"
                 android:text="@string/under_construction"/>
         <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/me"

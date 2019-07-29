@@ -11,8 +11,8 @@
 
         <ImageView
                 android:id="@+id/grid_image"
-                android:layout_width="@dimen/dp_50"
-                android:layout_height="@dimen/dp_50"
+                android:layout_width="@dimen/dp_45"
+                android:layout_height="@dimen/dp_45"
                 android:scaleType="fitCenter"
                 android:clickable="false"
                 android:contentDescription="@null"/>

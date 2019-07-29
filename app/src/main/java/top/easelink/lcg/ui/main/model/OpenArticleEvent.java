@@ -1,16 +1,14 @@
 package top.easelink.lcg.ui.main.model;
 
-import top.easelink.lcg.ui.main.source.model.Article;
-
 public class OpenArticleEvent {
 
-    private Article mArticle;
+    private String mUrl;
 
-    public OpenArticleEvent(Article article) {
-        mArticle = article;
+    public OpenArticleEvent(String url) {
+        mUrl = url;
     }
 
-    public Article getArticle() {
-        return mArticle;
+    public String getUrl() {
+        return mUrl;
     }
 }

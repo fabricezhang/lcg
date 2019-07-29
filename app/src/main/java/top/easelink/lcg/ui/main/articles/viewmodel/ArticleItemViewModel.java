@@ -27,7 +27,7 @@ public class ArticleItemViewModel {
     }
 
     public void onItemClick() {
-        OpenArticleEvent event = new OpenArticleEvent(article);
+        OpenArticleEvent event = new OpenArticleEvent(article.getUrl());
         EventBus.getDefault().post(event);
     }
 }

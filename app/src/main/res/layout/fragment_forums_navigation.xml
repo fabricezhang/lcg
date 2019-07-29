@@ -11,14 +11,17 @@
     <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:focusable="true"
+            android:clickable="true"
             android:background="@color/white">
         <GridView
                 android:id="@+id/navigation_grid"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/dp_40"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dp_30"
                 android:numColumns="3"
-                android:layout_gravity="center"
+                android:layout_gravity="center_vertical"
                 android:gravity="center"
                 android:verticalSpacing="@dimen/dp_30"
                 android:horizontalSpacing="@dimen/dp_10"

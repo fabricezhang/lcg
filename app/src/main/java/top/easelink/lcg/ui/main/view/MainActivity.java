@@ -44,7 +44,6 @@ import top.easelink.lcg.ui.main.me.view.MeFragment;
 import top.easelink.lcg.ui.main.model.OpenArticleEvent;
 import top.easelink.lcg.ui.main.model.OpenForumEvent;
 import top.easelink.lcg.ui.main.model.TabModel;
-import top.easelink.lcg.ui.main.source.model.Article;
 import top.easelink.lcg.ui.main.viewmodel.MainViewModel;
 import top.easelink.lcg.ui.search.view.SearchActivity;
 import top.easelink.lcg.ui.webview.view.WebViewActivity;
@@ -231,7 +230,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
                             WebViewActivity.startWebViewWith(SERVER_BASE_URL + FREE_CHAT_URL, MainActivity.this);
                             return true;
                         case R.id.navItemRelease:
-                            WebViewActivity.startWebViewWith(SERVER_BASE_URL + APP_RELEASE_PAGE, MainActivity.this);
+                            showArticleFragment(APP_RELEASE_PAGE);
                             return true;
                         default:
                             return false;
@@ -241,7 +240,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(OpenArticleEvent event) {
-        showArticleFragment(event.getArticle());
+        showArticleFragment(event.getUrl());
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -267,9 +266,9 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
                 R.id.clRootView);
     }
 
-    private void showArticleFragment(Article article) {
+    private void showArticleFragment(String url) {
         ActivityUtils.addFragmentInActivity(getSupportFragmentManager(),
-                ArticleFragment.newInstance(article),
+                ArticleFragment.newInstance(url),
                 R.id.clRootView);
     }
 

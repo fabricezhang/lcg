@@ -38,7 +38,7 @@
     <string name="github_url">https://github.com/fabricezhang/lcg/</string>
     <string name="author_title">问题反馈邮箱</string>
     <string name="author_email">fabircez@163.com</string>
-    <string name="under_construction">页面施工中</string>
+    <string name="under_construction">页面施工中&#8230;</string>
 
     <!--favorite fragment-->
     <string name="empty_favorite">收藏夹目前是空的。</string>

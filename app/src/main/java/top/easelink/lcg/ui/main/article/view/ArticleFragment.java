@@ -23,7 +23,6 @@ import top.easelink.lcg.databinding.FragmentArticleBinding;
 import top.easelink.lcg.ui.ViewModelProviderFactory;
 import top.easelink.lcg.ui.main.article.viewmodel.ArticleAdapter;
 import top.easelink.lcg.ui.main.article.viewmodel.ArticleViewModel;
-import top.easelink.lcg.ui.main.source.model.Article;
 import top.easelink.lcg.ui.webview.view.WebViewActivity;
 
 import javax.inject.Inject;
@@ -42,10 +41,10 @@ public class ArticleFragment extends BaseFragment<FragmentArticleBinding, Articl
     private LinearLayoutManager mLayoutManager;
     private String articleUrl;
 
-    public static ArticleFragment newInstance(Article article) {
+    public static ArticleFragment newInstance(String url) {
         Bundle args = new Bundle();
         ArticleFragment fragment = new ArticleFragment();
-        args.putString(KEY_URL, article.getUrl());
+        args.putString(KEY_URL, url);
         fragment.setArguments(args);
         return fragment;
     }

@@ -17,6 +17,7 @@
             android:background="@color/white"
             android:onClick="@{() -> viewModel.onItemClick()}"
             android:orientation="vertical"
+            android:foreground="?attr/selectableItemBackground"
             app:cardCornerRadius="@dimen/dp_7"
             app:cardElevation="@dimen/dp_4">
 
