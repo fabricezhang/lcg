@@ -3,6 +3,8 @@
 UI参照知乎和虎扑App, 架构参考Google官方MVVM代码结构.
 论坛讨论贴: https://www.52pojie.cn/forum.php?mod=viewthread&tid=990363
 
+APK下载 蓝奏云 https://www.lanzous.com/i57tefa
+
 ## 功能
  - 通过Jsoup方式重新排版的文章浏览
  - 移动网页方式的浏览,支持账号密码登陆并保持登陆状态
