@@ -39,6 +39,7 @@ dependencies {
     api "androidx.vectordrawable:vectordrawable:$rootProject.vectorDrawableVersion"
     api "androidx.vectordrawable:vectordrawable-animated:$rootProject.animatedVectorDrawableVersion"
     api "androidx.constraintlayout:constraintlayout:$rootProject.constraintLayoutVersion"
+    api 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
 
     // font
     api "uk.co.chrisjenx:calligraphy:$rootProject.calligraphyVersion"
@@ -84,4 +85,5 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
 }
