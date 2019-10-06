@@ -9,33 +9,32 @@
             type="top.easelink.lcg.ui.main.me.viewmodel.MeViewModel" />
 
     </data>
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:focusable="true"
-            android:clickable="true"
-            android:gravity="center"
             android:background="@color/white">
         <TextView
-                android:id="@+id/author_email"
+                android:id="@+id/me_tab_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:textColor="@color/gray"
                 android:textSize="@dimen/sp_18"
-                android:text="@string/under_construction"/>
-        <com.airbnb.lottie.LottieAnimationView
-                android:id="@+id/me"
-                android:layout_marginTop="@dimen/dp_30"
-                android:layout_gravity="center"
-                android:layout_width="@dimen/dp_300"
-                android:layout_height="@dimen/dp_300"
-                android:scaleType="fitCenter"
-                app:lottie_rawRes="@raw/construction_site"
-                app:lottie_loop="false"
-                app:lottie_autoPlay="true"/>
-    </LinearLayout>
+                android:text="@string/me_tab_title"
+                android:layout_marginTop="@dimen/dp_10"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
+        <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/auto_sign_in_switch"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:text="@string/start_auto_sign_in"
+                android:layout_marginStart="@dimen/dp_20"
+                android:layout_marginEnd="@dimen/dp_20"
+                app:layout_constraintTop_toBottomOf="@id/me_tab_title"
+                app:layout_constraintStart_toStartOf="parent"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

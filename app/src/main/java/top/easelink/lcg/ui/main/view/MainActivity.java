@@ -78,7 +78,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
     DispatchingAndroidInjector<Fragment> fragmentDispatchingAndroidInjector;
     private static WeakReference<MainActivity> mainActivityWeakReference;
     private DrawerLayout mDrawer;
-    private Long lastBackPressed = 0l;
+    private Long lastBackPressed = 0L;
 
     @Override
     public int getBindingVariable() {
@@ -386,7 +386,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
         private List<TabModel> tabModels;
 
         MainViewPagerAdapter(FragmentManager fm, Context context) {
-            super(fm);
+            super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
             tabModels = new ArrayList<>();
             tabModels.add(new TabModel(context.getString(R.string.tab_title_hot), "hot"));
             tabModels.add(new TabModel(context.getString(R.string.tab_title_tech), "tech"));

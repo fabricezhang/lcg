@@ -65,6 +65,10 @@
                 android:name="com.tencent.bugly.beta.ui.BetaActivity"
                 android:configChanges="keyboardHidden|orientation|screenSize|locale"
                 android:theme="@android:style/Theme.Translucent" />
+        <service
+                android:name=".service.job.SignInJobService"
+                android:permission="android.permission.BIND_JOB_SERVICE"
+                android:exported="false"/>
     </application>
 
 </manifest>

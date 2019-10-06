@@ -33,13 +33,17 @@
     <string name="tab_title_digest">精华采撷</string>
     <string name="app_exit_tip">再按一次退出应用</string>
 
+    <!--Me Fragment-->
+    <string name="me_tab_title">个人页</string>
+    <string name="start_auto_sign_in">开启自动签到</string>
+
+
     <!--about fragment-->
     <string name="version">"version"</string>
     <string name="github_title">Github源码地址</string>
     <string name="github_url">https://github.com/fabricezhang/lcg/</string>
     <string name="author_title">问题反馈邮箱</string>
     <string name="author_email">fabircez@163.com</string>
-    <string name="under_construction">页面施工中&#8230;</string>
 
     <!--favorite fragment-->
     <string name="empty_favorite">收藏夹目前是空的。</string>
