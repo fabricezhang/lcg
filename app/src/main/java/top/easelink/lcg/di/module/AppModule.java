@@ -2,15 +2,17 @@ package top.easelink.lcg.di.module;
 
 import android.app.Application;
 import android.content.Context;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
 import top.easelink.framework.utils.rx.SchedulerProvider;
 import top.easelink.lcg.R;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
-
-import javax.inject.Singleton;
 
 @Module
 public class AppModule {

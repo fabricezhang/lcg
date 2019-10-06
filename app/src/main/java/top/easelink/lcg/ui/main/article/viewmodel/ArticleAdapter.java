@@ -4,19 +4,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
 import androidx.annotation.NonNull;
 import androidx.databinding.BindingAdapter;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
+
 import org.sufficientlysecure.htmltextview.HtmlHttpImageGetter;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import timber.log.Timber;
 import top.easelink.framework.base.BaseViewHolder;
 import top.easelink.lcg.R;
 import top.easelink.lcg.databinding.ItemPostViewBinding;
 import top.easelink.lcg.ui.main.source.model.Post;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static top.easelink.lcg.ui.main.source.remote.ArticlesRemoteDataSource.SERVER_BASE_URL;
 

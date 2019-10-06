@@ -3,16 +3,18 @@ package top.easelink.lcg.ui.search.viewmodel;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.databinding.BindingAdapter;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import top.easelink.framework.base.BaseViewHolder;
 import top.easelink.lcg.R;
 import top.easelink.lcg.databinding.ItemSearchResultViewBinding;
 import top.easelink.lcg.ui.search.model.SearchResult;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static top.easelink.lcg.ui.main.articles.viewmodel.ArticlesViewModel.FETCH_MORE;
 

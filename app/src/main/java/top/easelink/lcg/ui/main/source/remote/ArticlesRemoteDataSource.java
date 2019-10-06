@@ -3,27 +3,36 @@ package top.easelink.lcg.ui.main.source.remote;
 import android.text.TextUtils;
 import android.util.ArrayMap;
 import android.webkit.JavascriptInterface;
+
 import androidx.annotation.NonNull;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
+
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Nullable;
+
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
 import timber.log.Timber;
 import top.easelink.lcg.service.web.HookInterface;
 import top.easelink.lcg.service.web.WebViewWrapper;
 import top.easelink.lcg.ui.main.model.BlockException;
 import top.easelink.lcg.ui.main.source.ArticlesDataSource;
-import top.easelink.lcg.ui.main.source.model.*;
-
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import top.easelink.lcg.ui.main.source.model.Article;
+import top.easelink.lcg.ui.main.source.model.ArticleAbstractResponse;
+import top.easelink.lcg.ui.main.source.model.ArticleDetail;
+import top.easelink.lcg.ui.main.source.model.ForumPage;
+import top.easelink.lcg.ui.main.source.model.Post;
 
 /**
  * author : junzhang

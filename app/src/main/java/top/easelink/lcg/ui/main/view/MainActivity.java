@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -20,18 +21,27 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
-import dagger.android.AndroidInjector;
-import dagger.android.DispatchingAndroidInjector;
-import dagger.android.support.HasSupportFragmentInjector;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import top.easelink.framework.BR;
+
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.EmptyStackException;
+import java.util.List;
+
+import javax.inject.Inject;
+
+import dagger.android.AndroidInjector;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.support.HasSupportFragmentInjector;
 import top.easelink.framework.base.BaseActivity;
+import top.easelink.lcg.BR;
 import top.easelink.lcg.BuildConfig;
-import top.easelink.lcg.LCGApp;
 import top.easelink.lcg.R;
 import top.easelink.lcg.databinding.ActivityMainBinding;
 import top.easelink.lcg.databinding.NavHeaderMainBinding;
@@ -51,15 +61,12 @@ import top.easelink.lcg.ui.search.view.SearchActivity;
 import top.easelink.lcg.ui.webview.view.WebViewActivity;
 import top.easelink.lcg.utils.ActivityUtils;
 
-import javax.inject.Inject;
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.EmptyStackException;
-import java.util.List;
-
 import static top.easelink.lcg.ui.main.source.remote.ArticlesRemoteDataSource.SERVER_BASE_URL;
 import static top.easelink.lcg.utils.ActivityUtils.TAG_PREFIX;
-import static top.easelink.lcg.utils.WebsiteConstant.*;
+import static top.easelink.lcg.utils.WebsiteConstant.APP_RELEASE_PAGE;
+import static top.easelink.lcg.utils.WebsiteConstant.FREE_CHAT_URL;
+import static top.easelink.lcg.utils.WebsiteConstant.SEARCH_URL;
+import static top.easelink.lcg.utils.WebsiteConstant.URL_KEY;
 
 @SuppressWarnings("unused")
 public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewModel>

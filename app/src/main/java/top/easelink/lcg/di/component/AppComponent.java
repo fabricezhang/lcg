@@ -1,14 +1,15 @@
 package top.easelink.lcg.di.component;
 
 import android.app.Application;
+
+import javax.inject.Singleton;
+
 import dagger.BindsInstance;
 import dagger.Component;
 import dagger.android.AndroidInjectionModule;
 import top.easelink.lcg.LCGApp;
 import top.easelink.lcg.di.builder.ActivityBuilder;
 import top.easelink.lcg.di.module.AppModule;
-
-import javax.inject.Singleton;
 
 @Singleton
 @Component(modules = {AndroidInjectionModule.class,

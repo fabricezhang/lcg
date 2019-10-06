@@ -1,16 +1,18 @@
 package top.easelink.lcg.ui.main.me.view;
 
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
-import top.easelink.framework.BR;
+
+import javax.inject.Inject;
+
 import top.easelink.framework.base.BaseFragment;
+import top.easelink.lcg.BR;
 import top.easelink.lcg.R;
 import top.easelink.lcg.databinding.FragmentAboutBinding;
 import top.easelink.lcg.ui.ViewModelProviderFactory;
 import top.easelink.lcg.ui.main.me.viewmodel.MeViewModel;
-
-import javax.inject.Inject;
 
 public class MeFragment extends BaseFragment<FragmentAboutBinding, MeViewModel> implements MeNavigator {
 

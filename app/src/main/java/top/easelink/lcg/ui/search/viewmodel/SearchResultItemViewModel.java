@@ -1,7 +1,9 @@
 package top.easelink.lcg.ui.search.viewmodel;
 
 import androidx.databinding.ObservableField;
+
 import org.greenrobot.eventbus.EventBus;
+
 import top.easelink.lcg.ui.search.model.OpenSearchResultEvent;
 import top.easelink.lcg.ui.search.model.SearchResult;
 

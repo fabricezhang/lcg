@@ -4,8 +4,12 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+
 import com.tencent.bugly.Bugly;
 import com.tencent.bugly.beta.Beta;
+
+import javax.inject.Inject;
+
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasActivityInjector;
 import io.reactivex.exceptions.UndeliverableException;
@@ -14,8 +18,6 @@ import timber.log.Timber;
 import top.easelink.lcg.di.component.DaggerAppComponent;
 import top.easelink.lcg.service.web.WebViewWrapper;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
-
-import javax.inject.Inject;
 
 public class LCGApp extends Application implements HasActivityInjector {
 

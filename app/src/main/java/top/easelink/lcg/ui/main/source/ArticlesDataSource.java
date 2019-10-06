@@ -1,13 +1,15 @@
 package top.easelink.lcg.ui.main.source;
 
 import androidx.annotation.NonNull;
+
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import io.reactivex.Observable;
 import top.easelink.lcg.ui.main.source.model.Article;
 import top.easelink.lcg.ui.main.source.model.ArticleDetail;
 import top.easelink.lcg.ui.main.source.model.ForumPage;
-
-import javax.annotation.Nullable;
-import java.util.List;
 
 /**
  * author : junzhang

@@ -2,13 +2,14 @@ package top.easelink.lcg.ui.main.articles.viewmodel;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+
+import java.util.List;
+
 import top.easelink.framework.base.BaseViewModel;
 import top.easelink.framework.utils.rx.SchedulerProvider;
 import top.easelink.lcg.ui.main.articles.view.ArticlesNavigator;
 import top.easelink.lcg.ui.main.source.ArticlesRepository;
 import top.easelink.lcg.ui.main.source.model.Article;
-
-import java.util.List;
 
 public class ForumArticlesViewModel extends BaseViewModel<ArticlesNavigator>
         implements ArticlesAdapter.ArticlesAdapterListener  {

@@ -1,15 +1,17 @@
 package top.easelink.lcg.ui.search.viewmodel;
 
 import android.text.TextUtils;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+
+import java.util.List;
+
 import top.easelink.framework.base.BaseViewModel;
 import top.easelink.framework.utils.rx.SchedulerProvider;
 import top.easelink.lcg.ui.search.model.SearchResult;
 import top.easelink.lcg.ui.search.source.RxSearchService;
 import top.easelink.lcg.ui.search.view.SearchNavigator;
-
-import java.util.List;
 
 import static top.easelink.lcg.utils.WebsiteConstant.BAIDU_SEARCH_BASE_URL;
 

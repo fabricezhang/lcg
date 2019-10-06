@@ -6,6 +6,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
@@ -14,19 +15,22 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.airbnb.lottie.LottieAnimationView;
+
+import java.util.ArrayList;
+
+import javax.inject.Inject;
+
 import timber.log.Timber;
-import top.easelink.framework.BR;
 import top.easelink.framework.base.BaseFragment;
+import top.easelink.lcg.BR;
 import top.easelink.lcg.R;
 import top.easelink.lcg.databinding.FragmentArticleBinding;
 import top.easelink.lcg.ui.ViewModelProviderFactory;
 import top.easelink.lcg.ui.main.article.viewmodel.ArticleAdapter;
 import top.easelink.lcg.ui.main.article.viewmodel.ArticleViewModel;
 import top.easelink.lcg.ui.webview.view.WebViewActivity;
-
-import javax.inject.Inject;
-import java.util.ArrayList;
 
 import static top.easelink.lcg.ui.main.article.viewmodel.ArticleViewModel.FETCH_INIT;
 import static top.easelink.lcg.ui.main.source.remote.ArticlesRemoteDataSource.SERVER_BASE_URL;

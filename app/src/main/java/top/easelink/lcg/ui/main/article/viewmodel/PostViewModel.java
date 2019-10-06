@@ -1,14 +1,16 @@
 package top.easelink.lcg.ui.main.article.viewmodel;
 
 import android.view.View;
+
 import androidx.databinding.ObservableField;
-import timber.log.Timber;
-import top.easelink.lcg.ui.main.source.model.Post;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import timber.log.Timber;
+import top.easelink.lcg.ui.main.source.model.Post;
 
 public class PostViewModel {
 

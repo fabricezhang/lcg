@@ -2,20 +2,23 @@ package top.easelink.lcg.ui.main.forumnav.view;
 
 import android.os.Bundle;
 import android.view.View;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
+
 import org.greenrobot.eventbus.EventBus;
-import top.easelink.framework.BR;
+
+import javax.inject.Inject;
+
 import top.easelink.framework.base.BaseFragment;
+import top.easelink.lcg.BR;
 import top.easelink.lcg.R;
 import top.easelink.lcg.databinding.FragmentForumsNavigationBinding;
 import top.easelink.lcg.ui.ViewModelProviderFactory;
 import top.easelink.lcg.ui.main.forumnav.viewmodel.ForumNavigationViewModel;
 import top.easelink.lcg.ui.main.model.ForumNavigationModel;
 import top.easelink.lcg.ui.main.model.OpenForumEvent;
-
-import javax.inject.Inject;
 
 public class ForumNavigationFragment extends BaseFragment<FragmentForumsNavigationBinding, ForumNavigationViewModel>
         implements ForumNavigationNavigator{

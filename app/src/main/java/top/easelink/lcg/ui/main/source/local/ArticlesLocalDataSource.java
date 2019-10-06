@@ -1,10 +1,10 @@
 package top.easelink.lcg.ui.main.source.local;
 
+import java.util.List;
+
 import io.reactivex.Observable;
 import top.easelink.lcg.ui.main.source.FavoritesDataSource;
 import top.easelink.lcg.ui.main.source.model.ArticleEntity;
-
-import java.util.List;
 
 /**
  * author : junzhang

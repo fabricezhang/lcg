@@ -7,6 +7,7 @@ import android.webkit.SslErrorHandler;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
 import top.easelink.lcg.LCGApp;
 
 /**
