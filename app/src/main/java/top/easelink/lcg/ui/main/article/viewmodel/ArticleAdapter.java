@@ -3,13 +3,10 @@ package top.easelink.lcg.ui.main.article.viewmodel;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.BindingAdapter;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.bumptech.glide.Glide;
 
 import org.sufficientlysecure.htmltextview.HtmlHttpImageGetter;
 
@@ -32,21 +29,13 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     private ArticleAdapterListener mListener;
     private List<Post> mPostList = new ArrayList<>();
 
-    @BindingAdapter({"adapter"})
-    public static void addPostItmes(RecyclerView recyclerView, List<Post> postListt) {
+    @BindingAdapter("adapter")
+    public static void addPostItems(RecyclerView recyclerView, List<Post> postListt) {
         ArticleAdapter adapter = (ArticleAdapter) recyclerView.getAdapter();
         if (adapter != null) {
             adapter.clearItems();
             adapter.addItems(postListt);
         }
-    }
-
-    @BindingAdapter({"imageUrl"})
-    public static void loadImage(ImageView imageView, String url){
-        Glide.with(imageView.getContext())
-                .load(url)
-                .placeholder(R.drawable.ic_noavatar_middle)
-                .into(imageView);
     }
 
     public ArticleAdapter(ArticleAdapterListener listener) {

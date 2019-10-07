@@ -1,8 +1,10 @@
 package top.easelink.lcg.ui.main.me.viewmodel
 
+import android.text.TextUtils
 import android.view.View
 import android.webkit.JavascriptInterface
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.widget.SwitchCompat
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.LiveData
@@ -12,11 +14,12 @@ import com.bumptech.glide.Glide
 import org.jsoup.Jsoup
 import top.easelink.framework.base.BaseViewModel
 import top.easelink.framework.utils.rx.SchedulerProvider
+import top.easelink.lcg.LCGApp
 import top.easelink.lcg.R
 import top.easelink.lcg.service.web.WebViewWrapper
 import top.easelink.lcg.service.work.SignInWorker
-import top.easelink.lcg.service.work.SignInWorker.DEFAULT_TIME_UNIT
-import top.easelink.lcg.service.work.SignInWorker.WORK_INTERVAL
+import top.easelink.lcg.service.work.SignInWorker.Companion.DEFAULT_TIME_UNIT
+import top.easelink.lcg.service.work.SignInWorker.Companion.WORK_INTERVAL
 import top.easelink.lcg.ui.main.me.model.UserInfo
 import top.easelink.lcg.ui.main.me.view.MeNavigator
 import top.easelink.lcg.ui.main.source.local.SPConstants.SP_KEY_AUTO_SIGN_IN
@@ -27,17 +30,24 @@ import top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL
 class MeViewModel(schedulerProvider:SchedulerProvider):BaseViewModel<MeNavigator>(schedulerProvider) {
 
     private val mUserInfo = MutableLiveData<UserInfo>()
+    private val mAutoSignInEnable = MutableLiveData<Boolean>()
+
+    init {
+        mAutoSignInEnable.postValue(SharedPreferencesHelper
+            .getUserSp()
+            .getBoolean(SP_KEY_AUTO_SIGN_IN, false))
+    }
 
     val workInfo:LiveData<List<WorkInfo>>
-        get() = WorkManager.getInstance().getWorkInfosByTagLiveData(SignInWorker::class.java!!.simpleName)
+        get() = WorkManager.getInstance().getWorkInfosByTagLiveData(SignInWorker::class.java.simpleName)
 
     val userInfo:LiveData<UserInfo>
         get() = mUserInfo
 
-    val isAutoSignInEnabled:Boolean
-        get() = SharedPreferencesHelper.getUserSp().getBoolean(SP_KEY_AUTO_SIGN_IN, false)
+    val autoSignEnable: LiveData<Boolean>
+        get() = mAutoSignInEnable
 
-    fun ScheduleJob(v:View) {
+    fun scheduleJob(v:View) {
         if (v is SwitchCompat) {
             SharedPreferencesHelper.getUserSp()
                 .edit()
@@ -63,6 +73,7 @@ class MeViewModel(schedulerProvider:SchedulerProvider):BaseViewModel<MeNavigator
     }
 
     fun fetchUserInfo() {
+        setIsLoading(true)
         WebViewWrapper.getInstance()
             .loadUrl("$SERVER_BASE_URL$HOME_URL?mod=spacecp&ac=credit&showcredit=1", ::parseHtml)
     }
@@ -70,29 +81,32 @@ class MeViewModel(schedulerProvider:SchedulerProvider):BaseViewModel<MeNavigator
     @JavascriptInterface
     fun parseHtml(html: String) {
         Jsoup.parse(html).apply {
-            val avatar = selectFirst("div.avt > a > img")?.attr("src")
-            val groupInfo = getElementById("g_upmine")?.text()
             val userName = getElementsByClass("vwmy")?.first()?.firstElementSibling()?.text()
-            getElementsByClass("xi2")?.remove()
-            val wuaiCoin = getElementsByClass("xi1 cl")?.first()?.text()
-            val element = selectFirst("span.xg1")
-            val parentCredit = element?.parent()
-            element.remove()
-            val credit = parentCredit?.text()
-
-            mUserInfo.postValue(UserInfo(userName, avatar, groupInfo, wuaiCoin, credit))
+            if (!TextUtils.isEmpty(userName)) {
+                val avatar = selectFirst("div.avt > a > img")?.attr("src")
+                val groupInfo = getElementById("g_upmine")?.text()
+                getElementsByClass("xi2")?.remove()
+                val coin = getElementsByClass("xi1 cl")?.first()?.text()
+                val element = selectFirst("span.xg1")
+                val parentCredit = element?.parent()
+                element?.remove()
+                val credit = parentCredit?.text()
+                mUserInfo.postValue(UserInfo(userName, avatar, groupInfo, coin, credit))
+            } else{
+                Toast.makeText(
+                    LCGApp.getContext(),
+                    getElementById("messagetext").text(),
+                    Toast.LENGTH_SHORT)
+                    .show()
+                disableAutoSign()
+            }
         }
+        postIsLoading(false)
     }
 
-    companion object {
-
-        @BindingAdapter("imageUrl")
-        fun loadImage(imageView:ImageView, url:String) {
-            Glide.with(imageView.context)
-                .load(url)
-                .placeholder(R.drawable.ic_noavatar_middle)
-                .into(imageView)
-        }
+    private fun disableAutoSign() {
+        WorkManager.getInstance().cancelAllWorkByTag(SignInWorker::class.java.simpleName)
+        SharedPreferencesHelper.getUserSp().edit().putBoolean(SP_KEY_AUTO_SIGN_IN, false).commit()
+        mAutoSignInEnable.postValue(false)
     }
-
 }

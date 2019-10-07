@@ -13,9 +13,14 @@ import top.easelink.lcg.LCGApp;
 public class SharedPreferencesHelper {
 
     private static final String SP_USER = "sp_user";
+    private static final String SP_COOKIE = "sp_cookie";
 
     public static SharedPreferences getUserSp() {
         return LCGApp.getInstance().getSharedPreferences(SP_USER, Context.MODE_PRIVATE);
+    }
+
+    public static SharedPreferences getCookieSp() {
+        return LCGApp.getInstance().getSharedPreferences(SP_COOKIE, Context.MODE_PRIVATE);
     }
 
     public static SharedPreferences getDefaultSp() {

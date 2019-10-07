@@ -41,6 +41,10 @@ public abstract class BaseViewModel<N> extends ViewModel {
         mIsLoading.setValue(isLoading);
     }
 
+    public void postIsLoading(boolean isLoading) {
+        mIsLoading.postValue(isLoading);
+    }
+
     public N getNavigator() {
         return mNavigator.get();
     }

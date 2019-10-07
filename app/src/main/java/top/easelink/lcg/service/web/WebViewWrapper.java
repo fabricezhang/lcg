@@ -3,12 +3,19 @@ package top.easelink.lcg.service.web;
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.net.http.SslError;
+import android.text.TextUtils;
+import android.webkit.CookieManager;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import timber.log.Timber;
 import top.easelink.lcg.LCGApp;
+import top.easelink.lcg.ui.main.source.local.SharedPreferencesHelper;
 
 /**
  * author : junzhang
@@ -72,9 +79,19 @@ public class WebViewWrapper {
     private class InnerWebViewClient extends WebViewClient {
         @Override
         public void onPageFinished(WebView view, String url) {
-//            CookieManager cookieManager = CookieManager.getInstance();
-//            String cookieUrl = cookieManager.getCookie(url);
-//            Timber.d("Cookie : %s", cookieUrl);
+            CookieManager cookieManager = CookieManager.getInstance();
+            String cookieUrl = cookieManager.getCookie(url);
+            Timber.i("Cookie : %s", cookieUrl);
+            if (!TextUtils.isEmpty(cookieUrl)) {
+                String[] cookies = cookieUrl.split(";");
+                List<SharedPreferencesHelper.SpItem> itemList = new ArrayList<>();
+                for (String cookie: cookies) {
+                    String[] cookiePair = cookie.split("=", 2);
+                    itemList.add(new SharedPreferencesHelper.SpItem<>(cookiePair[0], cookiePair[1]));
+                    Timber.i("%s = %s", cookiePair[0], cookiePair[1]);
+                }
+                SharedPreferencesHelper.setPreferenceWithList(SharedPreferencesHelper.getCookieSp(), itemList);
+            }
             view.loadUrl("javascript:" + HOOK_NAME + ".processHtml(document.documentElement.outerHTML);");
             super.onPageFinished(view, url);
         }

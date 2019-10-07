@@ -65,7 +65,6 @@ dependencies {
     annotationProcessor "com.google.dagger:dagger-android-processor:$rootProject.dagger2Version"
     implementation project(':framework')
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     debugImplementation "com.amitshekhar.android:debug-db:1.0.4"
     // test related
