@@ -32,17 +32,30 @@
             <TextView
                     android:id="@+id/titleTextView"
                     style="@style/TextStyle.Heading"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:maxWidth="@dimen/dp_280"
                     android:layout_marginStart="@dimen/dp_10"
                     android:layout_marginTop="@dimen/dp_20"
                     android:maxLines="2"
+                    android:ellipsize="middle"
                     android:text="@{viewModel.title}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/removeButton"
                     app:layout_constraintHorizontal_bias="0"
                     tools:text="Title"/>
+
+            <ImageButton
+                    android:id="@+id/removeButton"
+                    android:layout_width="@dimen/dp_24"
+                    android:layout_height="@dimen/dp_24"
+                    android:src="@drawable/ic_delete_gray_24dp"
+                    android:contentDescription="@null"
+                    android:background="@color/transparent"
+                    app:layout_constraintTop_toTopOf="@id/titleTextView"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    />
 
             <TextView
                     android:id="@+id/authorTextView"

@@ -11,10 +11,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 import top.easelink.framework.base.BaseViewHolder;
 import top.easelink.lcg.R;
 import top.easelink.lcg.databinding.ItemFavoriteArticleViewBinding;
+import top.easelink.lcg.ui.main.source.ArticlesRepository;
 import top.easelink.lcg.ui.main.source.model.ArticleEntity;
 
 import static top.easelink.lcg.ui.main.articles.viewmodel.ArticlesViewModel.FETCH_MORE;
@@ -76,7 +79,7 @@ public class FavoriteArticlesAdapter extends RecyclerView.Adapter<BaseViewHolder
                 ItemFavoriteArticleViewBinding favoriteArticleViewBinding
                         = ItemFavoriteArticleViewBinding.inflate(LayoutInflater.from(parent.getContext()),
                         parent, false);
-                return new ArticleViewHolder(favoriteArticleViewBinding);
+                return new ArticleViewHolder(favoriteArticleViewBinding, this);
             case VIEW_TYPE_LOAD_MORE:
                 return new LoadMoreViewHolder(
                         LayoutInflater.from(parent.getContext())
@@ -113,17 +116,32 @@ public class FavoriteArticlesAdapter extends RecyclerView.Adapter<BaseViewHolder
     public class ArticleViewHolder extends BaseViewHolder {
 
         private ItemFavoriteArticleViewBinding mBinding;
+        private FavoriteArticlesAdapter mAdapter;
 
         private FavoriteArticleItemViewModel favoriteArticleItemViewModel;
 
-        ArticleViewHolder(ItemFavoriteArticleViewBinding binding) {
+        ArticleViewHolder(ItemFavoriteArticleViewBinding binding, FavoriteArticlesAdapter adapter) {
             super(binding.getRoot());
             this.mBinding = binding;
+            this.mAdapter = adapter;
         }
 
         @Override
         public void onBind(int position) {
             final ArticleEntity articleEntity = mArticleEntities.get(position);
+            mBinding.removeButton.setOnClickListener(v -> {
+                        ArticlesRepository.getInstance().delArticleFromFavorite(articleEntity.getId())
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(res -> {
+                                    if (res) {
+                                        mArticleEntities.remove(articleEntity);
+                                        notifyItemRemoved(position);
+                                        notifyItemRangeChanged(position, mArticleEntities.size() - position);
+                                    }
+                                });
+                    }
+            );
             favoriteArticleItemViewModel = new FavoriteArticleItemViewModel(articleEntity);
             try {
                 mBinding.contentTextView.setHtml(articleEntity.getContent().trim());
