@@ -7,17 +7,20 @@ public class UserInfo {
     private String groupInfo;
     private String wuaiCoin;
     private String credit;
+    private String signInStateUrl;
 
     public UserInfo(String userName,
                     String avatarUrl,
                     String groupInfo,
                     String wuaiCoin,
-                    String credit) {
+                    String credit,
+                    String signInStateUrl) {
         this.avatarUrl = avatarUrl;
         this.groupInfo = groupInfo;
         this.userName = userName;
         this.wuaiCoin = wuaiCoin;
         this.credit = credit;
+        this.signInStateUrl = signInStateUrl;
     }
 
     public String getUserName() {
@@ -38,5 +41,9 @@ public class UserInfo {
 
     public String getCredit() {
         return credit;
+    }
+
+    public String getSignInStateUrl() {
+        return signInStateUrl;
     }
 }

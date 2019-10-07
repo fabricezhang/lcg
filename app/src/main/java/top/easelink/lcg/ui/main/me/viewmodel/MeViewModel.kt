@@ -3,19 +3,15 @@ package top.easelink.lcg.ui.main.me.viewmodel
 import android.text.TextUtils
 import android.view.View
 import android.webkit.JavascriptInterface
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.widget.SwitchCompat
-import androidx.databinding.BindingAdapter
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.work.*
-import com.bumptech.glide.Glide
 import org.jsoup.Jsoup
 import top.easelink.framework.base.BaseViewModel
 import top.easelink.framework.utils.rx.SchedulerProvider
 import top.easelink.lcg.LCGApp
-import top.easelink.lcg.R
 import top.easelink.lcg.service.web.WebViewWrapper
 import top.easelink.lcg.service.work.SignInWorker
 import top.easelink.lcg.service.work.SignInWorker.Companion.DEFAULT_TIME_UNIT
@@ -91,7 +87,8 @@ class MeViewModel(schedulerProvider:SchedulerProvider):BaseViewModel<MeNavigator
                 val parentCredit = element?.parent()
                 element?.remove()
                 val credit = parentCredit?.text()
-                mUserInfo.postValue(UserInfo(userName, avatar, groupInfo, coin, credit))
+                val signInState = selectFirst("img.qq_bind")?.attr("src")
+                mUserInfo.postValue(UserInfo(userName, avatar, groupInfo, coin, credit, signInState))
             } else{
                 Toast.makeText(
                     LCGApp.getContext(),
