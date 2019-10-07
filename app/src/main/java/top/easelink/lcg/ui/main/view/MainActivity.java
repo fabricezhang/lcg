@@ -61,11 +61,11 @@ import top.easelink.lcg.ui.search.view.SearchActivity;
 import top.easelink.lcg.ui.webview.view.WebViewActivity;
 import top.easelink.lcg.utils.ActivityUtils;
 
-import static top.easelink.lcg.ui.main.source.remote.ArticlesRemoteDataSource.SERVER_BASE_URL;
 import static top.easelink.lcg.utils.ActivityUtils.TAG_PREFIX;
 import static top.easelink.lcg.utils.WebsiteConstant.APP_RELEASE_PAGE;
 import static top.easelink.lcg.utils.WebsiteConstant.FREE_CHAT_URL;
 import static top.easelink.lcg.utils.WebsiteConstant.SEARCH_URL;
+import static top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL;
 import static top.easelink.lcg.utils.WebsiteConstant.URL_KEY;
 
 @SuppressWarnings("unused")

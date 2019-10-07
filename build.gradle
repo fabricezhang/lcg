@@ -49,6 +49,7 @@ ext {
     glideVersion = '4.10.0'
     roomDatabaseVersion = '2.0.0'
     dataBindingVersion = '3.1.4'
+    workVersion = '1.0.1'
 
     dagger2Version = '2.23.1'
     rxjava2Version = '2.1.9'

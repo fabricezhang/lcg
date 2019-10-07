@@ -33,7 +33,7 @@ public class LCGApp extends Application implements HasActivityInjector {
     }
 
     @SuppressLint("StaticFieldLeak")
-    private static Context mContext;
+    private static LCGApp INSTANCE;
 
     @Override
     public void onCreate() {
@@ -43,7 +43,7 @@ public class LCGApp extends Application implements HasActivityInjector {
                 .application(this)
                 .build()
                 .inject(this);
-        mContext = this;
+        INSTANCE = this;
         initBulgy();
         CalligraphyConfig.initDefault(mCalligraphyConfig);
         if (BuildConfig.DEBUG) {
@@ -54,7 +54,10 @@ public class LCGApp extends Application implements HasActivityInjector {
     }
 
     public static Context getContext() {
-        return mContext;
+        return INSTANCE;
+    }
+    public static LCGApp getInstance() {
+        return INSTANCE;
     }
 
     private void initRx() {

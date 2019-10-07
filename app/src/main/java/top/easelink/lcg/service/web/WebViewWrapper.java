@@ -32,6 +32,14 @@ public class WebViewWrapper {
         instance = getInstance();
     }
 
+    public void post(String url, HookInterface hookInterface) {
+        mWebView.post(() -> {
+            mWebView.removeJavascriptInterface(HOOK_NAME);
+            mWebView.addJavascriptInterface(hookInterface, HOOK_NAME);
+            mWebView.loadUrl(url);
+        });
+    }
+
     public void loadUrl(String url, HookInterface hookInterface) {
         mWebView.removeJavascriptInterface(HOOK_NAME);
         mWebView.addJavascriptInterface(hookInterface, HOOK_NAME);

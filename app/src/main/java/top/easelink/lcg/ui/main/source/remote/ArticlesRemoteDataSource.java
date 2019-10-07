@@ -34,6 +34,8 @@ import top.easelink.lcg.ui.main.source.model.ArticleDetail;
 import top.easelink.lcg.ui.main.source.model.ForumPage;
 import top.easelink.lcg.ui.main.source.model.Post;
 
+import static top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL;
+
 /**
  * author : junzhang
  * date   : 2019-07-04 16:22
@@ -41,7 +43,6 @@ import top.easelink.lcg.ui.main.source.model.Post;
  */
 public class ArticlesRemoteDataSource implements ArticlesDataSource {
 
-    public static final String SERVER_BASE_URL = "https://www.52pojie.cn/";
     private static final String FORUM_BASE_URL = "forum.php?mod=guide&view=";
 
     private static ArticlesRemoteDataSource mInstance;
@@ -59,7 +60,6 @@ public class ArticlesRemoteDataSource implements ArticlesDataSource {
 
     private ArticlesRemoteDataSource() {
         // should avoid to instantiating RxSearchService from outside
-        // FIXME: 2019-07-27 should use dagger2 to inject this field
         gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
     }
 

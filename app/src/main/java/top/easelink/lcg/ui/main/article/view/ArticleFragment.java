@@ -33,7 +33,7 @@ import top.easelink.lcg.ui.main.article.viewmodel.ArticleViewModel;
 import top.easelink.lcg.ui.webview.view.WebViewActivity;
 
 import static top.easelink.lcg.ui.main.article.viewmodel.ArticleViewModel.FETCH_INIT;
-import static top.easelink.lcg.ui.main.source.remote.ArticlesRemoteDataSource.SERVER_BASE_URL;
+import static top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL;
 
 
 public class ArticleFragment extends BaseFragment<FragmentArticleBinding, ArticleViewModel>

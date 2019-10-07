@@ -40,6 +40,7 @@ dependencies {
     api "androidx.vectordrawable:vectordrawable-animated:$rootProject.animatedVectorDrawableVersion"
     api "androidx.constraintlayout:constraintlayout:$rootProject.constraintLayoutVersion"
     api 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
+    api "android.arch.work:work-runtime:$rootProject.workVersion"
 
     // font
     api "uk.co.chrisjenx:calligraphy:$rootProject.calligraphyVersion"
