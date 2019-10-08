@@ -10,9 +10,5 @@
                 android:id="@+id/navItemRelease"
                 android:icon="@drawable/ic_get_app_black_24dp"
                 android:title="@string/thread_about_app" />
-        <item
-                android:id="@+id/navItemFreeChat"
-                android:icon="@drawable/ic_invert_colors_black_24dp"
-                android:title="@string/free_chat_title" />
     </group>
 </menu>

@@ -58,14 +58,11 @@ import top.easelink.lcg.ui.main.model.OpenForumEvent;
 import top.easelink.lcg.ui.main.model.TabModel;
 import top.easelink.lcg.ui.main.viewmodel.MainViewModel;
 import top.easelink.lcg.ui.search.view.SearchActivity;
-import top.easelink.lcg.ui.webview.view.WebViewActivity;
 import top.easelink.lcg.utils.ActivityUtils;
 
 import static top.easelink.lcg.utils.ActivityUtils.TAG_PREFIX;
 import static top.easelink.lcg.utils.WebsiteConstant.APP_RELEASE_PAGE;
-import static top.easelink.lcg.utils.WebsiteConstant.FREE_CHAT_URL;
 import static top.easelink.lcg.utils.WebsiteConstant.SEARCH_URL;
-import static top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL;
 import static top.easelink.lcg.utils.WebsiteConstant.URL_KEY;
 
 @SuppressWarnings("unused")
@@ -240,9 +237,6 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
                     switch (item.getItemId()) {
                         case R.id.navItemAbout:
                             showAboutFragment();
-                            return true;
-                        case R.id.navItemFreeChat:
-                            WebViewActivity.startWebViewWith(SERVER_BASE_URL + FREE_CHAT_URL, MainActivity.this);
                             return true;
                         case R.id.navItemRelease:
                             showArticleFragment(APP_RELEASE_PAGE);
