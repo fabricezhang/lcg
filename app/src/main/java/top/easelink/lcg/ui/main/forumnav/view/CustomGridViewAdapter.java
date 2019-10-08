@@ -64,7 +64,6 @@ public class CustomGridViewAdapter extends ArrayAdapter<ForumNavigationModel> {
         }
         holder.textView.setText(item.getTitle());
         holder.imageView.setImageResource(item.getDrawableRes());
-        final ForumNavigationModel model = item;
         return convertView;
     }
 

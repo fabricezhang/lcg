@@ -79,8 +79,7 @@ public class ForumNavigationViewModel extends BaseViewModel<ForumNavigationNavig
         list.add(new ForumNavigationModel(
                 context.getString(R.string.free_chat_title),
                 R.drawable.ic_invert_colors_black_24dp,
-                FREE_CHAT_URL)
-        );
+                FREE_CHAT_URL));
         navigation.setValue(list);
     }
 
