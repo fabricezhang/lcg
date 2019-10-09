@@ -3,8 +3,8 @@ package top.easelink.lcg.ui.main.me.viewmodel
 import android.text.TextUtils
 import android.view.View
 import android.webkit.JavascriptInterface
+import android.widget.CheckBox
 import android.widget.Toast
-import androidx.appcompat.widget.SwitchCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.work.*
@@ -44,7 +44,7 @@ class MeViewModel(schedulerProvider:SchedulerProvider):BaseViewModel<MeNavigator
         get() = mAutoSignInEnable
 
     fun scheduleJob(v:View) {
-        if (v is SwitchCompat) {
+        if (v is CheckBox) {
             SharedPreferencesHelper.getUserSp()
                 .edit()
                 .putBoolean(SP_KEY_AUTO_SIGN_IN, v.isChecked)
@@ -96,6 +96,7 @@ class MeViewModel(schedulerProvider:SchedulerProvider):BaseViewModel<MeNavigator
                     Toast.LENGTH_SHORT)
                     .show()
                 disableAutoSign()
+                navigator.showLoginFragment()
             }
         }
         postIsLoading(false)

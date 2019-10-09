@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:bottom="28dp">
+        <shape android:shape="rectangle">
+            <corners android:radius="@dimen/dp_10" />
+            <gradient
+                    android:angle="90"
+                    android:endColor="@color/light_gray"
+                    android:startColor="@color/pojie_logo_light" />
+        </shape>
+    </item>
+</layer-list>

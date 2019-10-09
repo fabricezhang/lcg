@@ -14,6 +14,7 @@ import top.easelink.lcg.BR;
 import top.easelink.lcg.R;
 import top.easelink.lcg.databinding.FragmentAboutBinding;
 import top.easelink.lcg.ui.ViewModelProviderFactory;
+import top.easelink.lcg.ui.main.login.view.LoginDialog;
 import top.easelink.lcg.ui.main.me.viewmodel.MeViewModel;
 
 public class MeFragment extends BaseFragment<FragmentAboutBinding, MeViewModel> implements MeNavigator {
@@ -53,5 +54,10 @@ public class MeFragment extends BaseFragment<FragmentAboutBinding, MeViewModel> 
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+    }
+
+    @Override
+    public void showLoginFragment() {
+        new LoginDialog().show(getBaseActivity().getSupportFragmentManager(), LoginDialog.class.getSimpleName());
     }
 }

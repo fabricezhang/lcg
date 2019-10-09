@@ -38,6 +38,11 @@
     <string name="me_setting_title">设置选项</string>
     <string name="start_auto_sign_in">开启自动签到</string>
 
+    <!--Login Dialog-->
+    <string name="login_username">用户名</string>
+    <string name="login_password">密码</string>
+    <string name="login_verify_code">验证码</string>
+    <string name="login_btn">登陆</string>
 
     <!--about fragment-->
     <string name="version">"version"</string>
