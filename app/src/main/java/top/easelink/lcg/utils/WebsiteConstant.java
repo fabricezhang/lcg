@@ -26,6 +26,7 @@ public class WebsiteConstant {
     public static final String VIRUS_SAMPLE_URL = "forum-40-%d.html";
 
     public static final String HOME_URL = "home.php";
+    public static final String LOGIN_URL = "member.php?mod=logging&action=login";
 
     public static final String APP_RELEASE_PAGE = "forum.php?mod=viewthread&tid=990363&page=1";
 }

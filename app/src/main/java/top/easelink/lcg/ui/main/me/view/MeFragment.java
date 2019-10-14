@@ -48,7 +48,7 @@ public class MeFragment extends BaseFragment<FragmentAboutBinding, MeViewModel> 
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getViewModel().setNavigator(this);
-        getViewModel().fetchUserInfo();
+        getViewModel().fetchUserInfoDirect();
     }
 
     @Override

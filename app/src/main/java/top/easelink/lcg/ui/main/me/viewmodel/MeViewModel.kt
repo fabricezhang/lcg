@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.work.*
+import kotlinx.coroutines.*
 import org.jsoup.Jsoup
 import top.easelink.framework.base.BaseViewModel
 import top.easelink.framework.utils.rx.SchedulerProvider
@@ -20,6 +21,7 @@ import top.easelink.lcg.ui.main.me.model.UserInfo
 import top.easelink.lcg.ui.main.me.view.MeNavigator
 import top.easelink.lcg.ui.main.source.local.SPConstants.SP_KEY_AUTO_SIGN_IN
 import top.easelink.lcg.ui.main.source.local.SharedPreferencesHelper
+import top.easelink.lcg.utils.WebsiteConstant
 import top.easelink.lcg.utils.WebsiteConstant.HOME_URL
 import top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL
 
@@ -74,6 +76,26 @@ class MeViewModel(schedulerProvider:SchedulerProvider):BaseViewModel<MeNavigator
             .loadUrl("$SERVER_BASE_URL$HOME_URL?mod=spacecp&ac=credit&showcredit=1", ::parseHtml)
     }
 
+    fun fetchUserInfoDirect() {
+        setIsLoading(true)
+        GlobalScope.launch(Dispatchers.IO) {
+            val response = Jsoup
+                .connect("$SERVER_BASE_URL$HOME_URL?mod=spacecp&ac=credit&showcredit=1")
+                .get()
+                .html()
+            val userInfo = parse(response)
+            if (userInfo != null) {
+                mUserInfo.postValue(userInfo)
+            } else {
+                disableAutoSign()
+                withContext(Dispatchers.Main) {
+                    navigator.showLoginFragment()
+                    setIsLoading(false)
+                }
+            }
+        }
+    }
+
     @JavascriptInterface
     fun parseHtml(html: String) {
         Jsoup.parse(html).apply {
@@ -100,6 +122,27 @@ class MeViewModel(schedulerProvider:SchedulerProvider):BaseViewModel<MeNavigator
             }
         }
         postIsLoading(false)
+    }
+
+
+    private suspend fun parse(html: String): UserInfo? {
+        Jsoup.parse(html).apply {
+            val userName = getElementsByClass("vwmy")?.first()?.firstElementSibling()?.text()
+            if (!TextUtils.isEmpty(userName)) {
+                val avatar = selectFirst("div.avt > a > img")?.attr("src")
+                val groupInfo = getElementById("g_upmine")?.text()
+                getElementsByClass("xi2")?.remove()
+                val coin = getElementsByClass("xi1 cl")?.first()?.text()
+                val element = selectFirst("span.xg1")
+                val parentCredit = element?.parent()
+                element?.remove()
+                val credit = parentCredit?.text()
+                val signInState = selectFirst("img.qq_bind")?.attr("src")
+                return UserInfo(userName, avatar, groupInfo, coin, credit, signInState)
+            } else {
+                return null
+            }
+        }
     }
 
     private fun disableAutoSign() {

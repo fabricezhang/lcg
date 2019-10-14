@@ -30,8 +30,8 @@ class SignInWorker(context: Context, workerParams: WorkerParameters) :
 
     companion object {
 
-        const val WORK_INTERVAL: Long = 24
-        val DEFAULT_TIME_UNIT = if (BuildConfig.DEBUG) TimeUnit.SECONDS else TimeUnit.HOURS
+        val WORK_INTERVAL: Long = if (BuildConfig.DEBUG) 15L else 24L
+        val DEFAULT_TIME_UNIT = if (BuildConfig.DEBUG) TimeUnit.MINUTES else TimeUnit.HOURS
 
         private const val SIGN_IN_URL = "https://www.52pojie.cn/home.php?mod=task&do=apply&id=2"
     }
