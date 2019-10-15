@@ -8,6 +8,7 @@ public class UserInfo {
     private String wuaiCoin;
     private String credit;
     private String signInStateUrl;
+    private String messageText;
 
     public UserInfo(String userName,
                     String avatarUrl,
@@ -21,6 +22,10 @@ public class UserInfo {
         this.wuaiCoin = wuaiCoin;
         this.credit = credit;
         this.signInStateUrl = signInStateUrl;
+    }
+
+    public UserInfo(String messageText) {
+        this.messageText = messageText;
     }
 
     public String getUserName() {
@@ -45,5 +50,9 @@ public class UserInfo {
 
     public String getSignInStateUrl() {
         return signInStateUrl;
+    }
+
+    public String getMessageText() {
+        return messageText;
     }
 }

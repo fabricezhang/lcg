@@ -84,14 +84,20 @@ class MeViewModel(schedulerProvider:SchedulerProvider):BaseViewModel<MeNavigator
                 .get()
                 .html()
             val userInfo = parse(response)
-            if (userInfo != null) {
-                mUserInfo.postValue(userInfo)
-            } else {
+            if (userInfo.userName.isNullOrEmpty()) {
                 disableAutoSign()
                 withContext(Dispatchers.Main) {
+                    Toast.makeText(
+                        LCGApp.getContext(),
+                        userInfo.messageText,
+                        Toast.LENGTH_SHORT)
+                        .show()
                     navigator.showLoginFragment()
                     setIsLoading(false)
                 }
+            } else {
+                mUserInfo.postValue(userInfo)
+                postIsLoading(false)
             }
         }
     }
@@ -125,7 +131,7 @@ class MeViewModel(schedulerProvider:SchedulerProvider):BaseViewModel<MeNavigator
     }
 
 
-    private suspend fun parse(html: String): UserInfo? {
+    private fun parse(html: String): UserInfo {
         Jsoup.parse(html).apply {
             val userName = getElementsByClass("vwmy")?.first()?.firstElementSibling()?.text()
             if (!TextUtils.isEmpty(userName)) {
@@ -140,7 +146,7 @@ class MeViewModel(schedulerProvider:SchedulerProvider):BaseViewModel<MeNavigator
                 val signInState = selectFirst("img.qq_bind")?.attr("src")
                 return UserInfo(userName, avatar, groupInfo, coin, credit, signInState)
             } else {
-                return null
+                return UserInfo(getElementById("messagetext").text())
             }
         }
     }

@@ -33,5 +33,6 @@ class LoginDialog : SafeShowDialogFragment() {
             windowParam.gravity = Gravity.BOTTOM
             window.attributes = windowParam
         }
+        viewModel.fetchLoginPage()
     }
 }
