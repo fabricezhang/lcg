@@ -12,8 +12,8 @@ fun getCookies() = SharedPreferencesHelper
     }
 
 
-fun setCookies(cookieUrl: String) {
-    if (cookieUrl.isNotEmpty()) {
+fun setCookies(cookieUrl: String?) {
+    if (cookieUrl != null) {
         val cookies = cookieUrl.split(";")
             .dropLastWhile { it.isEmpty() }
             .toTypedArray()
