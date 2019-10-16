@@ -152,7 +152,7 @@ public class ArticlesRemoteDataSource implements ArticlesDataSource {
     private Observable<List<Article>> getArticles(@NonNull final String requestUrl){
         return Observable.create(emitter -> {
             try {
-                Document doc = Jsoup.connect(requestUrl).get();
+                Document doc = Jsoup.connect(requestUrl).cookies(getCookies()).get();
                 Elements elements = doc.select("tbody");
                 List<Article> list = new ArrayList<>();
                 String title, author, date, url, origin;
