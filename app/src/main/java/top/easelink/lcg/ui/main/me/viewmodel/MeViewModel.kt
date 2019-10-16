@@ -9,7 +9,10 @@ import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.work.*
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.jsoup.Jsoup
 import top.easelink.framework.base.BaseViewModel
 import top.easelink.framework.utils.rx.SchedulerProvider
@@ -22,9 +25,9 @@ import top.easelink.lcg.ui.main.me.model.UserInfo
 import top.easelink.lcg.ui.main.me.view.MeNavigator
 import top.easelink.lcg.ui.main.source.local.SPConstants.SP_KEY_AUTO_SIGN_IN
 import top.easelink.lcg.ui.main.source.local.SharedPreferencesHelper
-import top.easelink.lcg.utils.WebsiteConstant
 import top.easelink.lcg.utils.WebsiteConstant.HOME_URL
 import top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL
+import top.easelink.lcg.utils.getCookies
 
 class MeViewModel(schedulerProvider:SchedulerProvider):BaseViewModel<MeNavigator>(schedulerProvider) {
 
@@ -83,13 +86,9 @@ class MeViewModel(schedulerProvider:SchedulerProvider):BaseViewModel<MeNavigator
     fun fetchUserInfoDirect() {
         setIsLoading(true)
         GlobalScope.launch(Dispatchers.IO) {
-            val cookies: Map<String, String> = SharedPreferencesHelper
-                .getCookieSp()
-                .all
-                .mapValues { it.value.toString()}
             val response = Jsoup
                 .connect("$SERVER_BASE_URL$HOME_URL?mod=spacecp&ac=credit&showcredit=1")
-                .cookies(cookies)
+                .cookies(getCookies())
                 .get()
                 .html()
             val userInfo = parse(response)

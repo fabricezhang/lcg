@@ -48,7 +48,7 @@ public class ForumArticlesViewModel extends BaseViewModel<ArticlesNavigator>
                 break;
         }
         getCompositeDisposable().add(articlesRepository.getForumArticles(String.format(mUrl, mCurrentPage))
-                .subscribeOn(getSchedulerProvider().ui())
+                .subscribeOn(getSchedulerProvider().io())
                 .observeOn(getSchedulerProvider().ui())
                 .subscribe(forumPage -> {
                     if (forumPage != null) {
@@ -64,9 +64,7 @@ public class ForumArticlesViewModel extends BaseViewModel<ArticlesNavigator>
                         }
                         mShouldDisplayArticles.setValue(true);
                     }
-                }, throwable -> {
-                    getNavigator().handleError(throwable);
-                }, () -> setIsLoading(false)));
+                }, throwable -> getNavigator().handleError(throwable), () -> setIsLoading(false)));
     }
 
     public LiveData<List<Article>> getArticles() {

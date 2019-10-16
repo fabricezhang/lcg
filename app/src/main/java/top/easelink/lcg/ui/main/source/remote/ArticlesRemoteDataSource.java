@@ -2,7 +2,6 @@ package top.easelink.lcg.ui.main.source.remote;
 
 import android.text.TextUtils;
 import android.util.ArrayMap;
-import android.webkit.JavascriptInterface;
 
 import androidx.annotation.NonNull;
 
@@ -18,14 +17,13 @@ import org.jsoup.select.Elements;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.annotation.Nullable;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import timber.log.Timber;
-import top.easelink.lcg.service.web.HookInterface;
-import top.easelink.lcg.service.web.WebViewWrapper;
 import top.easelink.lcg.ui.main.model.BlockException;
 import top.easelink.lcg.ui.main.source.ArticlesDataSource;
 import top.easelink.lcg.ui.main.source.model.Article;
@@ -34,6 +32,7 @@ import top.easelink.lcg.ui.main.source.model.ArticleDetail;
 import top.easelink.lcg.ui.main.source.model.ForumPage;
 import top.easelink.lcg.ui.main.source.model.Post;
 
+import static top.easelink.lcg.utils.CookieUtilsKt.getCookies;
 import static top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL;
 
 /**
@@ -67,16 +66,17 @@ public class ArticlesRemoteDataSource implements ArticlesDataSource {
     public Observable<ForumPage> getForumArticles(@NonNull final String requestUrl){
         return Observable.create(emitter -> {
             String url = SERVER_BASE_URL + requestUrl;
-//            Document doc = Jsoup.connect(url).get();
-            // TODO: 2019-07-24 Add a check here to choose webivew or jsoup in case of anti-scraper
-            WebViewWrapper.getInstance().loadUrl(url, new HookInterface() {
-                @Override
-                @JavascriptInterface
-                public void processHtml(String html) {
-                    Document doc = Jsoup.parse(html);
-                    forumArticlesDocumentProcessor(doc, emitter);
-                }
-            });
+            Document doc = Jsoup.connect(url).cookies(getCookies()).get();
+            forumArticlesDocumentProcessor(doc, emitter);
+//
+//            WebViewWrapper.getInstance().loadUrl(url, new HookInterface() {
+//                @Override
+//                @JavascriptInterface
+//                public void processHtml(String html) {
+//                    Document doc = Jsoup.parse(html);
+//                    forumArticlesDocumentProcessor(doc, emitter);
+//                }
+//            });
         });
     }
 
@@ -92,6 +92,7 @@ public class ArticlesRemoteDataSource implements ArticlesDataSource {
             try {
                 Connection connection = Jsoup
                         .connect(SERVER_BASE_URL + url)
+                        .cookies(getCookies())
                         .method(Connection.Method.GET);
                 Connection.Response response = connection.execute();
                 Document doc = response.parse();
@@ -127,8 +128,8 @@ public class ArticlesRemoteDataSource implements ArticlesDataSource {
                 List<Post> postList = new ArrayList<>(avatarsAndNames.size());
                 for (int i = 0; i< avatarsAndNames.size(); i++) {
                     try {
-                        Post post = new Post(avatarsAndNames.get(i).get("name"),
-                                avatarsAndNames.get(i).get("avatar"),
+                        Post post = new Post(Objects.requireNonNull(avatarsAndNames.get(i).get("name")),
+                                Objects.requireNonNull(avatarsAndNames.get(i).get("avatar")),
                                 datetimes.get(i),
                                 contents.get(i));
                         postList.add(post);

@@ -61,8 +61,10 @@ public class ForumNavigationFragment extends BaseFragment<FragmentForumsNavigati
         getViewDataBinding().navigationGrid.setAdapter(new CustomGridViewAdapter(getBaseActivity(), R.layout.item_forums_grid));
         getViewDataBinding().navigationGrid.setOnItemClickListener(((parent, view, position, id) -> {
             ForumNavigationModel item = ((CustomGridViewAdapter) parent.getAdapter()).getItem(position);
-            EventBus.getDefault().post(new OpenForumEvent(item.getTitle(), item.getUrl()));
+            if (item != null) {
+                EventBus.getDefault().post(new OpenForumEvent(item.getTitle(), item.getUrl()));
+            }
         }));
-        getViewModel().initOptions(getContext());
+        getViewModel().initOptions(getBaseActivity());
     }
 }

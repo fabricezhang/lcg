@@ -17,6 +17,8 @@ import timber.log.Timber;
 import top.easelink.lcg.LCGApp;
 import top.easelink.lcg.ui.main.source.local.SharedPreferencesHelper;
 
+import static top.easelink.lcg.utils.CookieUtilsKt.setCookies;
+
 /**
  * author : junzhang
  * date   : 2019-07-23 13:58
@@ -82,16 +84,7 @@ public class WebViewWrapper {
             CookieManager cookieManager = CookieManager.getInstance();
             String cookieUrl = cookieManager.getCookie(url);
             Timber.i("Cookie : %s", cookieUrl);
-            if (!TextUtils.isEmpty(cookieUrl)) {
-                String[] cookies = cookieUrl.split(";");
-                List<SharedPreferencesHelper.SpItem> itemList = new ArrayList<>();
-                for (String cookie: cookies) {
-                    String[] cookiePair = cookie.split("=", 2);
-                    itemList.add(new SharedPreferencesHelper.SpItem<>(cookiePair[0], cookiePair[1]));
-                    Timber.i("%s = %s", cookiePair[0], cookiePair[1]);
-                }
-                SharedPreferencesHelper.setPreferenceWithList(SharedPreferencesHelper.getCookieSp(), itemList);
-            }
+            setCookies(cookieUrl);
             view.loadUrl("javascript:" + HOOK_NAME + ".processHtml(document.documentElement.outerHTML);");
             super.onPageFinished(view, url);
         }

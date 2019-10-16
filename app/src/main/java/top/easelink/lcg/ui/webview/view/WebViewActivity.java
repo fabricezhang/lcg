@@ -35,6 +35,7 @@ import top.easelink.lcg.ui.main.source.local.SharedPreferencesHelper;
 
 import static top.easelink.lcg.ui.webview.WebViewConstants.FORCE_ENABLE_JS_KEY;
 import static top.easelink.lcg.ui.webview.WebViewConstants.TITLE_KEY;
+import static top.easelink.lcg.utils.CookieUtilsKt.setCookies;
 import static top.easelink.lcg.utils.WebsiteConstant.URL_KEY;
 
 public class WebViewActivity extends AppCompatActivity {
@@ -163,16 +164,7 @@ public class WebViewActivity extends AppCompatActivity {
             CookieManager cookieManager = CookieManager.getInstance();
             String cookieUrl = cookieManager.getCookie(url);
             Timber.i("Cookie : %s", cookieUrl);
-            if (!TextUtils.isEmpty(cookieUrl)) {
-                String[] cookies = cookieUrl.split(";");
-                List<SharedPreferencesHelper.SpItem> itemList = new ArrayList<>();
-                for (String cookie: cookies) {
-                    String[] cookiePair = cookie.split("=", 2);
-                    itemList.add(new SharedPreferencesHelper.SpItem<>(cookiePair[0], cookiePair[1]));
-                    Timber.i("%s = %s", cookiePair[0], cookiePair[1]);
-                }
-                SharedPreferencesHelper.setPreferenceWithList(SharedPreferencesHelper.getCookieSp(), itemList);
-            }
+            setCookies(cookieUrl);
             setLoading(false);
         }
 
