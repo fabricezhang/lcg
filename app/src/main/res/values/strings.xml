@@ -37,6 +37,8 @@
     <string name="me_tab_title">个人页</string>
     <string name="me_setting_title">设置选项</string>
     <string name="start_auto_sign_in">开启自动签到</string>
+    <string name="me_tab_level_placeholder">个人信息</string>
+    <string name="me_tab_clear_cookie">本地登陆信息已清除</string>
 
     <!--Login Dialog-->
     <string name="login_username">用户名</string>

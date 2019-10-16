@@ -22,6 +22,14 @@ public class ImageAdapter {
     public static void loadAvatar(ImageView imageView, String url){
         Glide.with(imageView.getContext())
                 .load(url)
+                .placeholder(R.drawable.ic_noavatar_middle_gray)
+                .into(imageView);
+    }
+
+    @BindingAdapter("imageUrlOnly")
+    public static void loadImageNoHolder(ImageView imageView, String url){
+        Glide.with(imageView.getContext())
+                .load(url)
                 .into(imageView);
     }
 }

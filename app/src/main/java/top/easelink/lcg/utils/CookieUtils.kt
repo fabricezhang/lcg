@@ -2,7 +2,7 @@ package top.easelink.lcg.utils
 
 import timber.log.Timber
 import top.easelink.lcg.ui.main.source.local.SharedPreferencesHelper
-import java.util.ArrayList
+import java.util.*
 
 fun getCookies() = SharedPreferencesHelper
     .getCookieSp()

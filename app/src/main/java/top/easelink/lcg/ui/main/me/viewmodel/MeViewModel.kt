@@ -1,5 +1,6 @@
 package top.easelink.lcg.ui.main.me.viewmodel
 
+import android.annotation.SuppressLint
 import android.text.TextUtils
 import android.view.View
 import android.webkit.JavascriptInterface
@@ -17,6 +18,7 @@ import org.jsoup.Jsoup
 import top.easelink.framework.base.BaseViewModel
 import top.easelink.framework.utils.rx.SchedulerProvider
 import top.easelink.lcg.LCGApp
+import top.easelink.lcg.R
 import top.easelink.lcg.service.web.WebViewWrapper
 import top.easelink.lcg.service.work.SignInWorker
 import top.easelink.lcg.service.work.SignInWorker.Companion.DEFAULT_TIME_UNIT
@@ -29,7 +31,7 @@ import top.easelink.lcg.utils.WebsiteConstant.HOME_URL
 import top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL
 import top.easelink.lcg.utils.getCookies
 
-class MeViewModel(schedulerProvider:SchedulerProvider):BaseViewModel<MeNavigator>(schedulerProvider) {
+class MeViewModel(schedulerProvider:SchedulerProvider): BaseViewModel<MeNavigator>(schedulerProvider) {
 
     private val mUserInfo = MutableLiveData<UserInfo>()
     private val mAutoSignInEnable = MutableLiveData<Boolean>()
@@ -89,6 +91,7 @@ class MeViewModel(schedulerProvider:SchedulerProvider):BaseViewModel<MeNavigator
             val response = Jsoup
                 .connect("$SERVER_BASE_URL$HOME_URL?mod=spacecp&ac=credit&showcredit=1")
                 .cookies(getCookies())
+                .ignoreHttpErrors(true)
                 .get()
                 .html()
             val userInfo = parse(response)
@@ -111,6 +114,20 @@ class MeViewModel(schedulerProvider:SchedulerProvider):BaseViewModel<MeNavigator
         }
     }
 
+    fun clearLocalCookies() {
+        GlobalScope.launch {
+            clearCookies()
+        }
+        WebViewWrapper.getInstance().clearCookies()
+        with(LCGApp.getContext()) {
+            Toast.makeText(this,
+                getString(R.string.me_tab_clear_cookie),
+                Toast.LENGTH_SHORT).show()
+        }
+
+    }
+
+    @SuppressLint("ApplySharedPref")
     @WorkerThread
     private fun clearCookies() {
         SharedPreferencesHelper.getCookieSp().edit().clear().commit()
@@ -151,7 +168,7 @@ class MeViewModel(schedulerProvider:SchedulerProvider):BaseViewModel<MeNavigator
     private fun parse(html: String): UserInfo {
         Jsoup.parse(html).apply {
             val userName = getElementsByClass("vwmy")?.first()?.firstElementSibling()?.text()
-            if (!TextUtils.isEmpty(userName)) {
+            return if (!TextUtils.isEmpty(userName)) {
                 val avatar = selectFirst("div.avt > a > img")?.attr("src")
                 val groupInfo = getElementById("g_upmine")?.text()
                 getElementsByClass("xi2")?.remove()
@@ -161,13 +178,15 @@ class MeViewModel(schedulerProvider:SchedulerProvider):BaseViewModel<MeNavigator
                 element?.remove()
                 val credit = parentCredit?.text()
                 val signInState = selectFirst("img.qq_bind")?.attr("src")
-                return UserInfo(userName, avatar, groupInfo, coin, credit, signInState)
+                UserInfo(userName, avatar, groupInfo, coin, credit, signInState)
             } else {
-                return UserInfo(getElementById("messagetext").text())
+                UserInfo(getElementById("messagetext").text())
             }
         }
     }
 
+    @SuppressLint("ApplySharedPref")
+    @WorkerThread
     private fun disableAutoSign() {
         WorkManager.getInstance().cancelAllWorkByTag(SignInWorker::class.java.simpleName)
         SharedPreferencesHelper.getUserSp().edit().putBoolean(SP_KEY_AUTO_SIGN_IN, false).commit()

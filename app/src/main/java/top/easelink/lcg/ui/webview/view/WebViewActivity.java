@@ -26,12 +26,8 @@ import androidx.core.app.ShareCompat;
 
 import com.airbnb.lottie.LottieAnimationView;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import timber.log.Timber;
 import top.easelink.lcg.R;
-import top.easelink.lcg.ui.main.source.local.SharedPreferencesHelper;
 
 import static top.easelink.lcg.ui.webview.WebViewConstants.FORCE_ENABLE_JS_KEY;
 import static top.easelink.lcg.ui.webview.WebViewConstants.TITLE_KEY;

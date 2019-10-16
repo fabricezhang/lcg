@@ -3,19 +3,16 @@ package top.easelink.lcg.service.web;
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.net.http.SslError;
-import android.text.TextUtils;
+import android.os.Build;
 import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import timber.log.Timber;
 import top.easelink.lcg.LCGApp;
-import top.easelink.lcg.ui.main.source.local.SharedPreferencesHelper;
 
 import static top.easelink.lcg.utils.CookieUtilsKt.setCookies;
 
@@ -63,6 +60,25 @@ public class WebViewWrapper {
             }
         }
         return instance;
+    }
+
+    @SuppressWarnings("deprecation")
+    public void clearCookies() {
+        mWebView.clearCache(true);
+        mWebView.clearHistory();
+        mWebView.clearFormData();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+            CookieManager.getInstance().removeAllCookies(null);
+            CookieManager.getInstance().flush();
+        } else {
+            CookieSyncManager cookieSyncMngr=CookieSyncManager.createInstance(mWebView.getContext());
+            cookieSyncMngr.startSync();
+            CookieManager cookieManager = CookieManager.getInstance();
+            cookieManager.removeAllCookie();
+            cookieManager.removeSessionCookie();
+            cookieSyncMngr.stopSync();
+            cookieSyncMngr.sync();
+        }
     }
 
     private void updateWebViewSettings() {
