@@ -5,6 +5,7 @@ import android.view.View
 import android.webkit.JavascriptInterface
 import android.widget.CheckBox
 import android.widget.Toast
+import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.work.*
@@ -70,6 +71,9 @@ class MeViewModel(schedulerProvider:SchedulerProvider):BaseViewModel<MeNavigator
         }
     }
 
+    /**
+     * Used as a back up of Jsoup
+     */
     fun fetchUserInfo() {
         setIsLoading(true)
         WebViewWrapper.getInstance()
@@ -79,13 +83,19 @@ class MeViewModel(schedulerProvider:SchedulerProvider):BaseViewModel<MeNavigator
     fun fetchUserInfoDirect() {
         setIsLoading(true)
         GlobalScope.launch(Dispatchers.IO) {
+            val cookies: Map<String, String> = SharedPreferencesHelper
+                .getCookieSp()
+                .all
+                .mapValues { it.value.toString()}
             val response = Jsoup
                 .connect("$SERVER_BASE_URL$HOME_URL?mod=spacecp&ac=credit&showcredit=1")
+                .cookies(cookies)
                 .get()
                 .html()
             val userInfo = parse(response)
             if (userInfo.userName.isNullOrEmpty()) {
                 disableAutoSign()
+                clearCookies()
                 withContext(Dispatchers.Main) {
                     Toast.makeText(
                         LCGApp.getContext(),
@@ -102,6 +112,14 @@ class MeViewModel(schedulerProvider:SchedulerProvider):BaseViewModel<MeNavigator
         }
     }
 
+    @WorkerThread
+    private fun clearCookies() {
+        SharedPreferencesHelper.getCookieSp().edit().clear().commit()
+    }
+
+    /**
+     * Used as a back up of Jsoup
+     */
     @JavascriptInterface
     fun parseHtml(html: String) {
         Jsoup.parse(html).apply {

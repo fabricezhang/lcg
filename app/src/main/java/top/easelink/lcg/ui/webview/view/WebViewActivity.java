@@ -26,8 +26,12 @@ import androidx.core.app.ShareCompat;
 
 import com.airbnb.lottie.LottieAnimationView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import timber.log.Timber;
 import top.easelink.lcg.R;
+import top.easelink.lcg.ui.main.source.local.SharedPreferencesHelper;
 
 import static top.easelink.lcg.ui.webview.WebViewConstants.FORCE_ENABLE_JS_KEY;
 import static top.easelink.lcg.ui.webview.WebViewConstants.TITLE_KEY;
@@ -158,7 +162,17 @@ public class WebViewActivity extends AppCompatActivity {
             super.onPageFinished(view, url);
             CookieManager cookieManager = CookieManager.getInstance();
             String cookieUrl = cookieManager.getCookie(url);
-            Timber.d("Cookie : " + cookieUrl);
+            Timber.i("Cookie : %s", cookieUrl);
+            if (!TextUtils.isEmpty(cookieUrl)) {
+                String[] cookies = cookieUrl.split(";");
+                List<SharedPreferencesHelper.SpItem> itemList = new ArrayList<>();
+                for (String cookie: cookies) {
+                    String[] cookiePair = cookie.split("=", 2);
+                    itemList.add(new SharedPreferencesHelper.SpItem<>(cookiePair[0], cookiePair[1]));
+                    Timber.i("%s = %s", cookiePair[0], cookiePair[1]);
+                }
+                SharedPreferencesHelper.setPreferenceWithList(SharedPreferencesHelper.getCookieSp(), itemList);
+            }
             setLoading(false);
         }
 
