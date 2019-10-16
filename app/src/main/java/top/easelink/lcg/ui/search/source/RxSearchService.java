@@ -1,18 +1,21 @@
 package top.easelink.lcg.ui.search.source;
 
 import android.text.TextUtils;
+
 import androidx.annotation.NonNull;
-import io.reactivex.Observable;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import timber.log.Timber;
-import top.easelink.lcg.ui.search.model.SearchResult;
-import top.easelink.lcg.ui.search.model.SearchResults;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.Observable;
+import timber.log.Timber;
+import top.easelink.lcg.ui.search.model.SearchResult;
+import top.easelink.lcg.ui.search.model.SearchResults;
 
 /**
  * author : junzhang

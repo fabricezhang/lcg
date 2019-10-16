@@ -28,9 +28,8 @@
             <com.airbnb.lottie.LottieAnimationView
                     android:id="@+id/searching_file"
                     android:layout_gravity="center"
-                    android:layout_marginStart="@dimen/dp_20"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="@dimen/dp_200"
+                    android:layout_height="@dimen/dp_200"
                     android:scaleType="fitCenter"
                     android:visibility="invisible"
                     app:lottie_rawRes="@raw/search_file"

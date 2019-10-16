@@ -6,6 +6,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
@@ -14,15 +15,16 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import top.easelink.framework.BR;
+
+import javax.inject.Inject;
+
 import top.easelink.framework.base.BaseFragment;
+import top.easelink.lcg.BR;
 import top.easelink.lcg.R;
 import top.easelink.lcg.databinding.FragmentFavoriteArticlesBinding;
 import top.easelink.lcg.ui.ViewModelProviderFactory;
 import top.easelink.lcg.ui.main.articles.viewmodel.FavoriteArticlesAdapter;
 import top.easelink.lcg.ui.main.articles.viewmodel.FavoriteArticlesViewModel;
-
-import javax.inject.Inject;
 
 import static top.easelink.lcg.ui.main.articles.viewmodel.FavoriteArticlesViewModel.FETCH_INIT;
 

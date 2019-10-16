@@ -9,6 +9,8 @@ public class WebsiteConstant {
 
     public static final String URL_KEY = "URL_KEY";
 
+    public static final String SERVER_BASE_URL = "https://www.52pojie.cn/";
+
     public static final String BAIDU_SEARCH_BASE_URL = "http://zhannei.baidu.com/cse/";
     public static final String SEARCH_URL = "http://zhannei.baidu.com/cse/site?q=%s&click=1&cc=52pojie.cn&s=&nsid=";
     public static final String FREE_CHAT_URL = "forum-10-1.html";
@@ -22,6 +24,9 @@ public class WebsiteConstant {
     public static final String VIRUS_ANALYSIS_URL = "forum-32-%d.html";
     public static final String VIRUS_RESCUE_URL = "forum-50-%d.html";
     public static final String VIRUS_SAMPLE_URL = "forum-40-%d.html";
+
+    public static final String HOME_URL = "home.php";
+    public static final String LOGIN_URL = "member.php?mod=logging&action=login";
 
     public static final String APP_RELEASE_PAGE = "forum.php?mod=viewthread&tid=990363&page=1";
 }

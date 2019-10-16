@@ -2,28 +2,38 @@ package top.easelink.lcg.ui.main.source.remote;
 
 import android.text.TextUtils;
 import android.util.ArrayMap;
-import android.webkit.JavascriptInterface;
+
 import androidx.annotation.NonNull;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
+
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import timber.log.Timber;
-import top.easelink.lcg.service.web.HookInterface;
-import top.easelink.lcg.service.web.WebViewWrapper;
-import top.easelink.lcg.ui.main.model.BlockException;
-import top.easelink.lcg.ui.main.source.ArticlesDataSource;
-import top.easelink.lcg.ui.main.source.model.*;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+
+import javax.annotation.Nullable;
+
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import timber.log.Timber;
+import top.easelink.lcg.ui.main.model.BlockException;
+import top.easelink.lcg.ui.main.source.ArticlesDataSource;
+import top.easelink.lcg.ui.main.source.model.Article;
+import top.easelink.lcg.ui.main.source.model.ArticleAbstractResponse;
+import top.easelink.lcg.ui.main.source.model.ArticleDetail;
+import top.easelink.lcg.ui.main.source.model.ForumPage;
+import top.easelink.lcg.ui.main.source.model.Post;
+
+import static top.easelink.lcg.utils.CookieUtilsKt.getCookies;
+import static top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL;
 
 /**
  * author : junzhang
@@ -32,7 +42,6 @@ import java.util.Map;
  */
 public class ArticlesRemoteDataSource implements ArticlesDataSource {
 
-    public static final String SERVER_BASE_URL = "https://www.52pojie.cn/";
     private static final String FORUM_BASE_URL = "forum.php?mod=guide&view=";
 
     private static ArticlesRemoteDataSource mInstance;
@@ -50,7 +59,6 @@ public class ArticlesRemoteDataSource implements ArticlesDataSource {
 
     private ArticlesRemoteDataSource() {
         // should avoid to instantiating RxSearchService from outside
-        // FIXME: 2019-07-27 should use dagger2 to inject this field
         gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
     }
 
@@ -58,16 +66,17 @@ public class ArticlesRemoteDataSource implements ArticlesDataSource {
     public Observable<ForumPage> getForumArticles(@NonNull final String requestUrl){
         return Observable.create(emitter -> {
             String url = SERVER_BASE_URL + requestUrl;
-//            Document doc = Jsoup.connect(url).get();
-            // TODO: 2019-07-24 Add a check here to choose webivew or jsoup in case of anti-scraper
-            WebViewWrapper.getInstance().loadUrl(url, new HookInterface() {
-                @Override
-                @JavascriptInterface
-                public void processHtml(String html) {
-                    Document doc = Jsoup.parse(html);
-                    forumArticlesDocumentProcessor(doc, emitter);
-                }
-            });
+            Document doc = Jsoup.connect(url).cookies(getCookies()).get();
+            forumArticlesDocumentProcessor(doc, emitter);
+//
+//            WebViewWrapper.getInstance().loadUrl(url, new HookInterface() {
+//                @Override
+//                @JavascriptInterface
+//                public void processHtml(String html) {
+//                    Document doc = Jsoup.parse(html);
+//                    forumArticlesDocumentProcessor(doc, emitter);
+//                }
+//            });
         });
     }
 
@@ -83,6 +92,7 @@ public class ArticlesRemoteDataSource implements ArticlesDataSource {
             try {
                 Connection connection = Jsoup
                         .connect(SERVER_BASE_URL + url)
+                        .cookies(getCookies())
                         .method(Connection.Method.GET);
                 Connection.Response response = connection.execute();
                 Document doc = response.parse();
@@ -118,8 +128,8 @@ public class ArticlesRemoteDataSource implements ArticlesDataSource {
                 List<Post> postList = new ArrayList<>(avatarsAndNames.size());
                 for (int i = 0; i< avatarsAndNames.size(); i++) {
                     try {
-                        Post post = new Post(avatarsAndNames.get(i).get("name"),
-                                avatarsAndNames.get(i).get("avatar"),
+                        Post post = new Post(Objects.requireNonNull(avatarsAndNames.get(i).get("name")),
+                                Objects.requireNonNull(avatarsAndNames.get(i).get("avatar")),
                                 datetimes.get(i),
                                 contents.get(i));
                         postList.add(post);
@@ -142,7 +152,7 @@ public class ArticlesRemoteDataSource implements ArticlesDataSource {
     private Observable<List<Article>> getArticles(@NonNull final String requestUrl){
         return Observable.create(emitter -> {
             try {
-                Document doc = Jsoup.connect(requestUrl).get();
+                Document doc = Jsoup.connect(requestUrl).cookies(getCookies()).get();
                 Elements elements = doc.select("tbody");
                 List<Article> list = new ArrayList<>();
                 String title, author, date, url, origin;

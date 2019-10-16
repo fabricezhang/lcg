@@ -2,10 +2,11 @@ package top.easelink.lcg.utils;
 
 import android.text.TextUtils;
 
-import javax.annotation.Nonnull;
 import java.util.HashSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import javax.annotation.Nonnull;
 
 /**
  * author : junzhang

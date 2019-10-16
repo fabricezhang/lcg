@@ -2,13 +2,14 @@ package top.easelink.lcg.ui.main.articles.viewmodel;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+
+import java.util.List;
+
 import top.easelink.framework.base.BaseViewModel;
 import top.easelink.framework.utils.rx.SchedulerProvider;
 import top.easelink.lcg.ui.main.articles.view.ArticlesNavigator;
 import top.easelink.lcg.ui.main.source.ArticlesRepository;
 import top.easelink.lcg.ui.main.source.model.Article;
-
-import java.util.List;
 
 public class ForumArticlesViewModel extends BaseViewModel<ArticlesNavigator>
         implements ArticlesAdapter.ArticlesAdapterListener  {
@@ -47,7 +48,7 @@ public class ForumArticlesViewModel extends BaseViewModel<ArticlesNavigator>
                 break;
         }
         getCompositeDisposable().add(articlesRepository.getForumArticles(String.format(mUrl, mCurrentPage))
-                .subscribeOn(getSchedulerProvider().ui())
+                .subscribeOn(getSchedulerProvider().io())
                 .observeOn(getSchedulerProvider().ui())
                 .subscribe(forumPage -> {
                     if (forumPage != null) {
@@ -63,9 +64,7 @@ public class ForumArticlesViewModel extends BaseViewModel<ArticlesNavigator>
                         }
                         mShouldDisplayArticles.setValue(true);
                     }
-                }, throwable -> {
-                    getNavigator().handleError(throwable);
-                }, () -> setIsLoading(false)));
+                }, throwable -> getNavigator().handleError(throwable), () -> setIsLoading(false)));
     }
 
     public LiveData<List<Article>> getArticles() {

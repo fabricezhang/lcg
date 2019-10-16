@@ -13,16 +13,25 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.webkit.*;
+import android.webkit.CookieManager;
+import android.webkit.SslErrorHandler;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ShareCompat;
+
 import com.airbnb.lottie.LottieAnimationView;
+
 import timber.log.Timber;
 import top.easelink.lcg.R;
 
 import static top.easelink.lcg.ui.webview.WebViewConstants.FORCE_ENABLE_JS_KEY;
 import static top.easelink.lcg.ui.webview.WebViewConstants.TITLE_KEY;
+import static top.easelink.lcg.utils.CookieUtilsKt.setCookies;
 import static top.easelink.lcg.utils.WebsiteConstant.URL_KEY;
 
 public class WebViewActivity extends AppCompatActivity {
@@ -150,7 +159,8 @@ public class WebViewActivity extends AppCompatActivity {
             super.onPageFinished(view, url);
             CookieManager cookieManager = CookieManager.getInstance();
             String cookieUrl = cookieManager.getCookie(url);
-            Timber.d("Cookie : " + cookieUrl);
+            Timber.i("Cookie : %s", cookieUrl);
+            setCookies(cookieUrl);
             setLoading(false);
         }
 

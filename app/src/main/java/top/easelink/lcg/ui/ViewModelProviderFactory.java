@@ -3,6 +3,10 @@ package top.easelink.lcg.ui;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import top.easelink.framework.utils.rx.SchedulerProvider;
 import top.easelink.lcg.ui.main.about.viewmodel.AboutViewModel;
 import top.easelink.lcg.ui.main.article.viewmodel.ArticleViewModel;
@@ -14,9 +18,6 @@ import top.easelink.lcg.ui.main.forumnav.viewmodel.ForumNavigationViewModel;
 import top.easelink.lcg.ui.main.me.viewmodel.MeViewModel;
 import top.easelink.lcg.ui.main.viewmodel.MainViewModel;
 import top.easelink.lcg.ui.search.viewmodel.SearchViewModel;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
 
 @Singleton
 public class ViewModelProviderFactory extends ViewModelProvider.NewInstanceFactory {

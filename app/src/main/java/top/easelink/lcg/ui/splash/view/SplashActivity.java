@@ -3,8 +3,10 @@ package top.easelink.lcg.ui.splash.view;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
 import top.easelink.lcg.R;
 import top.easelink.lcg.ui.main.view.MainActivity;
 

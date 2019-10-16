@@ -9,13 +9,15 @@ import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.databinding.BindingAdapter;
-import top.easelink.lcg.R;
-import top.easelink.lcg.ui.main.model.ForumNavigationModel;
 
 import java.util.List;
+
+import top.easelink.lcg.R;
+import top.easelink.lcg.ui.main.model.ForumNavigationModel;
 
 /**
  * author : junzhang
@@ -62,7 +64,6 @@ public class CustomGridViewAdapter extends ArrayAdapter<ForumNavigationModel> {
         }
         holder.textView.setText(item.getTitle());
         holder.imageView.setImageResource(item.getDrawableRes());
-        final ForumNavigationModel model = item;
         return convertView;
     }
 

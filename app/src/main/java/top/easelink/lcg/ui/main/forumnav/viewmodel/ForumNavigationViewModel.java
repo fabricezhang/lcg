@@ -1,18 +1,30 @@
 package top.easelink.lcg.ui.main.forumnav.viewmodel;
 
 import android.content.Context;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import top.easelink.framework.base.BaseViewModel;
 import top.easelink.framework.utils.rx.SchedulerProvider;
 import top.easelink.lcg.R;
 import top.easelink.lcg.ui.main.forumnav.view.ForumNavigationNavigator;
 import top.easelink.lcg.ui.main.model.ForumNavigationModel;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static top.easelink.lcg.utils.WebsiteConstant.*;
+import static top.easelink.lcg.utils.WebsiteConstant.ANIMATION_RELEASE_URL;
+import static top.easelink.lcg.utils.WebsiteConstant.FREE_CHAT_URL;
+import static top.easelink.lcg.utils.WebsiteConstant.MOB_SECURITY_URL;
+import static top.easelink.lcg.utils.WebsiteConstant.ORIGINAL_RELEASE_URL;
+import static top.easelink.lcg.utils.WebsiteConstant.PROGRAM_LANGUAGE_URL;
+import static top.easelink.lcg.utils.WebsiteConstant.QA_URL;
+import static top.easelink.lcg.utils.WebsiteConstant.REVERSE_RESOURCE_URL;
+import static top.easelink.lcg.utils.WebsiteConstant.SOFTWARE_URL;
+import static top.easelink.lcg.utils.WebsiteConstant.VIRUS_ANALYSIS_URL;
+import static top.easelink.lcg.utils.WebsiteConstant.VIRUS_RESCUE_URL;
+import static top.easelink.lcg.utils.WebsiteConstant.VIRUS_SAMPLE_URL;
 
 public class ForumNavigationViewModel extends BaseViewModel<ForumNavigationNavigator> {
 
@@ -57,13 +69,17 @@ public class ForumNavigationViewModel extends BaseViewModel<ForumNavigationNavig
                 R.drawable.ic_report_problem_black_24dp,
                 VIRUS_ANALYSIS_URL));
         list.add(new ForumNavigationModel(
+                context.getString(R.string.forum_virus_rescue),
+                R.drawable.ic_help_black_24dp,
+                VIRUS_RESCUE_URL));
+        list.add(new ForumNavigationModel(
                 context.getString(R.string.forum_virus_sample),
                 R.drawable.ic_bug_report_black_24dp,
                 VIRUS_SAMPLE_URL));
         list.add(new ForumNavigationModel(
-                context.getString(R.string.forum_virus_rescue),
-                R.drawable.ic_help_black_24dp,
-                VIRUS_RESCUE_URL));
+                context.getString(R.string.free_chat_title),
+                R.drawable.ic_invert_colors_black_24dp,
+                FREE_CHAT_URL));
         navigation.setValue(list);
     }
 

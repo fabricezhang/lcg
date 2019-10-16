@@ -3,22 +3,23 @@ package top.easelink.lcg.ui.main.article.viewmodel;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+
 import androidx.annotation.NonNull;
 import androidx.databinding.BindingAdapter;
 import androidx.recyclerview.widget.RecyclerView;
-import com.bumptech.glide.Glide;
+
 import org.sufficientlysecure.htmltextview.HtmlHttpImageGetter;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import timber.log.Timber;
 import top.easelink.framework.base.BaseViewHolder;
 import top.easelink.lcg.R;
 import top.easelink.lcg.databinding.ItemPostViewBinding;
 import top.easelink.lcg.ui.main.source.model.Post;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static top.easelink.lcg.ui.main.source.remote.ArticlesRemoteDataSource.SERVER_BASE_URL;
+import static top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL;
 
 public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
@@ -28,21 +29,13 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     private ArticleAdapterListener mListener;
     private List<Post> mPostList = new ArrayList<>();
 
-    @BindingAdapter({"adapter"})
-    public static void addPostItmes(RecyclerView recyclerView, List<Post> postListt) {
+    @BindingAdapter("adapter")
+    public static void addPostItems(RecyclerView recyclerView, List<Post> postListt) {
         ArticleAdapter adapter = (ArticleAdapter) recyclerView.getAdapter();
         if (adapter != null) {
             adapter.clearItems();
             adapter.addItems(postListt);
         }
-    }
-
-    @BindingAdapter({"imageUrl"})
-    public static void loadImage(ImageView imageView, String url){
-        Glide.with(imageView.getContext())
-                .load(url)
-                .placeholder(R.drawable.ic_noavatar_middle)
-                .into(imageView);
     }
 
     public ArticleAdapter(ArticleAdapterListener listener) {

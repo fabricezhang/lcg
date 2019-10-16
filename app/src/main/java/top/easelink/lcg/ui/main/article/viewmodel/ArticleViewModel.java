@@ -1,10 +1,17 @@
 package top.easelink.lcg.ui.main.article.viewmodel;
 
 import android.text.TextUtils;
+
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+
 import org.jsoup.HttpStatusException;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+
 import top.easelink.framework.base.BaseViewModel;
 import top.easelink.framework.utils.rx.SchedulerProvider;
 import top.easelink.lcg.R;
@@ -15,10 +22,6 @@ import top.easelink.lcg.ui.main.source.model.ArticleAbstractResponse;
 import top.easelink.lcg.ui.main.source.model.ArticleEntity;
 import top.easelink.lcg.ui.main.source.model.Post;
 import top.easelink.lcg.utils.RegexUtils;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
 
 public class ArticleViewModel extends BaseViewModel<ArticleNavigator>
         implements ArticleAdapterListener {

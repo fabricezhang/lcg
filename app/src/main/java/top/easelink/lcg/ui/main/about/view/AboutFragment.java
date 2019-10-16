@@ -2,18 +2,21 @@ package top.easelink.lcg.ui.main.about.view;
 
 import android.os.Bundle;
 import android.view.View;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
-import top.easelink.framework.BR;
+
+import java.util.Calendar;
+
+import javax.inject.Inject;
+
 import top.easelink.framework.base.BaseFragment;
+import top.easelink.lcg.BR;
 import top.easelink.lcg.R;
 import top.easelink.lcg.databinding.FragmentAboutBinding;
 import top.easelink.lcg.ui.ViewModelProviderFactory;
 import top.easelink.lcg.ui.main.about.viewmodel.AboutViewModel;
-
-import javax.inject.Inject;
-import java.util.Calendar;
 
 public class AboutFragment extends BaseFragment<FragmentAboutBinding, AboutViewModel> implements AboutNavigator {
 

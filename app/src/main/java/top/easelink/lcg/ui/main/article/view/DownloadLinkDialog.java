@@ -9,20 +9,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
+
+import java.util.ArrayList;
+
+import javax.inject.Inject;
+
 import dagger.android.support.AndroidSupportInjection;
 import top.easelink.framework.base.BaseDialog;
 import top.easelink.lcg.R;
 import top.easelink.lcg.databinding.DialogDownloadLinkBinding;
 import top.easelink.lcg.ui.ViewModelProviderFactory;
 import top.easelink.lcg.ui.main.article.viewmodel.DownloadLinkViewModel;
-
-import javax.inject.Inject;
-import java.util.ArrayList;
 
 import static top.easelink.lcg.utils.ActivityUtils.TAG_PREFIX;
 

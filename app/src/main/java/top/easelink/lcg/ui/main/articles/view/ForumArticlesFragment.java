@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
@@ -12,17 +13,18 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import top.easelink.framework.BR;
+
+import javax.inject.Inject;
+
 import top.easelink.framework.base.BaseFragment;
 import top.easelink.framework.customview.ScrollChildSwipeRefreshLayout;
+import top.easelink.lcg.BR;
 import top.easelink.lcg.LCGApp;
 import top.easelink.lcg.R;
 import top.easelink.lcg.databinding.FragmentForumArticlesBinding;
 import top.easelink.lcg.ui.ViewModelProviderFactory;
 import top.easelink.lcg.ui.main.articles.viewmodel.ArticlesAdapter;
 import top.easelink.lcg.ui.main.articles.viewmodel.ForumArticlesViewModel;
-
-import javax.inject.Inject;
 
 import static top.easelink.lcg.ui.main.articles.viewmodel.ArticlesViewModel.FETCH_INIT;
 

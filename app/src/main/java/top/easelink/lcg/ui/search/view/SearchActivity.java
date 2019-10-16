@@ -2,18 +2,23 @@ package top.easelink.lcg.ui.search.view;
 
 import android.os.Bundle;
 import android.widget.Toast;
+
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import top.easelink.framework.BR;
+
+import javax.inject.Inject;
+
 import top.easelink.framework.base.BaseActivity;
 import top.easelink.framework.customview.ScrollChildSwipeRefreshLayout;
+import top.easelink.lcg.BR;
 import top.easelink.lcg.R;
 import top.easelink.lcg.databinding.ActivitySearchBinding;
 import top.easelink.lcg.ui.ViewModelProviderFactory;
@@ -21,8 +26,6 @@ import top.easelink.lcg.ui.search.model.OpenSearchResultEvent;
 import top.easelink.lcg.ui.search.viewmodel.SearchResultAdapter;
 import top.easelink.lcg.ui.search.viewmodel.SearchViewModel;
 import top.easelink.lcg.ui.webview.view.WebViewActivity;
-
-import javax.inject.Inject;
 
 import static top.easelink.lcg.ui.search.viewmodel.SearchResultAdapter.SearchAdapterListener.FETCH_INIT;
 import static top.easelink.lcg.utils.WebsiteConstant.URL_KEY;

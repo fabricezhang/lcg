@@ -1,4 +1,6 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -39,6 +41,8 @@ dependencies {
     api "androidx.vectordrawable:vectordrawable:$rootProject.vectorDrawableVersion"
     api "androidx.vectordrawable:vectordrawable-animated:$rootProject.animatedVectorDrawableVersion"
     api "androidx.constraintlayout:constraintlayout:$rootProject.constraintLayoutVersion"
+    api 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
+    api "android.arch.work:work-runtime:$rootProject.workVersion"
 
     // font
     api "uk.co.chrisjenx:calligraphy:$rootProject.calligraphyVersion"
@@ -72,7 +76,7 @@ dependencies {
     // jsoup
     api "org.jsoup:jsoup:$rootProject.jsoupVersion"
     // java script engine
-    api 'io.apisense:rhino-android:1.1.1'
+//    api 'io.apisense:rhino-android:1.1.1'
     // database
     api "androidx.room:room-runtime:$rootProject.roomVersion"
     // event-bus
@@ -80,8 +84,14 @@ dependencies {
     // bugly
     api "com.tencent.bugly:crashreport_upgrade:$rootProject.buglyVersion"
 
+    // kotlin
+    api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.2"
+    api 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.2'
+
     // test related
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
 }

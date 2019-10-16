@@ -3,11 +3,18 @@ package top.easelink.lcg.service.web;
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.net.http.SslError;
+import android.os.Build;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import timber.log.Timber;
 import top.easelink.lcg.LCGApp;
+
+import static top.easelink.lcg.utils.CookieUtilsKt.setCookies;
 
 /**
  * author : junzhang
@@ -31,6 +38,14 @@ public class WebViewWrapper {
         instance = getInstance();
     }
 
+    public void post(String url, HookInterface hookInterface) {
+        mWebView.post(() -> {
+            mWebView.removeJavascriptInterface(HOOK_NAME);
+            mWebView.addJavascriptInterface(hookInterface, HOOK_NAME);
+            mWebView.loadUrl(url);
+        });
+    }
+
     public void loadUrl(String url, HookInterface hookInterface) {
         mWebView.removeJavascriptInterface(HOOK_NAME);
         mWebView.addJavascriptInterface(hookInterface, HOOK_NAME);
@@ -45,6 +60,25 @@ public class WebViewWrapper {
             }
         }
         return instance;
+    }
+
+    @SuppressWarnings("deprecation")
+    public void clearCookies() {
+        mWebView.clearCache(true);
+        mWebView.clearHistory();
+        mWebView.clearFormData();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+            CookieManager.getInstance().removeAllCookies(null);
+            CookieManager.getInstance().flush();
+        } else {
+            CookieSyncManager cookieSyncMngr=CookieSyncManager.createInstance(mWebView.getContext());
+            cookieSyncMngr.startSync();
+            CookieManager cookieManager = CookieManager.getInstance();
+            cookieManager.removeAllCookie();
+            cookieManager.removeSessionCookie();
+            cookieSyncMngr.stopSync();
+            cookieSyncMngr.sync();
+        }
     }
 
     private void updateWebViewSettings() {
@@ -63,9 +97,10 @@ public class WebViewWrapper {
     private class InnerWebViewClient extends WebViewClient {
         @Override
         public void onPageFinished(WebView view, String url) {
-//            CookieManager cookieManager = CookieManager.getInstance();
-//            String cookieUrl = cookieManager.getCookie(url);
-//            Timber.d("Cookie : %s", cookieUrl);
+            CookieManager cookieManager = CookieManager.getInstance();
+            String cookieUrl = cookieManager.getCookie(url);
+            Timber.i("Cookie : %s", cookieUrl);
+            setCookies(cookieUrl);
             view.loadUrl("javascript:" + HOOK_NAME + ".processHtml(document.documentElement.outerHTML);");
             super.onPageFinished(view, url);
         }
