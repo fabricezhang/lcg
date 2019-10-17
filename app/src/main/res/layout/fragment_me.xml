@@ -171,7 +171,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:onClick="@{(v) -> viewModel.scheduleJob(v)}"
-                    android:checked="@{viewModel.autoSignEnable}"
+                    android:checked="@{viewModel.}"
                     app:layout_constraintTop_toTopOf="@id/auto_sign_in_switch_title"
                     app:layout_constraintBottom_toBottomOf="@id/auto_sign_in_switch_title"
                     app:layout_constraintEnd_toEndOf="parent"

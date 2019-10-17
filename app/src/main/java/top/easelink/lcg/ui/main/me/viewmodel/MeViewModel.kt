@@ -3,7 +3,6 @@ package top.easelink.lcg.ui.main.me.viewmodel
 import android.annotation.SuppressLint
 import android.text.TextUtils
 import android.view.View
-import android.webkit.JavascriptInterface
 import android.widget.CheckBox
 import android.widget.Toast
 import androidx.annotation.WorkerThread
@@ -15,6 +14,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
 import top.easelink.framework.base.BaseViewModel
 import top.easelink.framework.utils.rx.SchedulerProvider
 import top.easelink.lcg.LCGApp
@@ -23,6 +23,7 @@ import top.easelink.lcg.service.web.WebViewWrapper
 import top.easelink.lcg.service.work.SignInWorker
 import top.easelink.lcg.service.work.SignInWorker.Companion.DEFAULT_TIME_UNIT
 import top.easelink.lcg.service.work.SignInWorker.Companion.WORK_INTERVAL
+import top.easelink.lcg.ui.main.me.model.NotificationInfo
 import top.easelink.lcg.ui.main.me.model.UserInfo
 import top.easelink.lcg.ui.main.me.view.MeNavigator
 import top.easelink.lcg.ui.main.source.local.SPConstants.SP_KEY_AUTO_SIGN_IN
@@ -35,6 +36,7 @@ class MeViewModel(schedulerProvider:SchedulerProvider): BaseViewModel<MeNavigato
 
     private val mUserInfo = MutableLiveData<UserInfo>()
     private val mAutoSignInEnable = MutableLiveData<Boolean>()
+    private val mNotificationInfo = MutableLiveData<NotificationInfo>()
 
     init {
         mAutoSignInEnable.postValue(SharedPreferencesHelper
@@ -42,6 +44,7 @@ class MeViewModel(schedulerProvider:SchedulerProvider): BaseViewModel<MeNavigato
             .getBoolean(SP_KEY_AUTO_SIGN_IN, false))
     }
 
+    @Suppress("unused")
     val workInfo:LiveData<List<WorkInfo>>
         get() = WorkManager.getInstance().getWorkInfosByTagLiveData(SignInWorker::class.java.simpleName)
 
@@ -50,6 +53,9 @@ class MeViewModel(schedulerProvider:SchedulerProvider): BaseViewModel<MeNavigato
 
     val autoSignEnable: LiveData<Boolean>
         get() = mAutoSignInEnable
+
+    val notificationInfo: LiveData<NotificationInfo>
+        get() = mNotificationInfo
 
     fun scheduleJob(v:View) {
         if (v is CheckBox) {
@@ -76,25 +82,15 @@ class MeViewModel(schedulerProvider:SchedulerProvider): BaseViewModel<MeNavigato
         }
     }
 
-    /**
-     * Used as a back up of Jsoup
-     */
-    fun fetchUserInfo() {
-        setIsLoading(true)
-        WebViewWrapper.getInstance()
-            .loadUrl("$SERVER_BASE_URL$HOME_URL?mod=spacecp&ac=credit&showcredit=1", ::parseHtml)
-    }
-
     fun fetchUserInfoDirect() {
         setIsLoading(true)
         GlobalScope.launch(Dispatchers.IO) {
-            val response = Jsoup
+            val doc = Jsoup
                 .connect("$SERVER_BASE_URL$HOME_URL?mod=spacecp&ac=credit&showcredit=1")
                 .cookies(getCookies())
                 .ignoreHttpErrors(true)
                 .get()
-                .html()
-            val userInfo = parse(response)
+            val userInfo = parseUserInfo(doc)
             if (userInfo.userName.isNullOrEmpty()) {
                 disableAutoSign()
                 clearCookies()
@@ -109,8 +105,14 @@ class MeViewModel(schedulerProvider:SchedulerProvider): BaseViewModel<MeNavigato
                 }
             } else {
                 mUserInfo.postValue(userInfo)
-                postIsLoading(false)
+
             }
+
+            val notificationInfo = parseNotificationInfo(doc)
+            if (notificationInfo.myPost > 0) {
+                mNotificationInfo.postValue(notificationInfo)
+            }
+            postIsLoading(false)
         }
     }
 
@@ -133,40 +135,19 @@ class MeViewModel(schedulerProvider:SchedulerProvider): BaseViewModel<MeNavigato
         SharedPreferencesHelper.getCookieSp().edit().clear().commit()
     }
 
-    /**
-     * Used as a back up of Jsoup
-     */
-    @JavascriptInterface
-    fun parseHtml(html: String) {
-        Jsoup.parse(html).apply {
-            val userName = getElementsByClass("vwmy")?.first()?.firstElementSibling()?.text()
-            if (!TextUtils.isEmpty(userName)) {
-                val avatar = selectFirst("div.avt > a > img")?.attr("src")
-                val groupInfo = getElementById("g_upmine")?.text()
-                getElementsByClass("xi2")?.remove()
-                val coin = getElementsByClass("xi1 cl")?.first()?.text()
-                val element = selectFirst("span.xg1")
-                val parentCredit = element?.parent()
-                element?.remove()
-                val credit = parentCredit?.text()
-                val signInState = selectFirst("img.qq_bind")?.attr("src")
-                mUserInfo.postValue(UserInfo(userName, avatar, groupInfo, coin, credit, signInState))
-            } else{
-                Toast.makeText(
-                    LCGApp.getContext(),
-                    getElementById("messagetext").text(),
-                    Toast.LENGTH_SHORT)
-                    .show()
-                disableAutoSign()
-                navigator.showLoginFragment()
+    private fun parseNotificationInfo(doc: Document): NotificationInfo {
+        with(doc) {
+            val myPosts = select("span.rq")?.first()?.`val`()
+            return try {
+                NotificationInfo(0,0, myPosts?.toInt()?:0)
+            } catch (e: NumberFormatException) {
+                NotificationInfo(0,0, 0)
             }
         }
-        postIsLoading(false)
     }
 
-
-    private fun parse(html: String): UserInfo {
-        Jsoup.parse(html).apply {
+    private fun parseUserInfo(doc: Document): UserInfo {
+        with(doc) {
             val userName = getElementsByClass("vwmy")?.first()?.firstElementSibling()?.text()
             return if (!TextUtils.isEmpty(userName)) {
                 val avatar = selectFirst("div.avt > a > img")?.attr("src")
