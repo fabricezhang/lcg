@@ -40,6 +40,8 @@
     <string name="me_tab_level_placeholder">个人信息</string>
     <string name="me_tab_clear_cookie">本地登陆信息已清除</string>
 
+    <string name="me_notification_title">我的信息</string>
+
     <!--Login Dialog-->
     <string name="login_username">用户名</string>
     <string name="login_password">密码</string>

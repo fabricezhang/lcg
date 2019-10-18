@@ -15,6 +15,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
+import timber.log.Timber
 import top.easelink.framework.base.BaseViewModel
 import top.easelink.framework.utils.rx.SchedulerProvider
 import top.easelink.lcg.LCGApp
@@ -110,6 +111,7 @@ class MeViewModel(schedulerProvider:SchedulerProvider): BaseViewModel<MeNavigato
 
             val notificationInfo = parseNotificationInfo(doc)
             if (notificationInfo.myPost > 0) {
+                Toast.makeText(LCGApp.getContext(), "Notifications", Toast.LENGTH_SHORT).show()
                 mNotificationInfo.postValue(notificationInfo)
             }
             postIsLoading(false)
@@ -137,12 +139,35 @@ class MeViewModel(schedulerProvider:SchedulerProvider): BaseViewModel<MeNavigato
 
     private fun parseNotificationInfo(doc: Document): NotificationInfo {
         with(doc) {
-            val myPosts = select("span.rq")?.first()?.`val`()
-            return try {
-                NotificationInfo(0,0, myPosts?.toInt()?:0)
-            } catch (e: NumberFormatException) {
-                NotificationInfo(0,0, 0)
+            //            val myprompt = getElementById("myprompt")
+            val menu = getElementById("myprompt_menu")
+            val requestList = mutableListOf<String>()
+            var message = 0
+            var follower = 0
+            var myPost = 0
+            menu?.select("li")?.forEach {
+                try {
+                    it.select("a > span").first()?.text()?.also { v ->
+                        Timber.d(it.toString())
+                        if (v.isNotBlank() && v.toInt() >= 1) {
+                            it.selectFirst("a")?.attr("href")?.also { url ->
+                                requestList.add(url)
+                                when {
+                                    url.contains("mypost") -> myPost++
+                                    url.contains("follower") -> follower++
+                                    url.contains("pm") -> message++
+                                    else -> {
+                                        // do nothing
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } catch (e :NumberFormatException) {
+                    // don't care
+                }
             }
+            return NotificationInfo(message,follower, myPost)
         }
     }
 
