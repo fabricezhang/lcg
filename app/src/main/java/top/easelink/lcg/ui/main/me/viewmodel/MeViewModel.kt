@@ -111,8 +111,10 @@ class MeViewModel(schedulerProvider:SchedulerProvider): BaseViewModel<MeNavigato
 
             val notificationInfo = parseNotificationInfo(doc)
             if (notificationInfo.myPost > 0) {
-                Toast.makeText(LCGApp.getContext(), "Notifications", Toast.LENGTH_SHORT).show()
-                mNotificationInfo.postValue(notificationInfo)
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(LCGApp.getContext(), "Notifications", Toast.LENGTH_SHORT).show()
+                    mNotificationInfo.postValue(notificationInfo)
+                }
             }
             postIsLoading(false)
         }
