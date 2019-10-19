@@ -110,11 +110,8 @@ class MeViewModel(schedulerProvider:SchedulerProvider): BaseViewModel<MeNavigato
             }
 
             val notificationInfo = parseNotificationInfo(doc)
-            if (notificationInfo.myPost > 0) {
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(LCGApp.getContext(), "Notifications", Toast.LENGTH_SHORT).show()
-                    mNotificationInfo.postValue(notificationInfo)
-                }
+            if (notificationInfo.posts.isNotEmpty()) {
+                mNotificationInfo.postValue(notificationInfo)
             }
             postIsLoading(false)
         }
@@ -141,12 +138,12 @@ class MeViewModel(schedulerProvider:SchedulerProvider): BaseViewModel<MeNavigato
 
     private fun parseNotificationInfo(doc: Document): NotificationInfo {
         with(doc) {
-            //            val myprompt = getElementById("myprompt")
             val menu = getElementById("myprompt_menu")
             val requestList = mutableListOf<String>()
             var message = 0
             var follower = 0
             var myPost = 0
+            var systemNotifs = 0
             menu?.select("li")?.forEach {
                 try {
                     it.select("a > span").first()?.text()?.also { v ->
@@ -158,6 +155,7 @@ class MeViewModel(schedulerProvider:SchedulerProvider): BaseViewModel<MeNavigato
                                     url.contains("mypost") -> myPost++
                                     url.contains("follower") -> follower++
                                     url.contains("pm") -> message++
+                                    url.contains("system") -> systemNotifs++
                                     else -> {
                                         // do nothing
                                     }
@@ -169,7 +167,9 @@ class MeViewModel(schedulerProvider:SchedulerProvider): BaseViewModel<MeNavigato
                     // don't care
                 }
             }
-            return NotificationInfo(message,follower, myPost)
+            return NotificationInfo(message, follower,
+                posts = emptyList(),
+                systemNotifications = emptyList())
         }
     }
 
