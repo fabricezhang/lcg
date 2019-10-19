@@ -63,7 +63,7 @@
                     app:layout_constraintStart_toEndOf="@id/post_avatar"
                     tools:text="2019-07-04"/>
 
-            <org.sufficientlysecure.htmltextview.HtmlTextView
+            <top.easelink.framework.customview.htmltextview.HtmlTextView
                     android:id="@+id/contentTextView"
                     style="@style/TextStyle.Title"
                     android:layout_width="0dp"

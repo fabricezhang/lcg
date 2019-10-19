@@ -305,8 +305,8 @@ public class ArticlesRemoteDataSource implements ArticlesDataSource {
         element.select("script").remove();
         // convert all code
         for(Element e: element.getElementsByTag("pre")) {
-            e.tagName("div");
-            e.html("<font color=\"#ff0000\">代码暂时无法显示</font>");
+//            e.tagName("div");
+//            e.html("<font color=\"#ff0000\">代码暂时无法显示</font>");
         }
 
         Elements imgElements = element.getElementsByTag("img");

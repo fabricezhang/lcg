@@ -8,13 +8,12 @@ import androidx.annotation.NonNull;
 import androidx.databinding.BindingAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.sufficientlysecure.htmltextview.HtmlHttpImageGetter;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import timber.log.Timber;
 import top.easelink.framework.base.BaseViewHolder;
+import top.easelink.framework.customview.htmltextview.HtmlHttpImageGetter;
 import top.easelink.lcg.R;
 import top.easelink.lcg.databinding.ItemPostViewBinding;
 import top.easelink.lcg.ui.main.source.model.Post;
@@ -101,7 +100,6 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     public class PostViewHolder extends BaseViewHolder {
 
         private ItemPostViewBinding mBinding;
-        private PostViewModel postViewModel;
         private HtmlHttpImageGetter htmlHttpImageGetter;
 
         PostViewHolder(ItemPostViewBinding binding) {
@@ -114,7 +112,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         @Override
         public void onBind(int position) {
             final Post post = mPostList.get(position);
-            postViewModel = new PostViewModel(post);
+            PostViewModel postViewModel = new PostViewModel(post);
             mBinding.setViewModel(postViewModel);
             try {
                 mBinding.contentTextView.setHtml(post.getContent(),htmlHttpImageGetter);

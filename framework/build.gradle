@@ -61,7 +61,6 @@ dependencies {
     api "com.mindorks:placeholderview:$rootProject.placeholderviewVersion"
     api 'com.ethanhua:skeleton:1.1.2'
     api 'io.supercharge:shimmerlayout:2.1.0'
-    api "org.sufficientlysecure:html-textview:$rootProject.htmlTextViewVersion"
     api "com.airbnb.android:lottie:$rootProject.lottieVersion"
     // logger
     api "com.jakewharton.timber:timber:$rootProject.timberVersion"
@@ -71,6 +70,7 @@ dependencies {
     // view model
     api "androidx.lifecycle:lifecycle-extensions:$rootProject.lifecycleVersion"
     annotationProcessor "androidx.lifecycle:lifecycle-compiler:$rootProject.lifecycleVersion"
+    api 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.1.0'
     // guava
     api "com.google.guava:guava:$rootProject.guavaVersion"
     // jsoup
