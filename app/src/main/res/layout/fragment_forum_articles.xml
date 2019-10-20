@@ -33,20 +33,32 @@
                     app:subtitleTextColor="@color/white"
                     app:titleTextAppearance="@style/Toolbar.TitleText"
                     app:titleTextColor="@color/white" />
-            <top.easelink.framework.customview.ScrollChildSwipeRefreshLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <!-- TODO change button to a grid view-->
+                <Button
+                    android:id="@+id/test"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    />
+                <top.easelink.framework.customview.ScrollChildSwipeRefreshLayout
                     android:id="@+id/refresh_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:background="@color/white"
+                    app:layout_constraintTop_toBottomOf="@id/test"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:refreshing="@{viewModel.isLoading &amp;&amp; (viewModel.articles != null) }">
-                <androidx.recyclerview.widget.RecyclerView
+                    <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recycler_view"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:visibility="@{viewModel.shouldDisplayArticles ? View.VISIBLE:View.GONE, default = gone}"
                         app:adapter="@{viewModel.articles}"/>
-            </top.easelink.framework.customview.ScrollChildSwipeRefreshLayout>
-
+                </top.easelink.framework.customview.ScrollChildSwipeRefreshLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.appbar.AppBarLayout>
 
         <com.airbnb.lottie.LottieAnimationView

@@ -30,6 +30,7 @@ import top.easelink.lcg.ui.main.source.model.Article;
 import top.easelink.lcg.ui.main.source.model.ArticleAbstractResponse;
 import top.easelink.lcg.ui.main.source.model.ArticleDetail;
 import top.easelink.lcg.ui.main.source.model.ForumPage;
+import top.easelink.lcg.ui.main.source.model.ForumThread;
 import top.easelink.lcg.ui.main.source.model.Post;
 
 import static top.easelink.lcg.utils.CookieUtilsKt.getCookies;
@@ -68,15 +69,6 @@ public class ArticlesRemoteDataSource implements ArticlesDataSource {
             String url = SERVER_BASE_URL + requestUrl;
             Document doc = Jsoup.connect(url).cookies(getCookies()).get();
             forumArticlesDocumentProcessor(doc, emitter);
-//
-//            WebViewWrapper.getInstance().loadUrl(url, new HookInterface() {
-//                @Override
-//                @JavascriptInterface
-//                public void processHtml(String html) {
-//                    Document doc = Jsoup.parse(html);
-//                    forumArticlesDocumentProcessor(doc, emitter);
-//                }
-//            });
         });
     }
 
@@ -193,7 +185,7 @@ public class ArticlesRemoteDataSource implements ArticlesDataSource {
                 Timber.d(htmls);
                 elements = doc.select("tbody");
             }
-            List<Article> list = new ArrayList<>();
+            List<Article> articleList = new ArrayList<>();
             String title, author, date, url, origin;
             Integer view, reply;
             for (Element element : elements) {
@@ -212,7 +204,7 @@ public class ArticlesRemoteDataSource implements ArticlesDataSource {
                     }
                     origin = extractFrom(element, "td.by", "a[target]");
                     if (!TextUtils.isEmpty(title) && !TextUtils.isEmpty(author)) {
-                        list.add(new Article(title, author, date, url, view, reply, origin));
+                        articleList.add(new Article(title, author, date, url, view, reply, origin));
                     }
                 } catch (NumberFormatException nbe) {
                     Timber.v(nbe);
@@ -220,7 +212,22 @@ public class ArticlesRemoteDataSource implements ArticlesDataSource {
                     Timber.e(e);
                 }
             }
-            ForumPage forumPage = new ForumPage(list);
+            // for thread part
+            elements = doc.getElementById("thread_types").getElementsByTag("li");
+            List<ForumThread> threadList = new ArrayList<>();
+            for (Element element: elements) {
+                try {
+                    String threadUrl = element.getElementsByTag("a").attr("href");
+                    String name = element.getElementsByTag("font").first().text();
+                    if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(threadUrl)) {
+                        threadList.add(new ForumThread(name, threadUrl));
+                    }
+                } catch (Exception e) {
+                    // don't care
+                }
+            }
+
+            ForumPage forumPage = new ForumPage(articleList, threadList);
             emitter.onNext(forumPage);
         } catch (Exception e) {
             Timber.e(e);
