@@ -27,12 +27,12 @@ public class HtmlFormatter {
     }
 
     public static Spanned formatHtml(@NonNull HtmlFormatterBuilder builder) {
-        return formatHtml(builder.getHtml(), builder.getImageGetter(), builder.getClickableTableSpan(), builder.getDrawTableLinkSpan(), builder.getIndent(), builder.isRemoveTrailingWhiteSpace());
+        return formatHtml(builder.getHtml(), builder.getImageGetter(), builder.getClickableSpecialSpan(), builder.getDrawTableLinkSpan(), builder.getIndent(), builder.isRemoveTrailingWhiteSpace());
     }
 
-    public static Spanned formatHtml(@Nullable String html, ImageGetter imageGetter, ClickableTableSpan clickableTableSpan, DrawTableLinkSpan drawTableLinkSpan, float indent, boolean removeTrailingWhiteSpace) {
+    public static Spanned formatHtml(@Nullable String html, ImageGetter imageGetter, ClickableSpecialSpan clickableSpecialSpan, DrawTableLinkSpan drawTableLinkSpan, float indent, boolean removeTrailingWhiteSpace) {
         final HtmlTagHandler htmlTagHandler = new HtmlTagHandler();
-        htmlTagHandler.setClickableTableSpan(clickableTableSpan);
+        htmlTagHandler.setClickableSpecialSpan(clickableSpecialSpan);
         htmlTagHandler.setDrawTableLinkSpan(drawTableLinkSpan);
         htmlTagHandler.setListIndentPx(indent);
 

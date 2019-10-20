@@ -45,6 +45,7 @@ public class HtmlTagHandler implements Html.TagHandler {
     public static final String UNORDERED_LIST = "HTML_TEXTVIEW_ESCAPED_UL_TAG";
     public static final String ORDERED_LIST = "HTML_TEXTVIEW_ESCAPED_OL_TAG";
     public static final String LIST_ITEM = "HTML_TEXTVIEW_ESCAPED_LI_TAG";
+    public static final String HTML_TEXTVIEW_CUSTOME_BR = "HTML_TEXTVIEW_CUSTOME_BR";
 
     public HtmlTagHandler() {
     }
@@ -104,6 +105,7 @@ public class HtmlTagHandler implements Html.TagHandler {
      * Tells us which level of table tag we're on; ultimately used to find the root table tag.
      */
     int tableTagLevel = 0;
+    boolean preStart = false;
 
     private StringBuilder preHtmlBuilder = new StringBuilder();
 
@@ -111,7 +113,7 @@ public class HtmlTagHandler implements Html.TagHandler {
     private static final int defaultIndent = 10;
     private static final int defaultListItemIndent = defaultIndent * 2;
     private static final BulletSpan defaultBullet = new BulletSpan(defaultIndent);
-    private ClickableTableSpan clickableTableSpan;
+    private ClickableSpecialSpan clickableSpecialSpan;
     private DrawTableLinkSpan drawTableLinkSpan;
 
     private static class Ul {
@@ -195,7 +197,10 @@ public class HtmlTagHandler implements Html.TagHandler {
             } else if (tag.equalsIgnoreCase("pre")) {
                 start(output, new Pre());
                 preHtmlBuilder = new StringBuilder();
-                output.append("pre placeholder");
+                preStart = true;
+                preHtmlBuilder.append("<")
+                        .append(tag.toLowerCase())
+                        .append(">");
             }
         } else {
             // closing tag
@@ -264,10 +269,10 @@ public class HtmlTagHandler implements Html.TagHandler {
                 if (tableTagLevel == 0) {
                     final String tableHtml = tableHtmlBuilder.toString();
 
-                    ClickableTableSpan myClickableTableSpan = null;
-                    if (clickableTableSpan != null) {
-                        myClickableTableSpan = clickableTableSpan.newInstance();
-                        myClickableTableSpan.setTableHtml(tableHtml);
+                    ClickableSpecialSpan myClickableSpecialSpan = null;
+                    if (clickableSpecialSpan != null) {
+                        myClickableSpecialSpan = clickableSpecialSpan.newInstance();
+                        myClickableSpecialSpan.setHtml(tableHtml);
                     }
 
                     DrawTableLinkSpan myDrawTableLinkSpan = null;
@@ -275,7 +280,7 @@ public class HtmlTagHandler implements Html.TagHandler {
                         myDrawTableLinkSpan = drawTableLinkSpan.newInstance();
                     }
 
-                    end(output, Table.class, false, myDrawTableLinkSpan, myClickableTableSpan);
+                    end(output, Table.class, false, myDrawTableLinkSpan, myClickableSpecialSpan);
                 } else {
                     end(output, Table.class, false);
                 }
@@ -286,9 +291,22 @@ public class HtmlTagHandler implements Html.TagHandler {
             } else if (tag.equalsIgnoreCase("td")) {
                 end(output, Td.class, false);
             } else if (tag.equalsIgnoreCase("pre")) {
-                final String preHtml = preHtmlBuilder.toString();
-                Log.d(HtmlTextView.TAG, preHtml);
-                end(output, Pre.class, false, new ClickablePreSpan());
+                ClickableSpecialSpan myClickableSpecialSpan = null;
+                if (clickableSpecialSpan != null) {
+                    myClickableSpecialSpan = clickableSpecialSpan.newInstance();
+                    final CharSequence extractedSpanText = extractSpanText(output, Pre.class);
+                    preHtmlBuilder.append(extractedSpanText);
+                    preHtmlBuilder.append("</")
+                            .append(tag.toLowerCase())
+                            .append(">");
+                    myClickableSpecialSpan.setHtml(preHtmlBuilder.toString());
+                }
+                DrawTableLinkSpan myDrawTableLinkSpan = null;
+                if (drawTableLinkSpan != null) {
+                    myDrawTableLinkSpan = drawTableLinkSpan.newInstance();
+                }
+                end(output, Pre.class, false, myDrawTableLinkSpan, myClickableSpecialSpan);
+                preStart = false;
             }
         }
 
@@ -297,7 +315,7 @@ public class HtmlTagHandler implements Html.TagHandler {
 
     /**
      * If we're arriving at a table tag or are already within a table tag, then we should store it
-     * the raw HTML for our ClickableTableSpan
+     * the raw HTML for our ClickableSpecialSpan
      */
     private void storeSpecialTags(boolean opening, String tag) {
         if (tableTagLevel > 0 || tag.equalsIgnoreCase("table")) {
@@ -306,14 +324,6 @@ public class HtmlTagHandler implements Html.TagHandler {
                 tableHtmlBuilder.append("/");
             }
             tableHtmlBuilder
-                    .append(tag.toLowerCase())
-                    .append(">");
-        } else if (tag.equalsIgnoreCase("pre")) {
-            preHtmlBuilder.append("<");
-            if (!opening) {
-                preHtmlBuilder.append("/");
-            }
-            preHtmlBuilder
                     .append(tag.toLowerCase())
                     .append(">");
         }
@@ -345,6 +355,12 @@ public class HtmlTagHandler implements Html.TagHandler {
         if (tableTagLevel > 0) {
             final CharSequence extractedSpanText = extractSpanText(output, kind);
             tableHtmlBuilder.append(extractedSpanText);
+        }
+
+        if (preStart) {
+            String placeHolder = "LCG";
+            output.append(placeHolder);
+            len += placeHolder.length();
         }
 
         output.removeSpan(obj);
@@ -404,8 +420,8 @@ public class HtmlTagHandler implements Html.TagHandler {
         userGivenIndent = Math.round(px);
     }
 
-    public void setClickableTableSpan(ClickableTableSpan clickableTableSpan) {
-        this.clickableTableSpan = clickableTableSpan;
+    public void setClickableSpecialSpan(ClickableSpecialSpan clickableSpecialSpan) {
+        this.clickableSpecialSpan = clickableSpecialSpan;
     }
 
     public void setDrawTableLinkSpan(DrawTableLinkSpan drawTableLinkSpan) {

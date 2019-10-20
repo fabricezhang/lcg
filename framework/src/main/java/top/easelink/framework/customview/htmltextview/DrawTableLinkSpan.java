@@ -25,7 +25,7 @@ import android.text.style.ReplacementSpan;
  * This span defines how a table should be rendered in the HtmlTextView. The default implementation
  * is a cop-out which replaces the HTML table with some text ("[tap for table]" is the default).
  * <p/>
- * This is to be used in conjunction with the ClickableTableSpan which will redirect a click to the
+ * This is to be used in conjunction with the ClickableSpecialSpan which will redirect a click to the
  * text some application-defined action (i.e. render the raw HTML in a WebView).
  */
 public class DrawTableLinkSpan extends ReplacementSpan {

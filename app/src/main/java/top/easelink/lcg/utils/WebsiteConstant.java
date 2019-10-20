@@ -8,6 +8,7 @@ package top.easelink.lcg.utils;
 public class WebsiteConstant {
 
     public static final String URL_KEY = "URL_KEY";
+    public static final String EXTRA_TABLE_HTML = "EXTRA_TABLE_HTML";
 
     public static final String SERVER_BASE_URL = "https://www.52pojie.cn/";
 
@@ -28,5 +29,5 @@ public class WebsiteConstant {
     public static final String HOME_URL = "home.php";
     public static final String LOGIN_URL = "member.php?mod=logging&action=login";
 
-    public static final String APP_RELEASE_PAGE = "forum.php?mod=viewthread&tid=990363&page=1";
+    public static final String APP_RELEASE_PAGE = "thread-1038934-1-1.html";
 }

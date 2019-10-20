@@ -6,15 +6,15 @@ import org.jetbrains.annotations.NotNull;
 
 import timber.log.Timber;
 
-class ClickablePreSpan extends ClickableTableSpan {
+class ClickablePreSpan extends ClickableSpecialSpan {
 
-        @Override
-        public ClickableTableSpan newInstance() {
-            return new ClickablePreSpan();
-        }
-
-        @Override
-        public void onClick(@NotNull View view) {
-            Timber.d("Test");
-        }
+    @Override
+    public ClickableSpecialSpan newInstance() {
+        return new ClickablePreSpan();
     }
+
+    @Override
+    public void onClick(@NotNull View view) {
+        Timber.d("Test");
+    }
+}
