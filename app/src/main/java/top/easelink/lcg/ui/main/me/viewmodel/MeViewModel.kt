@@ -9,6 +9,7 @@ import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.work.*
+import com.tencent.stat.StatService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -29,9 +30,12 @@ import top.easelink.lcg.ui.main.me.model.UserInfo
 import top.easelink.lcg.ui.main.me.view.MeNavigator
 import top.easelink.lcg.ui.main.source.local.SPConstants.SP_KEY_AUTO_SIGN_IN
 import top.easelink.lcg.ui.main.source.local.SharedPreferencesHelper
+import top.easelink.lcg.ui.mta.EVENT_AUTO_SIGN
+import top.easelink.lcg.ui.mta.PROP_IS_AUTO_SIGN_ENABLE
 import top.easelink.lcg.utils.WebsiteConstant.HOME_URL
 import top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL
 import top.easelink.lcg.utils.getCookies
+import java.util.*
 
 class MeViewModel(schedulerProvider:SchedulerProvider): BaseViewModel<MeNavigator>(schedulerProvider) {
 
@@ -60,6 +64,7 @@ class MeViewModel(schedulerProvider:SchedulerProvider): BaseViewModel<MeNavigato
 
     fun scheduleJob(v:View) {
         if (v is CheckBox) {
+            val prop = Properties()
             SharedPreferencesHelper.getUserSp()
                 .edit()
                 .putBoolean(SP_KEY_AUTO_SIGN_IN, v.isChecked)
@@ -76,10 +81,12 @@ class MeViewModel(schedulerProvider:SchedulerProvider): BaseViewModel<MeNavigato
                     .addTag(SignInWorker::class.java.simpleName)
                     .build()
                 WorkManager.getInstance().enqueue(request)
-            }
-            else {
+                prop.setProperty(PROP_IS_AUTO_SIGN_ENABLE, true.toString())
+            } else {
+                prop.setProperty(PROP_IS_AUTO_SIGN_ENABLE, false.toString())
                 WorkManager.getInstance().cancelAllWorkByTag(SignInWorker::class.java.simpleName)
             }
+            StatService.trackCustomKVEvent(v.context, EVENT_AUTO_SIGN, prop)
         }
     }
 

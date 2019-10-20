@@ -27,11 +27,14 @@ import androidx.core.app.ShareCompat;
 import com.airbnb.lottie.LottieAnimationView;
 
 import timber.log.Timber;
+import top.easelink.framework.customview.HorizontalScrollDisableWebView;
+import top.easelink.lcg.LCGApp;
 import top.easelink.lcg.R;
 
 import static top.easelink.lcg.ui.webview.WebViewConstants.FORCE_ENABLE_JS_KEY;
 import static top.easelink.lcg.ui.webview.WebViewConstants.TITLE_KEY;
 import static top.easelink.lcg.utils.CookieUtilsKt.setCookies;
+import static top.easelink.lcg.utils.WebsiteConstant.EXTRA_TABLE_HTML;
 import static top.easelink.lcg.utils.WebsiteConstant.URL_KEY;
 
 public class WebViewActivity extends AppCompatActivity {
@@ -39,6 +42,7 @@ public class WebViewActivity extends AppCompatActivity {
     private boolean mForceEnableJs = true;
 
     protected String mUrl;
+    protected String mHtml;
 
     private WebView mWebView;
     private LottieAnimationView animationView;
@@ -50,9 +54,17 @@ public class WebViewActivity extends AppCompatActivity {
         context.startActivity(intent);
     }
 
+    public static void startWebViewWithHtml(String html, Context context) {
+        context = context == null? LCGApp.getContext() : context;
+        Intent intent = new Intent(context, WebViewActivity.class);
+        intent.putExtra(EXTRA_TABLE_HTML, html);
+        context.startActivity(intent);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initData();
         initContentView();
         initActionBar();
         initWebView();
@@ -66,24 +78,31 @@ public class WebViewActivity extends AppCompatActivity {
 
     protected void initWebView() {
         mWebView.setWebViewClient(getWebViewClient());
-        initUrl();
-        updateWebViewSettings();
         Intent intent = getIntent();
         if (Intent.ACTION_VIEW.equals(intent.getAction()) && intent.getData() != null) {
+            updateWebViewSettingsRemote();
             mWebView.loadUrl(intent.getData().toString());
         } else {
             mForceEnableJs = intent.getBooleanExtra(FORCE_ENABLE_JS_KEY, false);
-            mWebView.loadUrl(mUrl);
+            if (!TextUtils.isEmpty(mUrl)) {
+                updateWebViewSettingsRemote();
+                mWebView.loadUrl(mUrl);
+            } else if(!TextUtils.isEmpty(mHtml)) {
+                updateWebViewSettingsLocal();
+                mWebView.loadData(mHtml, "text/html", "UTF-8");
+            }
         }
     }
 
-    protected void initUrl() {
+    protected void initData() {
         Intent intent = getIntent();
         Uri uri = intent.getData();
         mUrl = intent.getStringExtra(URL_KEY);
         if (TextUtils.isEmpty(mUrl) && uri != null) {
             mUrl = uri.toString();
         }
+
+        mHtml = intent.getStringExtra(EXTRA_TABLE_HTML);
     }
 
     @Override
@@ -190,8 +209,11 @@ public class WebViewActivity extends AppCompatActivity {
     }
 
     @SuppressLint("SetJavaScriptEnabled")
-    private void updateWebViewSettings() {
+    private void updateWebViewSettingsLocal() {
         WebSettings settings = mWebView.getSettings();
+        if (mWebView instanceof HorizontalScrollDisableWebView) {
+            ((HorizontalScrollDisableWebView) mWebView).setScrollEnable(true);
+        }
         if (mForceEnableJs) {
             settings.setJavaScriptEnabled(true);
         } else {
@@ -200,6 +222,25 @@ public class WebViewActivity extends AppCompatActivity {
         settings.setBlockNetworkImage(false);
         settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+        settings.setDefaultTextEncodingName("UTF-8");
+        settings.setBuiltInZoomControls(true);
+        settings.setAppCacheEnabled(true);
+        settings.setSupportZoom(true);
+        settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+    }
+
+    @SuppressLint("SetJavaScriptEnabled")
+    private void updateWebViewSettingsRemote() {
+        WebSettings settings = mWebView.getSettings();
+        if (mForceEnableJs) {
+            settings.setJavaScriptEnabled(true);
+        } else {
+            settings.setJavaScriptEnabled(false);
+        }
+        settings.setBlockNetworkImage(false);
+        settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        settings.setUseWideViewPort(true);
+        settings.setLoadWithOverviewMode(true);
         settings.setDefaultTextEncodingName("UTF-8");
         settings.setBuiltInZoomControls(false);
         settings.setAppCacheEnabled(true);

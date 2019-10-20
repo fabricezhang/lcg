@@ -22,7 +22,7 @@ public class HtmlFormatterBuilder {
 
     private String html;
     private ImageGetter imageGetter;
-    private ClickableTableSpan clickableTableSpan;
+    private ClickableSpecialSpan clickableSpecialSpan;
     private DrawTableLinkSpan drawTableLinkSpan;
     private float indent = 24.0f;
     private boolean removeTrailingWhiteSpace = true;
@@ -35,8 +35,8 @@ public class HtmlFormatterBuilder {
         return imageGetter;
     }
 
-    public ClickableTableSpan getClickableTableSpan() {
-        return clickableTableSpan;
+    public ClickableSpecialSpan getClickableSpecialSpan() {
+        return clickableSpecialSpan;
     }
 
     public DrawTableLinkSpan getDrawTableLinkSpan() {
@@ -61,8 +61,8 @@ public class HtmlFormatterBuilder {
         return this;
     }
 
-    public HtmlFormatterBuilder setClickableTableSpan(@Nullable final ClickableTableSpan clickableTableSpan) {
-        this.clickableTableSpan = clickableTableSpan;
+    public HtmlFormatterBuilder setClickableSpecialSpan(@Nullable final ClickableSpecialSpan clickableSpecialSpan) {
+        this.clickableSpecialSpan = clickableSpecialSpan;
         return this;
     }
 

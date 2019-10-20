@@ -7,6 +7,7 @@ import android.content.Context;
 
 import com.tencent.bugly.Bugly;
 import com.tencent.bugly.beta.Beta;
+import com.tencent.stat.StatService;
 
 import javax.inject.Inject;
 
@@ -76,5 +77,7 @@ public class LCGApp extends Application implements HasActivityInjector {
         Bugly.init(getApplicationContext(), BuildConfig.BUGLY_APP_ID, false);
         Beta.largeIconId = R.drawable.ic_noavatar_middle;
         Beta.enableHotfix = true;
+
+        StatService.registerActivityLifecycleCallbacks(LCGApp.this);
     }
 }
