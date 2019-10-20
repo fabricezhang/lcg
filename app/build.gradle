@@ -64,7 +64,6 @@ dependencies {
     // database
     annotationProcessor "androidx.room:room-compiler:$roomVersion"
     annotationProcessor "com.android.databinding:compiler:$dataBindingVersion"
-    annotationProcessor "androidx.lifecycle:lifecycle-compiler:$rootProject.lifecycleVersion"
 
     annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.dagger2Version"
     annotationProcessor "com.google.dagger:dagger-android-processor:$rootProject.dagger2Version"

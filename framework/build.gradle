@@ -69,7 +69,7 @@ dependencies {
     api "io.reactivex.rxjava2:rxandroid:$rootProject.rxandroidVersion"
     // view model
     api "androidx.lifecycle:lifecycle-extensions:$rootProject.lifecycleVersion"
-    annotationProcessor "androidx.lifecycle:lifecycle-compiler:$rootProject.lifecycleVersion"
+    api "androidx.lifecycle:lifecycle-common-java8:$rootProject.lifecycleVersion"
     api 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.1.0'
     // guava
     api "com.google.guava:guava:$rootProject.guavaVersion"

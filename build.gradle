@@ -57,7 +57,7 @@ ext {
     placeholderviewVersion = '0.6.1'
     debugDBVersion = '1.0.3'
     timberVersion = '4.7.1'
-    lifecycleVersion = '2.0.0'
+    lifecycleVersion = '2.1.0'
     roomVersion = '2.2.0'
     guavaVersion = '28.1-jre'
     jsoupVersion = '1.12.1'
