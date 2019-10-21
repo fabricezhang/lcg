@@ -213,17 +213,19 @@ public class ArticlesRemoteDataSource implements ArticlesDataSource {
                 }
             }
             // for thread part
-            elements = doc.getElementById("thread_types").getElementsByTag("li");
             List<ForumThread> threadList = new ArrayList<>();
-            for (Element element: elements) {
-                try {
-                    String threadUrl = element.getElementsByTag("a").attr("href");
-                    String name = element.getElementsByTag("font").first().text();
-                    if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(threadUrl)) {
-                        threadList.add(new ForumThread(name, threadUrl));
+            Element threadTypes = doc.getElementById("thread_types");
+            if (threadTypes != null) {
+                for (Element element: threadTypes.getElementsByTag("li")) {
+                    try {
+                        String threadUrl = element.getElementsByTag("a").attr("href");
+                        String name = element.getElementsByTag("font").first().text();
+                        if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(threadUrl)) {
+                            threadList.add(new ForumThread(name, threadUrl));
+                        }
+                    } catch (Exception e) {
+                        // don't care
                     }
-                } catch (Exception e) {
-                    // don't care
                 }
             }
 
