@@ -3,7 +3,11 @@
 UI参照知乎和虎扑App, 架构参考Google官方MVVM代码结构.
 论坛讨论贴: https://www.52pojie.cn/forum.php?mod=viewthread&tid=990363
 
-APK下载 蓝奏云 https://www.lanzous.com/i57tefa
+
+APK下载 蓝奏云 
+V1.5.0 https://www.lanzous.com/i6wmceb
+V1.4.0 https://www.lanzous.com/i6wmceb
+V1.3.0 https://www.lanzous.com/i57tefa
 
 ## 功能
  - 通过Jsoup方式重新排版的文章浏览
