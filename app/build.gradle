@@ -19,6 +19,11 @@ android {
         buildConfigField("String", "DB_NAME", "\"articles.db\"")
         buildConfigField("String", "BUGLY_APP_ID", "\"b9441ed548\"")
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        manifestPlaceholders = [
+                MTA_APPKEY:"A6SZ9KQ7VX9T",
+                MTA_CHANNEL:"52POJIE"
+        ]
     }
     signingConfigs {
         releaseConfig {
@@ -59,7 +64,6 @@ dependencies {
     // database
     annotationProcessor "androidx.room:room-compiler:$roomVersion"
     annotationProcessor "com.android.databinding:compiler:$dataBindingVersion"
-    annotationProcessor "androidx.lifecycle:lifecycle-compiler:$rootProject.lifecycleVersion"
 
     annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.dagger2Version"
     annotationProcessor "com.google.dagger:dagger-android-processor:$rootProject.dagger2Version"
@@ -68,7 +72,7 @@ dependencies {
 
     debugImplementation "com.amitshekhar.android:debug-db:1.0.4"
     // test related
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.2.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    testImplementation "junit:junit:$rootProject.junitVersion"
+    androidTestImplementation "androidx.test:runner:$rootProject.runnerVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.espressoVersion"
 }

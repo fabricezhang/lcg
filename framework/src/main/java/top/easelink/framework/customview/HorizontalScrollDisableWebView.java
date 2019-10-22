@@ -5,6 +5,9 @@ import android.util.AttributeSet;
 import android.webkit.WebView;
 
 public class HorizontalScrollDisableWebView extends WebView {
+
+    private boolean scrollEnable = false;
+
     public HorizontalScrollDisableWebView(Context context) {
         super(context);
     }
@@ -20,6 +23,12 @@ public class HorizontalScrollDisableWebView extends WebView {
     @Override
     protected void onScrollChanged(int l, int t, int oldl, int oldt) {
         super.onScrollChanged(l, t, oldl, oldt);
-        scrollTo(0,t);
+        if (!scrollEnable) {
+            scrollTo(0,t);
+        }
+    }
+
+    public void setScrollEnable(boolean scrollEnable) {
+        this.scrollEnable = scrollEnable;
     }
 }  

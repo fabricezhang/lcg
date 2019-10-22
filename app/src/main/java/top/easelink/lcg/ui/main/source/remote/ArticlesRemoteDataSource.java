@@ -25,11 +25,13 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import timber.log.Timber;
 import top.easelink.lcg.ui.main.model.BlockException;
+import top.easelink.lcg.ui.main.model.LoginRequiredException;
 import top.easelink.lcg.ui.main.source.ArticlesDataSource;
 import top.easelink.lcg.ui.main.source.model.Article;
 import top.easelink.lcg.ui.main.source.model.ArticleAbstractResponse;
 import top.easelink.lcg.ui.main.source.model.ArticleDetail;
 import top.easelink.lcg.ui.main.source.model.ForumPage;
+import top.easelink.lcg.ui.main.source.model.ForumThread;
 import top.easelink.lcg.ui.main.source.model.Post;
 
 import static top.easelink.lcg.utils.CookieUtilsKt.getCookies;
@@ -63,20 +65,12 @@ public class ArticlesRemoteDataSource implements ArticlesDataSource {
     }
 
     @Override
-    public Observable<ForumPage> getForumArticles(@NonNull final String requestUrl){
+    public Observable<ForumPage> getForumArticles(@NonNull final String requestUrl,
+                                                  boolean processThreadList){
         return Observable.create(emitter -> {
             String url = SERVER_BASE_URL + requestUrl;
             Document doc = Jsoup.connect(url).cookies(getCookies()).get();
-            forumArticlesDocumentProcessor(doc, emitter);
-//
-//            WebViewWrapper.getInstance().loadUrl(url, new HookInterface() {
-//                @Override
-//                @JavascriptInterface
-//                public void processHtml(String html) {
-//                    Document doc = Jsoup.parse(html);
-//                    forumArticlesDocumentProcessor(doc, emitter);
-//                }
-//            });
+            forumArticlesDocumentProcessor(doc, emitter, processThreadList);
         });
     }
 
@@ -185,15 +179,18 @@ public class ArticlesRemoteDataSource implements ArticlesDataSource {
         });
     }
 
-    private void forumArticlesDocumentProcessor(Document doc, ObservableEmitter<ForumPage> emitter) {
+    private void forumArticlesDocumentProcessor(Document doc,
+                                                ObservableEmitter<ForumPage> emitter,
+                                                boolean processThreadList) {
         try {
             Elements elements = doc.select("tbody[id^=normal]");
             if (elements.isEmpty()) {
-                String htmls = doc.html();
-                Timber.d(htmls);
-                elements = doc.select("tbody");
+                Element element = doc.getElementById("messagelogin");
+                if (element != null) {
+                    throw new LoginRequiredException();
+                }
             }
-            List<Article> list = new ArrayList<>();
+            List<Article> articleList = new ArrayList<>();
             String title, author, date, url, origin;
             Integer view, reply;
             for (Element element : elements) {
@@ -206,13 +203,13 @@ public class ArticlesRemoteDataSource implements ArticlesDataSource {
                     }
                     author = extractFrom(element, "td.by", "a[href*=uid]");
                     date = extractFrom(element, "td.by", "span");
-                    url = extractAttrFrom(element, "href","th.new", "a.xst");
+                    url = extractAttrFrom(element, "href", "th.new", "a.xst");
                     if (TextUtils.isEmpty(url)) {
-                        url = extractAttrFrom(element, "href","th.common", "a.xst");
+                        url = extractAttrFrom(element, "href", "th.common", "a.xst");
                     }
                     origin = extractFrom(element, "td.by", "a[target]");
                     if (!TextUtils.isEmpty(title) && !TextUtils.isEmpty(author)) {
-                        list.add(new Article(title, author, date, url, view, reply, origin));
+                        articleList.add(new Article(title, author, date, url, view, reply, origin));
                     }
                 } catch (NumberFormatException nbe) {
                     Timber.v(nbe);
@@ -220,7 +217,31 @@ public class ArticlesRemoteDataSource implements ArticlesDataSource {
                     Timber.e(e);
                 }
             }
-            ForumPage forumPage = new ForumPage(list);
+            // for thread part
+            List<ForumThread> threadList = new ArrayList<>();
+            if (processThreadList) {
+                Element threadTypes = doc.getElementById("thread_types");
+                if (threadTypes != null) {
+                    for (Element element : threadTypes.getElementsByTag("li")) {
+                        try {
+                            element = element.getElementsByTag("a").first();
+                            elements = element.getElementsByTag("span");
+                            if (elements.size() > 0) {
+                                elements.remove();
+                            }
+                            String threadUrl = element.attr("href");
+                            String name = element.text().trim();
+                            if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(threadUrl)) {
+                                threadList.add(new ForumThread(name, threadUrl));
+                            }
+                        } catch (Exception e) {
+                            // don't care
+                        }
+                    }
+                }
+            }
+
+            ForumPage forumPage = new ForumPage(articleList, threadList);
             emitter.onNext(forumPage);
         } catch (Exception e) {
             Timber.e(e);
@@ -305,8 +326,9 @@ public class ArticlesRemoteDataSource implements ArticlesDataSource {
         element.select("script").remove();
         // convert all code
         for(Element e: element.getElementsByTag("pre")) {
-            e.tagName("div");
-            e.html("<font color=\"#ff0000\">代码暂时无法显示</font>");
+            e.siblingElements().remove();
+            String s = e.html().replaceAll("\r\n", "<br/>").replaceAll(" ", "&nbsp;");
+            e.html(s);
         }
 
         Elements imgElements = element.getElementsByTag("img");

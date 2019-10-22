@@ -53,7 +53,7 @@ abstract class SafeShowDialogFragment : DialogFragment() {
     private fun showCatchException(manager: FragmentManager, tag: String?) {
         if (!isAdded) {
             try {
-                val ft = manager?.beginTransaction()
+                val ft = manager.beginTransaction()
                 ft.add(this, tag ?: this::class.java.simpleName)
                 ft.commitAllowingStateLoss()
             } catch (e: Exception) {

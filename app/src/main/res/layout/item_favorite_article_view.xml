@@ -69,7 +69,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 tools:text="Author"/>
 
-            <org.sufficientlysecure.htmltextview.HtmlTextView
+            <top.easelink.framework.customview.htmltextview.HtmlTextView
                 android:id="@+id/contentTextView"
                 style="@style/TextStyle.Title"
                 android:layout_width="match_parent"

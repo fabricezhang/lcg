@@ -55,8 +55,7 @@
                     android:src="@drawable/ic_power_settings_new_24px"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-
-                    />
+                    android:contentDescription="@null" />
                 <TextView
                     android:layout_marginStart="@dimen/dp_35"
                     android:id="@+id/me_user_name"
@@ -136,20 +135,21 @@
                     android:id="@+id/me_setting_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/black_effective"
-                    android:textSize="@dimen/sp_18"
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/sp_14"
                     android:text="@string/me_setting_title"
+                    android:layout_marginStart="@dimen/dp_15"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
+
                     />
                 <TextView
-                    android:layout_marginTop="@dimen/dp_3"
                     android:id="@+id/auto_sign_in_switch_title"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:text="@string/start_auto_sign_in"
                     android:layout_marginStart="@dimen/dp_20"
+                    android:layout_marginTop="@dimen/dp_10"
                     app:switchPadding="@dimen/dp_10"
                     app:layout_constraintTop_toBottomOf="@id/me_setting_title"
                     app:layout_constraintStart_toStartOf="parent"

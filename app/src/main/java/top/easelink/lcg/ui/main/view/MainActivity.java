@@ -40,6 +40,7 @@ import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
 import top.easelink.framework.base.BaseActivity;
+import top.easelink.framework.base.BaseFragment;
 import top.easelink.lcg.BR;
 import top.easelink.lcg.BuildConfig;
 import top.easelink.lcg.R;
@@ -236,10 +237,10 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
                     mDrawer.closeDrawer(GravityCompat.START);
                     switch (item.getItemId()) {
                         case R.id.navItemAbout:
-                            showAboutFragment();
+                            showFragment(AboutFragment.newInstance());
                             return true;
                         case R.id.navItemRelease:
-                            showArticleFragment(APP_RELEASE_PAGE);
+                            showFragment(ArticleFragment.newInstance(APP_RELEASE_PAGE));
                             return true;
                         default:
                             return false;
@@ -249,47 +250,17 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(OpenArticleEvent event) {
-        showArticleFragment(event.getUrl());
+        showFragment(ArticleFragment.newInstance(event.getUrl()));
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(OpenForumEvent event) {
-        showForumFragment(event.getTitle(), event.getUrl());
+        showFragment(ForumArticlesFragment.newInstance(event.getTitle(), event.getUrl()));
     }
 
-    private void showAboutFragment() {
+    private void showFragment(BaseFragment fragment) {
         ActivityUtils.addFragmentInActivity(getSupportFragmentManager(),
-                AboutFragment.newInstance(),
-                R.id.clRootView);
-    }
-
-    private void showMeFragment() {
-        ActivityUtils.addFragmentInActivity(getSupportFragmentManager(),
-                MeFragment.newInstance(),
-                R.id.clRootView);
-    }
-
-    private void showForumNavigationFragment() {
-        ActivityUtils.addFragmentInActivity(getSupportFragmentManager(),
-                ForumNavigationFragment.newInstance(),
-                R.id.clRootView);
-    }
-
-    private void showArticleFragment(String url) {
-        ActivityUtils.addFragmentInActivity(getSupportFragmentManager(),
-                ArticleFragment.newInstance(url),
-                R.id.clRootView);
-    }
-
-    private void showForumFragment(String title, String forumUrl) {
-        ActivityUtils.addFragmentInActivity(getSupportFragmentManager(),
-                ForumArticlesFragment.newInstance(title, forumUrl),
-                R.id.clRootView);
-    }
-
-    private void showFavoriteFragment() {
-        ActivityUtils.addFragmentInActivity(getSupportFragmentManager(),
-                FavoriteArticlesFragment.newInstance(),
+                fragment,
                 R.id.clRootView);
     }
 
@@ -360,13 +331,13 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
         }
         switch (menuItem.getItemId()) {
             case R.id.action_favorite:
-                showFavoriteFragment();
+                showFragment(FavoriteArticlesFragment.newInstance());
                 break;
             case R.id.action_forum_navigation:
-                showForumNavigationFragment();
+                showFragment(ForumNavigationFragment.newInstance());
                 break;
             case R.id.action_about_me:
-                showMeFragment();
+                showFragment(MeFragment.newInstance());
                 break;
             case R.id.action_home:
             default:

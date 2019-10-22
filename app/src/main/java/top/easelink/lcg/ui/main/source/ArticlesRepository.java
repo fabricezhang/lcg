@@ -62,8 +62,8 @@ public class ArticlesRepository implements FavoritesDataSource, ArticlesDataSour
     }
 
     @Override
-    public Observable<ForumPage> getForumArticles(@NonNull String requestUrl) {
-        return remoteDataSource.getForumArticles(requestUrl);
+    public Observable<ForumPage> getForumArticles(@NonNull String requestUrl, boolean processThreadList) {
+        return remoteDataSource.getForumArticles(requestUrl, processThreadList);
     }
 
     @Override

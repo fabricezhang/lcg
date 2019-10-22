@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">吾爱破解</string>
 
+    <string name="login_required_error">请求页面失败，请确认是否登陆</string>
     <string name="error">请求页面失败，请稍后再试</string>
     <!--Toolbar menus-->
     <string name="clear">Clear</string>
@@ -25,6 +26,7 @@
     <string name="about">『关于应用』</string>
     <string name="thread_about_app">『App发布页』</string>
     <string name="free_chat_title">『水漫金山』</string>
+    <string name="welfare_title">『福利经验』</string>
 
     <!--home fragment-->
     <string name="tab_title_hot">人气热门</string>
@@ -39,6 +41,8 @@
     <string name="start_auto_sign_in">开启自动签到</string>
     <string name="me_tab_level_placeholder">个人信息</string>
     <string name="me_tab_clear_cookie">本地登陆信息已清除</string>
+
+    <string name="me_notification_title">我的信息</string>
 
     <!--Login Dialog-->
     <string name="login_username">用户名</string>
@@ -63,6 +67,7 @@
      <!--feed-->
     <string name="load_more">加载更多</string>
     <string name="no_more_content">没有更多了</string>
+    <string name="tap_for_code">『点击显示代码』</string>
 
     <!--download link dialog-->
     <string name="download_title">下载链接</string>

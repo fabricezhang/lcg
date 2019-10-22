@@ -8,13 +8,13 @@ import androidx.annotation.NonNull;
 import androidx.databinding.BindingAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.sufficientlysecure.htmltextview.HtmlHttpImageGetter;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import timber.log.Timber;
 import top.easelink.framework.base.BaseViewHolder;
+import top.easelink.framework.customview.htmltextview.DrawTableLinkSpan;
+import top.easelink.framework.customview.htmltextview.HtmlHttpImageGetter;
 import top.easelink.lcg.R;
 import top.easelink.lcg.databinding.ItemPostViewBinding;
 import top.easelink.lcg.ui.main.source.model.Post;
@@ -57,7 +57,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         if (mPostList.isEmpty()) {
             return VIEW_TYPE_EMPTY;
         } else if (position == mPostList.size()) {
-                return VIEW_TYPE_LOAD_MORE;
+            return VIEW_TYPE_LOAD_MORE;
         } else {
             return VIEW_TYPE_NORMAL;
         }
@@ -101,7 +101,6 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     public class PostViewHolder extends BaseViewHolder {
 
         private ItemPostViewBinding mBinding;
-        private PostViewModel postViewModel;
         private HtmlHttpImageGetter htmlHttpImageGetter;
 
         PostViewHolder(ItemPostViewBinding binding) {
@@ -114,10 +113,14 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         @Override
         public void onBind(int position) {
             final Post post = mPostList.get(position);
-            postViewModel = new PostViewModel(post);
+            PostViewModel postViewModel = new PostViewModel(post);
             mBinding.setViewModel(postViewModel);
             try {
-                mBinding.contentTextView.setHtml(post.getContent(),htmlHttpImageGetter);
+                mBinding.contentTextView.setClickableSpecialSpan(new ClickableSpecialSpanImpl());
+                DrawTableLinkSpan drawTableLinkSpan = new DrawTableLinkSpan();
+                drawTableLinkSpan.setTableLinkText(itemView.getContext().getString(R.string.tap_for_code));
+                mBinding.contentTextView.setDrawTableLinkSpan(drawTableLinkSpan);
+                mBinding.contentTextView.setHtml(post.getContent(), htmlHttpImageGetter);
             } catch (Exception e) {
                 Timber.e(e);
             }

@@ -25,6 +25,7 @@ import static top.easelink.lcg.utils.WebsiteConstant.SOFTWARE_URL;
 import static top.easelink.lcg.utils.WebsiteConstant.VIRUS_ANALYSIS_URL;
 import static top.easelink.lcg.utils.WebsiteConstant.VIRUS_RESCUE_URL;
 import static top.easelink.lcg.utils.WebsiteConstant.VIRUS_SAMPLE_URL;
+import static top.easelink.lcg.utils.WebsiteConstant.WELFARE_URL;
 
 public class ForumNavigationViewModel extends BaseViewModel<ForumNavigationNavigator> {
 
@@ -80,6 +81,10 @@ public class ForumNavigationViewModel extends BaseViewModel<ForumNavigationNavig
                 context.getString(R.string.free_chat_title),
                 R.drawable.ic_invert_colors_black_24dp,
                 FREE_CHAT_URL));
+        list.add(new ForumNavigationModel(
+                context.getString(R.string.welfare_title),
+                R.drawable.ic_attach_money_black_24dp,
+                WELFARE_URL));
         navigation.setValue(list);
     }
 

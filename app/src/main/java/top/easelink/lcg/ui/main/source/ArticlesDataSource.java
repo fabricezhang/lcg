@@ -18,7 +18,7 @@ import top.easelink.lcg.ui.main.source.model.ForumPage;
  */
 public interface ArticlesDataSource {
 
-    Observable<ForumPage> getForumArticles(@NonNull final String requestUrl);
+    Observable<ForumPage> getForumArticles(@NonNull final String requestUrl, boolean processThreadList);
 
     Observable<ArticleDetail> getArticleDetail(@NonNull final String url);
 

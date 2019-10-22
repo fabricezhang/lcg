@@ -14,6 +14,11 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.tabs.TabLayout;
+import com.tencent.stat.StatService;
+
+import java.util.List;
+
 import javax.inject.Inject;
 
 import top.easelink.framework.base.BaseFragment;
@@ -25,11 +30,15 @@ import top.easelink.lcg.databinding.FragmentForumArticlesBinding;
 import top.easelink.lcg.ui.ViewModelProviderFactory;
 import top.easelink.lcg.ui.main.articles.viewmodel.ArticlesAdapter;
 import top.easelink.lcg.ui.main.articles.viewmodel.ForumArticlesViewModel;
+import top.easelink.lcg.ui.main.model.LoginRequiredException;
+import top.easelink.lcg.ui.main.source.model.ForumThread;
 
+import static top.easelink.lcg.mta.MTAConstantKt.CHANGE_THREAD;
+import static top.easelink.lcg.ui.main.articles.viewmodel.ArticlesAdapter.ArticlesAdapterListener.FETCH_BY_THREAD;
 import static top.easelink.lcg.ui.main.articles.viewmodel.ArticlesViewModel.FETCH_INIT;
 
 public class ForumArticlesFragment extends BaseFragment<FragmentForumArticlesBinding, ForumArticlesViewModel>
-        implements ArticlesNavigator {
+        implements FourmArticleNavigator {
 
     private static final String ARG_PARAM = "url";
     private static final String ARG_TITLE = "title";
@@ -66,7 +75,14 @@ public class ForumArticlesFragment extends BaseFragment<FragmentForumArticlesBin
 
     @Override
     public void handleError(Throwable t) {
-        Toast.makeText(getContext(), R.string.error, Toast.LENGTH_SHORT).show();
+        int errorId;
+        if (t instanceof LoginRequiredException) {
+            errorId = R.string.login_required_error;
+        } else {
+            errorId = R.string.error;
+        }
+        showMessage(errorId);
+        mFragmentArticlesBinding.loading.setAnimation(R.raw.face_sorry);
     }
 
     @Override
@@ -90,10 +106,37 @@ public class ForumArticlesFragment extends BaseFragment<FragmentForumArticlesBin
     private void setUp() {
         Bundle bundle = getArguments();
         if (bundle != null) {
-            mArticlesViewModel.initUrl(getArguments().getString(ARG_PARAM));
+            mArticlesViewModel.initUrl(getArguments().getString(ARG_PARAM), FETCH_INIT);
             mArticlesViewModel.setTitle(getArguments().getString(ARG_TITLE));
         }
 
+        setUpRecyclerView();
+    }
+
+    @Override
+    public void setUpTabLayout(List<ForumThread> forumThreadList) {
+        TabLayout tabLayout = mFragmentArticlesBinding.forumTab;
+        tabLayout.setVisibility(View.VISIBLE);
+        for(ForumThread forumThread: forumThreadList) {
+            tabLayout.addTab(tabLayout.newTab().setText(forumThread.getThreadName()));
+        }
+
+        mFragmentArticlesBinding.forumTab.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                StatService.trackCustomEvent(getContext(), CHANGE_THREAD);
+                mArticlesViewModel.initUrl(
+                        forumThreadList.get(tab.getPosition()).getThreadUrl(),
+                        FETCH_BY_THREAD);
+            }
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) { }
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) { }
+        });
+    }
+
+    private void setUpRecyclerView() {
         ArticlesAdapter mArticlesAdapter = new ArticlesAdapter(mArticlesViewModel);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         mLayoutManager.setOrientation(RecyclerView.VERTICAL);

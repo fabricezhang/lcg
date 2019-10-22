@@ -1,65 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
         <import type="android.view.View" />
         <variable
-                name="viewModel"
-                type="top.easelink.lcg.ui.main.articles.viewmodel.ForumArticlesViewModel"/>
+            name="viewModel"
+            type="top.easelink.lcg.ui.main.articles.viewmodel.ForumArticlesViewModel"/>
     </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-            android:id="@+id/clRootView"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clRootView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipChildren="false"
+        android:background="@color/white"
+        android:focusable="true"
+        android:clickable="true">
+        <androidx.appcompat.widget.Toolbar
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clipChildren="false"
-            android:focusable="true"
-            android:clickable="true">
+            android:layout_height="?android:actionBarSize"
+            android:id="@+id/article_toolbar"
+            app:layout_constraintTop_toTopOf="parent"
+            style="@style/Toolbar"
+            app:title="@{viewModel.title}"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:subtitleTextColor="@color/white"
+            app:titleTextAppearance="@style/Toolbar.TitleText"
+            app:titleTextColor="@color/white" />
 
-        <com.google.android.material.appbar.AppBarLayout
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/forum_tab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/article_toolbar"
+            app:tabMode="scrollable" />
+
+        <top.easelink.framework.customview.ScrollChildSwipeRefreshLayout
+            android:id="@+id/refresh_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:refreshing="@{viewModel.isLoading &amp;&amp; (viewModel.articles != null) }"
+            app:layout_constraintTop_toBottomOf="@id/forum_tab">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/white"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                app:elevation="@dimen/dp_5">
-
-            <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/article_toolbar"
-                    style="@style/Toolbar"
-                    app:title="@{viewModel.title}"
-                    app:subtitleTextColor="@color/white"
-                    app:titleTextAppearance="@style/Toolbar.TitleText"
-                    app:titleTextColor="@color/white" />
-            <top.easelink.framework.customview.ScrollChildSwipeRefreshLayout
-                    android:id="@+id/refresh_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/white"
-                    app:refreshing="@{viewModel.isLoading &amp;&amp; (viewModel.articles != null) }">
-                <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recycler_view"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:visibility="@{viewModel.shouldDisplayArticles ? View.VISIBLE:View.GONE, default = gone}"
-                        app:adapter="@{viewModel.articles}"/>
-            </top.easelink.framework.customview.ScrollChildSwipeRefreshLayout>
-
-        </com.google.android.material.appbar.AppBarLayout>
+                android:layout_height="wrap_content"
+                android:visibility="@{viewModel.shouldDisplayArticles ? View.VISIBLE:View.GONE, default = gone}"
+                app:adapter="@{viewModel.articles}"/>
+        </top.easelink.framework.customview.ScrollChildSwipeRefreshLayout>
 
         <com.airbnb.lottie.LottieAnimationView
-                android:layout_gravity="center"
-                android:id="@+id/loading"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="@dimen/dp_30"
-                android:scaleType="fitCenter"
-                android:visibility="@{viewModel.articles == null? View.VISIBLE:View.GONE, default = gone}"
-                app:lottie_rawRes="@raw/search_file_2"
-                app:lottie_loop="true"
-                app:lottie_autoPlay="true"/>
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+            android:layout_gravity="center"
+            android:id="@+id/loading"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/dp_30"
+            android:scaleType="fitCenter"
+            android:background="@color/white"
+            android:visibility="@{viewModel.articles == null? View.VISIBLE:View.GONE, default = gone}"
+            app:lottie_rawRes="@raw/search_file_2"
+            app:lottie_loop="true"
+            app:lottie_autoPlay="true"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

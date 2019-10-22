@@ -8,12 +8,14 @@ package top.easelink.lcg.utils;
 public class WebsiteConstant {
 
     public static final String URL_KEY = "URL_KEY";
+    public static final String EXTRA_TABLE_HTML = "EXTRA_TABLE_HTML";
 
     public static final String SERVER_BASE_URL = "https://www.52pojie.cn/";
 
     public static final String BAIDU_SEARCH_BASE_URL = "http://zhannei.baidu.com/cse/";
     public static final String SEARCH_URL = "http://zhannei.baidu.com/cse/site?q=%s&click=1&cc=52pojie.cn&s=&nsid=";
     public static final String FREE_CHAT_URL = "forum-10-1.html";
+    public static final String WELFARE_URL = "forum-66-1.html";
     public static final String MOB_SECURITY_URL = "forum-65-%d.html";
     public static final String SOFTWARE_URL = "forum-16-%d.html";
     public static final String ORIGINAL_RELEASE_URL = "forum-2-%d.html";
@@ -28,5 +30,5 @@ public class WebsiteConstant {
     public static final String HOME_URL = "home.php";
     public static final String LOGIN_URL = "member.php?mod=logging&action=login";
 
-    public static final String APP_RELEASE_PAGE = "forum.php?mod=viewthread&tid=990363&page=1";
+    public static final String APP_RELEASE_PAGE = "thread-1038934-1-1.html";
 }
