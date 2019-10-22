@@ -117,6 +117,7 @@ public class ForumArticlesFragment extends BaseFragment<FragmentForumArticlesBin
     public void setUpTabLayout(List<ForumThread> forumThreadList) {
         TabLayout tabLayout = mFragmentArticlesBinding.forumTab;
         tabLayout.setVisibility(View.VISIBLE);
+        tabLayout.removeAllTabs();
         for(ForumThread forumThread: forumThreadList) {
             tabLayout.addTab(tabLayout.newTab().setText(forumThread.getThreadName()));
         }
