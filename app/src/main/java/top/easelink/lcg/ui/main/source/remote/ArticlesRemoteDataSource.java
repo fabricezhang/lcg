@@ -64,11 +64,12 @@ public class ArticlesRemoteDataSource implements ArticlesDataSource {
     }
 
     @Override
-    public Observable<ForumPage> getForumArticles(@NonNull final String requestUrl){
+    public Observable<ForumPage> getForumArticles(@NonNull final String requestUrl,
+                                                  boolean processThreadList){
         return Observable.create(emitter -> {
             String url = SERVER_BASE_URL + requestUrl;
             Document doc = Jsoup.connect(url).cookies(getCookies()).get();
-            forumArticlesDocumentProcessor(doc, emitter);
+            forumArticlesDocumentProcessor(doc, emitter, processThreadList);
         });
     }
 
@@ -177,7 +178,9 @@ public class ArticlesRemoteDataSource implements ArticlesDataSource {
         });
     }
 
-    private void forumArticlesDocumentProcessor(Document doc, ObservableEmitter<ForumPage> emitter) {
+    private void forumArticlesDocumentProcessor(Document doc,
+                                                ObservableEmitter<ForumPage> emitter,
+                                                boolean processThreadList) {
         try {
             Elements elements = doc.select("tbody[id^=normal]");
             if (elements.isEmpty()) {
@@ -214,17 +217,24 @@ public class ArticlesRemoteDataSource implements ArticlesDataSource {
             }
             // for thread part
             List<ForumThread> threadList = new ArrayList<>();
-            Element threadTypes = doc.getElementById("thread_types");
-            if (threadTypes != null) {
-                for (Element element: threadTypes.getElementsByTag("li")) {
-                    try {
-                        String threadUrl = element.getElementsByTag("a").attr("href");
-                        String name = element.getElementsByTag("font").first().text();
-                        if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(threadUrl)) {
-                            threadList.add(new ForumThread(name, threadUrl));
+            if (processThreadList) {
+                Element threadTypes = doc.getElementById("thread_types");
+                if (threadTypes != null) {
+                    for (Element element : threadTypes.getElementsByTag("li")) {
+                        try {
+                            element = element.getElementsByTag("a").first();
+                            elements = element.getElementsByTag("span");
+                            if (elements.size() > 0) {
+                                elements.remove();
+                            }
+                            String threadUrl = element.attr("href");
+                            String name = element.text();
+                            if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(threadUrl)) {
+                                threadList.add(new ForumThread(name, threadUrl));
+                            }
+                        } catch (Exception e) {
+                            // don't care
                         }
-                    } catch (Exception e) {
-                        // don't care
                     }
                 }
             }

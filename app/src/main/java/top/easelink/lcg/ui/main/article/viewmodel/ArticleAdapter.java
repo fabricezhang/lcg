@@ -13,13 +13,11 @@ import java.util.List;
 
 import timber.log.Timber;
 import top.easelink.framework.base.BaseViewHolder;
-import top.easelink.framework.customview.htmltextview.ClickableSpecialSpan;
 import top.easelink.framework.customview.htmltextview.DrawTableLinkSpan;
 import top.easelink.framework.customview.htmltextview.HtmlHttpImageGetter;
 import top.easelink.lcg.R;
 import top.easelink.lcg.databinding.ItemPostViewBinding;
 import top.easelink.lcg.ui.main.source.model.Post;
-import top.easelink.lcg.ui.webview.view.WebViewActivity;
 
 import static top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL;
 

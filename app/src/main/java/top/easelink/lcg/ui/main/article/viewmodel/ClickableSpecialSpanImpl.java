@@ -9,7 +9,7 @@ import com.tencent.stat.StatService;
 import top.easelink.framework.customview.htmltextview.ClickableSpecialSpan;
 import top.easelink.lcg.ui.webview.view.WebViewActivity;
 
-import static top.easelink.lcg.ui.mta.MTAConstantKt.EVENT_TAP_FOR_CODE;
+import static top.easelink.lcg.mta.MTAConstantKt.EVENT_TAP_FOR_CODE;
 
 class ClickableSpecialSpanImpl extends ClickableSpecialSpan {
 

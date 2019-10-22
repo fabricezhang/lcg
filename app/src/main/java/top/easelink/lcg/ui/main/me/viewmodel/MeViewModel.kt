@@ -21,6 +21,8 @@ import top.easelink.framework.base.BaseViewModel
 import top.easelink.framework.utils.rx.SchedulerProvider
 import top.easelink.lcg.LCGApp
 import top.easelink.lcg.R
+import top.easelink.lcg.mta.EVENT_AUTO_SIGN
+import top.easelink.lcg.mta.PROP_IS_AUTO_SIGN_ENABLE
 import top.easelink.lcg.service.web.WebViewWrapper
 import top.easelink.lcg.service.work.SignInWorker
 import top.easelink.lcg.service.work.SignInWorker.Companion.DEFAULT_TIME_UNIT
@@ -30,8 +32,6 @@ import top.easelink.lcg.ui.main.me.model.UserInfo
 import top.easelink.lcg.ui.main.me.view.MeNavigator
 import top.easelink.lcg.ui.main.source.local.SPConstants.SP_KEY_AUTO_SIGN_IN
 import top.easelink.lcg.ui.main.source.local.SharedPreferencesHelper
-import top.easelink.lcg.ui.mta.EVENT_AUTO_SIGN
-import top.easelink.lcg.ui.mta.PROP_IS_AUTO_SIGN_ENABLE
 import top.easelink.lcg.utils.WebsiteConstant.HOME_URL
 import top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL
 import top.easelink.lcg.utils.getCookies
@@ -105,7 +105,7 @@ class MeViewModel(schedulerProvider:SchedulerProvider): BaseViewModel<MeNavigato
                 withContext(Dispatchers.Main) {
                     Toast.makeText(
                         LCGApp.getContext(),
-                        userInfo.messageText,
+                        userInfo.messageText?: "Error",
                         Toast.LENGTH_SHORT)
                         .show()
                     navigator.showLoginFragment()
@@ -195,7 +195,7 @@ class MeViewModel(schedulerProvider:SchedulerProvider): BaseViewModel<MeNavigato
                 val signInState = selectFirst("img.qq_bind")?.attr("src")
                 UserInfo(userName, avatar, groupInfo, coin, credit, signInState)
             } else {
-                UserInfo(getElementById("messagetext").text())
+                UserInfo(getElementById("messagetext")?.text())
             }
         }
     }
