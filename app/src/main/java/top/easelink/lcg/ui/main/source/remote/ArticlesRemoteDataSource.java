@@ -228,7 +228,7 @@ public class ArticlesRemoteDataSource implements ArticlesDataSource {
                                 elements.remove();
                             }
                             String threadUrl = element.attr("href");
-                            String name = element.text();
+                            String name = element.text().trim();
                             if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(threadUrl)) {
                                 threadList.add(new ForumThread(name, threadUrl));
                             }

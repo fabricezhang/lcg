@@ -25,6 +25,7 @@
     <string name="about">『关于应用』</string>
     <string name="thread_about_app">『App发布页』</string>
     <string name="free_chat_title">『水漫金山』</string>
+    <string name="welfare_title">『福利经验』</string>
 
     <!--home fragment-->
     <string name="tab_title_hot">人气热门</string>
