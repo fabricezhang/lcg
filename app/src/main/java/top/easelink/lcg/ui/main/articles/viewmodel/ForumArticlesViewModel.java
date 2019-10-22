@@ -73,6 +73,7 @@ public class ForumArticlesViewModel extends BaseViewModel<FourmArticleNavigator>
                                     } else {
                                         articles.setValue(articleList);
                                     }
+                                    mShouldDisplayArticles.setValue(true);
                                 }
                                 if (type == FETCH_INIT) {
                                     List<ForumThread> threadList = forumPage.getThreadList();
@@ -80,7 +81,6 @@ public class ForumArticlesViewModel extends BaseViewModel<FourmArticleNavigator>
                                         getNavigator().setUpTabLayout(threadList);
                                     }
                                 }
-                                mShouldDisplayArticles.setValue(true);
                             }
                         }, throwable -> getNavigator().handleError(throwable), () -> setIsLoading(false)));
     }

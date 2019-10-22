@@ -30,6 +30,7 @@ import top.easelink.lcg.databinding.FragmentForumArticlesBinding;
 import top.easelink.lcg.ui.ViewModelProviderFactory;
 import top.easelink.lcg.ui.main.articles.viewmodel.ArticlesAdapter;
 import top.easelink.lcg.ui.main.articles.viewmodel.ForumArticlesViewModel;
+import top.easelink.lcg.ui.main.model.LoginRequiredException;
 import top.easelink.lcg.ui.main.source.model.ForumThread;
 
 import static top.easelink.lcg.mta.MTAConstantKt.CHANGE_THREAD;
@@ -73,7 +74,14 @@ public class ForumArticlesFragment extends BaseFragment<FragmentForumArticlesBin
 
     @Override
     public void handleError(Throwable t) {
-        Toast.makeText(getContext(), R.string.error, Toast.LENGTH_SHORT).show();
+        int errorId;
+        if (t instanceof LoginRequiredException) {
+            errorId = R.string.login_required_error;
+        } else {
+            errorId = R.string.error;
+        }
+        showMessage(errorId);
+        mFragmentArticlesBinding.loading.setAnimation(R.raw.face_sorry);
     }
 
     @Override

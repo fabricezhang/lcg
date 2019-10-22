@@ -36,8 +36,7 @@
             android:layout_height="wrap_content"
             android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@id/article_toolbar"
-            app:tabMode="scrollable"
-            />
+            app:tabMode="scrollable" />
 
         <top.easelink.framework.customview.ScrollChildSwipeRefreshLayout
             android:id="@+id/refresh_layout"

@@ -25,6 +25,7 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import timber.log.Timber;
 import top.easelink.lcg.ui.main.model.BlockException;
+import top.easelink.lcg.ui.main.model.LoginRequiredException;
 import top.easelink.lcg.ui.main.source.ArticlesDataSource;
 import top.easelink.lcg.ui.main.source.model.Article;
 import top.easelink.lcg.ui.main.source.model.ArticleAbstractResponse;
@@ -184,9 +185,10 @@ public class ArticlesRemoteDataSource implements ArticlesDataSource {
         try {
             Elements elements = doc.select("tbody[id^=normal]");
             if (elements.isEmpty()) {
-                String htmls = doc.html();
-                Timber.d(htmls);
-                elements = doc.select("tbody");
+                Element element = doc.getElementById("messagelogin");
+                if (element != null) {
+                    throw new LoginRequiredException();
+                }
             }
             List<Article> articleList = new ArrayList<>();
             String title, author, date, url, origin;
@@ -201,9 +203,9 @@ public class ArticlesRemoteDataSource implements ArticlesDataSource {
                     }
                     author = extractFrom(element, "td.by", "a[href*=uid]");
                     date = extractFrom(element, "td.by", "span");
-                    url = extractAttrFrom(element, "href","th.new", "a.xst");
+                    url = extractAttrFrom(element, "href", "th.new", "a.xst");
                     if (TextUtils.isEmpty(url)) {
-                        url = extractAttrFrom(element, "href","th.common", "a.xst");
+                        url = extractAttrFrom(element, "href", "th.common", "a.xst");
                     }
                     origin = extractFrom(element, "td.by", "a[target]");
                     if (!TextUtils.isEmpty(title) && !TextUtils.isEmpty(author)) {
