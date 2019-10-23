@@ -16,7 +16,6 @@ fun setCookies(cookieUrl: String?) {
     if (cookieUrl != null) {
         val cookies = cookieUrl.split(";")
             .dropLastWhile { it.isEmpty() }
-            .toTypedArray()
         val itemList = ArrayList<SharedPreferencesHelper.SpItem<*>>()
         for (cookie in cookies) {
             val cookiePair = cookie.split("=".toRegex(), 2).toTypedArray()
