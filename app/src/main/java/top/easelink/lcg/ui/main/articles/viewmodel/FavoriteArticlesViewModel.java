@@ -10,14 +10,14 @@ import top.easelink.framework.base.BaseViewModel;
 import top.easelink.framework.utils.rx.SchedulerProvider;
 import top.easelink.lcg.R;
 import top.easelink.lcg.ui.main.articles.view.ArticlesNavigator;
-import top.easelink.lcg.ui.main.source.ArticlesRepository;
+import top.easelink.lcg.ui.main.source.local.ArticlesLocalDataSource;
 import top.easelink.lcg.ui.main.source.model.ArticleEntity;
 
 public class FavoriteArticlesViewModel extends BaseViewModel<ArticlesNavigator>
         implements FavoriteArticlesAdapter.ArticlesAdapterListener  {
 
     private final MutableLiveData<List<ArticleEntity>> articles = new MutableLiveData<>();
-    private final ArticlesRepository articlesRepository = ArticlesRepository.getInstance();
+    private final ArticlesLocalDataSource articlesLocalDataSource = ArticlesLocalDataSource.getInstance();
     // TODO: 2019-07-27 add pagination for favorites 
     private int mCurrentPage = 0;
 
@@ -36,7 +36,7 @@ public class FavoriteArticlesViewModel extends BaseViewModel<ArticlesNavigator>
                 break;
         }
         setIsLoading(true);
-        getCompositeDisposable().add(articlesRepository.getAllFavoriteArticles()
+        getCompositeDisposable().add(articlesLocalDataSource.getAllFavoriteArticles()
                 .subscribeOn(getSchedulerProvider().io())
                 .observeOn(getSchedulerProvider().ui())
                 .subscribe(articleEntityList -> {
@@ -50,7 +50,7 @@ public class FavoriteArticlesViewModel extends BaseViewModel<ArticlesNavigator>
     }
 
     public void removeAllFavorites() {
-        getCompositeDisposable().add(articlesRepository.delAllArticlesFromFavorite()
+        getCompositeDisposable().add(articlesLocalDataSource.delAllArticlesFromFavorite()
                 .subscribeOn(getSchedulerProvider().io())
                 .observeOn(getSchedulerProvider().ui())
                 .subscribe(

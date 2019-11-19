@@ -12,16 +12,21 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+import timber.log.Timber;
 import top.easelink.framework.base.BaseViewModel;
 import top.easelink.framework.utils.rx.SchedulerProvider;
 import top.easelink.lcg.R;
 import top.easelink.lcg.ui.main.article.view.ArticleNavigator;
 import top.easelink.lcg.ui.main.model.BlockException;
-import top.easelink.lcg.ui.main.source.ArticlesRepository;
+import top.easelink.lcg.ui.main.source.local.ArticlesLocalDataSource;
+import top.easelink.lcg.ui.main.source.local.SharedPreferencesHelper;
 import top.easelink.lcg.ui.main.source.model.ArticleAbstractResponse;
 import top.easelink.lcg.ui.main.source.model.ArticleEntity;
 import top.easelink.lcg.ui.main.source.model.Post;
+import top.easelink.lcg.ui.main.source.remote.ArticlesRemoteDataSource;
 import top.easelink.lcg.utils.RegexUtils;
+
+import static top.easelink.lcg.ui.main.source.local.SPConstants.SP_KEY_SYNC_FAVORITE;
 
 public class ArticleViewModel extends BaseViewModel<ArticleNavigator>
         implements ArticleAdapterListener {
@@ -34,9 +39,12 @@ public class ArticleViewModel extends BaseViewModel<ArticleNavigator>
     private final MutableLiveData<Boolean> mIsNotFound = new MutableLiveData<>();
     private final MutableLiveData<Boolean> mShouldDisplayPosts = new MutableLiveData<>();
     private final MutableLiveData<String> mArticleTitle = new MutableLiveData<>();
-    private final ArticlesRepository articlesRepository = ArticlesRepository.getInstance();
+    private final ArticlesRemoteDataSource articlesRemoteDataSource = ArticlesRemoteDataSource.getInstance();
+    private final ArticlesLocalDataSource articlesLocalDataSource = ArticlesLocalDataSource.getInstance();
     private String mUrl;
     private String nextPageUrl;
+    // formhash is used for add favorite/reply/rate etc
+    private String mFormHash = null;
     private ArticleAbstractResponse articleAbstract;
 
     public ArticleViewModel(SchedulerProvider schedulerProvider) {
@@ -62,7 +70,7 @@ public class ArticleViewModel extends BaseViewModel<ArticleNavigator>
                 requestUrl = nextPageUrl;
             }
         }
-        getCompositeDisposable().add(articlesRepository.getArticleDetail(requestUrl)
+        getCompositeDisposable().add(articlesRemoteDataSource.getArticleDetail(requestUrl)
                 .subscribeOn(getSchedulerProvider().io())
                 .observeOn(getSchedulerProvider().ui())
                 .subscribe(articleDetail -> {
@@ -86,6 +94,7 @@ public class ArticleViewModel extends BaseViewModel<ArticleNavigator>
                             }
                         }
                     }
+                    mFormHash = articleDetail.getFromHash();
                     mShouldDisplayPosts.setValue(true);
                 }, throwable -> {
                     if (throwable instanceof BlockException) {
@@ -125,16 +134,32 @@ public class ArticleViewModel extends BaseViewModel<ArticleNavigator>
             // if title is null, use abstract's title, this rarely happens
             title = articleAbstract.title;
         }
+        String threadId = extractThreadId(mUrl);
         String author = posts.get(0).getAuthor();
         String content = articleAbstract==null?"":articleAbstract.description;
         ArticleEntity articleEntity = new ArticleEntity(title == null?"未知标题":title, author, mUrl, content, System.currentTimeMillis());
-        getCompositeDisposable().add(articlesRepository.addArticleToFavorite(articleEntity)
+        boolean syncFavoritesEnable = SharedPreferencesHelper.getUserSp().getBoolean(SP_KEY_SYNC_FAVORITE, false);
+        if (syncFavoritesEnable) {
+            if (threadId != null && mFormHash != null) {
+                getCompositeDisposable().add(articlesRemoteDataSource.addFavorites(threadId, mFormHash)
+                        .subscribeOn(getSchedulerProvider().io())
+                        .observeOn(getSchedulerProvider().ui()).subscribe(
+                                res -> getNavigator().showMessage(res ?
+                                        R.string.sync_favorite_successfully :
+                                        R.string.sync_favorite_failed),
+                                throwable -> getNavigator().handleError(throwable)
+                        ));
+            }
+        }
+        getCompositeDisposable().add(articlesLocalDataSource.addArticleToFavorite(articleEntity)
                 .subscribeOn(getSchedulerProvider().io())
                 .observeOn(getSchedulerProvider().ui())
                 .subscribe(
-                        res -> getNavigator().showMessage(res?
-                                R.string.add_to_favorite_successfully:
-                                R.string.add_to_favorite_failed),
+                        res -> {
+                            getNavigator().showMessage(res ?
+                                    R.string.add_to_favorite_successfully :
+                                    R.string.add_to_favorite_failed);
+                        },
                         throwable -> getNavigator().handleError(throwable)));
     }
 
@@ -166,5 +191,17 @@ public class ArticleViewModel extends BaseViewModel<ArticleNavigator>
     private void setArticleBlocked() {
         mIsBlocked.setValue(true);
         mShouldDisplayPosts.setValue(false);
+    }
+
+    private String extractThreadId(String url) {
+        if (TextUtils.isEmpty(url)) {
+            return null;
+        }
+        try {
+            return url.split("-")[1];
+        } catch (Exception e) {
+            Timber.e(e);
+            return null;
+        }
     }
 }

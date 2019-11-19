@@ -10,7 +10,7 @@ import top.easelink.lcg.ui.main.source.model.ArticleEntity;
  * date   : 2019-07-26 14:14
  * desc   :
  */
-public interface FavoritesDataSource {
+public interface FavoritesLocalDataSource {
 
     Observable<List<ArticleEntity>> getAllFavoriteArticles();
 

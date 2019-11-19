@@ -8,8 +8,8 @@ import java.util.List;
 import top.easelink.framework.base.BaseViewModel;
 import top.easelink.framework.utils.rx.SchedulerProvider;
 import top.easelink.lcg.ui.main.articles.view.ArticlesNavigator;
-import top.easelink.lcg.ui.main.source.ArticlesRepository;
 import top.easelink.lcg.ui.main.source.model.Article;
+import top.easelink.lcg.ui.main.source.remote.ArticlesRemoteDataSource;
 
 public class ArticlesViewModel extends BaseViewModel<ArticlesNavigator> implements ArticlesAdapter.ArticlesAdapterListener  {
 
@@ -17,7 +17,7 @@ public class ArticlesViewModel extends BaseViewModel<ArticlesNavigator> implemen
     private String mUrl;
 
     private final MutableLiveData<List<Article>> articles = new MutableLiveData<>();
-    private final ArticlesRepository articlesRepository = ArticlesRepository.getInstance();
+    private final ArticlesRemoteDataSource articlesRemoteDataSource = ArticlesRemoteDataSource.getInstance();
 
     public ArticlesViewModel(SchedulerProvider schedulerProvider) {
         super(schedulerProvider);
@@ -41,7 +41,7 @@ public class ArticlesViewModel extends BaseViewModel<ArticlesNavigator> implemen
                 break;
         }
         setIsLoading(true);
-        getCompositeDisposable().add(articlesRepository.getHomePageArticles(mUrl, pageNum)
+        getCompositeDisposable().add(articlesRemoteDataSource.getHomePageArticles(mUrl, pageNum)
                 .subscribeOn(getSchedulerProvider().io())
                 .observeOn(getSchedulerProvider().ui())
                 .subscribe(articleList -> {

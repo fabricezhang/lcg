@@ -1,5 +1,6 @@
 package top.easelink.lcg.ui.main.articles.viewmodel;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +18,7 @@ import timber.log.Timber;
 import top.easelink.framework.base.BaseViewHolder;
 import top.easelink.lcg.R;
 import top.easelink.lcg.databinding.ItemFavoriteArticleViewBinding;
-import top.easelink.lcg.ui.main.source.ArticlesRepository;
+import top.easelink.lcg.ui.main.source.local.ArticlesLocalDataSource;
 import top.easelink.lcg.ui.main.source.model.ArticleEntity;
 
 import static top.easelink.lcg.ui.main.articles.viewmodel.ArticlesViewModel.FETCH_MORE;
@@ -126,21 +127,20 @@ public class FavoriteArticlesAdapter extends RecyclerView.Adapter<BaseViewHolder
             this.mAdapter = adapter;
         }
 
+        @SuppressLint("CheckResult")
         @Override
         public void onBind(int position) {
             final ArticleEntity articleEntity = mArticleEntities.get(position);
-            mBinding.removeButton.setOnClickListener(v -> {
-                        ArticlesRepository.getInstance().delArticleFromFavorite(articleEntity.getId())
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(res -> {
-                                    if (res) {
-                                        mArticleEntities.remove(articleEntity);
-                                        notifyItemRemoved(position);
-                                        notifyItemRangeChanged(position, mArticleEntities.size() - position);
-                                    }
-                                });
-                    }
+            mBinding.removeButton.setOnClickListener(v -> ArticlesLocalDataSource.getInstance().delArticleFromFavorite(articleEntity.getId())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(res -> {
+                        if (res) {
+                            mArticleEntities.remove(articleEntity);
+                            notifyItemRemoved(position);
+                            notifyItemRangeChanged(position, mArticleEntities.size() - position);
+                        }
+                    })
             );
             favoriteArticleItemViewModel = new FavoriteArticleItemViewModel(articleEntity);
             try {

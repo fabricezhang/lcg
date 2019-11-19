@@ -61,8 +61,10 @@
 
     <!--favorite fragment-->
     <string name="empty_favorite">收藏夹目前是空的。</string>
-    <string name="add_to_favorite_successfully">收藏成功</string>
-    <string name="add_to_favorite_failed">收藏失败</string>
+    <string name="add_to_favorite_successfully">收藏本地成功</string>
+    <string name="add_to_favorite_failed">收藏本地失败</string>
+    <string name="sync_favorite_successfully">同步网络收藏成功</string>
+    <string name="sync_favorite_failed">同步网络收藏失败</string>
     <string name="remove_all_favorites_successfully">清空收藏成功</string>
     <string name="remove_all_favorites_failed">清空收藏失败</string>
 

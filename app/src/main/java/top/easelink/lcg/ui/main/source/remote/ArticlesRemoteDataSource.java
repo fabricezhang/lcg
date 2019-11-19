@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import org.jetbrains.annotations.NotNull;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -27,6 +28,7 @@ import timber.log.Timber;
 import top.easelink.lcg.ui.main.model.BlockException;
 import top.easelink.lcg.ui.main.model.LoginRequiredException;
 import top.easelink.lcg.ui.main.source.ArticlesDataSource;
+import top.easelink.lcg.ui.main.source.FavoritesRemoteDataSource;
 import top.easelink.lcg.ui.main.source.model.Article;
 import top.easelink.lcg.ui.main.source.model.ArticleAbstractResponse;
 import top.easelink.lcg.ui.main.source.model.ArticleDetail;
@@ -35,6 +37,7 @@ import top.easelink.lcg.ui.main.source.model.ForumThread;
 import top.easelink.lcg.ui.main.source.model.Post;
 
 import static top.easelink.lcg.utils.CookieUtilsKt.getCookies;
+import static top.easelink.lcg.utils.WebsiteConstant.FAVORITE_URL;
 import static top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL;
 
 /**
@@ -42,7 +45,7 @@ import static top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL;
  * date   : 2019-07-04 16:22
  * desc   :
  */
-public class ArticlesRemoteDataSource implements ArticlesDataSource {
+public class ArticlesRemoteDataSource implements ArticlesDataSource, FavoritesRemoteDataSource {
 
     private static final String FORUM_BASE_URL = "forum.php?mod=guide&view=";
 
@@ -70,7 +73,7 @@ public class ArticlesRemoteDataSource implements ArticlesDataSource {
         return Observable.create(emitter -> {
             String url = SERVER_BASE_URL + requestUrl;
             Document doc = Jsoup.connect(url).cookies(getCookies()).get();
-            forumArticlesDocumentProcessor(doc, emitter, processThreadList);
+            processForumArticlesDocument(doc, emitter, processThreadList);
         });
     }
 
@@ -132,7 +135,8 @@ public class ArticlesRemoteDataSource implements ArticlesDataSource {
                         Timber.e(npe);
                     }
                 }
-                ArticleDetail articleDetail = new ArticleDetail(title, postList, nextPageUrl, articleAbstract);
+                String fromHash = doc.selectFirst("input[name=formhash]").attr("value");
+                ArticleDetail articleDetail = new ArticleDetail(title, postList, nextPageUrl, fromHash, articleAbstract);
                 emitter.onNext(articleDetail);
             } catch (Exception e) {
                 Timber.e(e);
@@ -179,7 +183,7 @@ public class ArticlesRemoteDataSource implements ArticlesDataSource {
         });
     }
 
-    private void forumArticlesDocumentProcessor(Document doc,
+    private void processForumArticlesDocument(Document doc,
                                                 ObservableEmitter<ForumPage> emitter,
                                                 boolean processThreadList) {
         try {
@@ -344,5 +348,21 @@ public class ArticlesRemoteDataSource implements ArticlesDataSource {
             }
         }
         return element.html();
+    }
+
+    @NotNull
+    @Override
+    public Observable<Boolean> addFavorites(@NotNull String threadId, @NotNull String formHash) {
+        return Observable.fromCallable(()->{
+            try {
+                Document doc = Jsoup.connect(String.format(FAVORITE_URL, threadId, formHash)).cookies(getCookies()).get();
+                Timber.d(doc.html());
+                return true;
+            } catch (Exception e) {
+                Timber.e(e);
+                return false;
+            }
+        });
+
     }
 }

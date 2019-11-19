@@ -9,15 +9,18 @@ public class ArticleDetail {
     private List<Post> mPostList;
     private String mArticleTitle;
     private String mNextPageUrl;
+    private String mFormHash;
     private ArticleAbstractResponse mArticleAbstractResponse;
 
     public ArticleDetail(String articleTitle,
                          List<Post> postList,
                          String nextPageUrl,
+                         String formHash,
                          @Nullable ArticleAbstractResponse articleAbstractResponse) {
         mArticleTitle = articleTitle;
         mPostList = postList;
         mNextPageUrl = nextPageUrl;
+        mFormHash = formHash;
         mArticleAbstractResponse = articleAbstractResponse;
     }
 
@@ -31,6 +34,10 @@ public class ArticleDetail {
 
     public String getNextPageUrl() {
         return mNextPageUrl;
+    }
+
+    public String getFromHash() {
+        return mFormHash;
     }
 
     @Nullable

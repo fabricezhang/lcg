@@ -3,7 +3,7 @@ package top.easelink.lcg.ui.main.source.local;
 import java.util.List;
 
 import io.reactivex.Observable;
-import top.easelink.lcg.ui.main.source.FavoritesDataSource;
+import top.easelink.lcg.ui.main.source.FavoritesLocalDataSource;
 import top.easelink.lcg.ui.main.source.model.ArticleEntity;
 
 /**
@@ -11,7 +11,7 @@ import top.easelink.lcg.ui.main.source.model.ArticleEntity;
  * date   : 2019-07-26 14:15
  * desc   :
  */
-public class ArticlesLocalDataSource implements FavoritesDataSource {
+public class ArticlesLocalDataSource implements FavoritesLocalDataSource {
 
     private static volatile ArticlesLocalDataSource mInstance;
 
