@@ -9,7 +9,6 @@ import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.work.*
-import com.tencent.stat.StatService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -21,8 +20,7 @@ import top.easelink.framework.base.BaseViewModel
 import top.easelink.framework.utils.rx.SchedulerProvider
 import top.easelink.lcg.LCGApp
 import top.easelink.lcg.R
-import top.easelink.lcg.mta.EVENT_AUTO_SIGN
-import top.easelink.lcg.mta.PROP_IS_AUTO_SIGN_ENABLE
+import top.easelink.lcg.mta.*
 import top.easelink.lcg.service.web.WebViewWrapper
 import top.easelink.lcg.service.work.SignInWorker
 import top.easelink.lcg.service.work.SignInWorker.Companion.DEFAULT_TIME_UNIT
@@ -70,9 +68,8 @@ class MeViewModel(schedulerProvider:SchedulerProvider): BaseViewModel<MeNavigato
     val notificationInfo: LiveData<NotificationInfo>
         get() = mNotificationInfo
 
-    fun scheduleJob(v:View) {
+    fun scheduleJob(v: View) {
         if (v is CheckBox) {
-            val prop = Properties()
             SharedPreferencesHelper.getUserSp()
                 .edit()
                 .putBoolean(SP_KEY_AUTO_SIGN_IN, v.isChecked)
@@ -89,12 +86,12 @@ class MeViewModel(schedulerProvider:SchedulerProvider): BaseViewModel<MeNavigato
                     .addTag(SignInWorker::class.java.simpleName)
                     .build()
                 WorkManager.getInstance().enqueue(request)
-                prop.setProperty(PROP_IS_AUTO_SIGN_ENABLE, true.toString())
             } else {
-                prop.setProperty(PROP_IS_AUTO_SIGN_ENABLE, false.toString())
                 WorkManager.getInstance().cancelAllWorkByTag(SignInWorker::class.java.simpleName)
             }
-            StatService.trackCustomKVEvent(v.context, EVENT_AUTO_SIGN, prop)
+            sendKVEvent(EVENT_AUTO_SIGN, Properties().apply {
+                setProperty(PROP_IS_AUTO_SIGN_ENABLE, v.isChecked.toString())
+            })
         }
     }
 
@@ -216,10 +213,16 @@ class MeViewModel(schedulerProvider:SchedulerProvider): BaseViewModel<MeNavigato
         mAutoSignInEnable.postValue(false)
     }
 
-    fun setSyncFavorite(view: View) {
+    fun setSyncFavorite(v: View) {
+        sendKVEvent(EVENT_SYNC_FAVORITE, Properties().apply {
+            setProperty(
+                PROP_IS_SYNC_FAVORITE_ENABLE,
+                (v as? CheckBox)?.isChecked?.toString() ?: false.toString()
+            )
+        })
         SharedPreferencesHelper.getUserSp()
             .edit()
-            .putBoolean(SP_KEY_SYNC_FAVORITE, (view as? CheckBox)?.isChecked?: false)
+            .putBoolean(SP_KEY_SYNC_FAVORITE, (v as? CheckBox)?.isChecked?: false)
             .apply()
     }
 }

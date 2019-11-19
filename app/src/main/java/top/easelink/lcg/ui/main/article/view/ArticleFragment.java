@@ -27,11 +27,13 @@ import top.easelink.framework.base.BaseFragment;
 import top.easelink.lcg.BR;
 import top.easelink.lcg.R;
 import top.easelink.lcg.databinding.FragmentArticleBinding;
+import top.easelink.lcg.mta.EventHelperKt;
 import top.easelink.lcg.ui.ViewModelProviderFactory;
 import top.easelink.lcg.ui.main.article.viewmodel.ArticleAdapter;
 import top.easelink.lcg.ui.main.article.viewmodel.ArticleViewModel;
 import top.easelink.lcg.ui.webview.view.WebViewActivity;
 
+import static top.easelink.lcg.mta.MTAConstantKt.EVENT_OPEN_ARTICLE;
 import static top.easelink.lcg.ui.main.article.viewmodel.ArticleViewModel.FETCH_INIT;
 import static top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL;
 
@@ -50,6 +52,7 @@ public class ArticleFragment extends BaseFragment<FragmentArticleBinding, Articl
         ArticleFragment fragment = new ArticleFragment();
         args.putString(KEY_URL, url);
         fragment.setArguments(args);
+        EventHelperKt.sendEvent(EVENT_OPEN_ARTICLE);
         return fragment;
     }
 

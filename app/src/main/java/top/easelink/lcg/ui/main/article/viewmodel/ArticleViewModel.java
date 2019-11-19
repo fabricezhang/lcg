@@ -6,6 +6,8 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.tencent.stat.StatService;
+
 import org.jsoup.HttpStatusException;
 
 import java.util.ArrayList;
@@ -15,7 +17,9 @@ import java.util.List;
 import timber.log.Timber;
 import top.easelink.framework.base.BaseViewModel;
 import top.easelink.framework.utils.rx.SchedulerProvider;
+import top.easelink.lcg.LCGApp;
 import top.easelink.lcg.R;
+import top.easelink.lcg.mta.EventHelperKt;
 import top.easelink.lcg.ui.main.article.view.ArticleNavigator;
 import top.easelink.lcg.ui.main.model.BlockException;
 import top.easelink.lcg.ui.main.source.local.ArticlesLocalDataSource;
@@ -26,6 +30,7 @@ import top.easelink.lcg.ui.main.source.model.Post;
 import top.easelink.lcg.ui.main.source.remote.ArticlesRemoteDataSource;
 import top.easelink.lcg.utils.RegexUtils;
 
+import static top.easelink.lcg.mta.MTAConstantKt.EVENT_ADD_TO_FAVORITE;
 import static top.easelink.lcg.ui.main.source.local.SPConstants.SP_KEY_SYNC_FAVORITE;
 
 public class ArticleViewModel extends BaseViewModel<ArticleNavigator>
@@ -124,6 +129,7 @@ public class ArticleViewModel extends BaseViewModel<ArticleNavigator>
     }
 
     public void addToFavorite() {
+        EventHelperKt.sendEvent(EVENT_ADD_TO_FAVORITE);
         List<Post> posts = getPosts().getValue();
         if (posts == null || posts.isEmpty()) {
             getNavigator().showMessage(R.string.add_to_favorite_failed);
