@@ -31,6 +31,7 @@ import top.easelink.lcg.ui.main.me.model.NotificationInfo
 import top.easelink.lcg.ui.main.me.model.UserInfo
 import top.easelink.lcg.ui.main.me.view.MeNavigator
 import top.easelink.lcg.ui.main.source.local.SPConstants.SP_KEY_AUTO_SIGN_IN
+import top.easelink.lcg.ui.main.source.local.SPConstants.SP_KEY_SYNC_FAVORITE
 import top.easelink.lcg.ui.main.source.local.SharedPreferencesHelper
 import top.easelink.lcg.utils.WebsiteConstant.HOME_URL
 import top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL
@@ -41,12 +42,16 @@ class MeViewModel(schedulerProvider:SchedulerProvider): BaseViewModel<MeNavigato
 
     private val mUserInfo = MutableLiveData<UserInfo>()
     private val mAutoSignInEnable = MutableLiveData<Boolean>()
+    private val mSyncFavoriteEnable = MutableLiveData<Boolean>()
     private val mNotificationInfo = MutableLiveData<NotificationInfo>()
 
     init {
         mAutoSignInEnable.postValue(SharedPreferencesHelper
             .getUserSp()
             .getBoolean(SP_KEY_AUTO_SIGN_IN, false))
+        mSyncFavoriteEnable.postValue(SharedPreferencesHelper
+            .getUserSp()
+            .getBoolean(SP_KEY_SYNC_FAVORITE, false))
     }
 
     @Suppress("unused")
@@ -58,6 +63,9 @@ class MeViewModel(schedulerProvider:SchedulerProvider): BaseViewModel<MeNavigato
 
     val autoSignEnable: LiveData<Boolean>
         get() = mAutoSignInEnable
+
+    val syncFavorite: LiveData<Boolean>
+        get() = mSyncFavoriteEnable
 
     val notificationInfo: LiveData<NotificationInfo>
         get() = mNotificationInfo
@@ -206,5 +214,12 @@ class MeViewModel(schedulerProvider:SchedulerProvider): BaseViewModel<MeNavigato
         WorkManager.getInstance().cancelAllWorkByTag(SignInWorker::class.java.simpleName)
         SharedPreferencesHelper.getUserSp().edit().putBoolean(SP_KEY_AUTO_SIGN_IN, false).commit()
         mAutoSignInEnable.postValue(false)
+    }
+
+    fun setSyncFavorite(view: View) {
+        SharedPreferencesHelper.getUserSp()
+            .edit()
+            .putBoolean(SP_KEY_SYNC_FAVORITE, (view as? CheckBox)?.isChecked?: false)
+            .apply()
     }
 }

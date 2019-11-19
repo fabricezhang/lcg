@@ -177,6 +177,41 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     />
 
+                <TextView
+                    android:id="@+id/favorite_settings_title"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="@string/sync_favorites"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:layout_marginBottom="@dimen/dp_10"
+                    app:switchPadding="@dimen/dp_10"
+                    app:layout_constraintTop_toBottomOf="@id/auto_sign_in_switch_title"
+                    app:layout_constraintStart_toStartOf="@id/auto_sign_in_switch_title"
+                    />
+
+                <TextView
+                    android:id="@+id/favorite_settings_instruction"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="@string/sync_favorites_instruction"
+                    app:layout_constraintTop_toTopOf="@id/favorite_settings_title"
+                    app:layout_constraintBottom_toBottomOf="@id/favorite_settings_title"
+                    app:layout_constraintStart_toEndOf="@id/favorite_settings_title"
+                    />
+
+                <CheckBox
+                    android:layout_marginEnd="@dimen/dp_10"
+                    android:id="@+id/favorite_settings_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{(v) -> viewModel.setSyncFavorite(v)}"
+                    android:checked="@{viewModel.syncFavorite}"
+                    app:layout_constraintTop_toTopOf="@id/favorite_settings_title"
+                    app:layout_constraintBottom_toBottomOf="@id/favorite_settings_title"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    />
+
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.cardview.widget.CardView>
