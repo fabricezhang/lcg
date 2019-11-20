@@ -28,3 +28,15 @@ fun setCookies(cookieUrl: String?) {
         )
     }
 }
+
+fun setCookies(cookies: Map<String, String>) {
+    val itemList = ArrayList<SharedPreferencesHelper.SpItem<*>>()
+    cookies.keys.forEach {
+        itemList.add(SharedPreferencesHelper.SpItem<String>(it, cookies[it]))
+        Timber.v("%s = %s", it, cookies[it])
+    }
+    SharedPreferencesHelper.setPreferenceWithList(
+        SharedPreferencesHelper.getCookieSp(),
+        itemList
+    )
+}
