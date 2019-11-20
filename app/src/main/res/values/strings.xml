@@ -79,6 +79,11 @@
     <string name="download_link_copy_succeed">已复制到剪贴板</string>
     <string name="download_link_copy_failed">复制失败</string>
 
+    <!--reply post dialog  -->
+    <string name="reply_post_dialog_title">回复：</string>
+    <string name="reply_post_btn_cancel">取消</string>
+    <string name="reply_post_btn_confirm">确认</string>
+
     <!--empty state-->
     <string name="empty_screen">目前没有内容可供展示</string>
     <string name="please_retry">请重试</string>

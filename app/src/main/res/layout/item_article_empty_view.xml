@@ -37,7 +37,8 @@
 
         <Button
                 android:id="@+id/btn_retry"
-                style="@style/Button.Primary.Quiz.Empty"
+                android:background="@drawable/button_bg"
+                android:backgroundTint="@color/light_gray"
                 android:layout_width="@dimen/dp_120"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

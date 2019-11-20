@@ -8,6 +8,8 @@ import androidx.annotation.NonNull;
 import androidx.databinding.BindingAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +19,7 @@ import top.easelink.framework.customview.htmltextview.DrawTableLinkSpan;
 import top.easelink.framework.customview.htmltextview.HtmlHttpImageGetter;
 import top.easelink.lcg.R;
 import top.easelink.lcg.databinding.ItemPostViewBinding;
+import top.easelink.lcg.ui.main.model.ReplyPostEvent;
 import top.easelink.lcg.ui.main.source.model.Post;
 
 import static top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL;
@@ -100,6 +103,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     public class PostViewHolder extends BaseViewHolder {
 
+        private Post post;
         private ItemPostViewBinding mBinding;
         private HtmlHttpImageGetter htmlHttpImageGetter;
 
@@ -112,7 +116,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
         @Override
         public void onBind(int position) {
-            final Post post = mPostList.get(position);
+            post = mPostList.get(position);
             PostViewModel postViewModel = new PostViewModel(post);
             mBinding.setViewModel(postViewModel);
             try {
@@ -121,10 +125,15 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                 drawTableLinkSpan.setTableLinkText(itemView.getContext().getString(R.string.tap_for_code));
                 mBinding.contentTextView.setDrawTableLinkSpan(drawTableLinkSpan);
                 mBinding.contentTextView.setHtml(post.getContent(), htmlHttpImageGetter);
+                mBinding.btnReply.setOnClickListener(this::onClick);
             } catch (Exception e) {
                 Timber.e(e);
             }
             mBinding.executePendingBindings();
+        }
+
+        public void onClick(View v) {
+            EventBus.getDefault().post(new ReplyPostEvent(post.getReplyUrl()));
         }
     }
 

@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,7 +20,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.airbnb.lottie.LottieAnimationView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -31,6 +38,7 @@ import top.easelink.lcg.mta.EventHelperKt;
 import top.easelink.lcg.ui.ViewModelProviderFactory;
 import top.easelink.lcg.ui.main.article.viewmodel.ArticleAdapter;
 import top.easelink.lcg.ui.main.article.viewmodel.ArticleViewModel;
+import top.easelink.lcg.ui.main.model.ReplyPostEvent;
 import top.easelink.lcg.ui.webview.view.WebViewActivity;
 
 import static top.easelink.lcg.mta.MTAConstantKt.EVENT_OPEN_ARTICLE;
@@ -74,6 +82,7 @@ public class ArticleFragment extends BaseFragment<FragmentArticleBinding, Articl
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
         getViewModel().setNavigator(this);
         Bundle args = getArguments();
         if (args != null) {
@@ -89,6 +98,12 @@ public class ArticleFragment extends BaseFragment<FragmentArticleBinding, Articl
         ((AppCompatActivity) getActivity()).setSupportActionBar(getViewDataBinding().articleToolbar);
         getViewModel().setUrl(articleUrl);
         getViewModel().fetchArticlePost(FETCH_INIT);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        EventBus.getDefault().unregister(this);
     }
 
     private void setUp() {
@@ -161,5 +176,10 @@ public class ArticleFragment extends BaseFragment<FragmentArticleBinding, Articl
     @Override
     public void scrollToTop() {
         getViewDataBinding().postRecyclerView.smoothScrollToPosition(0);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(ReplyPostEvent event) {
+        ReplyPostDialog.newInstance(event.getReplyUrl()).show(getChildFragmentManager());
     }
 }

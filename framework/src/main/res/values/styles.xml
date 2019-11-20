@@ -184,10 +184,9 @@
         <item name="android:textStyle">normal</item>
     </style>
 
-    <style name="Button.Primary.Quiz.Empty" parent="Button.Primary">
-        <item name="android:textColor">@color/white</item>
-        <item name="android:textAllCaps">true</item>
-        <item name="android:background">@drawable/button_primary_bg</item>
+    <style name="ReplyEditText" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@color/colorPrimary</item>
+        <item name="colorControlActivated">@color/cyan_dark</item>
     </style>
 
     <style name="BottomNavigationView" parent="@style/TextAppearance.AppCompat.Caption">

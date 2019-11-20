@@ -23,7 +23,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingEnd="@dimen/dp_20"
+                android:paddingEnd="@dimen/dp_10"
+                android:paddingStart="@dimen/dp_5"
                 android:paddingBottom="@dimen/dp_10">
 
             <ImageView
@@ -62,6 +63,16 @@
                     app:layout_constraintTop_toBottomOf="@id/authorTextView"
                     app:layout_constraintStart_toEndOf="@id/post_avatar"
                     tools:text="2019-07-04"/>
+
+            <Button
+                    android:id="@+id/btn_reply"
+                    android:layout_width="@dimen/dp_20"
+                    android:layout_height="@dimen/dp_20"
+                    android:background="@drawable/ic_message_black_24dp"
+                    android:backgroundTint="@color/semi_gray"
+                    app:layout_constraintTop_toTopOf="@id/authorTextView"
+                    app:layout_constraintEnd_toEndOf="@id/contentTextView"
+                    />
 
             <top.easelink.framework.customview.htmltextview.HtmlTextView
                     android:id="@+id/contentTextView"

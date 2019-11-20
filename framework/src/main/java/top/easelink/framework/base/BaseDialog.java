@@ -9,6 +9,7 @@ import android.view.KeyEvent;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.RelativeLayout;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
@@ -76,7 +77,6 @@ public abstract class BaseDialog extends DialogFragment {
     }
 
     protected void dismissDialog() {
-        getBaseActivity().onBackPressed();
         dismiss();
     }
 
