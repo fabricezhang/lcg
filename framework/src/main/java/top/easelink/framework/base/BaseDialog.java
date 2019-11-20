@@ -77,7 +77,7 @@ public abstract class BaseDialog extends DialogFragment {
     }
 
     protected void dismissDialog() {
-        dismiss();
+        dismissAllowingStateLoss();
     }
 
     protected BaseActivity getBaseActivity() {

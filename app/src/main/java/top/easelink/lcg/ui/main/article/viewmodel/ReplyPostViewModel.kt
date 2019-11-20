@@ -1,5 +1,6 @@
 package top.easelink.lcg.ui.main.article.viewmodel
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -14,13 +15,16 @@ import top.easelink.lcg.utils.setCookies
 
 class ReplyPostViewModel : ViewModel() {
 
-    fun sendReply(requestUrl: String?, content: String) {
+    val sending = MutableLiveData<Boolean>()
+
+    fun sendReply(requestUrl: String?, content: String, callback: () -> Unit) {
         GlobalScope.launch(Dispatchers.IO) {
-            sendReplyAsync(requestUrl, content)
+            sendReplyAsync(requestUrl, content, callback)
         }
     }
 
-    private fun sendReplyAsync(requestUrl: String?, content: String) {
+    private fun sendReplyAsync(requestUrl: String?, content: String, callback: () -> Unit) {
+        sending.postValue(true)
         Timber.d(content)
         if (requestUrl.isNullOrEmpty() || content.isBlank()) {
             return
@@ -69,15 +73,16 @@ class ReplyPostViewModel : ViewModel() {
                             .data(
                                 "formhash", formHash,
                                 "handlekey", handlekey,
-                                "noticeauthor", String(noticeauthor.toByteArray(charset("gbk"))),
-                                "noticetrimstr", String(noticetrimstr.toByteArray(charset("gbk"))),
-                                "noticeauthormsg", String(noticeauthormsg.toByteArray(charset("gbk"))),
+                                "noticeauthor", noticeauthor,
+                                "noticetrimstr", noticetrimstr,
+                                "noticeauthormsg", noticeauthormsg,
                                 "usesig", usesig,
                                 "reppid", reppid,
                                 "reppost", reppost,
                                 "subject", "",
-                                "message", String(content.toByteArray(charset("gbk")))
+                                "message", content
                             )
+                            .postDataCharset("gbk")
                             .method(Connection.Method.POST)
                             .execute()
                         setCookies(response.cookies())
@@ -87,6 +92,9 @@ class ReplyPostViewModel : ViewModel() {
                 }
         } catch (e: Exception) {
             Timber.e(e)
+        } finally {
+            sending.postValue(false)
+            callback.invoke()
         }
 
     }

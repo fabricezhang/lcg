@@ -83,6 +83,8 @@
     <string name="reply_post_dialog_title">回复：</string>
     <string name="reply_post_btn_cancel">取消</string>
     <string name="reply_post_btn_confirm">确认</string>
+    <string name="reply_post_btn_sending">发送中</string>
+    <string name="reply_post_btn_sent">发送完成</string>
 
     <!--empty state-->
     <string name="empty_screen">目前没有内容可供展示</string>
