@@ -12,6 +12,7 @@ public class WebsiteConstant {
 
     public static final String SERVER_BASE_URL = "https://www.52pojie.cn/";
 
+    public static final String FORUM_BASE_URL = "forum.php?mod=guide&view=";
     public static final String BAIDU_SEARCH_BASE_URL = "http://zhannei.baidu.com/cse/";
     public static final String SEARCH_URL = "http://zhannei.baidu.com/cse/site?q=%s&click=1&cc=52pojie.cn&s=&nsid=";
     public static final String FREE_CHAT_URL = "forum-10-1.html";

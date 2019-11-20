@@ -6,8 +6,6 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.tencent.stat.StatService;
-
 import org.jsoup.HttpStatusException;
 
 import java.util.ArrayList;
@@ -17,7 +15,6 @@ import java.util.List;
 import timber.log.Timber;
 import top.easelink.framework.base.BaseViewModel;
 import top.easelink.framework.utils.rx.SchedulerProvider;
-import top.easelink.lcg.LCGApp;
 import top.easelink.lcg.R;
 import top.easelink.lcg.mta.EventHelperKt;
 import top.easelink.lcg.ui.main.article.view.ArticleNavigator;

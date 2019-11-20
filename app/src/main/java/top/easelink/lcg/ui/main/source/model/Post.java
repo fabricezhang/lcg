@@ -20,6 +20,9 @@ public class Post {
     @NonNull
     private String mContent;
 
+    @NonNull
+    private String mReplyUrl;
+
     /**
      *
      * @param author      author of the post
@@ -30,11 +33,13 @@ public class Post {
     public Post(@NonNull String author,
                 @NonNull String avatar,
                 @NonNull String date,
-                @NonNull String content) {        
+                @NonNull String content,
+                @NonNull String replyUrl) {
         mAuthor = author;
         mAvatar = avatar;
         mContent = content;
         mDate = date;
+        mReplyUrl = replyUrl;
     }
 
     @NonNull
@@ -55,5 +60,10 @@ public class Post {
     @NonNull
     public String getDate() {
         return mDate;
+    }
+
+    @NonNull
+    public String getReplyUrl() {
+        return mReplyUrl;
     }
 }

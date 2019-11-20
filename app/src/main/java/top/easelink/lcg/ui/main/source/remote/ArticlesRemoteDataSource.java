@@ -38,6 +38,7 @@ import top.easelink.lcg.ui.main.source.model.Post;
 
 import static top.easelink.lcg.utils.CookieUtilsKt.getCookies;
 import static top.easelink.lcg.utils.WebsiteConstant.FAVORITE_URL;
+import static top.easelink.lcg.utils.WebsiteConstant.FORUM_BASE_URL;
 import static top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL;
 
 /**
@@ -46,8 +47,6 @@ import static top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL;
  * desc   :
  */
 public class ArticlesRemoteDataSource implements ArticlesDataSource, FavoritesRemoteDataSource {
-
-    private static final String FORUM_BASE_URL = "forum.php?mod=guide&view=";
 
     private static ArticlesRemoteDataSource mInstance;
 
@@ -122,17 +121,19 @@ public class ArticlesRemoteDataSource implements ArticlesDataSource, FavoritesRe
                 List<Map<String, String>> avatarsAndNames = getAvatarAndName(doc);
                 List<String> contents = getContent(doc);
                 List<String> datetimes = getDateTime(doc);
+                List<String> replyUrls = getReplyUrls(doc);
                 List<Post> postList = new ArrayList<>(avatarsAndNames.size());
                 for (int i = 0; i< avatarsAndNames.size(); i++) {
                     try {
                         Post post = new Post(Objects.requireNonNull(avatarsAndNames.get(i).get("name")),
                                 Objects.requireNonNull(avatarsAndNames.get(i).get("avatar")),
                                 datetimes.get(i),
-                                contents.get(i));
+                                contents.get(i),
+                                replyUrls.get(i));
                         postList.add(post);
                     } catch (NullPointerException npe) {
                         // will skip a loop if there's any npe occurs
-                        Timber.e(npe);
+                        Timber.w(npe);
                     }
                 }
                 String fromHash = doc.selectFirst("input[name=formhash]").attr("value");
@@ -319,6 +320,16 @@ public class ArticlesRemoteDataSource implements ArticlesDataSource, FavoritesRe
                 content = processContentElement(tmpElement);
             }
             list.add(content);
+        }
+        return list;
+    }
+
+    @NonNull
+    private List<String> getReplyUrls(Document doc) {
+        Elements elements = doc.getElementsByClass("fastre");
+        List<String> list = new ArrayList<>();
+        for (Element e: elements) {
+            list.add(e.attr("href"));
         }
         return list;
     }
