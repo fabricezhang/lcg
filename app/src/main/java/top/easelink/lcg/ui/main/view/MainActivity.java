@@ -33,6 +33,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.EmptyStackException;
 import java.util.List;
+import java.util.Properties;
 
 import javax.inject.Inject;
 
@@ -40,13 +41,13 @@ import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
 import top.easelink.framework.base.BaseActivity;
-import top.easelink.framework.base.BaseDialog;
 import top.easelink.framework.base.BaseFragment;
 import top.easelink.lcg.BR;
 import top.easelink.lcg.BuildConfig;
 import top.easelink.lcg.R;
 import top.easelink.lcg.databinding.ActivityMainBinding;
 import top.easelink.lcg.databinding.NavHeaderMainBinding;
+import top.easelink.lcg.mta.EventHelperKt;
 import top.easelink.lcg.ui.ViewModelProviderFactory;
 import top.easelink.lcg.ui.main.about.view.AboutFragment;
 import top.easelink.lcg.ui.main.article.view.ArticleFragment;
@@ -62,6 +63,8 @@ import top.easelink.lcg.ui.main.viewmodel.MainViewModel;
 import top.easelink.lcg.ui.search.view.SearchActivity;
 import top.easelink.lcg.utils.ActivityUtils;
 
+import static top.easelink.lcg.mta.MTAConstantKt.EVENT_OPEN_FORUM;
+import static top.easelink.lcg.mta.MTAConstantKt.PROP_FORUM_NAME;
 import static top.easelink.lcg.utils.ActivityUtils.TAG_PREFIX;
 import static top.easelink.lcg.utils.WebsiteConstant.APP_RELEASE_PAGE;
 import static top.easelink.lcg.utils.WebsiteConstant.SEARCH_URL;
@@ -256,6 +259,9 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(OpenForumEvent event) {
+        Properties prop = new Properties();
+        prop.setProperty(PROP_FORUM_NAME, event.getTitle());
+        EventHelperKt.sendKVEvent(EVENT_OPEN_FORUM, prop);
         showFragment(ForumArticlesFragment.newInstance(event.getTitle(), event.getUrl()));
     }
 

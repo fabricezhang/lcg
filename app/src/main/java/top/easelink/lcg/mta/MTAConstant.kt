@@ -1,9 +1,15 @@
 package top.easelink.lcg.mta
 
+const val EVENT_OPEN_FORUM = "open_forum"
+const val PROP_FORUM_NAME = "prop_forum_name"
+
 const val EVENT_ADD_TO_FAVORITE = "add_to_favorite"
+
 const val EVENT_OPEN_ARTICLE = "open_article"
+
 const val EVENT_AUTO_SIGN = "auto_sign"
 const val PROP_IS_AUTO_SIGN_ENABLE = "is_auto_sign_enable"
+
 const val EVENT_SYNC_FAVORITE = "sync_favorite"
 const val PROP_IS_SYNC_FAVORITE_ENABLE = "is_sync_favorite_enable"
 
