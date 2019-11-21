@@ -28,8 +28,7 @@ import top.easelink.lcg.service.work.SignInWorker.Companion.WORK_INTERVAL
 import top.easelink.lcg.ui.main.me.model.NotificationInfo
 import top.easelink.lcg.ui.main.me.model.UserInfo
 import top.easelink.lcg.ui.main.me.view.MeNavigator
-import top.easelink.lcg.ui.main.source.local.SPConstants.SP_KEY_AUTO_SIGN_IN
-import top.easelink.lcg.ui.main.source.local.SPConstants.SP_KEY_SYNC_FAVORITE
+import top.easelink.lcg.ui.main.source.local.SPConstants.*
 import top.easelink.lcg.ui.main.source.local.SharedPreferencesHelper
 import top.easelink.lcg.utils.WebsiteConstant.HOME_URL
 import top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL
@@ -113,12 +112,13 @@ class MeViewModel(schedulerProvider:SchedulerProvider): BaseViewModel<MeNavigato
                         userInfo.messageText?: "Error",
                         Toast.LENGTH_SHORT)
                         .show()
+                    SharedPreferencesHelper.getUserSp().edit().putBoolean(SP_KEY_LOGGED_IN, false).apply()
                     navigator.showLoginFragment()
                     setIsLoading(false)
                 }
             } else {
                 mUserInfo.postValue(userInfo)
-
+                SharedPreferencesHelper.getUserSp().edit().putBoolean(SP_KEY_LOGGED_IN, true).apply()
             }
 
             val notificationInfo = parseNotificationInfo(doc)
