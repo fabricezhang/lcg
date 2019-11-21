@@ -7,6 +7,7 @@ package top.easelink.lcg.ui.webview;
  */
 public class WebViewConstants {
 
+    public static final String OPEN_LOGIN_PAGE = "OPEN_LOGIN_PAGE";
     public static final String FORCE_ENABLE_JS_KEY = "FORCE_ENABLE_JS_KEY";
     public static final String TITLE_KEY = "TITLE_KEY";
 

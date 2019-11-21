@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.RelativeLayout;
@@ -16,17 +15,17 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import org.jetbrains.annotations.NotNull;
+
 public abstract class BaseDialog extends DialogFragment {
 
     private BaseActivity mActivity;
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NotNull Context context) {
         super.onAttach(context);
         if (context instanceof BaseActivity) {
-            BaseActivity mActivity = (BaseActivity) context;
-            this.mActivity = mActivity;
-            mActivity.onFragmentAttached(getTag());
+            this.mActivity = (BaseActivity) context;
         }
     }
 
@@ -50,13 +49,6 @@ public abstract class BaseDialog extends DialogFragment {
                     ViewGroup.LayoutParams.WRAP_CONTENT);
         }
         dialog.setCanceledOnTouchOutside(false);
-        dialog.setOnKeyListener((dialogInterface, keyCode, event) -> {
-            if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
-                dismissDialog();
-                return true;
-            }
-            return false;
-        });
         return dialog;
     }
 
@@ -74,6 +66,11 @@ public abstract class BaseDialog extends DialogFragment {
         }
         transaction.addToBackStack(null);
         show(transaction, tag);
+    }
+
+    public boolean onBackPressed() {
+        dismissDialog();
+        return true;
     }
 
     protected void dismissDialog() {

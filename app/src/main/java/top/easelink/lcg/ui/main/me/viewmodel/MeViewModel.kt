@@ -25,6 +25,7 @@ import top.easelink.lcg.service.web.WebViewWrapper
 import top.easelink.lcg.service.work.SignInWorker
 import top.easelink.lcg.service.work.SignInWorker.Companion.DEFAULT_TIME_UNIT
 import top.easelink.lcg.service.work.SignInWorker.Companion.WORK_INTERVAL
+import top.easelink.lcg.ui.info.UserData
 import top.easelink.lcg.ui.main.me.model.NotificationInfo
 import top.easelink.lcg.ui.main.me.model.UserInfo
 import top.easelink.lcg.ui.main.me.view.MeNavigator
@@ -107,16 +108,17 @@ class MeViewModel(schedulerProvider:SchedulerProvider): BaseViewModel<MeNavigato
                 disableAutoSign()
                 clearCookies()
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(
-                        LCGApp.getContext(),
-                        userInfo.messageText?: "Error",
-                        Toast.LENGTH_SHORT)
-                        .show()
-                    SharedPreferencesHelper.getUserSp().edit().putBoolean(SP_KEY_LOGGED_IN, false).apply()
+//                    Toast.makeText(
+//                        LCGApp.getContext(),
+//                        userInfo.messageText?: "Error",
+//                        Toast.LENGTH_SHORT)
+//                        .show()
+                    UserData.loggedInState = false
                     navigator.showLoginFragment()
                     setIsLoading(false)
                 }
             } else {
+                UserData.loggedInState = true
                 mUserInfo.postValue(userInfo)
                 SharedPreferencesHelper.getUserSp().edit().putBoolean(SP_KEY_LOGGED_IN, true).apply()
             }
@@ -130,22 +132,24 @@ class MeViewModel(schedulerProvider:SchedulerProvider): BaseViewModel<MeNavigato
     }
 
     fun clearLocalCookies() {
-        GlobalScope.launch {
-            clearCookies()
-        }
+        UserData.loggedInState = false
+        clearCookies()
         WebViewWrapper.getInstance().clearCookies()
-        with(LCGApp.getContext()) {
-            Toast.makeText(this,
-                getString(R.string.me_tab_clear_cookie),
-                Toast.LENGTH_SHORT).show()
-        }
-
+        showClearMessage()
     }
 
-    @SuppressLint("ApplySharedPref")
-    @WorkerThread
+    private fun showClearMessage() {
+        with(LCGApp.getContext()) {
+            Toast.makeText(
+                this,
+                getString(R.string.me_tab_clear_cookie),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
     private fun clearCookies() {
-        SharedPreferencesHelper.getCookieSp().edit().clear().commit()
+        SharedPreferencesHelper.getCookieSp().edit().clear().apply()
     }
 
     private fun parseNotificationInfo(doc: Document): NotificationInfo {

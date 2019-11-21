@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -32,10 +33,14 @@ class ReplyPostDialog : BaseDialog() {
     ) {
         super.onViewCreated(view, savedInstanceState)
         replyPostViewModel = ViewModelProviders.of(this).get(ReplyPostViewModel::class.java)
-        val bundle = arguments
         view.findViewById<Button>(R.id.btn_cancel).setOnClickListener {
             dismissDialog()
         }
+        view.findViewById<TextView>(R.id.reply_to).text =
+            String.format(
+                getString(R.string.reply_post_dialog_title),
+                arguments?.getString(REPLY_POST_AUTHOR)
+            )
         val button = view.findViewById<Button>(R.id.btn_confirm)
         button.setOnClickListener {
             val content = view.findViewById<EditText>(R.id.reply_content).text.trimEnd()
@@ -53,7 +58,7 @@ class ReplyPostDialog : BaseDialog() {
                 }
             })
             replyPostViewModel.sendReply(
-                bundle?.getString(REPLY_POST_URL),
+                arguments?.getString(REPLY_POST_URL),
                 content.toString()
             ) {view.postDelayed({
                 dismissDialog()
@@ -68,12 +73,14 @@ class ReplyPostDialog : BaseDialog() {
 
     companion object {
         private val TAG = ActivityUtils.TAG_PREFIX + ReplyPostDialog::class.java.simpleName
-        private const val REPLY_POST_URL = "REPLY_POST_URL"
+        private const val REPLY_POST_URL = "reply_post_url"
+        private const val REPLY_POST_AUTHOR = "reply_post_author"
         @JvmStatic
-        fun newInstance(replyPostUrl: String?): ReplyPostDialog {
+        fun newInstance(replyPostUrl: String, author: String): ReplyPostDialog {
             return ReplyPostDialog().apply {
                 arguments = Bundle().apply {
                     putString(REPLY_POST_URL, replyPostUrl)
+                    putString(REPLY_POST_AUTHOR, author)
                 }
             }
         }

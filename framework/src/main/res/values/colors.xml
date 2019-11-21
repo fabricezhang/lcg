@@ -5,6 +5,7 @@
     <color name="colorPrimaryDark">@color/black</color>
     <color name="colorAccent">#FF4081</color>
     <color name="light_gray">#dbdbdb</color>
+    <color name="slight_light_gray">#ECECEC</color>
     <color name="gray">#7e7e7e</color>
     <color name="semi_gray">#979797</color>
     <color name="dark_gray">#696969</color>

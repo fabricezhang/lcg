@@ -180,6 +180,6 @@ public class ArticleFragment extends BaseFragment<FragmentArticleBinding, Articl
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(ReplyPostEvent event) {
-        ReplyPostDialog.newInstance(event.getReplyUrl()).show(getChildFragmentManager());
+        ReplyPostDialog.newInstance(event.getReplyUrl(), event.getAuthor()).show(getFragmentManager());
     }
 }

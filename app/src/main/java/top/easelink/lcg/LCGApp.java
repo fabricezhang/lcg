@@ -1,6 +1,5 @@
 package top.easelink.lcg;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
@@ -17,7 +16,6 @@ import io.reactivex.exceptions.UndeliverableException;
 import io.reactivex.plugins.RxJavaPlugins;
 import timber.log.Timber;
 import top.easelink.lcg.di.component.DaggerAppComponent;
-import top.easelink.lcg.service.web.WebViewWrapper;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 public class LCGApp extends Application implements HasActivityInjector {
@@ -33,7 +31,6 @@ public class LCGApp extends Application implements HasActivityInjector {
         return activityDispatchingAndroidInjector;
     }
 
-    @SuppressLint("StaticFieldLeak")
     private static LCGApp INSTANCE;
 
     @Override
@@ -51,7 +48,6 @@ public class LCGApp extends Application implements HasActivityInjector {
             Timber.plant(new Timber.DebugTree());
         }
         initRx();
-        WebViewWrapper.init();
     }
 
     public static Context getContext() {

@@ -19,8 +19,9 @@ import static top.easelink.lcg.utils.CookieUtilsKt.setCookies;
 /**
  * author : junzhang
  * date   : 2019-07-23 13:58
- * desc   :
+ * desc   : can be a back-up method in case of Jsoup doesn't work
  */
+@Deprecated()
 @SuppressLint({"SetJavaScriptEnabled", "StaticFieldLeak"})
 public class WebViewWrapper {
 
@@ -51,6 +52,7 @@ public class WebViewWrapper {
         mWebView.addJavascriptInterface(hookInterface, HOOK_NAME);
         mWebView.loadUrl(url);
     }
+
     public static WebViewWrapper getInstance() {
         if (instance == null) {
             synchronized (WebViewWrapper.class) {

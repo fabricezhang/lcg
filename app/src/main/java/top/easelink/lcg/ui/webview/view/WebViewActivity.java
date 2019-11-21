@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.CookieManager;
+import android.webkit.JavascriptInterface;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
@@ -26,21 +27,32 @@ import androidx.core.app.ShareCompat;
 
 import com.airbnb.lottie.LottieAnimationView;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 import timber.log.Timber;
 import top.easelink.framework.customview.HorizontalScrollDisableWebView;
 import top.easelink.lcg.LCGApp;
 import top.easelink.lcg.R;
+import top.easelink.lcg.service.web.HookInterface;
+import top.easelink.lcg.ui.main.view.MainActivity;
 
 import static top.easelink.lcg.ui.webview.WebViewConstants.FORCE_ENABLE_JS_KEY;
+import static top.easelink.lcg.ui.webview.WebViewConstants.OPEN_LOGIN_PAGE;
 import static top.easelink.lcg.ui.webview.WebViewConstants.TITLE_KEY;
 import static top.easelink.lcg.utils.CookieUtilsKt.setCookies;
 import static top.easelink.lcg.utils.WebsiteConstant.EXTRA_TABLE_HTML;
+import static top.easelink.lcg.utils.WebsiteConstant.LOGIN_URL;
+import static top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL;
 import static top.easelink.lcg.utils.WebsiteConstant.URL_KEY;
 
 public class WebViewActivity extends AppCompatActivity {
 
+    private static final String HOOK_NAME = "hook";
     private boolean mForceEnableJs = true;
 
+    private  boolean isOpenLoginEvent = false;
     protected String mUrl;
     protected String mHtml;
 
@@ -58,6 +70,14 @@ public class WebViewActivity extends AppCompatActivity {
         context = context == null? LCGApp.getContext() : context;
         Intent intent = new Intent(context, WebViewActivity.class);
         intent.putExtra(EXTRA_TABLE_HTML, html);
+        context.startActivity(intent);
+    }
+
+    public static void openLoginPage(Context context) {
+        Intent intent = new Intent(context, WebViewActivity.class);
+        intent.putExtra(URL_KEY, SERVER_BASE_URL + LOGIN_URL);
+        intent.putExtra(FORCE_ENABLE_JS_KEY, true);
+        intent.putExtra(OPEN_LOGIN_PAGE, true);
         context.startActivity(intent);
     }
 
@@ -83,10 +103,33 @@ public class WebViewActivity extends AppCompatActivity {
             updateWebViewSettingsRemote();
             mWebView.loadUrl(intent.getData().toString());
         } else {
+            isOpenLoginEvent = getIntent().getBooleanExtra(OPEN_LOGIN_PAGE, false);
             mForceEnableJs = intent.getBooleanExtra(FORCE_ENABLE_JS_KEY, false);
             if (!TextUtils.isEmpty(mUrl)) {
                 updateWebViewSettingsRemote();
-                mWebView.loadUrl(mUrl);
+                if (isOpenLoginEvent) {
+                    mWebView.removeJavascriptInterface(HOOK_NAME);
+                    mWebView.addJavascriptInterface(new HookInterface() {
+                        @Override
+                        @JavascriptInterface
+                        public void processHtml(String html) {
+                            try {
+                                Element element = Jsoup.parse(html).selectFirst("div.avt");
+                                if (element != null) {
+                                    mWebView.post(() -> {
+                                        mWebView.stopLoading();
+                                        startActivity(new Intent(mWebView.getContext(), MainActivity.class));
+                                    });
+                                }
+                            } catch (Exception e) {
+                                Timber.w(html);
+                            }
+                        }
+                    }, HOOK_NAME);
+                    mWebView.loadUrl(mUrl);
+                } else {
+                    mWebView.loadUrl(mUrl);
+                }
             } else if(!TextUtils.isEmpty(mHtml)) {
                 updateWebViewSettingsLocal();
                 mWebView.loadData(mHtml, "text/html", "UTF-8");
@@ -176,11 +219,11 @@ public class WebViewActivity extends AppCompatActivity {
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
-            CookieManager cookieManager = CookieManager.getInstance();
-            String cookieUrl = cookieManager.getCookie(url);
-            Timber.i("Cookie : %s", cookieUrl);
-            setCookies(cookieUrl);
             setLoading(false);
+            if (isOpenLoginEvent) {
+                view.loadUrl("javascript:" + HOOK_NAME + ".processHtml(document.documentElement.outerHTML);");
+            }
+            setCookies(CookieManager.getInstance().getCookie(url));
         }
 
         @Override

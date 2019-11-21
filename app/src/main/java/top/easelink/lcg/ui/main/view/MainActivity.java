@@ -40,6 +40,7 @@ import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
 import top.easelink.framework.base.BaseActivity;
+import top.easelink.framework.base.BaseDialog;
 import top.easelink.framework.base.BaseFragment;
 import top.easelink.lcg.BR;
 import top.easelink.lcg.BuildConfig;

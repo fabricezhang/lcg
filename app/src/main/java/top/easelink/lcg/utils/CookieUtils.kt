@@ -1,6 +1,5 @@
 package top.easelink.lcg.utils
 
-import timber.log.Timber
 import top.easelink.lcg.ui.main.source.local.SharedPreferencesHelper
 import java.util.*
 
@@ -20,7 +19,6 @@ fun setCookies(cookieUrl: String?) {
         for (cookie in cookies) {
             val cookiePair = cookie.split("=".toRegex(), 2).toTypedArray()
             itemList.add(SharedPreferencesHelper.SpItem<String>(cookiePair[0], cookiePair[1]))
-            Timber.i("%s = %s", cookiePair[0], cookiePair[1])
         }
         SharedPreferencesHelper.setPreferenceWithList(
             SharedPreferencesHelper.getCookieSp(),
@@ -33,7 +31,6 @@ fun setCookies(cookies: Map<String, String>) {
     val itemList = ArrayList<SharedPreferencesHelper.SpItem<*>>()
     cookies.keys.forEach {
         itemList.add(SharedPreferencesHelper.SpItem<String>(it, cookies[it]))
-        Timber.v("%s = %s", it, cookies[it])
     }
     SharedPreferencesHelper.setPreferenceWithList(
         SharedPreferencesHelper.getCookieSp(),

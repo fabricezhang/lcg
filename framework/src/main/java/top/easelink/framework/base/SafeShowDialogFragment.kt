@@ -10,7 +10,7 @@ import timber.log.Timber
  * 安全显示和隐藏
  * 解决 Unable to add window -- token android.os.BinderProxy@... is not valid
  */
-abstract class SafeShowDialogFragment : DialogFragment() {
+abstract class SafeShowDialogFragment : BaseDialog() {
 
     private var lastTryShowTime: Long = 0L
 

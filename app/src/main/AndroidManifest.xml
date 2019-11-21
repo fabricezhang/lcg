@@ -26,11 +26,13 @@
         android:roundIcon="@drawable/ic_noavatar_middle"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.main.view.MainActivity"
+        <activity
+            android:launchMode="singleTask"
+            android:name=".ui.main.view.MainActivity"
             android:screenOrientation="portrait">
         </activity>
         <activity android:name=".ui.webview.view.WebViewActivity"
-            android:launchMode="singleTop"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
@@ -45,7 +47,8 @@
         <activity android:name=".ui.search.view.SearchActivity"
             android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".ui.splash.view.SplashActivity"
+        <activity
+            android:name=".ui.splash.view.SplashActivity"
             android:theme="@style/SplashTheme"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait">
