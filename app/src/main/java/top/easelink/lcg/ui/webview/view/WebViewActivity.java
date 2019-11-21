@@ -63,6 +63,7 @@ public class WebViewActivity extends AppCompatActivity {
         Intent intent = new Intent(context, WebViewActivity.class);
         intent.putExtra(URL_KEY, url);
         intent.putExtra(FORCE_ENABLE_JS_KEY, true);
+        context = context == null? LCGApp.getContext() : context;
         context.startActivity(intent);
     }
 
@@ -78,6 +79,7 @@ public class WebViewActivity extends AppCompatActivity {
         intent.putExtra(URL_KEY, SERVER_BASE_URL + LOGIN_URL);
         intent.putExtra(FORCE_ENABLE_JS_KEY, true);
         intent.putExtra(OPEN_LOGIN_PAGE, true);
+        context = context == null? LCGApp.getContext() : context;
         context.startActivity(intent);
     }
 

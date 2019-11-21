@@ -13,7 +13,7 @@
 -keepattributes *Annotation*
 # 避免混淆泛型, 这在JSON实体映射时非常重要
 -keepattributes Signature
--keepattributes SourceFile,LineNumberTable
+-keepattributes SourceFile, LineNumberTable
 -renamesourcefileattribute LCG
 -flattenpackagehierarchy LCG
 -allowaccessmodification
