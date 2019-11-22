@@ -3,11 +3,12 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
     android:clickable="true"
     android:focusable="true"
     android:padding="@dimen/dp_20"
+    android:layout_marginBottom="@dimen/dp_10"
     android:background="@drawable/login_bg">
 
 
@@ -18,20 +19,36 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="This is a Test " />
 
+
     <Button
         android:id="@+id/login_hint_btn"
         android:layout_width="@dimen/dp_60"
-        android:layout_height="@dimen/dp_40"
+        android:layout_height="@dimen/dp_30"
         android:textColor="@color/white"
         android:layout_marginTop="@dimen/dp_10"
         android:textSize="@dimen/sp_14"
         android:text="@string/login_hint_btn"
+        android:layout_marginBottom="@dimen/dp_5"
         android:background="@drawable/button_bg"
         android:backgroundTint="@color/pojie_logo"
-        app:layout_constraintHorizontal_bias="0.85"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/login_hint_instruction"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/login_cancel_btn"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/login_cancel_btn"
+        android:layout_width="@dimen/dp_60"
+        android:layout_height="@dimen/dp_30"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_14"
+        android:text="@string/login_cancel_btn"
+        android:background="@drawable/button_bg"
+        android:backgroundTint="@color/light_gray"
+        app:layout_constraintBottom_toBottomOf="@id/login_hint_btn"
+        app:layout_constraintTop_toTopOf="@id/login_hint_btn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/login_hint_btn" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

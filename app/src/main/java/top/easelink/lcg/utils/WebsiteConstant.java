@@ -33,5 +33,5 @@ public class WebsiteConstant {
     public static final String HOME_URL = "home.php";
     public static final String LOGIN_URL = "member.php?mod=logging&action=login";
 
-    public static final String APP_RELEASE_PAGE = "thread-1038934-1-1.html";
+    public static final String APP_RELEASE_PAGE = "thread-1060219-1-1.html";
 }

@@ -52,6 +52,7 @@
     <string name="login_verify_code">验证码</string>
     <string name="login_btn">登陆</string>
     <string name="login_hint_btn">去登陆</string>
+    <string name="login_cancel_btn">取消</string>
 
     <!--about fragment-->
     <string name="version">"version"</string>

@@ -32,6 +32,9 @@ class LoginHintDialog : SafeShowDialogFragment() {
             WebViewActivity.openLoginPage(context)
             dismissDialog()
         }
+        view.findViewById<Button>(R.id.login_cancel_btn).setOnClickListener {
+            dismissDialog()
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
