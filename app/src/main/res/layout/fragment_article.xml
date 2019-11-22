@@ -1,112 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <import type="android.view.View" />
         <variable
-                name="viewModel"
-                type="top.easelink.lcg.ui.main.article.viewmodel.ArticleViewModel"/>
+            name="viewModel"
+            type="top.easelink.lcg.ui.main.article.viewmodel.ArticleViewModel"/>
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
-            android:id="@+id/clRootView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clipChildren="false"
-            android:focusable="true"
-            android:clickable="true">
+        android:id="@+id/clRootView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipChildren="false"
+        android:focusable="true"
+        android:clickable="true">
 
         <com.google.android.material.appbar.AppBarLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/white"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                app:elevation="@dimen/dp_5">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:elevation="@dimen/dp_5">
 
             <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/article_toolbar"
-                    android:textSize="@dimen/sp_12"
-                    style="@style/Toolbar"
-                    app:title="@{viewModel.articleTitle}"
-                    app:subtitleTextColor="@color/white"
-                    app:titleTextAppearance="@style/Toolbar.TitleText"
-                    app:titleTextColor="@color/white" />
+                android:id="@+id/article_toolbar"
+                android:textSize="@dimen/sp_12"
+                style="@style/Toolbar"
+                app:title="@{viewModel.articleTitle}"
+                app:subtitleTextColor="@color/white"
+                app:titleTextAppearance="@style/Toolbar.TitleText"
+                app:titleTextColor="@color/white" />
             <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/post_recycler_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:visibility="@{viewModel.shouldDisplayPosts? View.VISIBLE:View.GONE, default = gone}"
-                    app:adapter="@{viewModel.posts}"/>
+                android:id="@+id/post_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="@{viewModel.shouldDisplayPosts? View.VISIBLE:View.GONE, default = gone}"
+                app:adapter="@{viewModel.posts}"/>
         </com.google.android.material.appbar.AppBarLayout>
 
 
         <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:visibility="@{viewModel.isBlocked ? View.VISIBLE : View.GONE, default = gone}">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:visibility="@{viewModel.isBlocked ? View.VISIBLE : View.GONE, default = gone}">
             <com.airbnb.lottie.LottieAnimationView
-                    android:id="@+id/block_view"
-                    android:layout_width="@dimen/dp_200"
-                    android:layout_height="@dimen/dp_200"
-                    android:scaleType="fitCenter"
-                    app:lottie_rawRes="@raw/face_sorry"
-                    app:lottie_loop="true"
-                    app:lottie_autoPlay="true" />
+                android:id="@+id/block_view"
+                android:layout_width="@dimen/dp_200"
+                android:layout_height="@dimen/dp_200"
+                android:scaleType="fitCenter"
+                app:lottie_rawRes="@raw/face_sorry"
+                app:lottie_loop="true"
+                app:lottie_autoPlay="true" />
             <TextView
-                    style="@style/TextStyle.Heading"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/block_info"/>
+                style="@style/TextStyle.Heading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/block_info"/>
         </LinearLayout>
 
         <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:visibility="@{viewModel.isNotFound ? View.VISIBLE : View.GONE, default = gone}">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:visibility="@{viewModel.isNotFound ? View.VISIBLE : View.GONE, default = gone}">
             <com.airbnb.lottie.LottieAnimationView
-                    android:id="@+id/notfound_view"
-                    android:layout_width="@dimen/dp_200"
-                    android:layout_height="@dimen/dp_200"
-                    android:scaleType="fitCenter"
-                    app:lottie_rawRes="@raw/face_not_found"
-                    app:lottie_loop="true"
-                    app:lottie_autoPlay="true" />
+                android:id="@+id/notfound_view"
+                android:layout_width="@dimen/dp_200"
+                android:layout_height="@dimen/dp_200"
+                android:scaleType="fitCenter"
+                app:lottie_rawRes="@raw/face_not_found"
+                app:lottie_loop="true"
+                app:lottie_autoPlay="true" />
             <TextView
-                    style="@style/TextStyle.Heading"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/not_found_info"/>
+                style="@style/TextStyle.Heading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/not_found_info"/>
         </LinearLayout>
 
         <com.airbnb.lottie.LottieAnimationView
-                android:layout_gravity="bottom|end"
-                android:id="@+id/back_to_top"
-                android:layout_width="@dimen/dp_40"
-                android:layout_height="@dimen/dp_40"
-                android:scaleType="fitCenter"
-                android:layout_marginEnd="@dimen/dp_20"
-                android:layout_marginBottom="@dimen/dp_40"
-                android:focusable="true"
-                android:clickable="true"
-                android:visibility="gone"
-                android:background="@drawable/bg_oval"
-                android:onClick="@{() -> viewModel.scrollToTop()}"
-                app:lottie_rawRes="@raw/swipe_up"
-                app:lottie_loop="true"
-                app:lottie_autoPlay="false"/>
+            android:layout_gravity="bottom|end"
+            android:id="@+id/back_to_top"
+            android:layout_width="@dimen/dp_40"
+            android:layout_height="@dimen/dp_40"
+            android:scaleType="fitCenter"
+            android:layout_marginEnd="@dimen/dp_20"
+            android:layout_marginBottom="@dimen/dp_40"
+            android:focusable="true"
+            android:clickable="true"
+            android:visibility="gone"
+            android:background="@drawable/bg_oval"
+            android:onClick="@{() -> viewModel.scrollToTop()}"
+            app:lottie_rawRes="@raw/swipe_up"
+            app:lottie_loop="true"
+            app:lottie_autoPlay="false"/>
 
         <androidx.core.widget.ContentLoadingProgressBar
-                android:id="@+id/fetching_progress_bar"
-                style="?android:attr/progressBarStyleLarge"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE, default = gone}" />
+            android:id="@+id/fetching_progress_bar"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE, default = gone}" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </layout>
