@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.Group;
 import androidx.databinding.BindingAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -126,10 +127,10 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                 mBinding.contentTextView.setDrawTableLinkSpan(drawTableLinkSpan);
                 mBinding.contentTextView.setHtml(post.getContent(), htmlHttpImageGetter);
                 if (UserData.INSTANCE.getLoggedInState()) {
-                    mBinding.btnReply.setVisibility(View.VISIBLE);
+                    mBinding.btnGroup.setVisibility(View.VISIBLE);
                     mBinding.btnReply.setOnClickListener(this::onClick);
                 } else {
-                    mBinding.btnReply.setVisibility(View.GONE);
+                    mBinding.btnGroup.setVisibility(View.GONE);
                 }
             } catch (Exception e) {
                 Timber.e(e);

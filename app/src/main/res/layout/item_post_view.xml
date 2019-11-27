@@ -98,7 +98,6 @@
                 app:layout_constraintEnd_toStartOf="@id/btn_reply"
                 />
 
-
             <Button
                 android:id="@+id/btn_reply"
                 android:layout_width="@dimen/dp_20"
@@ -109,6 +108,13 @@
                 app:layout_constraintTop_toBottomOf="@id/guide_line"
                 app:layout_constraintEnd_toEndOf="@id/contentTextView"
                 />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/btn_group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="btn_reply,btn_thumb_up,guide_line" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
