@@ -1,7 +1,10 @@
 package top.easelink.framework.utils
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.util.DisplayMetrics
+import android.view.View
 
 
 fun px2dp(px: Float, context: Context): Float {
@@ -12,4 +15,16 @@ fun px2dp(px: Float, context: Context): Float {
 
 fun dp2px(context: Context, dp: Float): Float {
     return dp * context.resources.displayMetrics.density
+}
+
+fun loadBitmapFromView(view: View): Bitmap {
+    val bitmap = Bitmap.createBitmap(
+        view.measuredWidth,
+        view.measuredHeight,
+        Bitmap.Config.ARGB_8888
+    )
+    val canvas = Canvas(bitmap)
+    view.layout(view.left, view.top, view.right, view.bottom)
+    view.draw(canvas)
+    return bitmap
 }
