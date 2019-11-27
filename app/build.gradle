@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: "kotlin-kapt"
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
@@ -47,7 +48,7 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
-        incremental false
+        incremental true
     }
     // Generate Version Info
     android.applicationVariants.all { variant ->
@@ -62,11 +63,11 @@ android {
 
 dependencies {
     // database
-    annotationProcessor "androidx.room:room-compiler:$roomVersion"
-    annotationProcessor "com.android.databinding:compiler:$dataBindingVersion"
+    kapt "androidx.room:room-compiler:$roomVersion"
+    kapt "com.android.databinding:compiler:$dataBindingVersion"
 
-    annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.dagger2Version"
-    annotationProcessor "com.google.dagger:dagger-android-processor:$rootProject.dagger2Version"
+    kapt "com.google.dagger:dagger-compiler:$rootProject.dagger2Version"
+    kapt "com.google.dagger:dagger-android-processor:$rootProject.dagger2Version"
     implementation project(':framework')
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 

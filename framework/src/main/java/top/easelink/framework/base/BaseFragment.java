@@ -11,9 +11,11 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModel;
+
 import dagger.android.support.AndroidSupportInjection;
 
-public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseViewModel> extends Fragment {
+public abstract class BaseFragment<T extends ViewDataBinding, V extends ViewModel> extends Fragment {
 
     private BaseActivity mActivity;
     private View mRootView;
@@ -99,7 +101,7 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseView
         return mActivity != null && mActivity.isNetworkConnected();
     }
 
-    private void performDependencyInjection() {
+    protected void performDependencyInjection() {
         AndroidSupportInjection.inject(this);
     }
 

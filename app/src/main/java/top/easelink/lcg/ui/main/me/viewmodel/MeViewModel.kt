@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.work.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -16,8 +17,6 @@ import kotlinx.coroutines.withContext
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import timber.log.Timber
-import top.easelink.framework.base.BaseViewModel
-import top.easelink.framework.utils.rx.SchedulerProvider
 import top.easelink.lcg.LCGApp
 import top.easelink.lcg.R
 import top.easelink.lcg.mta.*
@@ -28,7 +27,6 @@ import top.easelink.lcg.service.work.SignInWorker.Companion.WORK_INTERVAL
 import top.easelink.lcg.ui.info.UserData
 import top.easelink.lcg.ui.main.me.model.NotificationInfo
 import top.easelink.lcg.ui.main.me.model.UserInfo
-import top.easelink.lcg.ui.main.me.view.MeNavigator
 import top.easelink.lcg.ui.main.source.local.SPConstants.*
 import top.easelink.lcg.ui.main.source.local.SharedPreferencesHelper
 import top.easelink.lcg.utils.WebsiteConstant.HOME_URL
@@ -36,8 +34,9 @@ import top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL
 import top.easelink.lcg.utils.getCookies
 import java.util.*
 
-class MeViewModel(schedulerProvider:SchedulerProvider): BaseViewModel<MeNavigator>(schedulerProvider) {
+class MeViewModel: ViewModel() {
 
+    val mLoginState = MutableLiveData<Boolean>()
     private val mUserInfo = MutableLiveData<UserInfo>()
     private val mAutoSignInEnable = MutableLiveData<Boolean>()
     private val mSyncFavoriteEnable = MutableLiveData<Boolean>()
@@ -96,7 +95,6 @@ class MeViewModel(schedulerProvider:SchedulerProvider): BaseViewModel<MeNavigato
     }
 
     fun fetchUserInfoDirect() {
-        setIsLoading(true)
         GlobalScope.launch(Dispatchers.IO) {
             try {
                 val doc = Jsoup
@@ -110,10 +108,11 @@ class MeViewModel(schedulerProvider:SchedulerProvider): BaseViewModel<MeNavigato
                     clearCookies()
                     withContext(Dispatchers.Main) {
                         UserData.loggedInState = false
-                        navigator.showLoginFragment()
+                        mLoginState.value = false
                     }
                 } else {
                     UserData.loggedInState = true
+                    mLoginState.postValue(true)
                     mUserInfo.postValue(userInfo)
                     SharedPreferencesHelper.getUserSp().edit().putBoolean(SP_KEY_LOGGED_IN, true)
                         .apply()
@@ -124,8 +123,6 @@ class MeViewModel(schedulerProvider:SchedulerProvider): BaseViewModel<MeNavigato
                 }
             } catch (e: Exception) {
                 Timber.e(e)
-            } finally {
-                postIsLoading(false)
             }
         }
     }

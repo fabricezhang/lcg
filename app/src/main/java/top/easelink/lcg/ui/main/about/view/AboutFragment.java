@@ -64,15 +64,15 @@ public class AboutFragment extends BaseFragment<FragmentAboutBinding, AboutViewM
 
     private void syncAuthorState() {
         int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
-        if (0 <= hour && hour < 7) {
+        if (hour < 7) {
             getViewDataBinding().me.setAnimation(R.raw.moon_stars);
-        } else if (7 <= hour && hour < 12) {
+        } else if (hour < 12) {
             getViewDataBinding().me.setAnimation(R.raw.personal_mac_daytime);
-        } else if (12 <= hour && hour < 13) {
+        } else if (hour == 12) {
             getViewDataBinding().me.setAnimation(R.raw.sun);
-        } else if (13 <= hour && hour < 18) {
+        } else if (hour < 18) {
             getViewDataBinding().me.setAnimation(R.raw.personal_phone_daytime);
-        } else if (18 <= hour && hour < 22) {
+        } else if (hour < 22) {
             getViewDataBinding().me.setAnimation(R.raw.personal_mac_night);
         } else {
             getViewDataBinding().me.setAnimation(R.raw.personal_phone_night);
