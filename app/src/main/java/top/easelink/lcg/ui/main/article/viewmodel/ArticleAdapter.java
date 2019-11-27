@@ -1,5 +1,6 @@
 package top.easelink.lcg.ui.main.article.viewmodel;
 
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,14 +17,12 @@ import java.util.List;
 import timber.log.Timber;
 import top.easelink.framework.base.BaseViewHolder;
 import top.easelink.framework.customview.htmltextview.DrawTableLinkSpan;
-import top.easelink.framework.customview.htmltextview.HtmlHttpImageGetter;
+import top.easelink.framework.customview.htmltextview.GlideImageGetter;
 import top.easelink.lcg.R;
 import top.easelink.lcg.databinding.ItemPostViewBinding;
 import top.easelink.lcg.ui.info.UserData;
 import top.easelink.lcg.ui.main.model.ReplyPostEvent;
 import top.easelink.lcg.ui.main.source.model.Post;
-
-import static top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL;
 
 public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
@@ -106,13 +105,13 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
         private Post post;
         private ItemPostViewBinding mBinding;
-        private HtmlHttpImageGetter htmlHttpImageGetter;
+        private Html.ImageGetter htmlHttpImageGetter;
 
         PostViewHolder(ItemPostViewBinding binding) {
             super(binding.getRoot());
             this.mBinding = binding;
-            this.htmlHttpImageGetter = new HtmlHttpImageGetter(mBinding.contentTextView,
-                    SERVER_BASE_URL, true);
+            htmlHttpImageGetter = new GlideImageGetter(mBinding.contentTextView.getContext(),
+                    mBinding.contentTextView);
         }
 
         @Override

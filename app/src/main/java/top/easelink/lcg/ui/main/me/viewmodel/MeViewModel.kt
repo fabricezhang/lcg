@@ -98,36 +98,35 @@ class MeViewModel(schedulerProvider:SchedulerProvider): BaseViewModel<MeNavigato
     fun fetchUserInfoDirect() {
         setIsLoading(true)
         GlobalScope.launch(Dispatchers.IO) {
-            val doc = Jsoup
-                .connect("$SERVER_BASE_URL$HOME_URL?mod=spacecp&ac=credit&showcredit=1")
-                .cookies(getCookies())
-                .ignoreHttpErrors(true)
-                .get()
-            val userInfo = parseUserInfo(doc)
-            if (userInfo.userName.isNullOrEmpty()) {
-                disableAutoSign()
-                clearCookies()
-                withContext(Dispatchers.Main) {
-//                    Toast.makeText(
-//                        LCGApp.getContext(),
-//                        userInfo.messageText?: "Error",
-//                        Toast.LENGTH_SHORT)
-//                        .show()
-                    UserData.loggedInState = false
-                    navigator.showLoginFragment()
-                    setIsLoading(false)
+            try {
+                val doc = Jsoup
+                    .connect("$SERVER_BASE_URL$HOME_URL?mod=spacecp&ac=credit&showcredit=1")
+                    .cookies(getCookies())
+                    .ignoreHttpErrors(true)
+                    .get()
+                val userInfo = parseUserInfo(doc)
+                if (userInfo.userName.isNullOrEmpty()) {
+                    disableAutoSign()
+                    clearCookies()
+                    withContext(Dispatchers.Main) {
+                        UserData.loggedInState = false
+                        navigator.showLoginFragment()
+                    }
+                } else {
+                    UserData.loggedInState = true
+                    mUserInfo.postValue(userInfo)
+                    SharedPreferencesHelper.getUserSp().edit().putBoolean(SP_KEY_LOGGED_IN, true)
+                        .apply()
                 }
-            } else {
-                UserData.loggedInState = true
-                mUserInfo.postValue(userInfo)
-                SharedPreferencesHelper.getUserSp().edit().putBoolean(SP_KEY_LOGGED_IN, true).apply()
+                val notificationInfo = parseNotificationInfo(doc)
+                if (notificationInfo.posts.isNotEmpty()) {
+                    mNotificationInfo.postValue(notificationInfo)
+                }
+            } catch (e: Exception) {
+                Timber.e(e)
+            } finally {
+                postIsLoading(false)
             }
-
-            val notificationInfo = parseNotificationInfo(doc)
-            if (notificationInfo.posts.isNotEmpty()) {
-                mNotificationInfo.postValue(notificationInfo)
-            }
-            postIsLoading(false)
         }
     }
 
