@@ -11,14 +11,15 @@ import androidx.lifecycle.ViewModelProviders;
 import javax.inject.Inject;
 
 import top.easelink.framework.base.BaseFragment;
-import top.easelink.framework.utils.BlurUtilsKt;
-import top.easelink.framework.utils.ScreenUtilsKt;
 import top.easelink.lcg.BR;
 import top.easelink.lcg.R;
 import top.easelink.lcg.databinding.FragmentAboutBinding;
 import top.easelink.lcg.ui.ViewModelProviderFactory;
 import top.easelink.lcg.ui.main.login.view.LoginHintDialog;
 import top.easelink.lcg.ui.main.me.viewmodel.MeViewModel;
+
+import static top.easelink.framework.utils.BlurUtilsKt.bitmapBlur;
+import static top.easelink.framework.utils.ScreenUtilsKt.convertViewToBitmap;
 
 public class MeFragment extends BaseFragment<FragmentAboutBinding, MeViewModel> implements MeNavigator {
 
@@ -63,8 +64,7 @@ public class MeFragment extends BaseFragment<FragmentAboutBinding, MeViewModel> 
     public void showLoginFragment() {
         // add a blur effect
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && isAdded() && getView() != null) {
-            Bitmap bitmap = ScreenUtilsKt.loadBitmapFromView(getView());
-            bitmap = BlurUtilsKt.bitmapBlur(getBaseActivity(), bitmap, 4);
+            Bitmap bitmap = bitmapBlur(getBaseActivity(), convertViewToBitmap(getView()), 20);
             getView().setForeground(new BitmapDrawable(bitmap));
         }
         new LoginHintDialog().show(getBaseActivity().getSupportFragmentManager(), null);

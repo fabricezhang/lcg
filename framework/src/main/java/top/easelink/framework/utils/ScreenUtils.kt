@@ -17,11 +17,11 @@ fun dp2px(context: Context, dp: Float): Float {
     return dp * context.resources.displayMetrics.density
 }
 
-fun loadBitmapFromView(view: View): Bitmap {
+fun convertViewToBitmap(view: View): Bitmap {
     val bitmap = Bitmap.createBitmap(
         view.measuredWidth,
         view.measuredHeight,
-        Bitmap.Config.ARGB_8888
+        Bitmap.Config.ARGB_4444
     )
     val canvas = Canvas(bitmap)
     view.layout(view.left, view.top, view.right, view.bottom)
