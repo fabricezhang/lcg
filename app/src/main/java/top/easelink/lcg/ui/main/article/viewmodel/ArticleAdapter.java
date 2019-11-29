@@ -9,6 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.databinding.BindingAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
@@ -120,9 +122,14 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         @Override
         public void onBind(int position) {
             post = mPostList.get(position);
-            PostViewModel postViewModel = new PostViewModel(post);
-            mBinding.setViewModel(postViewModel);
             try {
+                mBinding.authorTextView.setText(post.getAuthor());
+                mBinding.dateTextView.setText(post.getDate());
+                Glide.with(mBinding.postAvatar)
+                        .load(post.getAvatar())
+                        .placeholder(R.drawable.ic_noavatar_middle)
+                        .error(R.drawable.ic_noavatar_middle_gray)
+                        .into(mBinding.postAvatar);
                 mBinding.contentTextView.setClickableSpecialSpan(new ClickableSpecialSpanImpl());
                 DrawTableLinkSpan drawTableLinkSpan = new DrawTableLinkSpan();
                 drawTableLinkSpan.setTableLinkText(itemView.getContext().getString(R.string.tap_for_code));
@@ -156,6 +163,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                     }
                     break;
                 case R.id.btn_thumb_up:
+                    mListener.replyAdd(post.getReplyAddUrl());
                     break;
             }
         }

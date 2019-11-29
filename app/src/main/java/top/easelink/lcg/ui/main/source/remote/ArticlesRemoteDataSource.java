@@ -24,7 +24,9 @@ import javax.annotation.Nullable;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
+import io.reactivex.Scheduler;
 import timber.log.Timber;
+import top.easelink.framework.utils.rx.SchedulerProvider;
 import top.easelink.lcg.ui.main.model.BlockException;
 import top.easelink.lcg.ui.main.model.LoginRequiredException;
 import top.easelink.lcg.ui.main.source.ArticlesDataSource;
@@ -118,6 +120,7 @@ public class ArticlesRemoteDataSource implements ArticlesDataSource, FavoritesRe
                 } else {
                     nextPageUrl = "";
                 }
+                List<String> replyAddUrls = getReplyAddUrl(doc);
                 List<Map<String, String>> avatarsAndNames = getAvatarAndName(doc);
                 List<String> contents = getContent(doc);
                 List<String> datetimes = getDateTime(doc);
@@ -129,11 +132,12 @@ public class ArticlesRemoteDataSource implements ArticlesDataSource, FavoritesRe
                                 Objects.requireNonNull(avatarsAndNames.get(i).get("avatar")),
                                 datetimes.get(i),
                                 contents.get(i),
-                                replyUrls.get(i));
+                                replyUrls.get(i),
+                                replyAddUrls.get(i));
                         postList.add(post);
                     } catch (NullPointerException npe) {
                         // will skip a loop if there's any npe occurs
-                        Timber.w(npe);
+                        Timber.v(npe);
                     }
                 }
                 String fromHash = doc.selectFirst("input[name=formhash]").attr("value");
@@ -185,8 +189,8 @@ public class ArticlesRemoteDataSource implements ArticlesDataSource, FavoritesRe
     }
 
     private void processForumArticlesDocument(Document doc,
-                                                ObservableEmitter<ForumPage> emitter,
-                                                boolean processThreadList) {
+                                              ObservableEmitter<ForumPage> emitter,
+                                              boolean processThreadList) {
         try {
             Elements elements = doc.select("tbody[id^=normal]");
             if (elements.isEmpty()) {
@@ -285,6 +289,19 @@ public class ArticlesRemoteDataSource implements ArticlesDataSource, FavoritesRe
     }
 
     @NonNull
+    private List<String> getReplyAddUrl(Document document) {
+        List<String> list = new ArrayList<>(12);
+        Element e = document.getElementById("recommend_add");
+        list.add(e.attr("href"));
+        Elements elements = document.select("a.replyadd");
+        for (Element element: elements) {
+            list.add(element.attr("href"));
+        }
+        return list;
+    }
+
+
+    @NonNull
     private List<Map<String, String>> getAvatarAndName(Document document) {
         List<Map<String, String>> list = new ArrayList<>(12);
         Elements elements = document.select("td[rowspan]");
@@ -366,8 +383,7 @@ public class ArticlesRemoteDataSource implements ArticlesDataSource, FavoritesRe
     public Observable<Boolean> addFavorites(@NotNull String threadId, @NotNull String formHash) {
         return Observable.fromCallable(()->{
             try {
-                Document doc = Jsoup.connect(String.format(FAVORITE_URL, threadId, formHash)).cookies(getCookies()).get();
-                Timber.d(doc.html());
+                Jsoup.connect(String.format(FAVORITE_URL, threadId, formHash)).cookies(getCookies()).get();
                 return true;
             } catch (Exception e) {
                 Timber.e(e);
@@ -375,5 +391,25 @@ public class ArticlesRemoteDataSource implements ArticlesDataSource, FavoritesRe
             }
         });
 
+    }
+
+    /**
+     * Support user's post
+     * @param url post url without base_server_url
+     * @return status message
+     */
+    public Observable<String> replyAdd(@NotNull String url) {
+        return Observable.fromCallable(()->{
+            try {
+                Document doc = Jsoup.connect(SERVER_BASE_URL + url).cookies(getCookies()).get();
+                String message = doc.getElementsByClass("nfl").first().text();
+                Timber.d(doc.html());
+                Timber.d(message);
+                return message;
+            } catch (Exception e) {
+                Timber.e(e);
+                return "Error";
+            }
+        });
     }
 }

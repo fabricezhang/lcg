@@ -26,9 +26,11 @@ import top.easelink.lcg.ui.main.source.model.ArticleEntity;
 import top.easelink.lcg.ui.main.source.model.Post;
 import top.easelink.lcg.ui.main.source.remote.ArticlesRemoteDataSource;
 import top.easelink.lcg.utils.RegexUtils;
+import top.easelink.lcg.utils.ToastUtilsKt;
 
 import static top.easelink.lcg.mta.MTAConstantKt.EVENT_ADD_TO_FAVORITE;
 import static top.easelink.lcg.ui.main.source.local.SPConstants.SP_KEY_SYNC_FAVORITE;
+import static top.easelink.lcg.utils.ToastUtilsKt.showMessage;
 
 public class ArticleViewModel extends BaseViewModel<ArticleNavigator>
         implements ArticleAdapterListener {
@@ -107,6 +109,16 @@ public class ArticleViewModel extends BaseViewModel<ArticleNavigator>
                     setIsLoading(false);
                     getNavigator().handleError(throwable);
                 }, () -> setIsLoading(false)));
+    }
+
+    @Override
+    public void replyAdd(String url) {
+        getCompositeDisposable().add(articlesRemoteDataSource.replyAdd(url)
+                .subscribeOn(getSchedulerProvider().io())
+                .observeOn(getSchedulerProvider().ui())
+                .subscribe(ToastUtilsKt::showMessage
+                        , throwable -> { }
+                        , () -> setIsLoading(false)));
     }
 
     @Nullable
