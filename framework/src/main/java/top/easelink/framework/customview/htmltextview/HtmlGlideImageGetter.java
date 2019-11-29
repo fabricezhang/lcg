@@ -17,12 +17,12 @@ import com.bumptech.glide.request.target.SizeReadyCallback;
 import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.Transition;
 
-public class GlideImageGetter implements Html.ImageGetter {
+public class HtmlGlideImageGetter implements Html.ImageGetter {
 
     private Context context;
     private TextView textView;
 
-    public GlideImageGetter(Context context, TextView target) {
+    public HtmlGlideImageGetter(Context context, TextView target) {
         this.context = context;
         textView = target;
     }

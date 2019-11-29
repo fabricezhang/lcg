@@ -78,8 +78,8 @@
     <!--download link dialog-->
     <string name="download_title">下载链接</string>
     <string name="download_link_not_found">未找到下载链接</string>
-    <string name="download_link_copy_succeed">已复制到剪贴板</string>
-    <string name="download_link_copy_failed">复制失败</string>
+    <string name="copy_succeed">已复制到剪贴板</string>
+    <string name="copy_failed">复制失败</string>
 
     <!--reply post dialog  -->
     <string name="reply_post_dialog_title">回复：%s</string>

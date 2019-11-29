@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.Group;
 import androidx.databinding.BindingAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,12 +17,15 @@ import java.util.List;
 import timber.log.Timber;
 import top.easelink.framework.base.BaseViewHolder;
 import top.easelink.framework.customview.htmltextview.DrawTableLinkSpan;
-import top.easelink.framework.customview.htmltextview.GlideImageGetter;
+import top.easelink.framework.customview.htmltextview.HtmlGlideImageGetter;
 import top.easelink.lcg.R;
 import top.easelink.lcg.databinding.ItemPostViewBinding;
 import top.easelink.lcg.ui.info.UserData;
 import top.easelink.lcg.ui.main.model.ReplyPostEvent;
 import top.easelink.lcg.ui.main.source.model.Post;
+
+import static top.easelink.lcg.utils.CopyUtilsKt.copyContent;
+import static top.easelink.lcg.utils.ToastUtilsKt.showMessage;
 
 public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
@@ -102,7 +104,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         mPostList.clear();
     }
 
-    public class PostViewHolder extends BaseViewHolder {
+    public class PostViewHolder extends BaseViewHolder implements View.OnClickListener {
 
         private Post post;
         private ItemPostViewBinding mBinding;
@@ -111,7 +113,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         PostViewHolder(ItemPostViewBinding binding) {
             super(binding.getRoot());
             this.mBinding = binding;
-            htmlHttpImageGetter = new GlideImageGetter(mBinding.contentTextView.getContext(),
+            htmlHttpImageGetter = new HtmlGlideImageGetter(mBinding.contentTextView.getContext(),
                     mBinding.contentTextView);
         }
 
@@ -128,7 +130,9 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                 mBinding.contentTextView.setHtml(post.getContent(), htmlHttpImageGetter);
                 if (UserData.INSTANCE.getLoggedInState()) {
                     mBinding.btnGroup.setVisibility(View.VISIBLE);
-                    mBinding.btnReply.setOnClickListener(this::onClick);
+                    mBinding.btnReply.setOnClickListener(this);
+                    mBinding.btnThumbUp.setOnClickListener(this);
+                    mBinding.btnCopy.setOnClickListener(this);
                 } else {
                     mBinding.btnGroup.setVisibility(View.GONE);
                 }
@@ -138,8 +142,22 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             mBinding.executePendingBindings();
         }
 
+        @Override
         public void onClick(View v) {
-            EventBus.getDefault().post(new ReplyPostEvent(post.getReplyUrl(), post.getAuthor()));
+            switch (v.getId()) {
+                case R.id.btn_reply:
+                    EventBus.getDefault().post(new ReplyPostEvent(post.getReplyUrl(), post.getAuthor()));
+                    break;
+                case R.id.btn_copy:
+                    if(copyContent(post.getContent(), post.getReplyUrl())) {
+                        showMessage(R.string.copy_succeed);
+                    } else {
+                        showMessage(R.string.copy_failed);
+                    }
+                    break;
+                case R.id.btn_thumb_up:
+                    break;
+            }
         }
     }
 

@@ -89,9 +89,9 @@ public class DownloadLinkDialog extends BaseDialog implements DownloadLinkCallBa
         ClipData mClipData = ClipData.newPlainText("DownloadLink", clipString);
         if (cm != null) {
             cm.setPrimaryClip(mClipData);
-            showMessage(R.string.download_link_copy_succeed);
+            showMessage(R.string.copy_succeed);
         } else {
-            showMessage(R.string.download_link_copy_failed);
+            showMessage(R.string.copy_failed);
         }
     }
 
