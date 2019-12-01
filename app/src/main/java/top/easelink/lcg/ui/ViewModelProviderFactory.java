@@ -8,7 +8,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import top.easelink.framework.utils.rx.SchedulerProvider;
-import top.easelink.lcg.ui.main.about.viewmodel.AboutViewModel;
 import top.easelink.lcg.ui.main.article.viewmodel.ArticleViewModel;
 import top.easelink.lcg.ui.main.article.viewmodel.DownloadLinkViewModel;
 import top.easelink.lcg.ui.main.articles.viewmodel.ArticlesViewModel;
@@ -36,8 +35,6 @@ public class ViewModelProviderFactory extends ViewModelProvider.NewInstanceFacto
             return (T) new ArticlesViewModel(schedulerProvider);
         } else if (modelClass.isAssignableFrom(MainViewModel.class)) {
             return (T) new MainViewModel(schedulerProvider);
-        } else if (modelClass.isAssignableFrom(AboutViewModel.class)) {
-            return (T) new AboutViewModel(schedulerProvider);
         } else if (modelClass.isAssignableFrom(ArticleViewModel.class)) {
             return (T) new ArticleViewModel(schedulerProvider);
         } else if (modelClass.isAssignableFrom(ForumArticlesViewModel.class)) {

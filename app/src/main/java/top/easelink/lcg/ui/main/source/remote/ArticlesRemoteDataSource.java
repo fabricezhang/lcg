@@ -102,7 +102,7 @@ public class ArticlesRemoteDataSource implements ArticlesDataSource, FavoritesRe
                         json = json.replaceAll("\u00a0", "");
                         articleAbstract = gson.fromJson(json, ArticleAbstractResponse.class);
                     } catch (Exception e) {
-                        Timber.w(e);
+                        // no need to handle
                     }
                 }
                 Element titleElement = doc.selectFirst("span#thread_subject");
@@ -128,12 +128,18 @@ public class ArticlesRemoteDataSource implements ArticlesDataSource, FavoritesRe
                 List<Post> postList = new ArrayList<>(avatarsAndNames.size());
                 for (int i = 0; i< avatarsAndNames.size(); i++) {
                     try {
+                        String replyAddUrl;
+                        if (i >= replyAddUrls.size()) {
+                            replyAddUrl = null;
+                        } else {
+                            replyAddUrl = replyAddUrls.get(i);
+                        }
                         Post post = new Post(Objects.requireNonNull(avatarsAndNames.get(i).get("name")),
                                 Objects.requireNonNull(avatarsAndNames.get(i).get("avatar")),
                                 datetimes.get(i),
                                 contents.get(i),
                                 replyUrls.get(i),
-                                replyAddUrls.get(i));
+                                replyAddUrl);
                         postList.add(post);
                     } catch (NullPointerException npe) {
                         // will skip a loop if there's any npe occurs
@@ -291,11 +297,15 @@ public class ArticlesRemoteDataSource implements ArticlesDataSource, FavoritesRe
     @NonNull
     private List<String> getReplyAddUrl(Document document) {
         List<String> list = new ArrayList<>(12);
-        Element e = document.getElementById("recommend_add");
-        list.add(e.attr("href"));
-        Elements elements = document.select("a.replyadd");
-        for (Element element: elements) {
-            list.add(element.attr("href"));
+        try {
+            Element e = document.getElementById("recommend_add");
+            list.add(e.attr("href"));
+            Elements elements = document.select("a.replyadd");
+            for (Element element : elements) {
+                list.add(element.attr("href"));
+            }
+        } catch (NullPointerException npe) {
+            // no need to handle
         }
         return list;
     }

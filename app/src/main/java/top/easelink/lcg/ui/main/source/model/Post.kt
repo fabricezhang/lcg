@@ -18,5 +18,5 @@ class Post
     val date: String,
     val content: String,
     val replyUrl: String,
-    val replyAddUrl: String
+    val replyAddUrl: String?
 )

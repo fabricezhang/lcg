@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -95,10 +96,6 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends ViewMode
         if (mActivity != null) {
             mActivity.hideKeyboard();
         }
-    }
-
-    public boolean isNetworkConnected() {
-        return mActivity != null && mActivity.isNetworkConnected();
     }
 
     protected void performDependencyInjection() {

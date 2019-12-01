@@ -1,6 +1,7 @@
 package top.easelink.lcg.ui.main.article.viewmodel;
 
 import android.text.Html;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -138,7 +139,12 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                 if (UserData.INSTANCE.getLoggedInState()) {
                     mBinding.btnGroup.setVisibility(View.VISIBLE);
                     mBinding.btnReply.setOnClickListener(this);
-                    mBinding.btnThumbUp.setOnClickListener(this);
+                    if (TextUtils.isEmpty(post.getReplyAddUrl())) {
+                        mBinding.btnThumbUp.setVisibility(View.GONE);
+                    } else {
+                        mBinding.btnThumbUp.setVisibility(View.VISIBLE);
+                        mBinding.btnThumbUp.setOnClickListener(this);
+                    }
                     mBinding.btnCopy.setOnClickListener(this);
                 } else {
                     mBinding.btnGroup.setVisibility(View.GONE);

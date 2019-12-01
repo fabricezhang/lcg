@@ -13,7 +13,6 @@ import androidx.work.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import timber.log.Timber
@@ -106,10 +105,8 @@ class MeViewModel: ViewModel() {
                 if (userInfo.userName.isNullOrEmpty()) {
                     disableAutoSign()
                     clearCookies()
-                    withContext(Dispatchers.Main) {
-                        UserData.loggedInState = false
-                        mLoginState.value = false
-                    }
+                    UserData.loggedInState = false
+                    mLoginState.postValue(false)
                 } else {
                     UserData.loggedInState = true
                     mLoginState.postValue(true)

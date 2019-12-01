@@ -59,6 +59,7 @@ android {
     dataBinding {
         enabled = true
     }
+    buildToolsVersion = buildToolsVersion
 }
 
 dependencies {

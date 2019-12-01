@@ -21,7 +21,7 @@ public class AppModule {
     @Singleton
     CalligraphyConfig provideCalligraphyDefaultConfig() {
         return new CalligraphyConfig.Builder()
-                .setDefaultFontPath("fonts/source-sans-pro/SourceSansPro-Regular.ttf")
+                .setDefaultFontPath("fonts/alibaba/Alibaba_Regular.ttf")
                 .setFontAttrId(R.attr.fontPath)
                 .build();
     }

@@ -113,6 +113,10 @@ public class ArticleViewModel extends BaseViewModel<ArticleNavigator>
 
     @Override
     public void replyAdd(String url) {
+        if (TextUtils.isEmpty(url)) {
+            setIsLoading(false);
+            throw new IllegalStateException();
+        }
         getCompositeDisposable().add(articlesRemoteDataSource.replyAdd(url)
                 .subscribeOn(getSchedulerProvider().io())
                 .observeOn(getSchedulerProvider().ui())
