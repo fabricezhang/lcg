@@ -61,12 +61,12 @@
                 style="@style/TextStyle.Title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_8"
+                android:layout_marginTop="@dimen/dp_10"
                 android:textIsSelectable="true"
+                android:textSize="@dimen/sp_14"
                 app:layout_constraintTop_toBottomOf="@id/post_avatar"
                 app:layout_constraintStart_toStartOf="@id/post_avatar"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0"
                 android:textStyle="normal"
                 tools:text="This repository contains a detailed sample app that implements MVVM architecture using Dagger2, Android Room, RxJava2 ,etc" />
 
@@ -75,39 +75,39 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_0_1"
                 android:layout_marginTop="@dimen/dp_8"
-                android:layout_marginStart="@dimen/dp_18"
-                android:layout_marginEnd="@dimen/dp_18"
+                android:layout_marginStart="@dimen/dp_15"
+                android:layout_marginEnd="@dimen/dp_15"
                 android:background="@drawable/rectangle_bg"
-                android:backgroundTint="@color/light_gray"
+                android:backgroundTint="@color/slight_light_gray"
                 app:layout_constraintTop_toBottomOf="@id/contentTextView"
                 />
 
             <Button
                 android:id="@+id/btn_copy"
-                android:layout_width="@dimen/dp_18"
-                android:layout_height="@dimen/dp_18"
+                android:layout_width="@dimen/dp_15"
+                android:layout_height="@dimen/dp_15"
                 android:background="@drawable/btn_selector_copy"
                 android:backgroundTint="@color/btn_color"
-                android:layout_marginEnd="@dimen/dp_20"
+                android:layout_marginEnd="@dimen/dp_25"
                 app:layout_constraintTop_toTopOf="@id/btn_reply"
                 app:layout_constraintEnd_toStartOf="@id/btn_thumb_up"
                 />
 
             <Button
                 android:id="@+id/btn_thumb_up"
-                android:layout_width="@dimen/dp_18"
-                android:layout_height="@dimen/dp_18"
+                android:layout_width="@dimen/dp_15"
+                android:layout_height="@dimen/dp_15"
                 android:background="@drawable/btn_selector_thubm_up"
                 android:backgroundTint="@color/btn_color"
-                android:layout_marginEnd="@dimen/dp_20"
+                android:layout_marginEnd="@dimen/dp_25"
                 app:layout_constraintTop_toTopOf="@id/btn_reply"
                 app:layout_constraintEnd_toStartOf="@id/btn_reply"
                 />
 
             <Button
                 android:id="@+id/btn_reply"
-                android:layout_width="@dimen/dp_18"
-                android:layout_height="@dimen/dp_18"
+                android:layout_width="@dimen/dp_15"
+                android:layout_height="@dimen/dp_15"
                 android:background="@drawable/btn_selector_reply"
                 android:backgroundTint="@color/btn_color"
                 android:layout_marginTop="@dimen/dp_3"

@@ -43,7 +43,7 @@
     <string name="sync_favorites_instruction">（默认仅收藏到本地）</string>
     <string name="me_tab_level_placeholder">个人信息</string>
     <string name="me_tab_clear_cookie">本地登陆信息已清除</string>
-
+    <string name="me_tab_credit_placeholder">0</string>
     <string name="me_notification_title">我的信息</string>
 
     <!--Login Dialog-->
