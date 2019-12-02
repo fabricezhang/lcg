@@ -100,13 +100,16 @@
             app:lottie_loop="true"
             app:lottie_autoPlay="false"/>
 
-        <androidx.core.widget.ContentLoadingProgressBar
+        <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/fetching_progress_bar"
-            style="?android:attr/progressBarStyleLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/dp_100"
+            android:layout_height="@dimen/dp_100"
             android:layout_gravity="center"
+            app:lottie_rawRes="@raw/loading_circle"
+            app:lottie_loop="true"
+            app:lottie_autoPlay="true"
             android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE, default = gone}" />
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </layout>
