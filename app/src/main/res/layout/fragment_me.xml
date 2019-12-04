@@ -147,7 +147,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.cardview.widget.CardView
-            android:layout_margin="@dimen/dp_8"
+            android:layout_margin="@dimen/dp_5"
             android:id="@+id/me_setting_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -157,7 +157,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/me_user_info_card">
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_margin="@dimen/dp_10"
+                android:paddingTop="@dimen/dp_5"
+                android:paddingBottom="@dimen/dp_5"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
                 <TextView
@@ -167,14 +168,14 @@
                     android:textColor="@color/gray"
                     android:textSize="@dimen/sp_14"
                     android:text="@string/me_setting_title"
-                    android:layout_marginStart="@dimen/dp_15"
+                    android:layout_marginStart="@dimen/dp_12"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
 
                     />
                 <TextView
-                    android:paddingTop="@dimen/dp_10"
-                    android:paddingBottom="@dimen/dp_10"
+                    android:paddingTop="@dimen/dp_5"
+                    android:paddingBottom="@dimen/dp_5"
                     android:id="@+id/auto_sign_in_switch_title"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
@@ -182,15 +183,14 @@
                     android:textSize="@dimen/sp_14"
                     android:layout_marginStart="@dimen/dp_20"
                     android:layout_marginTop="@dimen/dp_10"
-                    app:switchPadding="@dimen/dp_10"
                     app:layout_constraintTop_toBottomOf="@id/me_setting_title"
                     app:layout_constraintStart_toStartOf="parent"
                     />
                 <ImageView
                     android:id="@+id/me_sign_in_state"
                     android:layout_marginStart="@dimen/dp_8"
-                    android:paddingTop="@dimen/dp_13"
-                    android:paddingBottom="@dimen/dp_13"
+                    android:paddingTop="@dimen/dp_8"
+                    android:paddingBottom="@dimen/dp_8"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:contentDescription="@null"
@@ -214,8 +214,9 @@
                     />
 
                 <TextView
-                    android:paddingTop="@dimen/dp_10"
-                    android:paddingBottom="@dimen/dp_10"
+                    android:layout_marginTop="@dimen/dp_5"
+                    android:paddingTop="@dimen/dp_5"
+                    android:paddingBottom="@dimen/dp_5"
                     android:id="@+id/favorite_settings_title"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
