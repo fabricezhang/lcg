@@ -59,6 +59,7 @@
             <top.easelink.framework.customview.htmltextview.HtmlTextView
                 android:id="@+id/contentTextView"
                 style="@style/TextStyle.Title"
+                android:paddingBottom="@dimen/dp_3"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_10"

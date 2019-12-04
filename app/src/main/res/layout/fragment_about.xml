@@ -37,8 +37,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:textColorLink="@color/light_blue"
             android:clickable="true"
-            android:text="@string/github_url"/>
+            android:text="@string/github_url"
+            android:focusable="true" />
 
         <com.airbnb.lottie.LottieAnimationView
             android:layout_marginTop="@dimen/dp_30"

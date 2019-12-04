@@ -35,7 +35,7 @@ import java.util.*
 
 class MeViewModel: ViewModel() {
 
-    val mLoginState = MutableLiveData<Boolean>()
+    private val mLoginState = MutableLiveData<Boolean>()
     private val mUserInfo = MutableLiveData<UserInfo>()
     private val mAutoSignInEnable = MutableLiveData<Boolean>()
     private val mSyncFavoriteEnable = MutableLiveData<Boolean>()
@@ -50,9 +50,11 @@ class MeViewModel: ViewModel() {
             .getBoolean(SP_KEY_SYNC_FAVORITE, false))
     }
 
-    @Suppress("unused")
     val workInfo:LiveData<List<WorkInfo>>
         get() = WorkManager.getInstance().getWorkInfosByTagLiveData(SignInWorker::class.java.simpleName)
+
+    val loginState: LiveData<Boolean>
+        get() = mLoginState
 
     val userInfo:LiveData<UserInfo>
         get() = mUserInfo
@@ -67,30 +69,30 @@ class MeViewModel: ViewModel() {
         get() = mNotificationInfo
 
     fun scheduleJob(v: View) {
-        if (v is CheckBox) {
-            SharedPreferencesHelper.getUserSp()
-                .edit()
-                .putBoolean(SP_KEY_AUTO_SIGN_IN, v.isChecked)
-                .apply()
-            if (v.isChecked) {
-                val constraints = Constraints.Builder()
-                    .setRequiresDeviceIdle(false)
-                    .setRequiresCharging(false)
-                    .setRequiredNetworkType(NetworkType.CONNECTED)
-                    .setRequiresBatteryNotLow(false)
-                    .build()
-                val request = PeriodicWorkRequest.Builder(SignInWorker::class.java, WORK_INTERVAL, DEFAULT_TIME_UNIT)
-                    .setConstraints(constraints)
-                    .addTag(SignInWorker::class.java.simpleName)
-                    .build()
-                WorkManager.getInstance().enqueue(request)
-            } else {
-                WorkManager.getInstance().cancelAllWorkByTag(SignInWorker::class.java.simpleName)
-            }
-            sendKVEvent(EVENT_AUTO_SIGN, Properties().apply {
-                setProperty(PROP_IS_AUTO_SIGN_ENABLE, v.isChecked.toString())
-            })
+        val nextState = (mAutoSignInEnable.value != true)
+        mAutoSignInEnable.postValue(nextState)
+        SharedPreferencesHelper.getUserSp()
+            .edit()
+            .putBoolean(SP_KEY_AUTO_SIGN_IN, nextState)
+            .apply()
+        if (nextState) {
+            val constraints = Constraints.Builder()
+                .setRequiresDeviceIdle(false)
+                .setRequiresCharging(false)
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .setRequiresBatteryNotLow(false)
+                .build()
+            val request = PeriodicWorkRequest.Builder(SignInWorker::class.java, WORK_INTERVAL, DEFAULT_TIME_UNIT)
+                .setConstraints(constraints)
+                .addTag(SignInWorker::class.java.simpleName)
+                .build()
+            WorkManager.getInstance().enqueue(request)
+        } else {
+            WorkManager.getInstance().cancelAllWorkByTag(SignInWorker::class.java.simpleName)
         }
+        sendKVEvent(EVENT_AUTO_SIGN, Properties().apply {
+            setProperty(PROP_IS_AUTO_SIGN_ENABLE, nextState.toString())
+        })
     }
 
     fun fetchUserInfoDirect() {
@@ -114,10 +116,7 @@ class MeViewModel: ViewModel() {
                     SharedPreferencesHelper.getUserSp().edit().putBoolean(SP_KEY_LOGGED_IN, true)
                         .apply()
                 }
-                val notificationInfo = parseNotificationInfo(doc)
-                if (notificationInfo.posts.isNotEmpty()) {
-                    mNotificationInfo.postValue(notificationInfo)
-                }
+                mNotificationInfo.postValue(parseNotificationInfo(doc))
             } catch (e: Exception) {
                 Timber.e(e)
             }
@@ -176,9 +175,7 @@ class MeViewModel: ViewModel() {
                     // don't care
                 }
             }
-            return NotificationInfo(message, follower,
-                posts = emptyList(),
-                systemNotifications = emptyList())
+            return NotificationInfo(message, follower, myPost, systemNotifs)
         }
     }
 
@@ -211,15 +208,17 @@ class MeViewModel: ViewModel() {
     }
 
     fun setSyncFavorite(v: View) {
+        val nextState = (mSyncFavoriteEnable.value != true)
+        mSyncFavoriteEnable.postValue(nextState)
         sendKVEvent(EVENT_SYNC_FAVORITE, Properties().apply {
             setProperty(
                 PROP_IS_SYNC_FAVORITE_ENABLE,
-                (v as? CheckBox)?.isChecked?.toString() ?: false.toString()
+                nextState.toString()
             )
         })
         SharedPreferencesHelper.getUserSp()
             .edit()
-            .putBoolean(SP_KEY_SYNC_FAVORITE, (v as? CheckBox)?.isChecked?: false)
+            .putBoolean(SP_KEY_SYNC_FAVORITE, nextState)
             .apply()
     }
 }
