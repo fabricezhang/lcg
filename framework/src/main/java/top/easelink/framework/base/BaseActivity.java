@@ -16,6 +16,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.ViewModel;
 
 import java.util.Stack;
 
@@ -23,7 +24,7 @@ import dagger.android.AndroidInjection;
 import top.easelink.framework.utils.CommonUtils;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseViewModel> extends AppCompatActivity
+public abstract class BaseActivity<T extends ViewDataBinding, V extends ViewModel> extends AppCompatActivity
         implements BaseFragment.Callback {
 
     private ProgressDialog mProgressDialog;

@@ -61,10 +61,11 @@ class MeFragment : BaseFragment<FragmentMeBinding, MeViewModel>() {
                 // add a blur effect
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && isAdded && view != null) {
                     GlobalScope.launch(Dispatchers.IO){
-                        val bitmap = bitmapBlur(baseActivity, convertViewToBitmap(view!!), 20)
-                        GlobalScope.launch(Dispatchers.Main) {
-                            view!!.foreground = BitmapDrawable(resources, bitmap)
-                            LoginHintDialog().show(baseActivity.supportFragmentManager, null)
+                        bitmapBlur(baseActivity, convertViewToBitmap(view!!), 20)?.let {
+                            GlobalScope.launch(Dispatchers.Main) {
+                                view!!.foreground = BitmapDrawable(resources, it)
+                                LoginHintDialog().show(baseActivity.supportFragmentManager, null)
+                            }
                         }
                     }
                 }

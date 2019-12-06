@@ -21,6 +21,7 @@ import timber.log.Timber;
 import top.easelink.framework.base.BaseViewHolder;
 import top.easelink.framework.customview.htmltextview.DrawTableLinkSpan;
 import top.easelink.framework.customview.htmltextview.HtmlGlideImageGetter;
+import top.easelink.framework.utils.ScreenUtilsKt;
 import top.easelink.lcg.R;
 import top.easelink.lcg.databinding.ItemPostViewBinding;
 import top.easelink.lcg.ui.info.UserData;
@@ -136,6 +137,12 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                 drawTableLinkSpan.setTableLinkText(itemView.getContext().getString(R.string.tap_for_code));
                 mBinding.contentTextView.setDrawTableLinkSpan(drawTableLinkSpan);
                 mBinding.contentTextView.setHtml(post.getContent(), htmlHttpImageGetter);
+                if (position == 1) {
+                    mBinding.btnCapture.setVisibility(View.VISIBLE);
+                    mBinding.btnCapture.setOnClickListener(this);
+                } else {
+                    mBinding.btnCapture.setVisibility(View.GONE);
+                }
                 if (UserData.INSTANCE.getLoggedInState()) {
                     mBinding.btnGroup.setVisibility(View.VISIBLE);
                     mBinding.btnReply.setOnClickListener(this);
@@ -170,6 +177,9 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                     break;
                 case R.id.btn_thumb_up:
                     mListener.replyAdd(post.getReplyAddUrl());
+                    break;
+                case R.id.btn_capture:
+                    ScreenUtilsKt.convertViewToBitmap(v);
                     break;
             }
         }

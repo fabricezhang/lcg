@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.util.DisplayMetrics
 import android.view.View
+import timber.log.Timber
 
 
 fun px2dp(px: Float, context: Context): Float {
@@ -17,14 +18,19 @@ fun dp2px(context: Context, dp: Float): Float {
     return dp * context.resources.displayMetrics.density
 }
 
-fun convertViewToBitmap(view: View): Bitmap {
-    val bitmap = Bitmap.createBitmap(
-        view.measuredWidth,
-        view.measuredHeight,
-        Bitmap.Config.ARGB_4444
-    )
-    val canvas = Canvas(bitmap)
-    view.layout(view.left, view.top, view.right, view.bottom)
-    view.draw(canvas)
-    return bitmap
+fun convertViewToBitmap(view: View): Bitmap? {
+    try {
+        val bitmap = Bitmap.createBitmap(
+            view.measuredWidth,
+            view.measuredHeight,
+            Bitmap.Config.ARGB_4444
+        )
+        val canvas = Canvas(bitmap)
+        view.layout(view.left, view.top, view.right, view.bottom)
+        view.draw(canvas)
+        return bitmap
+    } catch (e: Exception) {
+        Timber.e(e)
+    }
+    return null
 }

@@ -14,7 +14,6 @@ import top.easelink.lcg.ui.main.articles.viewmodel.ArticlesViewModel;
 import top.easelink.lcg.ui.main.articles.viewmodel.FavoriteArticlesViewModel;
 import top.easelink.lcg.ui.main.articles.viewmodel.ForumArticlesViewModel;
 import top.easelink.lcg.ui.main.forumnav.viewmodel.ForumNavigationViewModel;
-import top.easelink.lcg.ui.main.viewmodel.MainViewModel;
 import top.easelink.lcg.ui.search.viewmodel.SearchViewModel;
 
 @Singleton
@@ -33,8 +32,6 @@ public class ViewModelProviderFactory extends ViewModelProvider.NewInstanceFacto
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if (modelClass.isAssignableFrom(ArticlesViewModel.class)) {
             return (T) new ArticlesViewModel(schedulerProvider);
-        } else if (modelClass.isAssignableFrom(MainViewModel.class)) {
-            return (T) new MainViewModel(schedulerProvider);
         } else if (modelClass.isAssignableFrom(ArticleViewModel.class)) {
             return (T) new ArticleViewModel(schedulerProvider);
         } else if (modelClass.isAssignableFrom(ForumArticlesViewModel.class)) {

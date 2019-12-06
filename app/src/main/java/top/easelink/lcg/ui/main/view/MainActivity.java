@@ -43,12 +43,10 @@ import dagger.android.support.HasSupportFragmentInjector;
 import top.easelink.framework.base.BaseActivity;
 import top.easelink.framework.base.BaseFragment;
 import top.easelink.lcg.BR;
-import top.easelink.lcg.BuildConfig;
 import top.easelink.lcg.R;
 import top.easelink.lcg.databinding.ActivityMainBinding;
 import top.easelink.lcg.databinding.NavHeaderMainBinding;
 import top.easelink.lcg.mta.EventHelperKt;
-import top.easelink.lcg.ui.ViewModelProviderFactory;
 import top.easelink.lcg.ui.main.about.view.AboutFragment;
 import top.easelink.lcg.ui.main.article.view.ArticleFragment;
 import top.easelink.lcg.ui.main.articles.view.ArticlesFragment;
@@ -71,10 +69,8 @@ import static top.easelink.lcg.utils.WebsiteConstant.SEARCH_URL;
 import static top.easelink.lcg.utils.WebsiteConstant.URL_KEY;
 
 public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewModel>
-        implements MainNavigator, HasSupportFragmentInjector, BottomNavigationView.OnNavigationItemSelectedListener {
+        implements HasSupportFragmentInjector, BottomNavigationView.OnNavigationItemSelectedListener {
 
-    @Inject
-    ViewModelProviderFactory factory;
     @Inject
     DispatchingAndroidInjector<Fragment> fragmentDispatchingAndroidInjector;
     private static WeakReference<MainActivity> mainActivityWeakReference;
@@ -93,12 +89,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
 
     @Override
     public MainViewModel getViewModel() {
-        return ViewModelProviders.of(this, factory).get(MainViewModel.class);
-    }
-
-    @Override
-    public void handleError(Throwable throwable) {
-        // handle error
+        return ViewModelProviders.of(this).get(MainViewModel.class);
     }
 
     @Override
@@ -128,9 +119,6 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
     }
 
     @Override
-    public void openLoginActivity() { }
-
-    @Override
     public AndroidInjector<Fragment> supportFragmentInjector() {
         return fragmentDispatchingAndroidInjector;
     }
@@ -139,7 +127,6 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
-        getViewModel().setNavigator(this);
         mainActivityWeakReference = new WeakReference<>(this);
         setUp();
     }
@@ -215,10 +202,6 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
         mDrawerToggle.syncState();
         setupDrawerNavMenu();
         setupBottomNavMenu();
-
-        String version = getString(R.string.version) + " " + BuildConfig.VERSION_NAME;
-        getViewModel().updateAppVersion(version);
-        getViewModel().onNavMenuCreated();
 
         getViewDataBinding().mainViewPager.setAdapter(new MainViewPagerAdapter(
                 getSupportFragmentManager(), MainActivity.this));
