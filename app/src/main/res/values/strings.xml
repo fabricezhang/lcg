@@ -48,6 +48,10 @@
     <string name="me_tab_credit_placeholder">0</string>
     <string name="me_notification_title">我的信息</string>
 
+    <string name="me_btn_notifications">消息提醒</string>
+    <string name="me_btn_app_review">问题反馈</string>
+    <string name="me_btn_recent_view">最近浏览</string>
+
     <!--Login Dialog-->
     <string name="login_username">用户名</string>
     <string name="login_password">密码</string>

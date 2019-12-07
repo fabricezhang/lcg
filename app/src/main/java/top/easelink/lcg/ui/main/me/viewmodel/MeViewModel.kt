@@ -3,13 +3,15 @@ package top.easelink.lcg.ui.main.me.viewmodel
 import android.annotation.SuppressLint
 import android.text.TextUtils
 import android.view.View
-import android.widget.CheckBox
 import android.widget.Toast
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.work.*
+import androidx.work.Constraints
+import androidx.work.NetworkType
+import androidx.work.PeriodicWorkRequest
+import androidx.work.WorkManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -49,9 +51,6 @@ class MeViewModel: ViewModel() {
             .getUserSp()
             .getBoolean(SP_KEY_SYNC_FAVORITE, false))
     }
-
-    val workInfo:LiveData<List<WorkInfo>>
-        get() = WorkManager.getInstance().getWorkInfosByTagLiveData(SignInWorker::class.java.simpleName)
 
     val loginState: LiveData<Boolean>
         get() = mLoginState

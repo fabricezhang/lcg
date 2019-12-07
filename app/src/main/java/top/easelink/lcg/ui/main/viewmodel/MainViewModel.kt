@@ -6,13 +6,7 @@ import top.easelink.lcg.BuildConfig
 
 class MainViewModel: ViewModel() {
 
-    init {
-        updateAppVersion("version: ${BuildConfig.VERSION_NAME}")
-    }
-
-    val appVersion = MutableLiveData<String>()
-
-    fun updateAppVersion(version: String) {
-        appVersion.postValue(version)
+    val appVersion = MutableLiveData<String>().apply {
+        value = "version: ${BuildConfig.VERSION_NAME}"
     }
 }

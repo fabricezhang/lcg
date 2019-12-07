@@ -86,6 +86,7 @@
                 />
 
             <ImageView
+                android:padding="@dimen/dp_1"
                 android:id="@+id/me_coin_icon"
                 android:layout_width="@dimen/dp_20"
                 android:layout_height="@dimen/dp_20"
@@ -114,6 +115,7 @@
                 />
 
             <ImageView
+                android:padding="@dimen/dp_3"
                 android:id="@+id/me_credit_icon"
                 android:layout_width="@dimen/dp_20"
                 android:layout_height="@dimen/dp_20"
@@ -146,8 +148,15 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <include
+            android:id="@+id/cardview_me_notifications"
+            layout="@layout/cardview_me_notifications"/>
+
         <androidx.cardview.widget.CardView
-            android:layout_margin="@dimen/dp_5"
+            android:layout_marginTop="@dimen/dp_15"
+            android:layout_marginBottom="@dimen/dp_5"
+            android:layout_marginStart="@dimen/dp_5"
+            android:layout_marginEnd="@dimen/dp_5"
             android:id="@+id/me_setting_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -155,7 +164,7 @@
             app:cardElevation="@dimen/dp_3"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/me_user_info_card">
+            app:layout_constraintTop_toBottomOf="@id/cardview_me_notifications">
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:paddingTop="@dimen/dp_5"
                 android:paddingBottom="@dimen/dp_5"

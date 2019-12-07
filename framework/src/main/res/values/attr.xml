@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ELIconButton">
+        <attr name="el_drawable" format="reference"/>
+        <attr name="el_text" format="reference"/>
+    </declare-styleable>
+</resources>
