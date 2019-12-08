@@ -23,7 +23,6 @@ public class ForumArticlesViewModel extends BaseViewModel<FourmArticleNavigator>
 
     private final MutableLiveData<List<Article>> articles = new MutableLiveData<>();
     private final MutableLiveData<List<ForumThread>> threads = new MutableLiveData<>();
-    private final ArticlesRemoteDataSource articlesRemoteDataSource = ArticlesRemoteDataSource.getInstance();
     private final MutableLiveData<Boolean> mShouldDisplayArticles = new MutableLiveData<>();
 
     public ForumArticlesViewModel(SchedulerProvider schedulerProvider) {
@@ -71,9 +70,12 @@ public class ForumArticlesViewModel extends BaseViewModel<FourmArticleNavigator>
         }
 
         getCompositeDisposable().add(
-                articlesRemoteDataSource.getForumArticles(
-                        requestUrl,
-                        type == FETCH_INIT)
+                ArticlesRemoteDataSource
+                        .INSTANCE
+                        .getForumArticles(
+                                requestUrl,
+                                type == FETCH_INIT
+                        )
                         .subscribeOn(getSchedulerProvider().io())
                         .observeOn(getSchedulerProvider().ui())
                         .subscribe(forumPage -> {

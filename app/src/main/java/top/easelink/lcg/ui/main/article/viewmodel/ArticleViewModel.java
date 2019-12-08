@@ -43,7 +43,7 @@ public class ArticleViewModel extends BaseViewModel<ArticleNavigator>
     private final MutableLiveData<Boolean> mIsNotFound = new MutableLiveData<>();
     private final MutableLiveData<Boolean> mShouldDisplayPosts = new MutableLiveData<>();
     private final MutableLiveData<String> mArticleTitle = new MutableLiveData<>();
-    private final ArticlesRemoteDataSource articlesRemoteDataSource = ArticlesRemoteDataSource.getInstance();
+    private final ArticlesRemoteDataSource articlesRemoteDataSource = ArticlesRemoteDataSource.INSTANCE;
     private final ArticlesLocalDataSource articlesLocalDataSource = ArticlesLocalDataSource.getInstance();
     private String mUrl;
     private String nextPageUrl;

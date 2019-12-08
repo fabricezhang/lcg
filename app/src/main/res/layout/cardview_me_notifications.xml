@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/card_me_notifications"
+        android:id="@+id/card_me_icon_btns"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_10"
@@ -9,64 +9,33 @@
         android:layout_marginStart="@dimen/dp_5"
         android:layout_marginEnd="@dimen/dp_5"
         app:cardCornerRadius="@dimen/dp_6"
-        app:cardElevation="@dimen/dp_3"
+        app:cardElevation="@dimen/dp_2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/me_user_info_card">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingTop="@dimen/dp_5"
-            android:paddingBottom="@dimen/dp_5">
-        <Button
-                android:background="@color/transparent"
-                android:id="@+id/btn_notifications"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/sp_12"
-                android:drawablePadding="@dimen/dp_3"
-                android:text="@string/me_btn_notifications"
-                android:drawableTop="@drawable/ic_notifications"
-                app:layout_constraintHorizontal_chainStyle="spread"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/btn_recent_views"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:contentDescription="@null"
-                />
+            android:paddingBottom="@dimen/dp_5"
+            android:baselineAligned="false">
 
-        <Button
-                android:background="@color/transparent"
-                android:id="@+id/btn_recent_views"
-                android:layout_width="wrap_content"
+        <include layout="@layout/layout_icon_button"
+                android:id="@+id/icon_deja_vue"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:text="@string/me_btn_recent_view"
-                android:drawableTop="@drawable/ic_recent_view"
-                android:textSize="@dimen/sp_12"
-                android:drawablePadding="@dimen/dp_3"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toEndOf="@id/btn_notifications"
-                app:layout_constraintEnd_toStartOf="@id/btn_app_review"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:contentDescription="@null" />
-
-        <Button
-                android:background="@color/transparent"
-                android:id="@+id/btn_app_review"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp" />
+        <include layout="@layout/layout_icon_button"
+                android:id="@+id/icon_notifications"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:text="@string/me_btn_app_review"
-                android:drawableTop="@drawable/ic_app_review"
-                android:textSize="@dimen/sp_12"
-                android:drawablePadding="@dimen/dp_3"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toEndOf="@id/btn_recent_views"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:contentDescription="@null"
-                />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                android:layout_width="0dp" />
+        <include layout="@layout/layout_icon_button"
+                android:id="@+id/icon_feedback"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp" />
+    </LinearLayout>
 
 </androidx.cardview.widget.CardView>

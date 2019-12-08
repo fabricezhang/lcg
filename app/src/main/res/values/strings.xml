@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">吾爱破解</string>
-
+    <string name="todo_tips">未完成的功能</string>
     <string name="login_required_error">请求页面失败，请确认是否登陆</string>
     <string name="error">请求页面失败，请稍后再试</string>
     <!--Toolbar menus-->
@@ -48,9 +48,9 @@
     <string name="me_tab_credit_placeholder">0</string>
     <string name="me_notification_title">我的信息</string>
 
-    <string name="me_btn_notifications">消息提醒</string>
-    <string name="me_btn_app_review">问题反馈</string>
-    <string name="me_btn_recent_view">最近浏览</string>
+    <string name="ic_notifications">消息提醒</string>
+    <string name="ic_feedback">问题反馈</string>
+    <string name="ic_deja_vue">最近浏览</string>
 
     <!--Login Dialog-->
     <string name="login_username">用户名</string>

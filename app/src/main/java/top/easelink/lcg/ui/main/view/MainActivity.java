@@ -40,6 +40,7 @@ import javax.inject.Inject;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
+import timber.log.Timber;
 import top.easelink.framework.base.BaseActivity;
 import top.easelink.framework.base.BaseFragment;
 import top.easelink.lcg.BR;
@@ -54,12 +55,16 @@ import top.easelink.lcg.ui.main.articles.view.FavoriteArticlesFragment;
 import top.easelink.lcg.ui.main.articles.view.ForumArticlesFragment;
 import top.easelink.lcg.ui.main.forumnav.view.ForumNavigationFragment;
 import top.easelink.lcg.ui.main.me.view.MeFragment;
+import top.easelink.lcg.ui.main.model.NewMessageEvent;
+import top.easelink.lcg.ui.main.model.NotificationInfo;
 import top.easelink.lcg.ui.main.model.OpenArticleEvent;
 import top.easelink.lcg.ui.main.model.OpenForumEvent;
+import top.easelink.lcg.ui.main.model.OpenNotificationsPageEvent;
 import top.easelink.lcg.ui.main.model.TabModel;
 import top.easelink.lcg.ui.main.viewmodel.MainViewModel;
 import top.easelink.lcg.ui.search.view.SearchActivity;
 import top.easelink.lcg.utils.ActivityUtils;
+import top.easelink.lcg.utils.ToastUtilsKt;
 
 import static top.easelink.lcg.mta.MTAConstantKt.EVENT_OPEN_FORUM;
 import static top.easelink.lcg.mta.MTAConstantKt.PROP_FORUM_NAME;
@@ -245,6 +250,17 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
         prop.setProperty(PROP_FORUM_NAME, event.getTitle());
         EventHelperKt.sendKVEvent(EVENT_OPEN_FORUM, prop);
         showFragment(ForumArticlesFragment.newInstance(event.getTitle(), event.getUrl()));
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(OpenNotificationsPageEvent event) {
+
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(NewMessageEvent event) {
+        NotificationInfo info = event.getNotificationInfo();
+        ToastUtilsKt.showMessage("new");
     }
 
     private void showFragment(BaseFragment fragment) {

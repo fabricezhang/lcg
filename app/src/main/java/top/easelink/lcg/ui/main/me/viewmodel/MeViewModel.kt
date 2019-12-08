@@ -26,10 +26,11 @@ import top.easelink.lcg.service.work.SignInWorker
 import top.easelink.lcg.service.work.SignInWorker.Companion.DEFAULT_TIME_UNIT
 import top.easelink.lcg.service.work.SignInWorker.Companion.WORK_INTERVAL
 import top.easelink.lcg.ui.info.UserData
-import top.easelink.lcg.ui.main.me.model.NotificationInfo
 import top.easelink.lcg.ui.main.me.model.UserInfo
+import top.easelink.lcg.ui.main.model.NotificationInfo
 import top.easelink.lcg.ui.main.source.local.SPConstants.*
 import top.easelink.lcg.ui.main.source.local.SharedPreferencesHelper
+import top.easelink.lcg.ui.main.source.parseNotificationInfo
 import top.easelink.lcg.utils.WebsiteConstant.HOME_URL
 import top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL
 import top.easelink.lcg.utils.getCookies
@@ -141,41 +142,6 @@ class MeViewModel: ViewModel() {
 
     private fun clearCookies() {
         SharedPreferencesHelper.getCookieSp().edit().clear().apply()
-    }
-
-    private fun parseNotificationInfo(doc: Document): NotificationInfo {
-        with(doc) {
-            val menu = getElementById("myprompt_menu")
-            val requestList = mutableListOf<String>()
-            var message = 0
-            var follower = 0
-            var myPost = 0
-            var systemNotifs = 0
-            menu?.select("li")?.forEach {
-                try {
-                    it.select("a > span").first()?.text()?.also { v ->
-                        Timber.d(it.toString())
-                        if (v.isNotBlank() && v.toInt() >= 1) {
-                            it.selectFirst("a")?.attr("href")?.also { url ->
-                                requestList.add(url)
-                                when {
-                                    url.contains("mypost") -> myPost++
-                                    url.contains("follower") -> follower++
-                                    url.contains("pm") -> message++
-                                    url.contains("system") -> systemNotifs++
-                                    else -> {
-                                        // do nothing
-                                    }
-                                }
-                            }
-                        }
-                    }
-                } catch (e :NumberFormatException) {
-                    // don't care
-                }
-            }
-            return NotificationInfo(message, follower, myPost, systemNotifs)
-        }
     }
 
     private fun parseUserInfo(doc: Document): UserInfo {

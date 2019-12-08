@@ -17,7 +17,7 @@ public class ArticlesViewModel extends BaseViewModel<ArticlesNavigator> implemen
     private String mUrl;
 
     private final MutableLiveData<List<Article>> articles = new MutableLiveData<>();
-    private final ArticlesRemoteDataSource articlesRemoteDataSource = ArticlesRemoteDataSource.getInstance();
+    private final ArticlesRemoteDataSource articlesRemoteDataSource = ArticlesRemoteDataSource.INSTANCE;
 
     public ArticlesViewModel(SchedulerProvider schedulerProvider) {
         super(schedulerProvider);
