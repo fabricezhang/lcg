@@ -5,6 +5,7 @@ import android.content.ClipboardManager
 import android.content.Context
 import top.easelink.lcg.LCGApp
 
+
 fun copyContent(content: String, label: String): Boolean {
     val cm = LCGApp.getInstance().getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager
     val mClipData = ClipData.newPlainText(label, content)

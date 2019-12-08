@@ -39,7 +39,9 @@ import top.easelink.lcg.ui.ViewModelProviderFactory;
 import top.easelink.lcg.ui.main.article.viewmodel.ArticleAdapter;
 import top.easelink.lcg.ui.main.article.viewmodel.ArticleViewModel;
 import top.easelink.lcg.ui.main.model.ReplyPostEvent;
+import top.easelink.lcg.ui.main.model.ScreenCaptureEvent;
 import top.easelink.lcg.ui.webview.view.WebViewActivity;
+import top.easelink.lcg.utils.FileUtilsKt;
 
 import static top.easelink.lcg.mta.MTAConstantKt.EVENT_OPEN_ARTICLE;
 import static top.easelink.lcg.ui.main.article.viewmodel.ArticleViewModel.FETCH_INIT;
@@ -181,5 +183,12 @@ public class ArticleFragment extends BaseFragment<FragmentArticleBinding, Articl
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(ReplyPostEvent event) {
         ReplyPostDialog.newInstance(event.getReplyUrl(), event.getAuthor()).show(getFragmentManager());
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(ScreenCaptureEvent event) {
+        ScreenCaptureDialog
+                .newInstance(event.getImagePath())
+                .show(getFragmentManager(), ScreenCaptureDialog.Companion.getTAG());
     }
 }

@@ -5,6 +5,7 @@ import android.widget.Toast
 import androidx.annotation.StringRes
 import top.easelink.lcg.LCGApp
 
+
 fun showMessage(msg: String) {
     Toast.makeText(LCGApp.getContext(), msg, Toast.LENGTH_SHORT).show()
 }

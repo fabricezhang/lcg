@@ -122,4 +122,10 @@
     <!--block-->
     <string name="not_found_info">抱歉，文章可能已经被删除了</string>
     <string name="block_info">抱歉，本帖要求阅读权限高于 10 才能浏览</string>
+
+    <string name="general_error">未知错误，欢迎反馈问题</string>
+    <!--permissions-->
+    <string name="permission_request">请授予读写磁盘权限</string>
+    <string name="permission_grant">已授权</string>
+    <string name="permission_denied">未授权，部分空能可能无法使用</string>
 </resources>

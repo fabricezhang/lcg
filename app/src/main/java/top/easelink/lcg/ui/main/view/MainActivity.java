@@ -1,5 +1,6 @@
 package top.easelink.lcg.ui.main.view;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,6 +29,7 @@ import com.google.android.material.tabs.TabLayout;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -40,7 +42,7 @@ import javax.inject.Inject;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
-import timber.log.Timber;
+import pub.devrel.easypermissions.EasyPermissions;
 import top.easelink.framework.base.BaseActivity;
 import top.easelink.framework.base.BaseFragment;
 import top.easelink.lcg.BR;
@@ -73,8 +75,11 @@ import static top.easelink.lcg.utils.WebsiteConstant.APP_RELEASE_PAGE;
 import static top.easelink.lcg.utils.WebsiteConstant.SEARCH_URL;
 import static top.easelink.lcg.utils.WebsiteConstant.URL_KEY;
 
-public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewModel>
-        implements HasSupportFragmentInjector, BottomNavigationView.OnNavigationItemSelectedListener {
+public class MainActivity
+        extends BaseActivity<ActivityMainBinding, MainViewModel>
+        implements HasSupportFragmentInjector,
+        BottomNavigationView.OnNavigationItemSelectedListener,
+        EasyPermissions.PermissionCallbacks {
 
     @Inject
     DispatchingAndroidInjector<Fragment> fragmentDispatchingAndroidInjector;
@@ -134,6 +139,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
         EventBus.getDefault().register(this);
         mainActivityWeakReference = new WeakReference<>(this);
         setUp();
+        requestPermissions();
     }
 
     @Override
@@ -159,7 +165,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
     /**
      * manage the bottom navigation view item selected state
      * depends on current top fragment
-     * */
+     */
     private void syncBottomViewNavItemState() {
         BottomNavigationView view = getViewDataBinding().bottomNavigation;
         try {
@@ -260,7 +266,9 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(NewMessageEvent event) {
         NotificationInfo info = event.getNotificationInfo();
-        ToastUtilsKt.showMessage("new");
+        if (info.isNotEmpty()) {
+            ToastUtilsKt.showMessage(getString(R.string.notification_arrival));
+        }
     }
 
     private void showFragment(BaseFragment fragment) {
@@ -289,7 +297,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
         searchView.setSubmitButtonEnabled(true);
 //        // Assumes current activity is the searchable activity
 //        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener(){
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -349,6 +357,35 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
                 break;
         }
         return true;
+    }
+
+    private static final int RW_EXTERNAL_STORAGE_CODE = 1111;
+    private void requestPermissions() {
+        String[] perms = {
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+        };
+        if (!EasyPermissions.hasPermissions(this, perms)) {
+            EasyPermissions.requestPermissions(this, getString(R.string.permission_request), RW_EXTERNAL_STORAGE_CODE, perms);
+        }
+    }
+
+    @Override
+    public void onPermissionsGranted(int requestCode, List<String> perms) {
+        ToastUtilsKt.showMessage(R.string.permission_grant);
+    }
+
+    @Override
+    public void onPermissionsDenied(int requestCode, List<String> perms) {
+        if (requestCode == RW_EXTERNAL_STORAGE_CODE) {
+            ToastUtilsKt.showMessage(R.string.permission_denied);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NotNull String[] permissions, @NotNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
 
     public static class MainViewPagerAdapter extends FragmentPagerAdapter {

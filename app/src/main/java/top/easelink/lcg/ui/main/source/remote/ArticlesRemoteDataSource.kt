@@ -347,17 +347,15 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
     }
 
     private fun getContent(doc: Document): List<String> {
-        val list = ArrayList<String>()
-        val elements = doc.select("div.pcb")
-        var tmpElement: Element
-        var content: String
-        for (e in elements) {
-            tmpElement = e.selectFirst("td.t_f")
-            content =
-                tmpElement?.let { processContentElement(it) } ?: e.selectFirst("div.locked").html()
-            list.add(content)
-        }
-        return list
+        return doc.select("div.pcb")
+            .filterNotNull()
+            .mapTo(ArrayList<String>(), {
+                val tmpElement = it.selectFirst("td.t_f")
+                tmpElement?.let {
+                    processContentElement(it)
+                } ?:
+                it.selectFirst("div.locked").html()
+            })
     }
 
     private fun getReplyUrls(doc: Document): List<String> {
