@@ -31,6 +31,7 @@ import top.easelink.lcg.ui.main.model.NotificationInfo
 import top.easelink.lcg.ui.main.source.local.SPConstants.*
 import top.easelink.lcg.ui.main.source.local.SharedPreferencesHelper
 import top.easelink.lcg.ui.main.source.parseNotificationInfo
+import top.easelink.lcg.ui.main.source.parseUserInfo
 import top.easelink.lcg.utils.WebsiteConstant.HOME_URL
 import top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL
 import top.easelink.lcg.utils.getCookies
@@ -142,26 +143,6 @@ class MeViewModel: ViewModel() {
 
     private fun clearCookies() {
         SharedPreferencesHelper.getCookieSp().edit().clear().apply()
-    }
-
-    private fun parseUserInfo(doc: Document): UserInfo {
-        with(doc) {
-            val userName = getElementsByClass("vwmy")?.first()?.firstElementSibling()?.text()
-            return if (!TextUtils.isEmpty(userName)) {
-                val avatar = selectFirst("div.avt > a > img")?.attr("src")
-                val groupInfo = getElementById("g_upmine")?.text()
-                getElementsByClass("xi2")?.remove()
-                val coin = getElementsByClass("xi1 cl")?.first()?.text()
-                val element = selectFirst("span.xg1")
-                val parentCredit = element?.parent()
-                element?.remove()
-                val credit = parentCredit?.text()
-                val signInState = selectFirst("img.qq_bind")?.attr("src")
-                UserInfo(userName, avatar, groupInfo, coin, credit, signInState)
-            } else {
-                UserInfo(getElementById("messagetext")?.text())
-            }
-        }
     }
 
     @SuppressLint("ApplySharedPref")

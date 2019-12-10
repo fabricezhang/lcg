@@ -18,11 +18,11 @@ fun saveImageToGallery(bmp: Bitmap, bitName: String): String {
     if (!appDir.exists()) {
         appDir.mkdir()
     }
-    val fileName = "$bitName.jpg"
+    val fileName = "$bitName.png"
     val file = File(appDir, fileName)
     try {
         val fos = FileOutputStream(file)
-        bmp.compress(Bitmap.CompressFormat.JPEG, 95, fos)
+        bmp.compress(Bitmap.CompressFormat.PNG, 85, fos)
         fos.flush()
         fos.close()
     } catch (e: FileNotFoundException) {

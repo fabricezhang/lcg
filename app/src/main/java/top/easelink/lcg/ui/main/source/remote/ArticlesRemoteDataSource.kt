@@ -6,15 +6,13 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import io.reactivex.Observable
 import io.reactivex.ObservableEmitter
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import org.jsoup.Connection
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
 import timber.log.Timber
+import top.easelink.lcg.network.Client
 import top.easelink.lcg.ui.main.model.BlockException
 import top.easelink.lcg.ui.main.model.LoginRequiredException
 import top.easelink.lcg.ui.main.source.ArticlesDataSource
@@ -34,12 +32,11 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
     private val gson: Gson = GsonBuilder().excludeFieldsWithoutExposeAnnotation().create()
 
     override fun getForumArticles(
-        requestUrl: String,
+        query: String,
         processThreadList: Boolean
     ): Observable<ForumPage> {
         return Observable.create { emitter: ObservableEmitter<ForumPage> ->
-            val url = WebsiteConstant.SERVER_BASE_URL + requestUrl
-            val doc = Jsoup.connect(url).cookies(getCookies()).get()
+            val doc = Client.sendRequestWithQuery(query)
             processForumArticlesDocument(doc, emitter, processThreadList)
         }
     }
@@ -62,9 +59,7 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
                     .method(Connection.Method.GET)
                 val response = connection.execute()
                 val doc = response.parse()
-                GlobalScope.launch(Dispatchers.IO) {
-                    checkMessages(doc)
-                }
+                checkMessages(doc)
                 val baiduJsonElement = doc.selectFirst("script")
                 var articleAbstract: ArticleAbstractResponse? = null
                 if (baiduJsonElement != null) {
@@ -141,11 +136,7 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
     private fun getArticles(requestUrl: String): Observable<List<Article>> {
         return Observable.create { emitter: ObservableEmitter<List<Article>> ->
             try {
-                val doc =
-                    Jsoup.connect(requestUrl).cookies(getCookies()).get()
-                GlobalScope.launch(Dispatchers.IO) {
-                    checkMessages(doc)
-                }
+                val doc = Client.sendRequestWithUrl(requestUrl)
                 val elements = doc.select("tbody")
                 val list: MutableList<Article> =
                     ArrayList()
@@ -417,15 +408,13 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
 
     /**
      * Support user's post
-     * @param url post url without base_server_url
+     * @param query post url without base_server_url
      * @return status message
      */
-    fun replyAdd(url: String): Observable<String> {
+    fun replyAdd(query: String): Observable<String> {
         return Observable.fromCallable {
             try {
-                val doc =
-                    Jsoup.connect(WebsiteConstant.SERVER_BASE_URL + url).cookies(getCookies())
-                        .get()
+                val doc = Client.sendRequestWithQuery(query)
                 val message = doc.getElementsByClass("nfl").first().text()
                 Timber.d(doc.html())
                 Timber.d(message)
