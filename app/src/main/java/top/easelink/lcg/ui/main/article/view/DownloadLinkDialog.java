@@ -27,7 +27,7 @@ import top.easelink.lcg.databinding.DialogDownloadLinkBinding;
 import top.easelink.lcg.ui.ViewModelProviderFactory;
 import top.easelink.lcg.ui.main.article.viewmodel.DownloadLinkViewModel;
 
-import static top.easelink.lcg.utils.ActivityUtils.TAG_PREFIX;
+import static top.easelink.lcg.utils.ActivityUtilsKt.TAG_PREFIX;
 
 public class DownloadLinkDialog extends BaseDialog implements DownloadLinkCallBack {
 

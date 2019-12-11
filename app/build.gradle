@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
-apply plugin: "kotlin-kapt"
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: "kotlin-kapt"
 
 // App Version is composed by Major * 10000 + Minor * 100 + Patch
 // each version starts from 0

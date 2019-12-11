@@ -6,44 +6,43 @@
     <data>
         <import type="android.view.View" />
         <variable
-                name="viewModel"
-                type="top.easelink.lcg.ui.main.articles.viewmodel.ArticlesViewModel"/>
+            name="viewModel"
+            type="top.easelink.lcg.ui.main.articles.viewmodel.ArticlesViewModel"/>
 
     </data>
 
     <top.easelink.framework.customview.ScrollChildSwipeRefreshLayout
-            android:id="@+id/refresh_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/white"
-            app:refreshing="@{viewModel.isLoading}"
-            android:focusable="true"
-            android:clickable="true">
+        android:id="@+id/refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        app:refreshing="@{viewModel.isLoading}"
+        android:focusable="true"
+        android:clickable="true">
         <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
             <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:visibility="@{viewModel.articles == null ? View.GONE : View.VISIBLE, default = gone}"
-                    app:adapter="@{viewModel.articles}"/>
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="@{viewModel.articles == null ? View.GONE : View.VISIBLE, default = gone}" />
+
             <com.airbnb.lottie.LottieAnimationView
-                    android:layout_gravity="bottom|end"
-                    android:id="@+id/back_to_top"
-                    android:layout_width="@dimen/dp_40"
-                    android:layout_height="@dimen/dp_40"
-                    android:scaleType="fitCenter"
-                    android:layout_marginEnd="@dimen/dp_20"
-                    android:layout_marginBottom="@dimen/dp_40"
-                    android:focusable="true"
-                    android:clickable="true"
-                    android:visibility="gone"
-                    android:background="@drawable/bg_oval"
-                    android:onClick="@{() -> viewModel.scrollToTop()}"
-                    app:lottie_rawRes="@raw/swipe_up"
-                    app:lottie_loop="true"
-                    app:lottie_autoPlay="false"/>
+                android:layout_gravity="bottom|end"
+                android:id="@+id/back_to_top"
+                android:layout_width="@dimen/dp_40"
+                android:layout_height="@dimen/dp_40"
+                android:scaleType="fitCenter"
+                android:layout_marginEnd="@dimen/dp_20"
+                android:layout_marginBottom="@dimen/dp_40"
+                android:focusable="true"
+                android:clickable="true"
+                android:visibility="gone"
+                android:background="@drawable/bg_oval"
+                app:lottie_rawRes="@raw/swipe_up"
+                app:lottie_loop="true"
+                app:lottie_autoPlay="false"/>
         </FrameLayout>
 
     </top.easelink.framework.customview.ScrollChildSwipeRefreshLayout>

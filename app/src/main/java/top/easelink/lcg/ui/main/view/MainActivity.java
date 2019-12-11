@@ -65,12 +65,12 @@ import top.easelink.lcg.ui.main.model.OpenNotificationsPageEvent;
 import top.easelink.lcg.ui.main.model.TabModel;
 import top.easelink.lcg.ui.main.viewmodel.MainViewModel;
 import top.easelink.lcg.ui.search.view.SearchActivity;
-import top.easelink.lcg.utils.ActivityUtils;
+import top.easelink.lcg.utils.ActivityUtilsKt;
 import top.easelink.lcg.utils.ToastUtilsKt;
 
 import static top.easelink.lcg.mta.MTAConstantKt.EVENT_OPEN_FORUM;
 import static top.easelink.lcg.mta.MTAConstantKt.PROP_FORUM_NAME;
-import static top.easelink.lcg.utils.ActivityUtils.TAG_PREFIX;
+import static top.easelink.lcg.utils.ActivityUtilsKt.TAG_PREFIX;
 import static top.easelink.lcg.utils.WebsiteConstant.APP_RELEASE_PAGE;
 import static top.easelink.lcg.utils.WebsiteConstant.SEARCH_URL;
 import static top.easelink.lcg.utils.WebsiteConstant.URL_KEY;
@@ -272,7 +272,7 @@ public class MainActivity
     }
 
     private void showFragment(BaseFragment fragment) {
-        ActivityUtils.addFragmentInActivity(getSupportFragmentManager(),
+        ActivityUtilsKt.addFragmentInActivity(getSupportFragmentManager(),
                 fragment,
                 R.id.clRootView);
     }

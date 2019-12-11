@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProviders
 import top.easelink.framework.base.BaseDialog
 import top.easelink.lcg.R
 import top.easelink.lcg.ui.main.article.viewmodel.ReplyPostViewModel
-import top.easelink.lcg.utils.ActivityUtils
+import top.easelink.lcg.utils.TAG_PREFIX
 
 class ReplyPostDialog : BaseDialog() {
 
@@ -87,7 +87,7 @@ class ReplyPostDialog : BaseDialog() {
     }
 
     companion object {
-        private val TAG = ActivityUtils.TAG_PREFIX + ReplyPostDialog::class.java.simpleName
+        private val TAG = TAG_PREFIX + ReplyPostDialog::class.java.simpleName
         private const val REPLY_POST_URL = "reply_post_url"
         private const val REPLY_POST_AUTHOR = "reply_post_author"
         @JvmStatic

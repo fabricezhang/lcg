@@ -34,17 +34,15 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
     override fun getForumArticles(
         query: String,
         processThreadList: Boolean
-    ): Observable<ForumPage> {
-        return Observable.create { emitter: ObservableEmitter<ForumPage> ->
-            val doc = Client.sendRequestWithQuery(query)
-            processForumArticlesDocument(doc, emitter, processThreadList)
-        }
+    ): ForumPage? {
+        val doc = Client.sendRequestWithQuery(query)
+        return processForumArticlesDocument(doc, processThreadList)
     }
 
     override fun getHomePageArticles(
         param: String,
-        pageNum: Int?
-    ): Observable<List<Article>> {
+        pageNum: Int
+    ): List<Article> {
         val requestUrl =
             WebsiteConstant.SERVER_BASE_URL + WebsiteConstant.FORUM_BASE_URL + param + "&page=" + pageNum
         return getArticles(requestUrl)
@@ -133,53 +131,47 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
         }
     }
 
-    private fun getArticles(requestUrl: String): Observable<List<Article>> {
-        return Observable.create { emitter: ObservableEmitter<List<Article>> ->
-            try {
-                val doc = Client.sendRequestWithUrl(requestUrl)
-                val elements = doc.select("tbody")
-                val list: MutableList<Article> =
-                    ArrayList()
-                var title: String?
-                var author: String?
-                var date: String?
-                var url: String?
-                var origin: String?
-                var view: Int
-                var reply: Int
-                for (element in elements) {
-                    try {
-                        reply = extractFrom(element, "td.num", "a.xi2")?.toInt()?:0
-                        view = extractFrom(element, "td.num", "em")?.toInt()?:0
-                        title = extractFrom(element, "th.common", ".xst")
-                        author = extractFrom(element, "td.by", "a[href*=uid]")
-                        date = extractFrom(element, "td.by", "span")
-                        url = extractAttrFrom(element, "href", "th.common", "a.xst")
-                        origin = extractFrom(element, "td.by", "a[target]")
-                        if (!TextUtils.isEmpty(title) && !TextUtils.isEmpty(author)) {
-                            list.add(Article(title!!, author!!, date!!, url!!, view, reply, origin))
-                        }
-                    } catch (nbe: NumberFormatException) {
-                        Timber.v(nbe)
-                    } catch (e: Exception) {
-                        Timber.e(e)
+    private fun getArticles(requestUrl: String): List<Article> {
+        val list: MutableList<Article> = ArrayList()
+        try {
+            val doc = Client.sendRequestWithUrl(requestUrl)
+            val elements = doc.select("tbody")
+            var title: String?
+            var author: String?
+            var date: String?
+            var url: String?
+            var origin: String?
+            var view: Int
+            var reply: Int
+            for (element in elements) {
+                try {
+                    reply = extractFrom(element, "td.num", "a.xi2")?.toInt()?:0
+                    view = extractFrom(element, "td.num", "em")?.toInt()?:0
+                    title = extractFrom(element, "th.common", ".xst")
+                    author = extractFrom(element, "td.by", "a[href*=uid]")
+                    date = extractFrom(element, "td.by", "span")
+                    url = extractAttrFrom(element, "href", "th.common", "a.xst")
+                    origin = extractFrom(element, "td.by", "a[target]")
+                    if (!TextUtils.isEmpty(title) && !TextUtils.isEmpty(author)) {
+                        list.add(Article(title!!, author!!, date!!, url!!, view, reply, origin))
                     }
+                } catch (nbe: NumberFormatException) {
+                    Timber.v(nbe)
+                } catch (e: Exception) {
+                    Timber.e(e)
                 }
-                emitter.onNext(list)
-            } catch (e: Exception) {
-                Timber.e(e)
-                emitter.onError(e)
-            } finally {
-                emitter.onComplete()
             }
+        } catch (e: Exception) {
+            Timber.e(e)
+        } finally {
+            return list
         }
     }
 
     private fun processForumArticlesDocument(
         doc: Document,
-        emitter: ObservableEmitter<ForumPage>,
         processThreadList: Boolean
-    ) {
+    ): ForumPage? {
         try {
             var elements = doc.select("tbody[id^=normal]")
             if (elements.isEmpty()) {
@@ -254,13 +246,10 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
                     }
                 }
             }
-            val forumPage = ForumPage(articleList, threadList)
-            emitter.onNext(forumPage)
+            return ForumPage(articleList, threadList);
         } catch (e: Exception) {
             Timber.e(e)
-            emitter.onError(e)
-        } finally {
-            emitter.onComplete()
+            return null
         }
     }
 

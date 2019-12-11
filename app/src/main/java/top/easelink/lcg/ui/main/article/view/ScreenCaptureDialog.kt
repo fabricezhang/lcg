@@ -1,22 +1,18 @@
 package top.easelink.lcg.ui.main.article.view
 
-import android.graphics.BitmapFactory
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.*
-import android.widget.ImageView
 import androidx.fragment.app.DialogFragment
 import com.bumptech.glide.Glide
 import timber.log.Timber
 import top.easelink.framework.base.SafeShowDialogFragment
 import top.easelink.lcg.R
-import top.easelink.lcg.utils.ActivityUtils
+import top.easelink.lcg.utils.TAG_PREFIX
 
 class ScreenCaptureDialog : SafeShowDialogFragment() {
 
     companion object {
-        val TAG = ActivityUtils.TAG_PREFIX + ScreenCaptureDialog::class.java.simpleName
+        val TAG = TAG_PREFIX + ScreenCaptureDialog::class.java.simpleName
         private const val IMAGE_PATH = "image_path"
         @JvmStatic
         fun newInstance(imagePath: String): ScreenCaptureDialog {
