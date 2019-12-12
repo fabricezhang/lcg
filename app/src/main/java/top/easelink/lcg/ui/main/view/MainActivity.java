@@ -139,7 +139,7 @@ public class MainActivity
         EventBus.getDefault().register(this);
         mainActivityWeakReference = new WeakReference<>(this);
         setUp();
-        requestPermissions();
+//        requestPermissions();
     }
 
     @Override

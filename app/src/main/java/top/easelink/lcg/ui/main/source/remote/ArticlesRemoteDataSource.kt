@@ -5,8 +5,6 @@ import android.util.ArrayMap
 import androidx.annotation.WorkerThread
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import io.reactivex.Observable
-import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
@@ -17,7 +15,7 @@ import top.easelink.lcg.ui.main.source.ArticlesDataSource
 import top.easelink.lcg.ui.main.source.FavoritesRemoteDataSource
 import top.easelink.lcg.ui.main.source.model.*
 import top.easelink.lcg.utils.WebsiteConstant
-import top.easelink.lcg.utils.getCookies
+import top.easelink.lcg.utils.WebsiteConstant.FORUM_BASE_URL
 import java.util.*
 
 /**
@@ -42,13 +40,11 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
         param: String,
         pageNum: Int
     ): List<Article> {
-        val requestUrl =
-            WebsiteConstant.SERVER_BASE_URL + WebsiteConstant.FORUM_BASE_URL + param + "&page=" + pageNum
-        return getArticles(requestUrl)
+        return getArticles("$FORUM_BASE_URL$param&page=$pageNum")
     }
 
     @WorkerThread
-    override fun getArticleDetail(query: String): ArticleDetail? {
+    override fun getArticleDetail(query: String, preload: Boolean): ArticleDetail? {
         var articleDetail: ArticleDetail? = null
         try {
             val doc = Client.sendRequestWithQuery(query)
@@ -77,12 +73,8 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
                         replyAddUrls[i]
                     }
                     val post = Post(
-                        Objects.requireNonNull(
-                            avatarsAndNames[i]["name"]
-                        )!!,
-                        Objects.requireNonNull(
-                            avatarsAndNames[i]["avatar"]
-                        )!!,
+                        avatarsAndNames[i]["name"].toString(),
+                        avatarsAndNames[i]["avatar"].toString(),
                         dateTimes[i],
                         contents[i],
                         replyUrls[i],
@@ -103,29 +95,32 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
         }
     }
 
-    private fun getArticles(requestUrl: String): List<Article> {
-        val list: MutableList<Article> = ArrayList()
+    private fun getArticles(query: String): List<Article> {
+        var list: List<Article> = emptyList()
         try {
-            val doc = Client.sendRequestWithUrl(requestUrl)
-            val elements = doc.select("tbody")
-            for (element in elements) {
-                try {
-                    val reply = extractFrom(element, "td.num", "a.xi2").toInt()
-                    val view = extractFrom(element, "td.num", "em").toInt()
-                    val title = extractFrom(element, "th.common", ".xst")
-                    val author = extractFrom(element, "td.by", "a[href*=uid]")
-                    val date = extractFrom(element, "td.by", "span")
-                    val url = extractAttrFrom(element, "href", "th.common", "a.xst")
-                    val origin = extractFrom(element, "td.by", "a[target]")
-                    if (!TextUtils.isEmpty(title) && !TextUtils.isEmpty(author)) {
-                        list.add(Article(title, author, date, url, view, reply, origin))
+            list = Client
+                .sendRequestWithQuery(query)
+                .select("tbody")
+                .map {
+                    try {
+                        val reply = extractFrom(it, "td.num", "a.xi2").toInt()
+                        val view = extractFrom(it, "td.num", "em").toInt()
+                        val title = extractFrom(it, "th.common", ".xst")
+                        val author = extractFrom(it, "td.by", "a[href*=uid]")
+                        val date = extractFrom(it, "td.by", "span")
+                        val url = extractAttrFrom(it, "href", "th.common", "a.xst")
+                        val origin = extractFrom(it, "td.by", "a[target]")
+                        if (title.isNotBlank() && author.isNotEmpty()) {
+                            return@map Article(title, author, date, url, view, reply, origin)
+                        }
+                    } catch (nbe: NumberFormatException) {
+                        Timber.v(nbe)
+                    } catch (e: Exception) {
+                        Timber.e(e)
                     }
-                } catch (nbe: NumberFormatException) {
-                    Timber.v(nbe)
-                } catch (e: Exception) {
-                    Timber.e(e)
+                    null
                 }
-            }
+                .filterNotNull()
         } catch (e: Exception) {
             Timber.e(e)
         } finally {

@@ -74,8 +74,8 @@ class ReplyPostDialog : BaseDialog() {
         super.onActivityCreated(savedInstanceState)
         dialog?.window?.attributes?.apply {
             width = WindowManager.LayoutParams.MATCH_PARENT
-            height = WindowManager.LayoutParams.MATCH_PARENT
-            gravity = Gravity.CENTER
+            height = WindowManager.LayoutParams.WRAP_CONTENT
+            gravity = Gravity.BOTTOM
         }
     }
 

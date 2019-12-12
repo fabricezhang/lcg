@@ -16,7 +16,7 @@ interface ArticlesDataSource {
     fun getForumArticles(query: String, processThreadList: Boolean): ForumPage?
 
     @WorkerThread
-    fun getArticleDetail(query: String): ArticleDetail?
+    fun getArticleDetail(query: String, preload: Boolean = false): ArticleDetail?
 
     @WorkerThread
     fun getHomePageArticles(param: String, pageNum: Int): List<Article>

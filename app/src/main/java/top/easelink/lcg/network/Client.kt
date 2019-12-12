@@ -25,8 +25,8 @@ object Client {
             .execute()
             .let {
                 setCookies(it.cookies())
-                it.parse().also {
-                    checkResponse(it)
+                it.parse().also { doc ->
+                    checkResponse(doc)
                 }
             }
     }
@@ -41,8 +41,8 @@ object Client {
             .execute()
             .let {
                 setCookies(it.cookies())
-                it.parse().also {
-                    checkResponse(it)
+                it.parse().also { doc ->
+                    checkResponse(doc)
                 }
             }
     }
