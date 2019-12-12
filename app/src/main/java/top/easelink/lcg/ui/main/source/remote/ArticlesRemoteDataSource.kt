@@ -44,7 +44,19 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
     }
 
     @WorkerThread
-    override fun getArticleDetail(query: String, preload: Boolean): ArticleDetail? {
+    override fun getPostPreview(query: String): PreviewPost? {
+        var post: PreviewPost? = null
+        try {
+            post =  getFirstPost(Client.sendRequestWithQuery(query))
+        } catch (e: Exception) {
+            Timber.e(e)
+        } finally {
+            return post
+        }
+    }
+
+    @WorkerThread
+    override fun getArticleDetail(query: String): ArticleDetail? {
         var articleDetail: ArticleDetail? = null
         try {
             val doc = Client.sendRequestWithQuery(query)
@@ -61,7 +73,7 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
             val nextPageUrl = doc.selectFirst("a.nxt")?.attr("href")?:""
             val replyAddUrls = getReplyAddUrl(doc)
             val avatarsAndNames = getAvatarAndName(doc)
-            val contents = getContent(doc)
+            val contents = getContents(doc)
             val dateTimes = getDateTime(doc)
             val replyUrls = getReplyUrls(doc)
             val postList: MutableList<Post> = ArrayList(avatarsAndNames.size)
@@ -225,8 +237,7 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
     }
 
     private fun getReplyAddUrl(document: Document): List<String> {
-        val list: MutableList<String> =
-            ArrayList(12)
+        val list: MutableList<String> = ArrayList(12)
         try {
             val e = document.getElementById("recommend_add")
             list.add(e.attr("href"))
@@ -234,7 +245,8 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
             for (element in elements) {
                 list.add(element.attr("href"))
             }
-        } catch (npe: NullPointerException) { // no need to handle
+        } catch (npe: NullPointerException) {
+            // no need to handle
         }
         return list
     }
@@ -252,15 +264,39 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
     }
 
     private fun getDateTime(document: Document): List<String> {
-        val list: MutableList<String> =
-            ArrayList()
-        for (element in document.select("div.authi").select("em")) {
-            list.add(element.text())
+        return document.select("div.authi").select("em").map {
+            it.text()
         }
-        return list
     }
 
-    private fun getContent(doc: Document): List<String> {
+    private fun getFirstPost(document: Document): PreviewPost {
+        val dateTime = document.selectFirst("div.authi").select("em").text()
+        val content = getFirstContent(document)
+        var avatar: String? = null
+        var name: String? = null
+        document.selectFirst("td[rowspan]").apply {
+            avatar = selectFirst("div.avatar").selectFirst("img").attr("src")
+            name = selectFirst("a.xw1").text()
+        }
+        return PreviewPost(
+            avatar = avatar?:"",
+            author = name?:"Unknown",
+            date = dateTime,
+            content = content
+        )
+    }
+
+    private fun getFirstContent(doc: Document): String {
+        return doc.selectFirst("div.pcb")
+            .let {
+                    element -> element.selectFirst("td.t_f")?.let {
+                    tmp -> processContentElement(tmp)
+            }
+                ?: element.selectFirst("div.locked").html()
+            }
+    }
+
+    private fun getContents(doc: Document): List<String> {
         return doc.select("div.pcb")
             .filterNotNull()
             .mapTo(ArrayList<String>(), {
@@ -271,13 +307,9 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
     }
 
     private fun getReplyUrls(doc: Document): List<String> {
-        val elements = doc.getElementsByClass("fastre")
-        val list: MutableList<String> =
-            ArrayList()
-        for (e in elements) {
-            list.add(e.attr("href"))
+        return doc.getElementsByClass("fastre").map {
+            it.attr("href")
         }
-        return list
     }
 
     private fun processContentElement(element: Element): String { // remove picture tips

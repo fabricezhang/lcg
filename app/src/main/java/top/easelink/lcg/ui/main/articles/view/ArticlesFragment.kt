@@ -35,7 +35,7 @@ class ArticlesFragment : BaseFragment<FragmentArticlesBinding, ArticlesViewModel
     private fun scrollToTop() {
         viewDataBinding.backToTop?.playAnimation()
         viewDataBinding.recyclerView?.let {
-//            val pos = (it.layoutManager as? LinearLayoutManager)?.findFirstVisibleItemPosition()
+            //            val pos = (it.layoutManager as? LinearLayoutManager)?.findFirstVisibleItemPosition()
 //            if (pos != null && pos > 30) {
 //                it.smoothScrollToPosition(pos - 5)
 //                it.scrollToPosition(0)
@@ -87,7 +87,9 @@ class ArticlesFragment : BaseFragment<FragmentArticlesBinding, ArticlesViewModel
             }
             layoutManager = mLayoutManager
             itemAnimator = DefaultItemAnimator()
-            adapter = ArticlesAdapter(viewModel)
+            adapter = ArticlesAdapter(viewModel).also {
+                it.setFragmentManager(fragmentManager?:baseActivity.supportFragmentManager)
+            }
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrollStateChanged(
                     recyclerView: RecyclerView,

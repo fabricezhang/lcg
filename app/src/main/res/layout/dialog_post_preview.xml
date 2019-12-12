@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginStart="@dimen/dp_20"
+    android:layout_marginEnd="@dimen/dp_20"
+    android:layout_marginTop="@dimen/dp_30"
+    android:layout_marginBottom="@dimen/dp_30"
+    android:background="@color/white"
+    android:orientation="vertical"
+    app:cardCornerRadius="@dimen/dp_6"
+    app:cardElevation="@dimen/dp_3">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingEnd="@dimen/dp_10"
+        android:paddingStart="@dimen/dp_5"
+        android:paddingBottom="@dimen/dp_5">
+
+        <ImageView
+            android:id="@+id/post_avatar"
+            style="@style/TextStyle.Heading"
+            android:layout_width="@dimen/dp_40"
+            android:layout_height="@dimen/dp_40"
+            android:layout_marginStart="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_20"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@null"
+            tools:src="@drawable/ic_noavatar_middle"/>
+
+        <TextView
+            android:id="@+id/author_text_view"
+            style="@style/TextStyle.Title.Sub"
+            android:layout_marginTop="@dimen/dp_5"
+            android:layout_marginStart="@dimen/dp_5"
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/post_avatar"
+            app:layout_constraintTop_toTopOf="@id/post_avatar"
+            tools:text="Author"/>
+
+        <TextView
+            android:id="@+id/date_text_view"
+            style="@style/TextStyle.Title.Sub"
+            android:layout_marginTop="@dimen/dp_5"
+            android:layout_marginStart="@dimen/dp_5"
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/author_text_view"
+            app:layout_constraintStart_toEndOf="@id/post_avatar"
+            tools:text="2019-07-04"/>
+
+        <top.easelink.framework.customview.htmltextview.HtmlTextView
+            android:id="@+id/content_text_view"
+            style="@style/TextStyle.Title"
+            android:paddingBottom="@dimen/dp_3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_10"
+            android:textIsSelectable="true"
+            android:textSize="@dimen/sp_14"
+            app:layout_constraintTop_toBottomOf="@id/post_avatar"
+            app:layout_constraintStart_toStartOf="@id/post_avatar"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textStyle="normal"
+            tools:text="This repository contains a detailed sample app that implements MVVM architecture using Dagger2, Android Room, RxJava2 ,etc" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

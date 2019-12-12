@@ -3,18 +3,22 @@ package top.easelink.lcg.ui.main.articles.viewmodel
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import top.easelink.framework.base.BaseViewHolder
 import top.easelink.lcg.R
 import top.easelink.lcg.databinding.ItemArticleEmptyViewBinding
 import top.easelink.lcg.databinding.ItemArticleViewBinding
+import top.easelink.lcg.ui.main.article.view.PostPreviewDialog
 import top.easelink.lcg.ui.main.articles.viewmodel.ArticleEmptyItemViewModel.ArticleEmptyItemViewModelListener
 import top.easelink.lcg.ui.main.source.model.Article
+import java.lang.ref.WeakReference
 
 class ArticlesAdapter(
     private var mListener: ArticleFetcher?
 ) : RecyclerView.Adapter<BaseViewHolder>() {
 
+    private var fragmentManager: WeakReference<FragmentManager>? = null
     private val mArticleList: MutableList<Article> = mutableListOf()
 
     override fun getItemCount(): Int {
@@ -46,9 +50,7 @@ class ArticlesAdapter(
                     LayoutInflater.from(parent.context),
                     parent, false
                 )
-                ArticleViewHolder(
-                    articleViewBinding
-                )
+                ArticleViewHolder(articleViewBinding)
             }
             VIEW_TYPE_LOAD_MORE -> LoadMoreViewHolder(
                 LayoutInflater.from(parent.context)
@@ -89,14 +91,22 @@ class ArticlesAdapter(
         mArticleList.clear()
     }
 
-    fun setListener(listener: ArticleFetcher?) {
-        mListener = listener
+    fun setFragmentManager(fragmentManager: FragmentManager) {
+        this.fragmentManager = WeakReference(fragmentManager)
     }
 
     inner class ArticleViewHolder internal constructor(private val mBinding: ItemArticleViewBinding) :
         BaseViewHolder(mBinding.root) {
         private var articleItemViewModel: ArticleItemViewModel? = null
         override fun onBind(position: Int) {
+            mBinding.titleTextView.setOnLongClickListener {
+                fragmentManager?.get()?.let {
+                    PostPreviewDialog
+                        .newInstance(mArticleList[position].url)
+                        .show(it, PostPreviewDialog.TAG)
+                }
+                true
+            }
             val article = mArticleList[position]
             articleItemViewModel = ArticleItemViewModel(article)
             mBinding.viewModel = articleItemViewModel

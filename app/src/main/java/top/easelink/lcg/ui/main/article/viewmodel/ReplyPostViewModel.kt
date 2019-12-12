@@ -19,13 +19,13 @@ class ReplyPostViewModel : ViewModel() {
     val sending = MutableLiveData<Boolean>()
 
     fun sendReply(query: String?, content: String, callback: () -> Unit) {
+        sending.value = true
         GlobalScope.launch(Dispatchers.IO) {
             sendReplyAsync(query, content, callback)
         }
     }
 
     private fun sendReplyAsync(query: String?, content: String, callback: () -> Unit) {
-        sending.postValue(true)
         Timber.d(content)
         if (query.isNullOrEmpty() || content.isBlank()) {
             return
