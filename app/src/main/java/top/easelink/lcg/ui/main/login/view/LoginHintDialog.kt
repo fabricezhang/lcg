@@ -21,6 +21,7 @@ class LoginHintDialog : SafeShowDialogFragment() {
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
+        dialog?.window?.setWindowAnimations(R.style.BottomInOutAnim)
         return inflater.inflate(R.layout.dialog_login_hint, container, false)
     }
 
