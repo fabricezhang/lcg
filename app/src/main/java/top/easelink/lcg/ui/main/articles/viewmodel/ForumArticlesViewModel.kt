@@ -70,7 +70,7 @@ class ForumArticlesViewModel : ViewModel(),
             val forumPage = getForumArticles(query, type == ArticleFetcher.FETCH_INIT)
             if (forumPage != null) {
                 val articleList = forumPage.articleList
-                if (articleList != null && articleList.size > 0) {
+                if (articleList.isNotEmpty()) {
                     val list = articles.value
                     if (type == ArticleFetcher.FETCH_MORE && list != null && list.size > 0) {
                         val articleA = articleList[articleList.size - 1]
@@ -88,10 +88,10 @@ class ForumArticlesViewModel : ViewModel(),
                 }
                 if (type == ArticleFetcher.FETCH_INIT) {
                     val threads = forumPage.threadList
-                    if (threads != null && threads.size > 0) {
+                    if (threads.size > 0) {
                         threadList.postValue(threads)
                     } else {
-                        threadList.postValue(null)
+                        threadList.postValue(emptyList())
                     }
                 }
             }

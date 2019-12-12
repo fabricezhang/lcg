@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.databinding.BindingAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -26,12 +25,12 @@ import top.easelink.framework.utils.ScreenUtilsKt;
 import top.easelink.lcg.R;
 import top.easelink.lcg.databinding.ItemPostViewBinding;
 import top.easelink.lcg.ui.info.UserData;
-import top.easelink.lcg.ui.main.article.view.ScreenCaptureDialog;
 import top.easelink.lcg.ui.main.model.ReplyPostEvent;
 import top.easelink.lcg.ui.main.model.ScreenCaptureEvent;
 import top.easelink.lcg.ui.main.source.model.Post;
 import top.easelink.lcg.utils.FileUtilsKt;
 
+import static top.easelink.lcg.ui.main.articles.viewmodel.ArticleFetcher.FETCH_MORE;
 import static top.easelink.lcg.utils.CopyUtilsKt.copyContent;
 import static top.easelink.lcg.utils.ToastUtilsKt.showMessage;
 
@@ -42,15 +41,6 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     private static final int VIEW_TYPE_LOAD_MORE = 2;
     private ArticleAdapterListener mListener;
     private List<Post> mPostList = new ArrayList<>();
-
-    @BindingAdapter("adapter")
-    public static void addPostItems(RecyclerView recyclerView, List<Post> postListt) {
-        ArticleAdapter adapter = (ArticleAdapter) recyclerView.getAdapter();
-        if (adapter != null) {
-            adapter.clearItems();
-            adapter.addItems(postListt);
-        }
-    }
 
     public ArticleAdapter(ArticleAdapterListener listener) {
         mListener = listener;
@@ -103,12 +93,12 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         }
     }
 
-    private void addItems(List<Post> postList) {
+    public void addItems(List<Post> postList) {
         mPostList.addAll(postList);
         notifyDataSetChanged();
     }
 
-    private void clearItems() {
+    public void clearItems() {
         mPostList.clear();
     }
 
@@ -215,7 +205,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
         @Override
         public void onBind(int position) {
-            mListener.fetchArticlePost(ArticleViewModel.FETCH_MORE);
+            mListener.fetchArticlePost(FETCH_MORE);
         }
     }
 }

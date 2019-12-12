@@ -8,6 +8,7 @@ import kotlinx.coroutines.launch
 import org.jsoup.Connection
 import org.jsoup.Jsoup
 import timber.log.Timber
+import top.easelink.lcg.network.Client
 import top.easelink.lcg.utils.WebsiteConstant.CHECK_RULE_URL
 import top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL
 import top.easelink.lcg.utils.getCookies
@@ -17,20 +18,20 @@ class ReplyPostViewModel : ViewModel() {
 
     val sending = MutableLiveData<Boolean>()
 
-    fun sendReply(requestUrl: String?, content: String, callback: () -> Unit) {
+    fun sendReply(query: String?, content: String, callback: () -> Unit) {
         GlobalScope.launch(Dispatchers.IO) {
-            sendReplyAsync(requestUrl, content, callback)
+            sendReplyAsync(query, content, callback)
         }
     }
 
-    private fun sendReplyAsync(requestUrl: String?, content: String, callback: () -> Unit) {
+    private fun sendReplyAsync(query: String?, content: String, callback: () -> Unit) {
         sending.postValue(true)
         Timber.d(content)
-        if (requestUrl.isNullOrEmpty() || content.isBlank()) {
+        if (query.isNullOrEmpty() || content.isBlank()) {
             return
         }
         val queryMap = mutableMapOf<String, String>()
-        requestUrl
+        query
             .split("&")
             .toMutableList()
             .forEach {
@@ -42,11 +43,8 @@ class ReplyPostViewModel : ViewModel() {
                 }
             }
         try {
-            Jsoup
-                .connect(SERVER_BASE_URL + requestUrl)
-                .timeout(60 * 1000)
-                .cookies(getCookies())
-                .get()
+            Client
+                .sendRequestWithQuery(query)
                 .run {
                     val noticeauthormsg = selectFirst("input[name=noticeauthormsg]").attr("value")
                     val noticetrimstr = selectFirst("input[name=noticetrimstr]").attr("value")

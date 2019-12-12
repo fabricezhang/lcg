@@ -1,25 +1,23 @@
 package top.easelink.lcg.ui.main.article.viewmodel
 
 import android.text.TextUtils
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.jsoup.HttpStatusException
 import timber.log.Timber
-import top.easelink.framework.base.BaseViewModel
-import top.easelink.framework.utils.rx.SchedulerProvider
 import top.easelink.lcg.R
 import top.easelink.lcg.mta.EVENT_ADD_TO_FAVORITE
 import top.easelink.lcg.mta.sendEvent
-import top.easelink.lcg.ui.main.article.view.ArticleNavigator
+import top.easelink.lcg.ui.main.articles.viewmodel.ArticleFetcher.Companion.FETCH_INIT
+import top.easelink.lcg.ui.main.articles.viewmodel.ArticleFetcher.Companion.FETCH_MORE
 import top.easelink.lcg.ui.main.model.BlockException
 import top.easelink.lcg.ui.main.source.local.ArticlesLocalDataSource
-import top.easelink.lcg.ui.main.source.local.SPConstants
+import top.easelink.lcg.ui.main.source.local.SP_KEY_SYNC_FAVORITE
 import top.easelink.lcg.ui.main.source.local.SharedPreferencesHelper
 import top.easelink.lcg.ui.main.source.model.ArticleAbstractResponse
-import top.easelink.lcg.ui.main.source.model.ArticleDetail
 import top.easelink.lcg.ui.main.source.model.ArticleEntity
 import top.easelink.lcg.ui.main.source.model.Post
 import top.easelink.lcg.ui.main.source.remote.ArticlesRemoteDataSource
@@ -27,14 +25,13 @@ import top.easelink.lcg.utils.RegexUtils
 import top.easelink.lcg.utils.showMessage
 import java.util.*
 
-class ArticleViewModel(schedulerProvider: SchedulerProvider?) :
-    BaseViewModel<ArticleNavigator?>(schedulerProvider), ArticleAdapterListener {
-    private val mPosts =
-        MutableLiveData<MutableList<Post>>()
-    private val mIsBlocked = MutableLiveData<Boolean>()
-    private val mIsNotFound = MutableLiveData<Boolean>()
-    private val mShouldDisplayPosts = MutableLiveData<Boolean>()
-    private val mArticleTitle = MutableLiveData<String>()
+class ArticleViewModel: ViewModel(), ArticleAdapterListener {
+    val posts = MutableLiveData<MutableList<Post>>()
+    val isBlocked = MutableLiveData<Boolean>()
+    val isNotFound = MutableLiveData<Boolean>()
+    val shouldDisplayPosts = MutableLiveData<Boolean>()
+    val articleTitle = MutableLiveData<String>()
+    val isLoading = MutableLiveData<Boolean>()
 
     private var mUrl: String? = null
     private var nextPageUrl: String? = null
@@ -42,83 +39,74 @@ class ArticleViewModel(schedulerProvider: SchedulerProvider?) :
     private var mFormHash: String? = null
     private var articleAbstract: ArticleAbstractResponse? = null
 
-    fun setUrl(url: String?) {
+    fun setUrl(url: String) {
         mUrl = url
     }
 
     override fun fetchArticlePost(type: Int) {
-        setIsLoading(true)
-        val requestUrl: String? =
-            if (type == FETCH_INIT) {
-                mUrl
-            } else if (TextUtils.isEmpty(nextPageUrl)) { // no more content
-                setIsLoading(false)
-                return
-            } else {
-                nextPageUrl
+        isLoading.value = true
+        val query: String? =
+            when (type) {
+                FETCH_INIT -> mUrl
+                FETCH_MORE -> nextPageUrl
+                else -> null
             }
 
-        compositeDisposable.add(ArticlesRemoteDataSource.getArticleDetail(requestUrl!!)
-            .subscribeOn(schedulerProvider.io())
-            .observeOn(schedulerProvider.ui())
-            .subscribe(
-                { articleDetail: ArticleDetail ->
-                    articleAbstract = articleDetail.articleAbstractResponse
-                    val title = articleDetail.articleTitle
-                    if (!TextUtils.isEmpty(title)) {
-                        mArticleTitle.value = title
+        if (query.isNullOrBlank()) {
+            isLoading.value = false
+            return
+        }
+        GlobalScope.launch(Dispatchers.IO) {
+            try {
+                ArticlesRemoteDataSource.getArticleDetail(query)?.let {
+                    articleAbstract = it.articleAbstractResponse
+                    if (it.articleTitle.isBlank()) {
+                        articleTitle.postValue(it.articleTitle)
                     }
-                    nextPageUrl = articleDetail.nextPageUrl
-                    val resPostList =
-                        articleDetail.postList
-                    if (resPostList != null && resPostList.size != 0) {
+                    if (it.postList.isNotEmpty()) {
                         if (type == FETCH_INIT) {
-                            mPosts.setValue(resPostList)
+                            posts.postValue(it.postList.toMutableList())
                         } else {
-                            val list = mPosts.value
-                            if (list != null && !list.isEmpty()) {
-                                list.addAll(resPostList)
-                                mPosts.setValue(list)
+                            val list = posts.value
+                            if (list != null && list.isNotEmpty()) {
+                                list.addAll(it.postList)
+                                posts.postValue(list)
                             } else {
-                                mPosts.setValue(resPostList)
+                                posts.postValue(it.postList.toMutableList())
                             }
                         }
                     }
-                    mFormHash = articleDetail.fromHash
-                    mShouldDisplayPosts.setValue(true)
-                },
-                { throwable: Throwable? ->
-                    if (throwable is BlockException) {
-                        setArticleBlocked()
-                    } else if (throwable is HttpStatusException) {
-                        setArticleNotFound()
-                    }
-                    setIsLoading(false)
-                    navigator!!.handleError(throwable)
+                    mFormHash = it.fromHash
+                    shouldDisplayPosts.postValue(true)
                 }
-            ) { setIsLoading(false) }
-        )
+            } catch (e: Exception) {
+                when(e) {
+                    is BlockException -> setArticleBlocked()
+                    is HttpStatusException -> setArticleNotFound()
+                }
+                Timber.e(e)
+            }
+            isLoading.postValue(false)
+        }
     }
 
     override fun replyAdd(url: String) {
         if (TextUtils.isEmpty(url)) {
-            setIsLoading(false)
+            isLoading.value = false
             throw IllegalStateException()
         }
-        compositeDisposable.add(ArticlesRemoteDataSource.replyAdd(url)
-            .subscribeOn(schedulerProvider.io())
-            .observeOn(schedulerProvider.ui())
-            .subscribe({ msg -> showMessage(msg) },
-                { throwable: Throwable -> }
-            ) { setIsLoading(false) }
-        )
+        GlobalScope.launch(Dispatchers.IO) {
+            ArticlesRemoteDataSource.replyAdd(url).also {
+                showMessage(it)
+            }
+        }
     }
 
     fun extractDownloadUrl(): ArrayList<String>? {
         val patternLanzous = "https://www.lanzous.com/[a-zA-Z0-9]{4,10}"
         val patternBaidu = "https://pan.baidu.com/s/.{23}"
         val patternT = "http://t.cn/[a-zA-Z0-9]{8}"
-        val list: List<Post>? = mPosts.value
+        val list: List<Post>? = posts.value
         var resSet: HashSet<String>? = null
         if (list != null && !list.isEmpty()) {
             val content = list[0].content
@@ -133,53 +121,44 @@ class ArticleViewModel(schedulerProvider: SchedulerProvider?) :
 
     fun addToFavorite() {
         sendEvent(EVENT_ADD_TO_FAVORITE)
-        val posts: MutableList<Post> = posts.value?: mutableListOf()
+        val posts: MutableList<Post> = posts.value ?: mutableListOf()
         if (posts.isEmpty()) {
-            navigator!!.showMessage(R.string.add_to_favorite_failed)
-            return
+            showMessage(R.string.add_to_favorite_failed)
         }
-        var title = mArticleTitle.value
-        if (title == null) { // if title is null, use abstract's title, this rarely happens
-            title = articleAbstract!!.title
-        }
-        val threadId = extractThreadId(mUrl)
-        val author = posts[0].author
-        val content =
-            if (articleAbstract == null) "" else articleAbstract!!.description
-        val articleEntity = ArticleEntity(
-            title ?: "未知标题",
-            author,
-            mUrl!!,
-            content,
-            System.currentTimeMillis()
-        )
-        val syncFavoritesEnable =
-            SharedPreferencesHelper.getUserSp().getBoolean(SPConstants.SP_KEY_SYNC_FAVORITE, false)
-        if (syncFavoritesEnable) {
-            if (threadId != null && mFormHash != null) {
-                compositeDisposable.add(
-                    ArticlesRemoteDataSource.addFavorites(threadId, mFormHash!!)
-                        .subscribeOn(schedulerProvider.io())
-                        .observeOn(schedulerProvider.ui()).subscribe(
-                            { res: Boolean ->
-                                navigator!!.showMessage(
-                                    if (res) R.string.sync_favorite_successfully else R.string.sync_favorite_failed
-                                )
-                            }
-                        ) { throwable: Throwable? ->
-                            navigator!!.handleError(
-                                throwable
-                            )
-                        }
-                )
+        GlobalScope.launch(Dispatchers.IO) {
+            // if title is null, use abstract's title, this rarely happens
+            val title = articleTitle.value?:articleAbstract?.title
+            val threadId = extractThreadId(mUrl)
+            val author = posts[0].author
+            val content = articleAbstract?.description ?: ""
+            val articleEntity = ArticleEntity(
+                title ?: "未知标题",
+                author,
+                mUrl!!,
+                content,
+                System.currentTimeMillis()
+            )
+            val syncFavoritesEnable =
+                SharedPreferencesHelper.getUserSp().getBoolean(SP_KEY_SYNC_FAVORITE, false)
+            if (syncFavoritesEnable) {
+                if (threadId != null && mFormHash != null) {
+                    ArticlesRemoteDataSource.addFavorites(threadId, mFormHash!!).let {
+                        if (it)
+                            showMessage(R.string.sync_favorite_successfully)
+                        else
+                            showMessage(R.string.sync_favorite_failed)
+                    }
+                }
             }
-        }
-        GlobalScope.launch(Dispatchers.IO){
             try {
-                if (ArticlesLocalDataSource.addArticleToFavorite(articleEntity)) {
-                    showMessage(R.string.add_to_favorite_successfully)
-                } else {
-                    showMessage(R.string.add_to_favorite_failed)
+                val res = ArticlesLocalDataSource.addArticleToFavorite(articleEntity)
+                // don't show local message while sync to network
+                if (!syncFavoritesEnable) {
+                    if (res) {
+                        showMessage(R.string.add_to_favorite_successfully)
+                    } else {
+                        showMessage(R.string.add_to_favorite_failed)
+                    }
                 }
             } catch (e: Exception) {
                 Timber.e(e)
@@ -188,33 +167,14 @@ class ArticleViewModel(schedulerProvider: SchedulerProvider?) :
         }
     }
 
-    val posts: LiveData<MutableList<Post>>
-        get() = mPosts
-
-    val isBlocked: LiveData<Boolean>
-        get() = mIsBlocked
-
-    val articleTitle: LiveData<String>
-        get() = mArticleTitle
-
-    val isNotFound: LiveData<Boolean>
-        get() = mIsNotFound
-
-    val shouldDisplayPosts: LiveData<Boolean>
-        get() = mShouldDisplayPosts
-
-    fun scrollToTop() {
-        navigator!!.scrollToTop()
-    }
-
     private fun setArticleNotFound() {
-        mIsNotFound.value = true
-        mShouldDisplayPosts.value = false
+        isNotFound.value = true
+        shouldDisplayPosts.value = false
     }
 
     private fun setArticleBlocked() {
-        mIsBlocked.value = true
-        mShouldDisplayPosts.value = false
+        isBlocked.value = true
+        shouldDisplayPosts.value = false
     }
 
     private fun extractThreadId(url: String?): String? {
@@ -226,10 +186,5 @@ class ArticleViewModel(schedulerProvider: SchedulerProvider?) :
             Timber.e(e)
             null
         }
-    }
-
-    companion object {
-        const val FETCH_INIT = 0
-        const val FETCH_MORE = 1
     }
 }

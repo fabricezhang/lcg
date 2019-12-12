@@ -12,8 +12,6 @@ import top.easelink.lcg.ui.info.UserData
 import top.easelink.lcg.ui.main.me.model.UserInfo
 import top.easelink.lcg.ui.main.model.NewMessageEvent
 import top.easelink.lcg.ui.main.model.NotificationInfo
-import top.easelink.lcg.ui.main.source.local.SPConstants
-import top.easelink.lcg.ui.main.source.local.SharedPreferencesHelper
 
 fun checkLoginState(doc: Document) {
     GlobalScope.launch(Dispatchers.IO) {

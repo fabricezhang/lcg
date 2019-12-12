@@ -72,13 +72,10 @@ class ReplyPostDialog : BaseDialog() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val window = dialog?.window
-        if (window != null) {
-            val windowParam = window.attributes
-            windowParam.width = WindowManager.LayoutParams.MATCH_PARENT
-            windowParam.height = WindowManager.LayoutParams.WRAP_CONTENT
-            windowParam.gravity = Gravity.BOTTOM
-            window.attributes = windowParam
+        dialog?.window?.attributes?.apply {
+            width = WindowManager.LayoutParams.MATCH_PARENT
+            height = WindowManager.LayoutParams.MATCH_PARENT
+            gravity = Gravity.CENTER
         }
     }
 

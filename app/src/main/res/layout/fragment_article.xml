@@ -36,8 +36,7 @@
                 android:id="@+id/post_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="@{viewModel.shouldDisplayPosts? View.VISIBLE:View.GONE, default = gone}"
-                app:adapter="@{viewModel.posts}"/>
+                android:visibility="@{viewModel.shouldDisplayPosts? View.VISIBLE:View.GONE, default = gone}" />
         </com.google.android.material.appbar.AppBarLayout>
 
 
@@ -95,7 +94,6 @@
             android:clickable="true"
             android:visibility="gone"
             android:background="@drawable/bg_oval"
-            android:onClick="@{() -> viewModel.scrollToTop()}"
             app:lottie_rawRes="@raw/swipe_up"
             app:lottie_loop="true"
             app:lottie_autoPlay="false"/>

@@ -1,6 +1,6 @@
 package top.easelink.lcg.ui.info
 
-import top.easelink.lcg.ui.main.source.local.SPConstants.SP_KEY_LOGGED_IN
+import top.easelink.lcg.ui.main.source.local.SP_KEY_LOGGED_IN
 import top.easelink.lcg.ui.main.source.local.SharedPreferencesHelper
 
 object UserData {

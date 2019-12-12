@@ -15,7 +15,8 @@ interface ArticlesDataSource {
     @WorkerThread
     fun getForumArticles(query: String, processThreadList: Boolean): ForumPage?
 
-    fun getArticleDetail(url: String): Observable<ArticleDetail>
+    @WorkerThread
+    fun getArticleDetail(query: String): ArticleDetail?
 
     @WorkerThread
     fun getHomePageArticles(param: String, pageNum: Int): List<Article>

@@ -15,7 +15,7 @@ object ArticlesLocalDataSource : FavoritesLocalDataSource {
 
     @WorkerThread
     override fun getAllFavoriteArticles(): List<ArticleEntity> {
-        return mArticlesDao.articles
+        return mArticlesDao.getArticles()
     }
 
     @WorkerThread

@@ -2,22 +2,19 @@ package top.easelink.lcg.ui.main.source.remote
 
 import android.text.TextUtils
 import android.util.ArrayMap
+import androidx.annotation.WorkerThread
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import io.reactivex.Observable
-import io.reactivex.ObservableEmitter
-import org.jsoup.Connection
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
 import timber.log.Timber
 import top.easelink.lcg.network.Client
-import top.easelink.lcg.ui.main.model.BlockException
 import top.easelink.lcg.ui.main.model.LoginRequiredException
 import top.easelink.lcg.ui.main.source.ArticlesDataSource
 import top.easelink.lcg.ui.main.source.FavoritesRemoteDataSource
-import top.easelink.lcg.ui.main.source.checkMessages
 import top.easelink.lcg.ui.main.source.model.*
 import top.easelink.lcg.utils.WebsiteConstant
 import top.easelink.lcg.utils.getCookies
@@ -31,6 +28,7 @@ import java.util.*
 object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
     private val gson: Gson = GsonBuilder().excludeFieldsWithoutExposeAnnotation().create()
 
+    @WorkerThread
     override fun getForumArticles(
         query: String,
         processThreadList: Boolean
@@ -39,6 +37,7 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
         return processForumArticlesDocument(doc, processThreadList)
     }
 
+    @WorkerThread
     override fun getHomePageArticles(
         param: String,
         pageNum: Int
@@ -48,86 +47,59 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
         return getArticles(requestUrl)
     }
 
-    override fun getArticleDetail(url: String): Observable<ArticleDetail> {
-        return Observable.create { emitter: ObservableEmitter<ArticleDetail> ->
-            try {
-                val connection = Jsoup
-                    .connect(WebsiteConstant.SERVER_BASE_URL + url)
-                    .cookies(getCookies())
-                    .method(Connection.Method.GET)
-                val response = connection.execute()
-                val doc = response.parse()
-                checkMessages(doc)
-                val baiduJsonElement = doc.selectFirst("script")
-                var articleAbstract: ArticleAbstractResponse? = null
-                if (baiduJsonElement != null) {
-                    try {
-                        var json = baiduJsonElement.html().trim { it <= ' ' }
-                        json = json.replace("\u00a0".toRegex(), "")
-                        articleAbstract = gson.fromJson(
-                            json,
-                            ArticleAbstractResponse::class.java
-                        )
-                    } catch (e: Exception) { // no need to handle
-                    }
+    @WorkerThread
+    override fun getArticleDetail(query: String): ArticleDetail? {
+        var articleDetail: ArticleDetail? = null
+        try {
+            val doc = Client.sendRequestWithQuery(query)
+            var articleAbstract: ArticleAbstractResponse? = null
+            doc.selectFirst("script")?.run {
+                try {
+                    val json = html().trim().replace("\u00a0".toRegex(), "")
+                    articleAbstract = gson.fromJson(json, ArticleAbstractResponse::class.java)
+                } catch (e: Exception) {
+                    // no need to handle
                 }
-                val titleElement = doc.selectFirst("span#thread_subject")
-                val title: String
-                title = if (titleElement == null) {
-                    emitter.onError(BlockException())
-                    return@create
-                } else {
-                    titleElement.text()
-                }
-                val nextPageElement = doc.selectFirst("a.nxt")
-                val nextPageUrl: String
-                nextPageUrl = if (nextPageElement != null) {
-                    nextPageElement.attr("href")
-                } else {
-                    ""
-                }
-                val replyAddUrls = getReplyAddUrl(doc)
-                val avatarsAndNames =
-                    getAvatarAndName(doc)
-                val contents = getContent(doc)
-                val dateTimes = getDateTime(doc)
-                val replyUrls = getReplyUrls(doc)
-                val postList: MutableList<Post> =
-                    ArrayList(avatarsAndNames.size)
-                for (i in avatarsAndNames.indices) {
-                    try {
-                        val replyAddUrl: String? = if (i >= replyAddUrls.size) {
-                            null
-                        } else {
-                            replyAddUrls[i]
-                        }
-                        val post = Post(
-                            Objects.requireNonNull(
-                                avatarsAndNames[i]["name"]
-                            )!!,
-                            Objects.requireNonNull(
-                                avatarsAndNames[i]["avatar"]
-                            )!!,
-                            dateTimes[i],
-                            contents[i],
-                            replyUrls[i],
-                            replyAddUrl
-                        )
-                        postList.add(post)
-                    } catch (npe: NullPointerException) { // will skip a loop if there's any npe occurs
-                        Timber.v(npe)
-                    }
-                }
-                val fromHash = doc.selectFirst("input[name=formhash]").attr("value")
-                val articleDetail =
-                    ArticleDetail(title, postList, nextPageUrl, fromHash, articleAbstract)
-                emitter.onNext(articleDetail)
-            } catch (e: Exception) {
-                Timber.e(e)
-                emitter.onError(e)
-            } finally {
-                emitter.onComplete()
             }
+            val title = doc.selectFirst("span#thread_subject")?.text()?:""
+            val nextPageUrl = doc.selectFirst("a.nxt")?.attr("href")?:""
+            val replyAddUrls = getReplyAddUrl(doc)
+            val avatarsAndNames = getAvatarAndName(doc)
+            val contents = getContent(doc)
+            val dateTimes = getDateTime(doc)
+            val replyUrls = getReplyUrls(doc)
+            val postList: MutableList<Post> = ArrayList(avatarsAndNames.size)
+            for (i in avatarsAndNames.indices) {
+                try {
+                    val replyAddUrl: String? = if (i >= replyAddUrls.size) {
+                        null
+                    } else {
+                        replyAddUrls[i]
+                    }
+                    val post = Post(
+                        Objects.requireNonNull(
+                            avatarsAndNames[i]["name"]
+                        )!!,
+                        Objects.requireNonNull(
+                            avatarsAndNames[i]["avatar"]
+                        )!!,
+                        dateTimes[i],
+                        contents[i],
+                        replyUrls[i],
+                        replyAddUrl
+                    )
+                    postList.add(post)
+                } catch (npe: NullPointerException) {
+                    // will skip a loop if there's any npe occurs
+                    Timber.v(npe)
+                }
+            }
+            val fromHash = doc.selectFirst("input[name=formhash]").attr("value")
+            articleDetail = ArticleDetail(title, postList, nextPageUrl, fromHash, articleAbstract)
+        } catch (e: Exception) {
+            Timber.e(e)
+        } finally {
+            return articleDetail
         }
     }
 
@@ -136,24 +108,17 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
         try {
             val doc = Client.sendRequestWithUrl(requestUrl)
             val elements = doc.select("tbody")
-            var title: String?
-            var author: String?
-            var date: String?
-            var url: String?
-            var origin: String?
-            var view: Int
-            var reply: Int
             for (element in elements) {
                 try {
-                    reply = extractFrom(element, "td.num", "a.xi2")?.toInt()?:0
-                    view = extractFrom(element, "td.num", "em")?.toInt()?:0
-                    title = extractFrom(element, "th.common", ".xst")
-                    author = extractFrom(element, "td.by", "a[href*=uid]")
-                    date = extractFrom(element, "td.by", "span")
-                    url = extractAttrFrom(element, "href", "th.common", "a.xst")
-                    origin = extractFrom(element, "td.by", "a[target]")
+                    val reply = extractFrom(element, "td.num", "a.xi2").toInt()
+                    val view = extractFrom(element, "td.num", "em").toInt()
+                    val title = extractFrom(element, "th.common", ".xst")
+                    val author = extractFrom(element, "td.by", "a[href*=uid]")
+                    val date = extractFrom(element, "td.by", "span")
+                    val url = extractAttrFrom(element, "href", "th.common", "a.xst")
+                    val origin = extractFrom(element, "td.by", "a[target]")
                     if (!TextUtils.isEmpty(title) && !TextUtils.isEmpty(author)) {
-                        list.add(Article(title!!, author!!, date!!, url!!, view, reply, origin))
+                        list.add(Article(title, author, date, url, view, reply, origin))
                     }
                 } catch (nbe: NumberFormatException) {
                     Timber.v(nbe)
@@ -168,10 +133,7 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
         }
     }
 
-    private fun processForumArticlesDocument(
-        doc: Document,
-        processThreadList: Boolean
-    ): ForumPage? {
+    private fun processForumArticlesDocument(doc: Document, processThreadList: Boolean): ForumPage? {
         try {
             var elements = doc.select("tbody[id^=normal]")
             if (elements.isEmpty()) {
@@ -180,41 +142,27 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
                     throw LoginRequiredException()
                 }
             }
-            val articleList: MutableList<Article> =
-                ArrayList()
-            var title: String?
-            var author: String?
-            var date: String?
-            var url: String?
-            var origin: String?
-            var view: Int
-            var reply: Int
+            val articleList: MutableList<Article> = ArrayList()
             for (element in elements) {
                 try {
-                    reply = extractFrom(element, "td.num", "a.xi2")?.toInt()?:0
-                    view = extractFrom(element, "td.num", "em")?.toInt()?:0
-                    title = extractFrom(element, "th.new", ".xst")
-                    if (TextUtils.isEmpty(title)) {
-                        title = extractFrom(element, "th.common", ".xst")
+                    val reply = extractFrom(element, "td.num", "a.xi2").toInt()
+                    val view = extractFrom(element, "td.num", "em").toInt()
+                    val title = extractFrom(element, "th.new", ".xst").also {
+                        if (it.isBlank()){
+                            extractFrom(element, "th.common", ".xst")
+                        }
                     }
-                    author = extractFrom(element, "td.by", "a[href*=uid]")
-                    date = extractFrom(element, "td.by", "span")
-                    url = extractAttrFrom(element, "href", "th.new", "a.xst")
-                    if (TextUtils.isEmpty(url)) {
-                        url = extractAttrFrom(element, "href", "th.common", "a.xst")
+                    val author = extractFrom(element, "td.by", "a[href*=uid]")
+                    val date = extractFrom(element, "td.by", "span")
+                    val url = extractAttrFrom(element, "href", "th.new", "a.xst").also {
+                        if (it.isBlank()) {
+                            extractAttrFrom(element, "href", "th.common", "a.xst")
+                        }
                     }
-                    origin = extractFrom(element, "td.by", "a[target]")
+                    val origin = extractFrom(element, "td.by", "a[target]")
                     if (!TextUtils.isEmpty(title) && !TextUtils.isEmpty(author)) {
                         articleList.add(
-                            Article(
-                                title!!,
-                                author!!,
-                                date!!,
-                                url!!,
-                                view,
-                                reply,
-                                origin
-                            )
+                            Article(title, author, date, url, view, reply, origin)
                         )
                     }
                 } catch (nbe: NumberFormatException) {
@@ -246,19 +194,16 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
                     }
                 }
             }
-            return ForumPage(articleList, threadList);
+            return ForumPage(articleList, threadList)
         } catch (e: Exception) {
             Timber.e(e)
             return null
         }
     }
 
-    private fun extractFrom(
-        element: Element?,
-        vararg tags: String
-    ): String? {
+    private fun extractFrom(element: Element, vararg tags: String): String {
         if (tags.isNullOrEmpty()) {
-            return element?.text()
+            return element.text()
         }
         var e = Elements(element)
         for (tag in tags) {
@@ -270,13 +215,9 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
         return e.text()
     }
 
-    private fun extractAttrFrom(
-        element: Element?,
-        attr: String,
-        vararg tags: String
-    ): String? {
+    private fun extractAttrFrom(element: Element, attr: String, vararg tags: String): String {
         if (tags.isNullOrEmpty()) {
-            return element?.text()
+            return element.text()
         }
         var e = Elements(element)
         for (tag in tags) {
@@ -304,12 +245,10 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
     }
 
     private fun getAvatarAndName(document: Document): List<Map<String, String>> {
-        val list: MutableList<Map<String, String>> =
-            ArrayList(12)
+        val list: MutableList<Map<String, String>> = ArrayList(12)
         val elements = document.select("td[rowspan]")
         for (element in elements) {
-            val avatarAndName: MutableMap<String, String> =
-                ArrayMap(2)
+            val avatarAndName: MutableMap<String, String> = ArrayMap(2)
             avatarAndName["avatar"] = element.select("div.avatar").select("img").attr("src")
             avatarAndName["name"] = element.select("a.xw1").text()
             list.add(avatarAndName)
@@ -330,11 +269,9 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
         return doc.select("div.pcb")
             .filterNotNull()
             .mapTo(ArrayList<String>(), {
-                val tmpElement = it.selectFirst("td.t_f")
-                tmpElement?.let {
-                    processContentElement(it)
-                } ?:
-                it.selectFirst("div.locked").html()
+                it.selectFirst("td.t_f")?.let {
+                        tmp -> processContentElement(tmp)
+                } ?: it.selectFirst("div.locked").html()
             })
     }
 
@@ -374,24 +311,18 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
         return element.html()
     }
 
-    override fun addFavorites(
-        threadId: String,
-        formHash: String
-    ): Observable<Boolean> {
-        return Observable.fromCallable {
-            try {
-                Jsoup.connect(
-                    String.format(
-                        WebsiteConstant.FAVORITE_URL,
-                        threadId,
-                        formHash
-                    )
-                ).cookies(getCookies()).get()
-                return@fromCallable true
-            } catch (e: Exception) {
-                Timber.e(e)
-                return@fromCallable false
-            }
+    @WorkerThread
+    override fun addFavorites(threadId: String, formHash: String): Boolean {
+        return try {
+            Client.sendRequestWithQuery(String.format(
+                WebsiteConstant.FAVORITE_URL,
+                threadId,
+                formHash
+            ))
+            true
+        } catch (e: Exception) {
+            Timber.e(e)
+            false
         }
     }
 
@@ -400,18 +331,17 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
      * @param query post url without base_server_url
      * @return status message
      */
-    fun replyAdd(query: String): Observable<String> {
-        return Observable.fromCallable {
-            try {
-                val doc = Client.sendRequestWithQuery(query)
-                val message = doc.getElementsByClass("nfl").first().text()
-                Timber.d(doc.html())
-                Timber.d(message)
-                return@fromCallable message
-            } catch (e: Exception) {
-                Timber.e(e)
-                return@fromCallable "Error"
-            }
+    @WorkerThread
+    fun replyAdd(query: String): String {
+        return try {
+            val doc = Client.sendRequestWithQuery(query)
+            val message = doc.getElementsByClass("nfl").first().text()
+            Timber.d(doc.html())
+            Timber.d(message)
+            message
+        } catch (e: Exception) {
+            Timber.e(e)
+            "Error"
         }
     }
 }

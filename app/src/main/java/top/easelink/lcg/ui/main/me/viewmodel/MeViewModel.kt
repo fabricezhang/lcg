@@ -1,7 +1,6 @@
 package top.easelink.lcg.ui.main.me.viewmodel
 
 import android.annotation.SuppressLint
-import android.text.TextUtils
 import android.view.View
 import android.widget.Toast
 import androidx.annotation.WorkerThread
@@ -16,7 +15,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.jsoup.Jsoup
-import org.jsoup.nodes.Document
 import timber.log.Timber
 import top.easelink.lcg.LCGApp
 import top.easelink.lcg.R
@@ -28,7 +26,9 @@ import top.easelink.lcg.service.work.SignInWorker.Companion.WORK_INTERVAL
 import top.easelink.lcg.ui.info.UserData
 import top.easelink.lcg.ui.main.me.model.UserInfo
 import top.easelink.lcg.ui.main.model.NotificationInfo
-import top.easelink.lcg.ui.main.source.local.SPConstants.*
+import top.easelink.lcg.ui.main.source.local.SP_KEY_AUTO_SIGN_IN
+import top.easelink.lcg.ui.main.source.local.SP_KEY_LOGGED_IN
+import top.easelink.lcg.ui.main.source.local.SP_KEY_SYNC_FAVORITE
 import top.easelink.lcg.ui.main.source.local.SharedPreferencesHelper
 import top.easelink.lcg.ui.main.source.parseNotificationInfo
 import top.easelink.lcg.ui.main.source.parseUserInfo

@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import top.easelink.lcg.ui.main.articles.viewmodel.ArticleFetcher.FETCH_INIT
-import top.easelink.lcg.ui.main.articles.viewmodel.ArticleFetcher.FETCH_MORE
+import top.easelink.lcg.ui.main.articles.viewmodel.ArticleFetcher.Companion.FETCH_INIT
+import top.easelink.lcg.ui.main.articles.viewmodel.ArticleFetcher.Companion.FETCH_MORE
 import top.easelink.lcg.ui.main.source.model.Article
 import top.easelink.lcg.ui.main.source.remote.ArticlesRemoteDataSource
 

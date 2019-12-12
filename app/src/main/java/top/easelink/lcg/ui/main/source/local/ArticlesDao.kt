@@ -1,23 +1,18 @@
-package top.easelink.lcg.ui.main.source.local;
+package top.easelink.lcg.ui.main.source.local
 
-import androidx.room.Dao;
-import androidx.room.Insert;
-import androidx.room.OnConflictStrategy;
-import androidx.room.Query;
-
-import java.util.List;
-
-import top.easelink.lcg.ui.main.source.model.ArticleEntity;
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import top.easelink.lcg.ui.main.source.model.ArticleEntity
 
 /**
  * author : junzhang
  * date   : 2019-07-26 14:02
  * desc   : Data Access Object for the articles table.
  */
-
 @Dao
-public interface ArticlesDao {
-
+interface ArticlesDao {
     /**
      * Insert an article in the database.
      * If the article already exists, replace it.
@@ -25,7 +20,7 @@ public interface ArticlesDao {
      * @param articleEntity the article to be inserted.
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertArticle(ArticleEntity articleEntity);
+    fun insertArticle(articleEntity: ArticleEntity)
 
     /**
      * Select all articles from my collections.
@@ -33,7 +28,7 @@ public interface ArticlesDao {
      * @return all collected articles.
      */
     @Query("SELECT * FROM articles")
-    List<ArticleEntity> getArticles();
+    fun getArticles(): List<ArticleEntity>
 
     /**
      * Delete an article by id.
@@ -41,11 +36,11 @@ public interface ArticlesDao {
      * @return the number of articles deleted. This should always be 1.
      */
     @Query("DELETE FROM articles WHERE id = :id")
-    int deleteArticleById(String id);
+    fun deleteArticleById(id: String): Int
 
     /**
      * Delete all articles.
      */
     @Query("DELETE FROM articles")
-    void deleteArticles();
+    fun deleteArticles()
 }
