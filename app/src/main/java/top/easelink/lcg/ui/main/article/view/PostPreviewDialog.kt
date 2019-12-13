@@ -1,7 +1,12 @@
 package top.easelink.lcg.ui.main.article.view
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.os.Bundle
 import android.view.*
+import android.view.animation.Animation
+import android.view.animation.BounceInterpolator
+import android.view.animation.OvershootInterpolator
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
@@ -67,6 +72,7 @@ class PostPreviewDialog : SafeShowDialogFragment() {
                 })
                 mViewModel.initUrl(query)
             }
+            dialog?.setCanceledOnTouchOutside(true)
         } catch (e: Exception) {
             Timber.e(e)
         }
@@ -79,6 +85,15 @@ class PostPreviewDialog : SafeShowDialogFragment() {
             height = 400.dpToPx(LCGApp.getContext()).toInt()
             gravity = Gravity.CENTER
         }
+        AnimatorSet().apply {
+            playTogether(
+                ObjectAnimator.ofFloat(view, "scaleX", 0f, 0.9f),
+                ObjectAnimator.ofFloat(view, "scaleY", 0f, 0.9f),
+                ObjectAnimator.ofFloat(view, "alpha", 0f, 1f)
+            )
+            interpolator = OvershootInterpolator()
+            duration = 800
+        }.start()
     }
 
 }

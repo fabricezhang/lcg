@@ -11,6 +11,10 @@ object PreloadManager {
 
     private val PRELOAD_FOLDER = "${LCGApp.getContext().externalCacheDir}/articles"
 
+    fun saveToDisk(content: String) {
+
+    }
+
     fun findDocOrNull(fileName: String): Document? {
         val file :File? = findInDisk("$PRELOAD_FOLDER/$fileName")
         if (file != null) {
