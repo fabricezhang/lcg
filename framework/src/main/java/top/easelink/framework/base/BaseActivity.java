@@ -81,7 +81,6 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends ViewMode
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        performDependencyInjection();
         super.onCreate(savedInstanceState);
         performDataBinding();
     }
@@ -110,10 +109,6 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends ViewMode
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
             mProgressDialog.cancel();
         }
-    }
-
-    public void performDependencyInjection() {
-        AndroidInjection.inject(this);
     }
 
     @TargetApi(Build.VERSION_CODES.M)

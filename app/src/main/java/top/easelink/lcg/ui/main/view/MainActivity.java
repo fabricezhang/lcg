@@ -39,6 +39,7 @@ import java.util.Properties;
 
 import javax.inject.Inject;
 
+import dagger.android.AndroidInjection;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
@@ -135,6 +136,7 @@ public class MainActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        performDependencyInjection();
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
         mainActivityWeakReference = new WeakReference<>(this);
@@ -217,6 +219,11 @@ public class MainActivity
         getViewDataBinding().mainViewPager.setAdapter(new MainViewPagerAdapter(
                 getSupportFragmentManager(), MainActivity.this));
         mTabLayout.setupWithViewPager(getViewDataBinding().mainViewPager);
+    }
+
+
+    public void performDependencyInjection() {
+        AndroidInjection.inject(this);
     }
 
     private void setupBottomNavMenu() {
