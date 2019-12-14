@@ -7,6 +7,8 @@
         android:id="@+id/notification_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingEnd="@dimen/dp_5"
+        android:paddingStart="@dimen/dp_5"
         android:layout_marginTop="@dimen/dp_3"
         android:layout_marginBottom="@dimen/dp_3" >
     <TextView

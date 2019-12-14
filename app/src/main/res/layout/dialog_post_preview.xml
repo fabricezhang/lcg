@@ -63,9 +63,8 @@
             android:contentDescription="@null"
             tools:src="@drawable/ic_noavatar_middle"/>
 
-        <Button
+        <ImageView
             android:id="@+id/exit"
-            android:background="@color/white"
             android:layout_width="@dimen/dp_20"
             android:layout_height="@dimen/dp_20"
             android:layout_gravity="center"
