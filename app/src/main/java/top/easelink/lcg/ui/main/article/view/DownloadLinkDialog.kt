@@ -40,7 +40,7 @@ class DownloadLinkDialog : SafeShowDialogFragment() {
                         R.layout.download_link_item_view, linkList
                     )
                     onItemClickListener =
-                        AdapterView.OnItemClickListener { parent: AdapterView<*>?, itemView: View, position: Int, id: Long ->
+                        AdapterView.OnItemClickListener { _: AdapterView<*>?, itemView: View, position: Int, _: Long ->
                             copy(linkList[position])
                             itemView.setBackgroundColor(baseActivity.resources.getColor(R.color.colorAccent))
                         }

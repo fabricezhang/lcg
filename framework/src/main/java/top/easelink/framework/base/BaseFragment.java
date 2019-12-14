@@ -14,8 +14,6 @@ import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModel;
 
-import dagger.android.support.AndroidSupportInjection;
-
 public abstract class BaseFragment<T extends ViewDataBinding, V extends ViewModel> extends Fragment {
 
     private BaseActivity mActivity;
@@ -56,7 +54,6 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends ViewMode
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        performDependencyInjection();
         super.onCreate(savedInstanceState);
         mViewModel = getViewModel();
         setHasOptionsMenu(false);
@@ -96,10 +93,6 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends ViewMode
         if (mActivity != null) {
             mActivity.hideKeyboard();
         }
-    }
-
-    protected void performDependencyInjection() {
-        AndroidSupportInjection.inject(this);
     }
 
     public interface Callback {

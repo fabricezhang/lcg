@@ -49,7 +49,7 @@ class ForumArticlesFragment :
             viewModel.threadList.observe(this, Observer {
                     threadList -> setUpTabLayout(threadList)
             })
-            viewModel.initUrl(it.getString(ARG_PARAM), ArticleFetcher.FETCH_INIT)
+            viewModel.initUrl(it.getString(ARG_PARAM)!!, ArticleFetcher.FETCH_INIT)
             viewModel.setTitle(it.getString(ARG_TITLE) ?: "PlaceHolder")
         }
         setUpRecyclerView()

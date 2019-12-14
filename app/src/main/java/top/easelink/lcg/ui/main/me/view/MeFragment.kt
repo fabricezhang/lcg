@@ -10,6 +10,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.airbnb.lottie.LottieProperty
@@ -30,6 +31,8 @@ import top.easelink.lcg.databinding.FragmentMeBinding
 import top.easelink.lcg.ui.main.login.view.LoginHintDialog
 import top.easelink.lcg.ui.main.me.viewmodel.MeViewModel
 import top.easelink.lcg.ui.main.model.OpenNotificationsPageEvent
+import top.easelink.lcg.utils.addFragmentInActivity
+import top.easelink.lcg.utils.addFragmentInFragment
 import top.easelink.lcg.utils.showMessage
 
 class MeFragment : BaseFragment<FragmentMeBinding, MeViewModel>() {
@@ -146,7 +149,12 @@ class MeFragment : BaseFragment<FragmentMeBinding, MeViewModel>() {
                 EventBus.getDefault().post(OpenNotificationsPageEvent)
                 findViewById<View>(R.id.badge).visibility = View.GONE
             }
-            findViewById<ImageView>(R.id.btn_icon).setImageResource(R.drawable.ic_notifications)
+            findViewById<ImageView>(R.id.btn_icon).apply {
+                setImageResource(R.drawable.ic_notifications)
+                setOnClickListener {
+                    showFragment(MeNotificationFragment())
+                }
+            }
             findViewById<TextView>(R.id.tv_icon).setText(R.string.ic_notifications)
         }
         icon_deja_vue?.apply {
@@ -175,13 +183,17 @@ class MeFragment : BaseFragment<FragmentMeBinding, MeViewModel>() {
         }
     }
 
+    private fun showFragment(fragment: Fragment) {
+        addFragmentInFragment(
+            childFragmentManager,
+            fragment,
+            R.id.child_fragment_container
+        )
+    }
+
     override fun onResume() {
         super.onResume()
         viewModel.fetchUserInfoDirect()
-    }
-
-    override fun performDependencyInjection() {
-
     }
 
     companion object {

@@ -35,8 +35,6 @@ class AboutFragment : BaseFragment<FragmentAboutBinding, AboutViewModel?>() {
         }
     }
 
-    override fun performDependencyInjection() { }
-
     private fun syncAuthorState() {
         val hour = Calendar.getInstance()[Calendar.HOUR_OF_DAY]
         when {

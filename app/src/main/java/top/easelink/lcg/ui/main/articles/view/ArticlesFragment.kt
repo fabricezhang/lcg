@@ -33,8 +33,8 @@ class ArticlesFragment : BaseFragment<FragmentArticlesBinding, ArticlesViewModel
     }
 
     private fun scrollToTop() {
-        viewDataBinding.backToTop?.playAnimation()
-        viewDataBinding.recyclerView?.let {
+        viewDataBinding.backToTop.playAnimation()
+        viewDataBinding.recyclerView.let {
             //            val pos = (it.layoutManager as? LinearLayoutManager)?.findFirstVisibleItemPosition()
 //            if (pos != null && pos > 30) {
 //                it.smoothScrollToPosition(pos - 5)

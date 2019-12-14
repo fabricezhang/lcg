@@ -42,7 +42,7 @@ class ForumNavigationFragment :
                 R.layout.item_forums_grid
             )
             onItemClickListener =
-                AdapterView.OnItemClickListener { parent: AdapterView<*>, view: View?, position: Int, id: Long ->
+                AdapterView.OnItemClickListener { parent: AdapterView<*>, _: View?, position: Int, _: Long ->
                     val item =
                         (parent.adapter as CustomGridViewAdapter).getItem(position)
                     if (item != null) {
