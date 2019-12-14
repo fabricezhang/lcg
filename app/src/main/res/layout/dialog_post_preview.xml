@@ -23,6 +23,37 @@
         android:paddingStart="@dimen/dp_5"
         android:paddingBottom="@dimen/dp_5">
 
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/loading_fail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:visibility="visible" >
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:layout_weight="9"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:lottie_autoPlay="true"
+                app:lottie_rawRes="@raw/shark"
+                app:lottie_loop="true" />
+            <TextView
+                android:id="@+id/error_info"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:textColor="@color/semi_gray"
+                android:text="@string/preview_fail_info" />
+        </LinearLayout>
+
+
+
         <ImageView
             android:id="@+id/post_avatar"
             style="@style/TextStyle.Heading"

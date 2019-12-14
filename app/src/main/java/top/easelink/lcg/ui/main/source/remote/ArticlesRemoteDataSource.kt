@@ -5,11 +5,13 @@ import android.util.ArrayMap
 import androidx.annotation.WorkerThread
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import org.jsoup.HttpStatusException
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
 import timber.log.Timber
 import top.easelink.lcg.network.Client
+import top.easelink.lcg.ui.main.model.BlockException
 import top.easelink.lcg.ui.main.model.LoginRequiredException
 import top.easelink.lcg.ui.main.source.ArticlesDataSource
 import top.easelink.lcg.ui.main.source.FavoritesRemoteDataSource
@@ -43,21 +45,24 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
         return getArticles("$FORUM_BASE_URL$param&page=$pageNum")
     }
 
+    @Throws(BlockException::class, HttpStatusException::class)
     @WorkerThread
     override fun getPostPreview(query: String): PreviewPost? {
-        var post: PreviewPost? = null
-        try {
-            post =  getFirstPost(Client.sendRequestWithQuery(query))
+        return try {
+            getFirstPost(Client.sendRequestWithQuery(query))
         } catch (e: Exception) {
-            Timber.e(e)
-        } finally {
-            return post
+            when(e) {
+                is BlockException,
+                is HttpStatusException -> throw e
+            }
+            Timber.w(e)
+            null
         }
     }
 
+    @Throws(BlockException::class)
     @WorkerThread
     override fun getArticleDetail(query: String): ArticleDetail? {
-        var articleDetail: ArticleDetail? = null
         try {
             val doc = Client.sendRequestWithQuery(query)
             var articleAbstract: ArticleAbstractResponse? = null
@@ -69,8 +74,11 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
                     // no need to handle
                 }
             }
-            val title = doc.selectFirst("span#thread_subject")?.text()?:""
-            val nextPageUrl = doc.selectFirst("a.nxt")?.attr("href")?:""
+            val title = doc.selectFirst("span#thread_subject")?.text().orEmpty()
+            if (title.isEmpty()) {
+                throw BlockException()
+            }
+            val nextPageUrl = doc.selectFirst("a.nxt")?.attr("href").orEmpty()
             val replyAddUrls = getReplyAddUrl(doc)
             val avatarsAndNames = getAvatarAndName(doc)
             val contents = getContents(doc)
@@ -98,12 +106,14 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
                     Timber.v(npe)
                 }
             }
-            val fromHash = doc.selectFirst("input[name=formhash]").attr("value")
-            articleDetail = ArticleDetail(title, postList, nextPageUrl, fromHash, articleAbstract)
+            val fromHash = doc.selectFirst("input[name=formhash]")?.attr("value")
+            return ArticleDetail(title, postList, nextPageUrl, fromHash, articleAbstract)
         } catch (e: Exception) {
+            when(e) {
+                is BlockException -> throw e
+            }
             Timber.e(e)
-        } finally {
-            return articleDetail
+            return null
         }
     }
 
@@ -270,7 +280,11 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
     }
 
     private fun getFirstPost(document: Document): PreviewPost {
-        val dateTime = document.selectFirst("div.authi").select("em").text()
+        val dateTime = document
+            .selectFirst("div.authi")
+            ?.select("em")
+            ?.text()
+            ?: throw BlockException()
         val content = getFirstContent(document)
         var avatar: String? = null
         var name: String? = null

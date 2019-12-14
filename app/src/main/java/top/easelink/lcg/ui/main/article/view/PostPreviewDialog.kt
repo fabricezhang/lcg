@@ -4,8 +4,6 @@ import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.os.Bundle
 import android.view.*
-import android.view.animation.Animation
-import android.view.animation.BounceInterpolator
 import android.view.animation.OvershootInterpolator
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -69,6 +67,10 @@ class PostPreviewDialog : SafeShowDialogFragment() {
                 })
                 mViewModel.date.observe(this, Observer {
                     date_text_view.text = it
+                })
+                mViewModel.loadFailed.observe(this, Observer {
+                    loading_fail.visibility = View.VISIBLE
+                    error_info.setText(it)
                 })
                 mViewModel.initUrl(query)
             }

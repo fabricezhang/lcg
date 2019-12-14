@@ -4,6 +4,6 @@ class ArticleDetail(
     val articleTitle: String,
     val postList: List<Post>,
     val nextPageUrl: String,
-    val fromHash: String,
+    val fromHash: String?,
     val articleAbstractResponse: ArticleAbstractResponse?
 )

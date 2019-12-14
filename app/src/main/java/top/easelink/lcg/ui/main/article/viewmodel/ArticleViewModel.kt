@@ -126,55 +126,59 @@ class ArticleViewModel: ViewModel(), ArticleAdapterListener {
             showMessage(R.string.add_to_favorite_failed)
         }
         GlobalScope.launch(Dispatchers.IO) {
-            // if title is null, use abstract's title, this rarely happens
-            val title = articleTitle.value?:articleAbstract?.title
-            val threadId = extractThreadId(mUrl)
-            val author = posts[0].author
-            val content = articleAbstract?.description ?: ""
-            val articleEntity = ArticleEntity(
-                title ?: "未知标题",
-                author,
-                mUrl!!,
-                content,
-                System.currentTimeMillis()
-            )
-            val syncFavoritesEnable =
-                SharedPreferencesHelper.getUserSp().getBoolean(SP_KEY_SYNC_FAVORITE, false)
-            if (syncFavoritesEnable) {
-                if (threadId != null && mFormHash != null) {
-                    ArticlesRemoteDataSource.addFavorites(threadId, mFormHash!!).let {
-                        if (it)
-                            showMessage(R.string.sync_favorite_successfully)
-                        else
-                            showMessage(R.string.sync_favorite_failed)
+            try {
+                // if title is null, use abstract's title, this rarely happens
+                val title = articleTitle.value?:articleAbstract?.title
+                val threadId = extractThreadId(mUrl)
+                val author = posts[0].author
+                val content = articleAbstract?.description ?: ""
+                val articleEntity = ArticleEntity(
+                    title ?: "未知标题",
+                    author,
+                    mUrl!!,
+                    content,
+                    System.currentTimeMillis()
+                )
+                val syncFavoritesEnable =
+                    SharedPreferencesHelper.getUserSp().getBoolean(SP_KEY_SYNC_FAVORITE, false)
+                if (syncFavoritesEnable) {
+                    if (threadId != null && mFormHash != null) {
+                        ArticlesRemoteDataSource.addFavorites(threadId, mFormHash!!).let {
+                            if (it)
+                                showMessage(R.string.sync_favorite_successfully)
+                            else
+                                showMessage(R.string.sync_favorite_failed)
+                        }
                     }
                 }
-            }
-            try {
-                val res = ArticlesLocalDataSource.addArticleToFavorite(articleEntity)
-                // don't show local message while sync to network
-                if (!syncFavoritesEnable) {
-                    if (res) {
-                        showMessage(R.string.add_to_favorite_successfully)
-                    } else {
-                        showMessage(R.string.add_to_favorite_failed)
+                try {
+                    val res = ArticlesLocalDataSource.addArticleToFavorite(articleEntity)
+                    // don't show local message while sync to network
+                    if (!syncFavoritesEnable) {
+                        if (res) {
+                            showMessage(R.string.add_to_favorite_successfully)
+                        } else {
+                            showMessage(R.string.add_to_favorite_failed)
+                        }
                     }
+                } catch (e: Exception) {
+                    Timber.e(e)
+                    showMessage(R.string.add_to_favorite_failed)
                 }
             } catch (e: Exception) {
                 Timber.e(e)
-                showMessage(R.string.add_to_favorite_failed)
             }
         }
     }
 
     private fun setArticleNotFound() {
-        isNotFound.value = true
-        shouldDisplayPosts.value = false
+        isNotFound.postValue(true)
+        shouldDisplayPosts.postValue(false)
     }
 
     private fun setArticleBlocked() {
-        isBlocked.value = true
-        shouldDisplayPosts.value = false
+        isBlocked.postValue(true)
+        shouldDisplayPosts.postValue(false)
     }
 
     private fun extractThreadId(url: String?): String? {

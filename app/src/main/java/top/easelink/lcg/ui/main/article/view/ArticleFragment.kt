@@ -136,8 +136,8 @@ class ArticleFragment : BaseFragment<FragmentArticleBinding, ArticleViewModel>()
         return super.onOptionsItemSelected(item)
     }
 
-    fun scrollToTop() {
-        viewDataBinding!!.postRecyclerView.smoothScrollToPosition(0)
+    private fun scrollToTop() {
+        viewDataBinding.postRecyclerView.smoothScrollToPosition(0)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
