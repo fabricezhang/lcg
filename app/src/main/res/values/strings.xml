@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">吾爱破解</string>
-
+    <string name="todo_tips">未完成的功能</string>
     <string name="login_required_error">请求页面失败，请确认是否登陆</string>
     <string name="error">请求页面失败，请稍后再试</string>
     <!--Toolbar menus-->
@@ -42,9 +42,15 @@
     <string name="sync_favorites">同步收藏文章</string>
     <string name="sync_favorites_instruction">（默认仅收藏到本地）</string>
     <string name="me_tab_level_placeholder">个人信息</string>
+    <string name="me_tab_username_placeholder">用户名</string>
+    <string name="me_tab_group_placeholder">用户群组</string>
     <string name="me_tab_clear_cookie">本地登陆信息已清除</string>
-
+    <string name="me_tab_credit_placeholder">0</string>
     <string name="me_notification_title">我的信息</string>
+
+    <string name="ic_notifications">消息提醒</string>
+    <string name="ic_feedback">问题反馈</string>
+    <string name="ic_deja_vue">最近浏览</string>
 
     <!--Login Dialog-->
     <string name="login_username">用户名</string>
@@ -53,7 +59,10 @@
     <string name="login_btn">登陆</string>
     <string name="login_hint_btn">去登陆</string>
     <string name="login_cancel_btn">取消</string>
-
+    
+    <!--Notification-->
+    <string name="notification_arrival">有新的消息</string>
+    <string name="notification_read">知道了</string>
     <!--about fragment-->
     <string name="version">"version"</string>
     <string name="github_title">Github源码地址</string>
@@ -78,16 +87,16 @@
     <!--download link dialog-->
     <string name="download_title">下载链接</string>
     <string name="download_link_not_found">未找到下载链接</string>
-    <string name="download_link_copy_succeed">已复制到剪贴板</string>
-    <string name="download_link_copy_failed">复制失败</string>
+    <string name="copy_succeed">已复制到剪贴板</string>
+    <string name="copy_failed">复制失败</string>
 
     <!--reply post dialog  -->
     <string name="reply_post_dialog_title">回复：%s</string>
     <string name="reply_post_btn_cancel">取消</string>
     <string name="reply_post_btn_confirm">确认</string>
     <string name="reply_post_btn_sending">发送中</string>
-    <string name="reply_post_btn_sent">发送完成</string>
-    <string name="reply_post_input_hint">请输入回复内容...</string>
+    <string name="reply_post_btn_sent">完成</string>
+    <string name="reply_post_input_hint">请输入回复内容…</string>
 
     <!--empty state-->
     <string name="empty_screen">目前没有内容可供展示</string>
@@ -113,4 +122,12 @@
     <!--block-->
     <string name="not_found_info">抱歉，文章可能已经被删除了</string>
     <string name="block_info">抱歉，本帖要求阅读权限高于 10 才能浏览</string>
+    <string name="preview_fail_info">预览失败，请检查阅读权限</string>
+    <string name="preview_fail_info_post_deleted">帖子违规，已被管理员删除</string>
+
+    <string name="general_error">未知错误，欢迎反馈问题</string>
+    <!--permissions-->
+    <string name="permission_request">请授予读写磁盘权限</string>
+    <string name="permission_grant">已授权</string>
+    <string name="permission_denied">未授权，部分空能可能无法使用</string>
 </resources>

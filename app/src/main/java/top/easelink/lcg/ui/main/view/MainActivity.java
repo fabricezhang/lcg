@@ -1,5 +1,6 @@
 package top.easelink.lcg.ui.main.view;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,6 +29,7 @@ import com.google.android.material.tabs.TabLayout;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -37,18 +39,18 @@ import java.util.Properties;
 
 import javax.inject.Inject;
 
+import dagger.android.AndroidInjection;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
+import pub.devrel.easypermissions.EasyPermissions;
 import top.easelink.framework.base.BaseActivity;
 import top.easelink.framework.base.BaseFragment;
 import top.easelink.lcg.BR;
-import top.easelink.lcg.BuildConfig;
 import top.easelink.lcg.R;
 import top.easelink.lcg.databinding.ActivityMainBinding;
 import top.easelink.lcg.databinding.NavHeaderMainBinding;
 import top.easelink.lcg.mta.EventHelperKt;
-import top.easelink.lcg.ui.ViewModelProviderFactory;
 import top.easelink.lcg.ui.main.about.view.AboutFragment;
 import top.easelink.lcg.ui.main.article.view.ArticleFragment;
 import top.easelink.lcg.ui.main.articles.view.ArticlesFragment;
@@ -56,26 +58,30 @@ import top.easelink.lcg.ui.main.articles.view.FavoriteArticlesFragment;
 import top.easelink.lcg.ui.main.articles.view.ForumArticlesFragment;
 import top.easelink.lcg.ui.main.forumnav.view.ForumNavigationFragment;
 import top.easelink.lcg.ui.main.me.view.MeFragment;
+import top.easelink.lcg.ui.main.model.NewMessageEvent;
+import top.easelink.lcg.ui.main.model.NotificationInfo;
 import top.easelink.lcg.ui.main.model.OpenArticleEvent;
 import top.easelink.lcg.ui.main.model.OpenForumEvent;
+import top.easelink.lcg.ui.main.model.OpenNotificationsPageEvent;
 import top.easelink.lcg.ui.main.model.TabModel;
 import top.easelink.lcg.ui.main.viewmodel.MainViewModel;
 import top.easelink.lcg.ui.search.view.SearchActivity;
-import top.easelink.lcg.utils.ActivityUtils;
+import top.easelink.lcg.utils.ActivityUtilsKt;
+import top.easelink.lcg.utils.ToastUtilsKt;
 
 import static top.easelink.lcg.mta.MTAConstantKt.EVENT_OPEN_FORUM;
 import static top.easelink.lcg.mta.MTAConstantKt.PROP_FORUM_NAME;
-import static top.easelink.lcg.utils.ActivityUtils.TAG_PREFIX;
+import static top.easelink.lcg.utils.ActivityUtilsKt.TAG_PREFIX;
 import static top.easelink.lcg.utils.WebsiteConstant.APP_RELEASE_PAGE;
 import static top.easelink.lcg.utils.WebsiteConstant.SEARCH_URL;
 import static top.easelink.lcg.utils.WebsiteConstant.URL_KEY;
 
-@SuppressWarnings("unused")
-public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewModel>
-        implements MainNavigator, HasSupportFragmentInjector, BottomNavigationView.OnNavigationItemSelectedListener {
+public class MainActivity
+        extends BaseActivity<ActivityMainBinding, MainViewModel>
+        implements HasSupportFragmentInjector,
+        BottomNavigationView.OnNavigationItemSelectedListener,
+        EasyPermissions.PermissionCallbacks {
 
-    @Inject
-    ViewModelProviderFactory factory;
     @Inject
     DispatchingAndroidInjector<Fragment> fragmentDispatchingAndroidInjector;
     private static WeakReference<MainActivity> mainActivityWeakReference;
@@ -94,12 +100,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
 
     @Override
     public MainViewModel getViewModel() {
-        return ViewModelProviders.of(this, factory).get(MainViewModel.class);
-    }
-
-    @Override
-    public void handleError(Throwable throwable) {
-        // handle error
+        return ViewModelProviders.of(this).get(MainViewModel.class);
     }
 
     @Override
@@ -129,20 +130,18 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
     }
 
     @Override
-    public void openLoginActivity() { }
-
-    @Override
     public AndroidInjector<Fragment> supportFragmentInjector() {
         return fragmentDispatchingAndroidInjector;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        performDependencyInjection();
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
-        getViewModel().setNavigator(this);
         mainActivityWeakReference = new WeakReference<>(this);
         setUp();
+//        requestPermissions();
     }
 
     @Override
@@ -168,7 +167,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
     /**
      * manage the bottom navigation view item selected state
      * depends on current top fragment
-     * */
+     */
     private void syncBottomViewNavItemState() {
         BottomNavigationView view = getViewDataBinding().bottomNavigation;
         try {
@@ -217,13 +216,14 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
         setupDrawerNavMenu();
         setupBottomNavMenu();
 
-        String version = getString(R.string.version) + " " + BuildConfig.VERSION_NAME;
-        getViewModel().updateAppVersion(version);
-        getViewModel().onNavMenuCreated();
-
         getViewDataBinding().mainViewPager.setAdapter(new MainViewPagerAdapter(
                 getSupportFragmentManager(), MainActivity.this));
         mTabLayout.setupWithViewPager(getViewDataBinding().mainViewPager);
+    }
+
+
+    public void performDependencyInjection() {
+        AndroidInjection.inject(this);
     }
 
     private void setupBottomNavMenu() {
@@ -265,8 +265,21 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
         showFragment(ForumArticlesFragment.newInstance(event.getTitle(), event.getUrl()));
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(OpenNotificationsPageEvent event) {
+
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(NewMessageEvent event) {
+        NotificationInfo info = event.getNotificationInfo();
+        if (info.isNotEmpty()) {
+            ToastUtilsKt.showMessage(getString(R.string.notification_arrival));
+        }
+    }
+
     private void showFragment(BaseFragment fragment) {
-        ActivityUtils.addFragmentInActivity(getSupportFragmentManager(),
+        ActivityUtilsKt.addFragmentInActivity(getSupportFragmentManager(),
                 fragment,
                 R.id.clRootView);
     }
@@ -291,7 +304,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
         searchView.setSubmitButtonEnabled(true);
 //        // Assumes current activity is the searchable activity
 //        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener(){
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -351,6 +364,35 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
                 break;
         }
         return true;
+    }
+
+    private static final int RW_EXTERNAL_STORAGE_CODE = 1111;
+    private void requestPermissions() {
+        String[] perms = {
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+        };
+        if (!EasyPermissions.hasPermissions(this, perms)) {
+            EasyPermissions.requestPermissions(this, getString(R.string.permission_request), RW_EXTERNAL_STORAGE_CODE, perms);
+        }
+    }
+
+    @Override
+    public void onPermissionsGranted(int requestCode, List<String> perms) {
+        ToastUtilsKt.showMessage(R.string.permission_grant);
+    }
+
+    @Override
+    public void onPermissionsDenied(int requestCode, List<String> perms) {
+        if (requestCode == RW_EXTERNAL_STORAGE_CODE) {
+            ToastUtilsKt.showMessage(R.string.permission_denied);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NotNull String[] permissions, @NotNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
 
     public static class MainViewPagerAdapter extends FragmentPagerAdapter {

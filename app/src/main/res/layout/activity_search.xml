@@ -18,7 +18,6 @@
         <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:adapter="@{viewModel.searchResults}"/>
+                android:layout_height="match_parent"/>
     </top.easelink.framework.customview.ScrollChildSwipeRefreshLayout>
 </layout>

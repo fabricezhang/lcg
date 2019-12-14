@@ -30,6 +30,8 @@ public class WebsiteConstant {
     public static final String FAVORITE_URL = SERVER_BASE_URL + "home.php?mod=spacecp&ac=favorite&type=thread&id=%s&formhash=%s&infloat=yes&handlekey=k_favorite&inajax=1&ajaxtarget=fwin_content_k_favorite";
     public static final String CHECK_RULE_URL = SERVER_BASE_URL + "forum.php?mod=ajax&action=checkpostrule&inajax=yes&ac=reply&infloat=yes&handlekey=reply";
 
+    public static final String SYSTEM_NOTIFICATION_URL = "home.php?mod=space&do=notice&view=system";
+
     public static final String HOME_URL = "home.php";
     public static final String LOGIN_URL = "member.php?mod=logging&action=login";
 

@@ -38,23 +38,25 @@ fun fastBlur(origin: Bitmap, radius: Int, scale: Float = BITMAP_SCALE): Bitmap? 
  * use RenderScript to create bulr effect
  */
 @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-fun bitmapBlur(context: Context, bitmap: Bitmap, radius: Int): Bitmap? {
-    try {
-        val renderScript = RenderScript.create(context)
-        val input = Allocation.createFromBitmap(renderScript, bitmap)
-        val output = Allocation.createTyped(renderScript, input.type)
-        // Load up an instance of the specific script that we want to use.
-        val scriptIntrinsicBlur = ScriptIntrinsicBlur.create(renderScript, Element.U8_4(renderScript))
-        scriptIntrinsicBlur.setInput(input)
-        scriptIntrinsicBlur.setRadius(radius.toFloat())
-        scriptIntrinsicBlur.forEach(output)
-        output.copyTo(bitmap)
-        renderScript.destroy()
-        return bitmap
-    } catch (e: Exception) {
-        bitmap.recycle()
-        return null
+fun bitmapBlur(context: Context, bitmap: Bitmap?, radius: Int): Bitmap? {
+    bitmap?.apply {
+        try {
+            val renderScript = RenderScript.create(context)
+            val input = Allocation.createFromBitmap(renderScript, bitmap)
+            val output = Allocation.createTyped(renderScript, input.type)
+            // Load up an instance of the specific script that we want to use.
+            val scriptIntrinsicBlur = ScriptIntrinsicBlur.create(renderScript, Element.U8_4(renderScript))
+            scriptIntrinsicBlur.setInput(input)
+            scriptIntrinsicBlur.setRadius(radius.toFloat())
+            scriptIntrinsicBlur.forEach(output)
+            output.copyTo(bitmap)
+            renderScript.destroy()
+            return bitmap
+        } catch (e: Exception) {
+            bitmap.recycle()
+        }
     }
+    return null
 }
 
 /**

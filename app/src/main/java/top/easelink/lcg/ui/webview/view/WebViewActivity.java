@@ -29,7 +29,6 @@ import com.airbnb.lottie.LottieAnimationView;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 import timber.log.Timber;
 import top.easelink.framework.customview.HorizontalScrollDisableWebView;
@@ -38,9 +37,9 @@ import top.easelink.lcg.R;
 import top.easelink.lcg.service.web.HookInterface;
 import top.easelink.lcg.ui.main.view.MainActivity;
 
-import static top.easelink.lcg.ui.webview.WebViewConstants.FORCE_ENABLE_JS_KEY;
-import static top.easelink.lcg.ui.webview.WebViewConstants.OPEN_LOGIN_PAGE;
-import static top.easelink.lcg.ui.webview.WebViewConstants.TITLE_KEY;
+import static top.easelink.lcg.ui.webview.WebViewConstantsKt.FORCE_ENABLE_JS_KEY;
+import static top.easelink.lcg.ui.webview.WebViewConstantsKt.OPEN_LOGIN_PAGE;
+import static top.easelink.lcg.ui.webview.WebViewConstantsKt.TITLE_KEY;
 import static top.easelink.lcg.utils.CookieUtilsKt.setCookies;
 import static top.easelink.lcg.utils.WebsiteConstant.EXTRA_TABLE_HTML;
 import static top.easelink.lcg.utils.WebsiteConstant.LOGIN_URL;

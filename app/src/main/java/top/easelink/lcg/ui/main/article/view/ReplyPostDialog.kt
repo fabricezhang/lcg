@@ -1,9 +1,7 @@
 package top.easelink.lcg.ui.main.article.view
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -13,17 +11,23 @@ import androidx.lifecycle.ViewModelProviders
 import top.easelink.framework.base.BaseDialog
 import top.easelink.lcg.R
 import top.easelink.lcg.ui.main.article.viewmodel.ReplyPostViewModel
-import top.easelink.lcg.utils.ActivityUtils
+import top.easelink.lcg.utils.TAG_PREFIX
 
 class ReplyPostDialog : BaseDialog() {
 
     private lateinit var replyPostViewModel: ReplyPostViewModel
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setStyle(STYLE_NORMAL, R.style.AppTheme_Dialog_FullScreen_BottomInOut)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        dialog?.window?.setWindowAnimations(R.style.BottomInOutAnim)
         return inflater.inflate(R.layout.dialog_reply_post, container, false)
     }
 
@@ -67,12 +71,21 @@ class ReplyPostDialog : BaseDialog() {
         }
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        dialog?.window?.attributes?.apply {
+            width = WindowManager.LayoutParams.MATCH_PARENT
+            height = WindowManager.LayoutParams.WRAP_CONTENT
+            gravity = Gravity.BOTTOM
+        }
+    }
+
     fun show(fragmentManager: FragmentManager?) {
         super.show(fragmentManager!!, TAG)
     }
 
     companion object {
-        private val TAG = ActivityUtils.TAG_PREFIX + ReplyPostDialog::class.java.simpleName
+        private val TAG = TAG_PREFIX + ReplyPostDialog::class.java.simpleName
         private const val REPLY_POST_URL = "reply_post_url"
         private const val REPLY_POST_AUTHOR = "reply_post_author"
         @JvmStatic

@@ -11,8 +11,4 @@ public abstract class ActivityBuilder {
 
     @ContributesAndroidInjector(modules = {MainFragmentProvider.class})
     abstract MainActivity bindMainActivity();
-
-    @ContributesAndroidInjector()
-    abstract SearchActivity bindSearchActivity();
-
 }

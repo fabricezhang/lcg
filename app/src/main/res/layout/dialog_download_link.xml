@@ -1,66 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <data>
-        <variable
-                name="viewModel"
-                type="top.easelink.lcg.ui.main.article.viewmodel.DownloadLinkViewModel" />
-    </data>
 
-    <RelativeLayout
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dp_10"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="@dimen/dp_4"
+        app:cardUseCompatPadding="true">
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/dp_15"
+            android:paddingStart="@dimen/dp_16"
+            android:paddingEnd="@dimen/dp_16"
+            android:paddingTop="@dimen/dp_30">
 
-        <androidx.cardview.widget.CardView
+            <TextView
+                style="@style/TextStyle.Heading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/dp_10"
+                android:text="@string/download_title" />
+
+            <ListView
+                android:id="@+id/download_link_list"
+                android:layout_marginTop="@dimen/dp_10"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dp_10"
-                app:cardBackgroundColor="@color/white"
-                app:cardCornerRadius="@dimen/dp_4"
-                app:cardUseCompatPadding="true">
-
-            <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingBottom="@dimen/dp_15"
-                    android:paddingStart="@dimen/dp_16"
-                    android:paddingEnd="@dimen/dp_16"
-                    android:paddingTop="@dimen/dp_30">
-
-                <TextView
-                        style="@style/TextStyle.Heading"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="@dimen/dp_10"
-                        android:text="@string/download_title" />
-
-                <ListView
-                        android:id="@+id/download_link_list"
-                        android:layout_marginTop="@dimen/dp_10"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@color/white"
-                        android:divider="@color/white"
-                        android:dividerHeight="@dimen/dp_6"
+                android:background="@color/white"
+                android:divider="@color/white"
+                android:dividerHeight="@dimen/dp_6"
                 />
 
-                <ImageButton
-                        android:background="@color/white"
-                        android:layout_marginTop="@dimen/dp_20"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom|end"
-                        android:src="@drawable/ic_close_black_24dp"
-                        android:padding="@dimen/dp_10"
-                        android:onClick="@{()-> viewModel.onExitClick()}"
-                        android:contentDescription="@null"/>
+            <ImageButton
+                android:id="@+id/exit"
+                android:background="@color/white"
+                android:layout_marginTop="@dimen/dp_20"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:src="@drawable/ic_close_black_24dp"
+                android:padding="@dimen/dp_10"
+                android:contentDescription="@null"/>
 
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
-    </RelativeLayout>
-
-</layout>
+</RelativeLayout>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_me_icon_btns"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_marginBottom="@dimen/dp_5"
+        android:layout_marginStart="@dimen/dp_5"
+        android:layout_marginEnd="@dimen/dp_5"
+        app:cardCornerRadius="@dimen/dp_6"
+        app:cardElevation="@dimen/dp_2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/me_user_info_card">
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="@dimen/dp_5"
+            android:paddingBottom="@dimen/dp_5"
+            android:baselineAligned="false">
+
+        <include layout="@layout/layout_icon_button"
+                android:id="@+id/icon_deja_vue"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp" />
+        <include layout="@layout/layout_icon_button"
+                android:id="@+id/icon_notifications"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp" />
+        <include layout="@layout/layout_icon_button"
+                android:id="@+id/icon_feedback"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp" />
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

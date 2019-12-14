@@ -5,15 +5,16 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
-import dagger.android.support.AndroidSupportInjection;
+import androidx.lifecycle.ViewModel;
 
-public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseViewModel> extends Fragment {
+public abstract class BaseFragment<T extends ViewDataBinding, V extends ViewModel> extends Fragment {
 
     private BaseActivity mActivity;
     private View mRootView;
@@ -53,7 +54,6 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseView
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        performDependencyInjection();
         super.onCreate(savedInstanceState);
         mViewModel = getViewModel();
         setHasOptionsMenu(false);
@@ -93,14 +93,6 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseView
         if (mActivity != null) {
             mActivity.hideKeyboard();
         }
-    }
-
-    public boolean isNetworkConnected() {
-        return mActivity != null && mActivity.isNetworkConnected();
-    }
-
-    private void performDependencyInjection() {
-        AndroidSupportInjection.inject(this);
     }
 
     public interface Callback {

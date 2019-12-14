@@ -1,12 +1,16 @@
 package top.easelink.lcg.ui.main.article.viewmodel;
 
+import android.graphics.Bitmap;
+import android.text.Html;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.databinding.BindingAdapter;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -16,14 +20,19 @@ import java.util.List;
 import timber.log.Timber;
 import top.easelink.framework.base.BaseViewHolder;
 import top.easelink.framework.customview.htmltextview.DrawTableLinkSpan;
-import top.easelink.framework.customview.htmltextview.HtmlHttpImageGetter;
+import top.easelink.framework.customview.htmltextview.HtmlGlideImageGetter;
+import top.easelink.framework.utils.ScreenUtilsKt;
 import top.easelink.lcg.R;
 import top.easelink.lcg.databinding.ItemPostViewBinding;
 import top.easelink.lcg.ui.info.UserData;
 import top.easelink.lcg.ui.main.model.ReplyPostEvent;
+import top.easelink.lcg.ui.main.model.ScreenCaptureEvent;
 import top.easelink.lcg.ui.main.source.model.Post;
+import top.easelink.lcg.utils.FileUtilsKt;
 
-import static top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL;
+import static top.easelink.lcg.ui.main.articles.viewmodel.ArticleFetcher.FETCH_MORE;
+import static top.easelink.lcg.utils.CopyUtilsKt.copyContent;
+import static top.easelink.lcg.utils.ToastUtilsKt.showMessage;
 
 public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
@@ -32,15 +41,6 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     private static final int VIEW_TYPE_LOAD_MORE = 2;
     private ArticleAdapterListener mListener;
     private List<Post> mPostList = new ArrayList<>();
-
-    @BindingAdapter("adapter")
-    public static void addPostItems(RecyclerView recyclerView, List<Post> postListt) {
-        ArticleAdapter adapter = (ArticleAdapter) recyclerView.getAdapter();
-        if (adapter != null) {
-            adapter.clearItems();
-            adapter.addItems(postListt);
-        }
-    }
 
     public ArticleAdapter(ArticleAdapterListener listener) {
         mListener = listener;
@@ -93,44 +93,62 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         }
     }
 
-    private void addItems(List<Post> postList) {
+    public void addItems(List<Post> postList) {
         mPostList.addAll(postList);
         notifyDataSetChanged();
     }
 
-    private void clearItems() {
+    public void clearItems() {
         mPostList.clear();
     }
 
-    public class PostViewHolder extends BaseViewHolder {
+    public class PostViewHolder extends BaseViewHolder implements View.OnClickListener {
 
         private Post post;
         private ItemPostViewBinding mBinding;
-        private HtmlHttpImageGetter htmlHttpImageGetter;
+        private Html.ImageGetter htmlHttpImageGetter;
 
         PostViewHolder(ItemPostViewBinding binding) {
             super(binding.getRoot());
             this.mBinding = binding;
-            this.htmlHttpImageGetter = new HtmlHttpImageGetter(mBinding.contentTextView,
-                    SERVER_BASE_URL, true);
+            htmlHttpImageGetter = new HtmlGlideImageGetter(mBinding.contentTextView.getContext(),
+                    mBinding.contentTextView);
         }
 
         @Override
         public void onBind(int position) {
             post = mPostList.get(position);
-            PostViewModel postViewModel = new PostViewModel(post);
-            mBinding.setViewModel(postViewModel);
             try {
+                mBinding.authorTextView.setText(post.getAuthor());
+                mBinding.dateTextView.setText(post.getDate());
+                Glide.with(mBinding.postAvatar)
+                        .load(post.getAvatar())
+                        .placeholder(R.drawable.ic_noavatar_middle)
+                        .error(R.drawable.ic_noavatar_middle_gray)
+                        .into(mBinding.postAvatar);
                 mBinding.contentTextView.setClickableSpecialSpan(new ClickableSpecialSpanImpl());
                 DrawTableLinkSpan drawTableLinkSpan = new DrawTableLinkSpan();
                 drawTableLinkSpan.setTableLinkText(itemView.getContext().getString(R.string.tap_for_code));
                 mBinding.contentTextView.setDrawTableLinkSpan(drawTableLinkSpan);
                 mBinding.contentTextView.setHtml(post.getContent(), htmlHttpImageGetter);
-                if (UserData.INSTANCE.getLoggedInState()) {
-                    mBinding.btnReply.setVisibility(View.VISIBLE);
-                    mBinding.btnReply.setOnClickListener(this::onClick);
+                if (position == 0) {
+                    mBinding.btnCapture.setVisibility(View.VISIBLE);
+                    mBinding.btnCapture.setOnClickListener(this);
                 } else {
-                    mBinding.btnReply.setVisibility(View.GONE);
+                    mBinding.btnCapture.setVisibility(View.GONE);
+                }
+                if (UserData.INSTANCE.getLoggedInState()) {
+                    mBinding.btnGroup.setVisibility(View.VISIBLE);
+                    mBinding.btnReply.setOnClickListener(this);
+                    if (TextUtils.isEmpty(post.getReplyAddUrl())) {
+                        mBinding.btnThumbUp.setVisibility(View.GONE);
+                    } else {
+                        mBinding.btnThumbUp.setVisibility(View.VISIBLE);
+                        mBinding.btnThumbUp.setOnClickListener(this);
+                    }
+                    mBinding.btnCopy.setOnClickListener(this);
+                } else {
+                    mBinding.btnGroup.setVisibility(View.GONE);
                 }
             } catch (Exception e) {
                 Timber.e(e);
@@ -138,8 +156,32 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             mBinding.executePendingBindings();
         }
 
+        @Override
         public void onClick(View v) {
-            EventBus.getDefault().post(new ReplyPostEvent(post.getReplyUrl(), post.getAuthor()));
+            switch (v.getId()) {
+                case R.id.btn_reply:
+                    EventBus.getDefault().post(new ReplyPostEvent(post.getReplyUrl(), post.getAuthor()));
+                    break;
+                case R.id.btn_copy:
+                    if(copyContent(post.getContent(), post.getReplyUrl())) {
+                        showMessage(R.string.copy_succeed);
+                    } else {
+                        showMessage(R.string.copy_failed);
+                    }
+                    break;
+                case R.id.btn_thumb_up:
+                    mListener.replyAdd(post.getReplyAddUrl());
+                    break;
+                case R.id.btn_capture:
+                    Bitmap bmp = ScreenUtilsKt.convertViewToBitmap(itemView);
+                    if (bmp != null) {
+                        String path = FileUtilsKt.saveImageToGallery(bmp, String.valueOf(System.currentTimeMillis()));
+                        EventBus.getDefault().post(new ScreenCaptureEvent(path));
+                    } else {
+                        showMessage(R.string.general_error);
+                    }
+                    break;
+            }
         }
     }
 
@@ -163,7 +205,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
         @Override
         public void onBind(int position) {
-            mListener.fetchArticlePost(ArticleViewModel.FETCH_MORE);
+            mListener.fetchArticlePost(FETCH_MORE);
         }
     }
 }

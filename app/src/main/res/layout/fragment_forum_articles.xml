@@ -49,8 +49,7 @@
                 android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="@{viewModel.shouldDisplayArticles ? View.VISIBLE:View.GONE, default = gone}"
-                app:adapter="@{viewModel.articles}"/>
+                android:visibility="@{viewModel.shouldDisplayArticles ? View.VISIBLE:View.GONE, default = gone}" />
         </top.easelink.framework.customview.ScrollChildSwipeRefreshLayout>
 
         <com.airbnb.lottie.LottieAnimationView

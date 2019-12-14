@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,19 +16,17 @@ import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import dagger.android.AndroidInjection;
-import top.easelink.framework.utils.CommonUtils;
-import top.easelink.framework.utils.NetworkUtils;
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+import androidx.lifecycle.ViewModel;
 
 import java.util.Stack;
 
-public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseViewModel> extends AppCompatActivity
+import dagger.android.AndroidInjection;
+import top.easelink.framework.utils.CommonUtils;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
+public abstract class BaseActivity<T extends ViewDataBinding, V extends ViewModel> extends AppCompatActivity
         implements BaseFragment.Callback {
 
-    // TODO
-    // this can probably depend on isLoading variable of BaseViewModel,
-    // since its going to be common for all the activities
     private ProgressDialog mProgressDialog;
     private T mViewDataBinding;
     private V mViewModel;
@@ -82,7 +81,6 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseView
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        performDependencyInjection();
         super.onCreate(savedInstanceState);
         performDataBinding();
     }
@@ -111,14 +109,6 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseView
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
             mProgressDialog.cancel();
         }
-    }
-
-    public boolean isNetworkConnected() {
-        return NetworkUtils.isNetworkConnected(getApplicationContext());
-    }
-
-    public void performDependencyInjection() {
-        AndroidInjection.inject(this);
     }
 
     @TargetApi(Build.VERSION_CODES.M)
