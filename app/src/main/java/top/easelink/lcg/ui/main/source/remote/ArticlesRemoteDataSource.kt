@@ -13,11 +13,13 @@ import timber.log.Timber
 import top.easelink.lcg.network.Client
 import top.easelink.lcg.ui.main.model.BlockException
 import top.easelink.lcg.ui.main.model.LoginRequiredException
+import top.easelink.lcg.ui.main.model.NetworkException
 import top.easelink.lcg.ui.main.source.ArticlesDataSource
 import top.easelink.lcg.ui.main.source.FavoritesRemoteDataSource
 import top.easelink.lcg.ui.main.source.model.*
 import top.easelink.lcg.utils.WebsiteConstant
 import top.easelink.lcg.utils.WebsiteConstant.FORUM_BASE_URL
+import java.net.SocketTimeoutException
 import java.util.*
 
 /**
@@ -29,19 +31,12 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
     private val gson: Gson = GsonBuilder().excludeFieldsWithoutExposeAnnotation().create()
 
     @WorkerThread
-    override fun getForumArticles(
-        query: String,
-        processThreadList: Boolean
-    ): ForumPage? {
-        val doc = Client.sendRequestWithQuery(query)
-        return processForumArticlesDocument(doc, processThreadList)
+    override fun getForumArticles(query: String, processThreadList: Boolean): ForumPage? {
+        return processForumArticlesDocument(Client.sendRequestWithQuery(query), processThreadList)
     }
 
     @WorkerThread
-    override fun getHomePageArticles(
-        param: String,
-        pageNum: Int
-    ): List<Article> {
+    override fun getHomePageArticles(param: String, pageNum: Int): List<Article> {
         return getArticles("$FORUM_BASE_URL$param&page=$pageNum")
     }
 
@@ -60,7 +55,7 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
         }
     }
 
-    @Throws(BlockException::class)
+    @Throws(BlockException::class, NetworkException::class)
     @WorkerThread
     override fun getArticleDetail(query: String): ArticleDetail? {
         try {
@@ -110,6 +105,8 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
             return ArticleDetail(title, postList, nextPageUrl, fromHash, articleAbstract)
         } catch (e: Exception) {
             when(e) {
+                // map to NetWorkException
+                is SocketTimeoutException -> throw NetworkException()
                 is BlockException -> throw e
             }
             Timber.e(e)
@@ -189,8 +186,7 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
                 }
             }
             // for thread part
-            val threadList: MutableList<ForumThread> =
-                ArrayList()
+            val threadList: MutableList<ForumThread> = ArrayList()
             if (processThreadList) {
                 val threadTypes = doc.getElementById("thread_types")
                 if (threadTypes != null) {

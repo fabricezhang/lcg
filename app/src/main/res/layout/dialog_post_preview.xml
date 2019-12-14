@@ -48,11 +48,8 @@
                 android:layout_height="0dp"
                 android:gravity="center"
                 android:layout_weight="1"
-                android:textColor="@color/semi_gray"
-                android:text="@string/preview_fail_info" />
+                android:textColor="@color/semi_gray" />
         </LinearLayout>
-
-
 
         <ImageView
             android:id="@+id/post_avatar"
@@ -65,6 +62,18 @@
             app:layout_constraintTop_toTopOf="parent"
             android:contentDescription="@null"
             tools:src="@drawable/ic_noavatar_middle"/>
+
+        <Button
+            android:id="@+id/exit"
+            android:background="@color/white"
+            android:layout_width="@dimen/dp_20"
+            android:layout_height="@dimen/dp_20"
+            android:layout_gravity="center"
+            android:foregroundTint="@color/semi_gray"
+            android:src="@drawable/ic_close_black_24dp"
+            android:contentDescription="@null"
+            app:layout_constraintEnd_toEndOf="@id/content_text_view"
+            app:layout_constraintTop_toTopOf="@id/post_avatar" />
 
         <TextView
             android:id="@+id/author_text_view"
@@ -99,6 +108,8 @@
             app:layout_constraintTop_toBottomOf="@id/post_avatar"
             app:layout_constraintStart_toStartOf="@id/post_avatar"
             app:layout_constraintEnd_toEndOf="parent"
+            android:focusable="false"
+            android:clickable="false"
             android:textStyle="normal"
             tools:text="This repository contains a detailed sample app that implements MVVM architecture using Dagger2, Android Room, RxJava2 ,etc" />
 

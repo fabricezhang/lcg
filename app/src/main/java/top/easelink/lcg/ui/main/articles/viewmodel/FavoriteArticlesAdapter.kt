@@ -1,10 +1,8 @@
 package top.easelink.lcg.ui.main.articles.viewmodel
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -80,16 +78,12 @@ class FavoriteArticlesAdapter(private var mListener: ArticleFetcher) :
         mArticleEntities.clear()
     }
 
-    fun setListener(listener: ArticleFetcher) {
-        mListener = listener
-    }
-
     inner class ArticleViewHolder internal constructor(
         private val mBinding: ItemFavoriteArticleViewBinding,
         private val mAdapter: FavoriteArticlesAdapter
     ) : BaseViewHolder(mBinding.root) {
         private var favoriteArticleItemViewModel: FavoriteArticleItemViewModel? = null
-        @SuppressLint("CheckResult")
+
         override fun onBind(position: Int) {
             val articleEntity = mArticleEntities[position]
             mBinding.removeButton.setOnClickListener {
@@ -131,18 +125,5 @@ class FavoriteArticlesAdapter(private var mListener: ArticleFetcher) :
         private const val VIEW_TYPE_EMPTY = 0
         private const val VIEW_TYPE_NORMAL = 1
         private const val VIEW_TYPE_LOAD_MORE = 2
-
-
-        @BindingAdapter("adapter")
-        fun addFavoriteArticleItems(
-            recyclerView: RecyclerView,
-            articleEntities: List<ArticleEntity>
-        ) {
-            (recyclerView.adapter as? FavoriteArticlesAdapter)?.apply {
-                clearItems()
-                addItems(articleEntities)
-            }
-        }
     }
-
 }

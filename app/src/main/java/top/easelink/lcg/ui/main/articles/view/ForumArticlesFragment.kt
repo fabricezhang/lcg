@@ -99,7 +99,9 @@ class ForumArticlesFragment :
                         orientation = RecyclerView.VERTICAL
                     }
                     itemAnimator = DefaultItemAnimator()
-                    adapter = ArticlesAdapter(viewModel)
+                    adapter = ArticlesAdapter(viewModel).also {
+                        it.setFragmentManager(fragmentManager?:baseActivity.supportFragmentManager)
+                    }
                 }
             )
             setOnRefreshListener {

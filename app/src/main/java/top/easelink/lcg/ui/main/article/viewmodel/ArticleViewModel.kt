@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import org.jsoup.HttpStatusException
 import timber.log.Timber
 import top.easelink.lcg.R
 import top.easelink.lcg.mta.EVENT_ADD_TO_FAVORITE
@@ -14,6 +13,7 @@ import top.easelink.lcg.mta.sendEvent
 import top.easelink.lcg.ui.main.articles.viewmodel.ArticleFetcher.Companion.FETCH_INIT
 import top.easelink.lcg.ui.main.articles.viewmodel.ArticleFetcher.Companion.FETCH_MORE
 import top.easelink.lcg.ui.main.model.BlockException
+import top.easelink.lcg.ui.main.model.NetworkException
 import top.easelink.lcg.ui.main.source.local.ArticlesLocalDataSource
 import top.easelink.lcg.ui.main.source.local.SP_KEY_SYNC_FAVORITE
 import top.easelink.lcg.ui.main.source.local.SharedPreferencesHelper
@@ -82,7 +82,7 @@ class ArticleViewModel: ViewModel(), ArticleAdapterListener {
             } catch (e: Exception) {
                 when(e) {
                     is BlockException -> setArticleBlocked()
-                    is HttpStatusException -> setArticleNotFound()
+                    is NetworkException -> setArticleNotFound()
                 }
                 Timber.e(e)
             }

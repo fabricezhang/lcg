@@ -24,7 +24,7 @@ class ForumArticlesViewModel : ViewModel(),
     val threadList = MutableLiveData<List<ForumThread>>()
     val isLoading = MutableLiveData<Boolean>()
 
-    fun initUrl(url: String?, type: Int) {
+    fun initUrl(url: String, type: Int) {
         mUrl = url
         mFetchType = type
         fetchArticles(mFetchType)

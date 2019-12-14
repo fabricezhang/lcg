@@ -4,7 +4,7 @@ import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.os.Bundle
 import android.view.*
-import android.view.animation.OvershootInterpolator
+import android.view.animation.AnticipateOvershootInterpolator
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
@@ -49,6 +49,9 @@ class PostPreviewDialog : SafeShowDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         try {
+            exit.setOnClickListener {
+                dismissDialog()
+            }
             val query = arguments?.getString(ARTICLE_QUERY)
             if (query?.isNotBlank() == true) {
                 mViewModel.content.observe(this, Observer {
@@ -93,7 +96,7 @@ class PostPreviewDialog : SafeShowDialogFragment() {
                 ObjectAnimator.ofFloat(view, "scaleY", 0f, 0.9f),
                 ObjectAnimator.ofFloat(view, "alpha", 0f, 1f)
             )
-            interpolator = OvershootInterpolator()
+            interpolator = AnticipateOvershootInterpolator()
             duration = 800
         }.start()
     }
