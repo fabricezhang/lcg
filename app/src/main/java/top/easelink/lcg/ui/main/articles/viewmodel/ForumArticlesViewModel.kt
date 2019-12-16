@@ -19,7 +19,7 @@ class ForumArticlesViewModel : ViewModel(),
     private var mCurrentPage = 1
 
     val title = MutableLiveData<String>()
-    val articles = MutableLiveData<MutableList<Article>>()
+    val articles = MutableLiveData<List<Article>>()
     val shouldDisplayArticles = MutableLiveData<Boolean>()
     val threadList = MutableLiveData<List<ForumThread>>()
     val isLoading = MutableLiveData<Boolean>()
@@ -78,7 +78,7 @@ class ForumArticlesViewModel : ViewModel(),
                         if (articleA.title == articleB.title) {
                             showMessage(R.string.no_more_content)
                         } else {
-                            list.addAll(articleList)
+                            list.toMutableList().addAll(articleList)
                             articles.postValue(list)
                         }
                     } else {
@@ -88,7 +88,7 @@ class ForumArticlesViewModel : ViewModel(),
                 }
                 if (type == ArticleFetcher.FETCH_INIT) {
                     val threads = forumPage.threadList
-                    if (threads.size > 0) {
+                    if (threads.isNotEmpty()) {
                         threadList.postValue(threads)
                     } else {
                         threadList.postValue(emptyList())
