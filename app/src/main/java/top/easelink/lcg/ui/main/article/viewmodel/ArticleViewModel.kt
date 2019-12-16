@@ -60,7 +60,7 @@ class ArticleViewModel: ViewModel(), ArticleAdapterListener {
             try {
                 ArticlesRemoteDataSource.getArticleDetail(query)?.let {
                     articleAbstract = it.articleAbstractResponse
-                    if (it.articleTitle.isBlank()) {
+                    if (it.articleTitle.isNotBlank()) {
                         articleTitle.postValue(it.articleTitle)
                     }
                     if (it.postList.isNotEmpty()) {
