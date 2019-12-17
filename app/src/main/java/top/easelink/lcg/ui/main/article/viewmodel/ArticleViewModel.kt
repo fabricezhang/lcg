@@ -76,6 +76,7 @@ class ArticleViewModel: ViewModel(), ArticleAdapterListener {
                             }
                         }
                     }
+                    nextPageUrl = it.nextPageUrl
                     mFormHash = it.fromHash
                     shouldDisplayPosts.postValue(true)
                 }
