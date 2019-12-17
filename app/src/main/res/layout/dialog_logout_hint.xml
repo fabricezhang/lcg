@@ -9,8 +9,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:clickable="true"
     android:focusable="true"
-    android:padding="@dimen/dp_20"
-    android:layout_marginBottom="@dimen/dp_10"
+    android:paddingTop="@dimen/dp_20"
+    android:paddingEnd="@dimen/dp_20"
+    android:paddingStart="@dimen/dp_20"
+    android:paddingBottom="@dimen/dp_5"
     android:background="@drawable/login_bg">
 
 

@@ -120,7 +120,10 @@ class MeViewModel: ViewModel() {
                     UserData.loggedInState = false
                     mLoginState.postValue(false)
                 } else {
-                    UserData.loggedInState = true
+                    UserData.apply {
+                        loggedInState = true
+                        username = userInfo.userName.toString()
+                    }
                     mLoginState.postValue(true)
                     mUserInfo.postValue(userInfo)
                     SharedPreferencesHelper.getUserSp().edit().putBoolean(SP_KEY_LOGGED_IN, true)

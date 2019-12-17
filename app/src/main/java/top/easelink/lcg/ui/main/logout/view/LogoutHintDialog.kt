@@ -3,10 +3,13 @@ package top.easelink.lcg.ui.main.logout.view
 import android.os.Bundle
 import android.view.*
 import android.widget.Button
+import android.widget.TextView
 import top.easelink.framework.base.SafeShowDialogFragment
 import top.easelink.framework.utils.dpToPx
 import top.easelink.lcg.LCGApp
 import top.easelink.lcg.R
+import top.easelink.lcg.ui.info.UserData
+import top.easelink.lcg.ui.main.me.model.UserInfo
 
 class LogoutHintDialog(
     private val positive: ()-> Unit,
@@ -28,6 +31,12 @@ class LogoutHintDialog(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        view.findViewById<TextView>(R.id.logout_message).text =
+            String.format(
+                getString(
+                    R.string.logout_confirm_message,
+                    UserData.username)
+            )
         view.findViewById<Button>(R.id.logout_confirm_btn).setOnClickListener {
             positive.invoke()
             dismissDialog()
