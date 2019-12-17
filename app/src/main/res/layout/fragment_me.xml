@@ -48,7 +48,7 @@
                 android:layout_margin="@dimen/dp_5"
                 android:layout_width="@dimen/dp_20"
                 android:layout_height="@dimen/dp_20"
-                android:onClick="@{() -> viewModel.clearLocalCookies()}"
+                android:onClick="@{() -> viewModel.tryLogout()}"
                 android:src="@drawable/ic_power_settings_new_24px"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

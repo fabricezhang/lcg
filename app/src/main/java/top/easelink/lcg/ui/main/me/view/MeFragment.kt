@@ -65,6 +65,7 @@ class MeFragment : BaseFragment<FragmentMeBinding, MeViewModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.setFragment(this)
         updateIconButtons()
         registerObservers()
     }
