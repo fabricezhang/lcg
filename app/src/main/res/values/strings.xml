@@ -12,6 +12,9 @@
     <string name="add_to_my_favorite">添加到收藏</string>
     <string name="clear_all_from_my_favorite">清空收藏夹</string>
 
+    <string name="order_by_datetime">按发帖时间排序</string>
+    <string name="order_by_lastpost">按回帖时间排序</string>
+
     <!--Toolbar menus-->
     <string name="about_me">我的</string>
     <string name="my_favorite">收藏</string>

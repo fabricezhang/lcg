@@ -43,11 +43,9 @@ class ForumNavigationFragment :
             )
             onItemClickListener =
                 AdapterView.OnItemClickListener { parent: AdapterView<*>, _: View?, position: Int, _: Long ->
-                    val item =
-                        (parent.adapter as CustomGridViewAdapter).getItem(position)
+                    val item = (parent.adapter as CustomGridViewAdapter).getItem(position)
                     if (item != null) {
-                        EventBus.getDefault()
-                            .post(OpenForumEvent(item.title, item.url))
+                        EventBus.getDefault().post(OpenForumEvent(item.title, item.url))
                     }
                 }
         }

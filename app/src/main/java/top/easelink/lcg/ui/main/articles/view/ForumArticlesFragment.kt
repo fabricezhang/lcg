@@ -1,7 +1,11 @@
 package top.easelink.lcg.ui.main.articles.view
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -17,13 +21,14 @@ import top.easelink.lcg.LCGApp
 import top.easelink.lcg.R
 import top.easelink.lcg.databinding.FragmentForumArticlesBinding
 import top.easelink.lcg.mta.CHANGE_THREAD
-import top.easelink.lcg.ui.main.articles.viewmodel.ArticleFetcher
-import top.easelink.lcg.ui.main.articles.viewmodel.ArticlesAdapter
-import top.easelink.lcg.ui.main.articles.viewmodel.ForumArticlesViewModel
+import top.easelink.lcg.ui.main.articles.viewmodel.*
+import top.easelink.lcg.ui.main.articles.viewmodel.ArticleFetcher.Companion.FETCH_INIT
 import top.easelink.lcg.ui.main.source.model.ForumThread
 
-class ForumArticlesFragment :
-    BaseFragment<FragmentForumArticlesBinding, ForumArticlesViewModel>() {
+class ForumArticlesFragment : BaseFragment<FragmentForumArticlesBinding, ForumArticlesViewModel>() {
+
+    private var currentTabUrl: String? = null
+
     override fun getBindingVariable(): Int {
         return BR.viewModel
     }
@@ -36,11 +41,10 @@ class ForumArticlesFragment :
         return ViewModelProviders.of(this).get(ForumArticlesViewModel::class.java)
     }
 
-    override fun onViewCreated(
-        view: View,
-        savedInstanceState: Bundle?
-    ) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(true)
+        (activity as AppCompatActivity?)?.setSupportActionBar(viewDataBinding.articleToolbar)
         setUp()
     }
 
@@ -53,6 +57,25 @@ class ForumArticlesFragment :
             viewModel.setTitle(it.getString(ARG_TITLE) ?: "PlaceHolder")
         }
         setUpRecyclerView()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        menu.clear()
+        inflater.inflate(R.menu.forum_articles, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_order_by_datetime -> {
+                viewModel.orderType = DATE_LINE_ORDER
+            }
+            R.id.action_order_by_lastpost -> {
+                viewModel.orderType = LAST_POST_ORDER
+            }
+        }
+        viewModel.fetchArticles(FETCH_INIT)
+        return true
     }
 
     private fun setUpTabLayout(forumThreadList: List<ForumThread>?) {

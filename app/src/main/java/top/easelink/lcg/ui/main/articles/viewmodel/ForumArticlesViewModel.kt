@@ -12,11 +12,15 @@ import top.easelink.lcg.ui.main.source.model.ForumThread
 import top.easelink.lcg.ui.main.source.remote.ArticlesRemoteDataSource.getForumArticles
 import top.easelink.lcg.utils.showMessage
 
-class ForumArticlesViewModel : ViewModel(),
-    ArticleFetcher {
+const val LAST_POST_ORDER = "&orderby=lastpost"
+const val DATE_LINE_ORDER = "&orderby=dateline"
+
+class ForumArticlesViewModel : ViewModel(), ArticleFetcher {
     private var mUrl: String? = null
     private var mFetchType = 0
     private var mCurrentPage = 1
+
+    var orderType = ""
 
     val title = MutableLiveData<String>()
     val articles = MutableLiveData<List<Article>>()
@@ -40,25 +44,23 @@ class ForumArticlesViewModel : ViewModel(),
             ArticleFetcher.FETCH_MORE -> {
                 nextPage()
                 when (mFetchType) {
-                    ArticleFetcher.FETCH_BY_THREAD -> mUrl + String.format(
-                        "&page=%s",
-                        mCurrentPage
-                    )
+                    ArticleFetcher.FETCH_BY_THREAD -> "$mUrl&page=$mCurrentPage$orderType"
+                    // todo add order feature
                     ArticleFetcher.FETCH_INIT -> String.format(mUrl!!, mCurrentPage)
                     else -> String.format(mUrl!!, mCurrentPage)
                 }
             }
             ArticleFetcher.FETCH_BY_THREAD -> {
                 rewindPageNum()
-                mUrl!!
+                mUrl!!+orderType
             }
             ArticleFetcher.FETCH_INIT -> {
                 rewindPageNum()
-                String.format(mUrl!!, mCurrentPage)
+                String.format(mUrl!!, mCurrentPage) + orderType
             }
             else -> {
                 rewindPageNum()
-                String.format(mUrl!!, mCurrentPage)
+                String.format(mUrl!!, mCurrentPage) + orderType
             }
         }
     }
@@ -72,7 +74,7 @@ class ForumArticlesViewModel : ViewModel(),
                 val articleList = forumPage.articleList
                 if (articleList.isNotEmpty()) {
                     val list = articles.value
-                    if (type == ArticleFetcher.FETCH_MORE && list != null && list.size > 0) {
+                    if (type == ArticleFetcher.FETCH_MORE && !list.isNullOrEmpty()) {
                         val articleA = articleList[articleList.size - 1]
                         val articleB = list[list.size - 1]
                         if (articleA.title == articleB.title) {
