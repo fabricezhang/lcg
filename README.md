@@ -5,11 +5,19 @@ UI参照知乎和虎扑App, 架构参考Google官方MVVM代码结构.
 
 
 APK下载 蓝奏云
+ - [V1.6.2](https://www.lanzous.com/i80uh1g)
  - [V1.5.0](https://www.lanzous.com/i6wmceb)
  - [V1.4.0](https://www.lanzous.com/i6tersj)
  - [V1.3.0](https://www.lanzous.com/i57tefa)
  
 ## 功能
+
+### V1.6.2 
+ - 新增回复/支持
+ - 同步收藏文章到网络
+ - 长按预览文章
+ - 消息通知查看
+### v1.5.0
  - 通过Jsoup方式重新排版的文章浏览
  - 移动网页方式的浏览,支持账号密码登陆并保持登陆状态
  - 支持百度站内搜索(首页上方的搜索键）
