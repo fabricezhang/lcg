@@ -9,17 +9,11 @@ import top.easelink.framework.utils.dpToPx
 import top.easelink.lcg.LCGApp
 import top.easelink.lcg.R
 import top.easelink.lcg.ui.info.UserData
-import top.easelink.lcg.ui.main.me.model.UserInfo
 
 class LogoutHintDialog(
     private val positive: ()-> Unit,
     private val negative: () -> Unit
 ) : SafeShowDialogFragment() {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setStyle(STYLE_NORMAL, R.style.AppTheme_Dialog_FullScreen_BottomInOut)
-    }
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,

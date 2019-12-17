@@ -64,7 +64,7 @@
     <string name="cancel_btn">取消</string>
 
     <!--Logout Dialog-->
-    <string name="logout_confirm_message">是否登出 @%s？</string>
+    <string name="logout_confirm_message">退出账号@%s？</string>
     <string name="logout_confirm_btn">是的</string>
 
     <!--Notification-->

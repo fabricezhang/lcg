@@ -8,7 +8,7 @@ object UserData {
 
     var username: String
         get() {
-            return SharedPreferencesHelper.getUserSp().getString(SP_KEY_USER_NAME, "").orEmpty()
+            return SharedPreferencesHelper.getUserSp().getString(SP_KEY_USER_NAME, "unknown")!!
         }
         set(value) {
             SharedPreferencesHelper.getUserSp().edit().putString(SP_KEY_USER_NAME, value).apply()

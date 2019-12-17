@@ -1,5 +1,8 @@
 package top.easelink.lcg.network
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.jsoup.Connection
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
@@ -44,7 +47,9 @@ object Client {
             .let {
                 setCookies(it.cookies())
                 it.parse().also { doc ->
-                    checkResponse(doc)
+                    GlobalScope.launch(Dispatchers.IO){
+                        checkResponse(doc)
+                    }
                 }
             }
     }
