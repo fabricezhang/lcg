@@ -18,11 +18,10 @@ class FavoriteArticlesViewModel : ViewModel(), ArticleFetcher {
     //TODO add pagination later
     private var mCurrentPage = 0
 
-    override fun fetchArticles(type: Int) {
-        when (type) {
-            ArticleFetcher.FETCH_MORE -> return
-            ArticleFetcher.FETCH_INIT -> rewindPageNum()
-            else -> rewindPageNum()
+    override fun fetchArticles(fetchType: ArticleFetcher.FetchType) {
+        when (fetchType) {
+            ArticleFetcher.FetchType.FETCH_MORE -> return
+            ArticleFetcher.FetchType.FETCH_INIT -> rewindPageNum()
         }
         isLoading.value = true
         GlobalScope.launch(Dispatchers.IO) {

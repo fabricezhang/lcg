@@ -156,12 +156,13 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
                     throw LoginRequiredException()
                 }
             }
-            val articleList: List<Article> = elements.map {element ->
+            val articleList: List<Article> = elements.mapNotNull { element ->
+                var article: Article? = null
                 try {
                     val reply = extractFrom(element, "td.num", "a.xi2").toInt()
                     val view = extractFrom(element, "td.num", "em").toInt()
                     val title = extractFrom(element, "th.new", ".xst").let {
-                        if (it.isBlank()){
+                        if (it.isBlank()) {
                             extractFrom(element, "th.common", ".xst")
                         } else {
                             it
@@ -179,15 +180,15 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
                     }
                     val origin = extractFrom(element, "td.by", "a[target]")
                     if (!TextUtils.isEmpty(title) && !TextUtils.isEmpty(author)) {
-                        return@map Article(title, author, date, url, view, reply, origin)
+                        article = Article(title, author, date, url, view, reply, origin)
                     }
                 } catch (nbe: NumberFormatException) {
                     Timber.v(nbe)
                 } catch (e: Exception) {
                     Timber.e(e)
                 }
-                null
-            }.filterNotNull()
+                article
+            }
 
             // for thread part
             var threadList: List<ForumThread>? = null
@@ -195,7 +196,7 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
                 doc.getElementById("thread_types")?.let {threadTypes ->
                     threadList = threadTypes
                         .getElementsByTag("li")
-                        .map { elementByTag ->
+                        .mapNotNull { elementByTag ->
                             try {
                                 val element = elementByTag.getElementsByTag("a").first()
                                 elements = element.getElementsByTag("span")
@@ -205,13 +206,12 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
                                 val threadUrl = element.attr("href")
                                 val name = element.text().trim { it <= ' ' }
                                 if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(threadUrl)) {
-                                    return@map ForumThread(name, threadUrl)
+                                    return@mapNotNull ForumThread(name, threadUrl)
                                 }
                             } catch (e: Exception) { // don't care
                             }
                             null
                         }
-                        .filterNotNull()
 
                 }
             }

@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.tencent.stat.StatService
+import timber.log.Timber
 import top.easelink.framework.base.BaseFragment
 import top.easelink.lcg.BR
 import top.easelink.lcg.LCGApp
@@ -22,12 +23,9 @@ import top.easelink.lcg.R
 import top.easelink.lcg.databinding.FragmentForumArticlesBinding
 import top.easelink.lcg.mta.CHANGE_THREAD
 import top.easelink.lcg.ui.main.articles.viewmodel.*
-import top.easelink.lcg.ui.main.articles.viewmodel.ArticleFetcher.Companion.FETCH_INIT
 import top.easelink.lcg.ui.main.source.model.ForumThread
 
 class ForumArticlesFragment : BaseFragment<FragmentForumArticlesBinding, ForumArticlesViewModel>() {
-
-    private var currentTabUrl: String? = null
 
     override fun getBindingVariable(): Int {
         return BR.viewModel
@@ -49,12 +47,15 @@ class ForumArticlesFragment : BaseFragment<FragmentForumArticlesBinding, ForumAr
     }
 
     private fun setUp() {
+        viewModel.threadList.observe(this, Observer {
+                threadList -> setUpTabLayout(threadList)
+        })
         arguments?.let {
-            viewModel.threadList.observe(this, Observer {
-                    threadList -> setUpTabLayout(threadList)
-            })
-            viewModel.initUrl(it.getString(ARG_PARAM)!!, ArticleFetcher.FETCH_INIT)
-            viewModel.setTitle(it.getString(ARG_TITLE) ?: "PlaceHolder")
+            viewModel.initUrlAndFetch(
+                url = it.getString(ARG_PARAM)!!,
+                pageType = ForumArticlesViewModel.PageType.DEFAULT_PAGE,
+                fetchType = ArticleFetcher.FetchType.FETCH_INIT)
+            viewModel.setTitle(it.getString(ARG_TITLE).orEmpty())
         }
         setUpRecyclerView()
     }
@@ -66,15 +67,29 @@ class ForumArticlesFragment : BaseFragment<FragmentForumArticlesBinding, ForumAr
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.action_order_by_datetime -> {
-                viewModel.orderType = DATE_LINE_ORDER
-            }
-            R.id.action_order_by_lastpost -> {
-                viewModel.orderType = LAST_POST_ORDER
-            }
+        val order = when (item.itemId) {
+            R.id.action_order_by_datetime -> DATE_LINE_ORDER
+            R.id.action_order_by_lastpost -> LAST_POST_ORDER
+            else -> DEFAULT_ORDER
         }
-        viewModel.fetchArticles(FETCH_INIT)
+        try {
+            val pos = viewDataBinding.forumTab.selectedTabPosition
+            viewModel
+                .threadList
+                .value
+                ?.get(pos)
+                ?.threadUrl
+                ?.let {
+                    viewModel.initUrlAndFetch(
+                        url = it,
+                        pageType = if(pos == 0) ForumArticlesViewModel.PageType.DEFAULT_PAGE else ForumArticlesViewModel.PageType.THREAD_PAGE,
+                        fetchType = ArticleFetcher.FetchType.FETCH_INIT,
+                        order = order
+                    )
+                }
+        } catch (e: Exception) {
+            Timber.e(e)
+        }
         return true
     }
 
@@ -95,9 +110,15 @@ class ForumArticlesFragment : BaseFragment<FragmentForumArticlesBinding, ForumAr
             addOnTabSelectedListener(object : OnTabSelectedListener {
                 override fun onTabSelected(tab: TabLayout.Tab) {
                     StatService.trackCustomEvent(context, CHANGE_THREAD)
-                    viewModel.initUrl(
-                        forumThreadList[tab.position].threadUrl,
-                        ArticleFetcher.FETCH_BY_THREAD
+                    val pageType = if (tab.position == 0) {
+                        ForumArticlesViewModel.PageType.DEFAULT_PAGE
+                    } else {
+                        ForumArticlesViewModel.PageType.THREAD_PAGE
+                    }
+                    viewModel.initUrlAndFetch(
+                        url = forumThreadList[tab.position].threadUrl,
+                        pageType = pageType,
+                        fetchType = ArticleFetcher.FetchType.FETCH_INIT
                     )
                 }
                 override fun onTabUnselected(tab: TabLayout.Tab) {}
@@ -128,7 +149,7 @@ class ForumArticlesFragment : BaseFragment<FragmentForumArticlesBinding, ForumAr
                 }
             )
             setOnRefreshListener {
-                viewModel.fetchArticles(ArticleFetcher.FETCH_INIT)
+                viewModel.fetchArticles(ArticleFetcher.FetchType.FETCH_INIT)
             }
         }
         // Add articles observer

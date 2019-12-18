@@ -23,8 +23,8 @@ import top.easelink.lcg.ui.main.article.view.DownloadLinkDialog.Companion.newIns
 import top.easelink.lcg.ui.main.article.view.ReplyPostDialog.Companion.newInstance
 import top.easelink.lcg.ui.main.article.view.ScreenCaptureDialog.Companion.TAG
 import top.easelink.lcg.ui.main.article.viewmodel.ArticleAdapter
+import top.easelink.lcg.ui.main.article.viewmodel.ArticleAdapterListener.Companion.FETCH_POST_INIT
 import top.easelink.lcg.ui.main.article.viewmodel.ArticleViewModel
-import top.easelink.lcg.ui.main.articles.viewmodel.ArticleFetcher
 import top.easelink.lcg.ui.main.model.ReplyPostEvent
 import top.easelink.lcg.ui.main.model.ScreenCaptureEvent
 import top.easelink.lcg.ui.webview.view.WebViewActivity
@@ -60,7 +60,7 @@ class ArticleFragment : BaseFragment<FragmentArticleBinding, ArticleViewModel>()
         setHasOptionsMenu(true)
         (activity as AppCompatActivity?)?.setSupportActionBar(viewDataBinding.articleToolbar)
         viewModel.setUrl(articleUrl!!)
-        viewModel.fetchArticlePost(ArticleFetcher.FETCH_INIT)
+        viewModel.fetchArticlePost(FETCH_POST_INIT)
     }
 
     override fun onDetach() {

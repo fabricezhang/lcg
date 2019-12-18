@@ -8,9 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import org.greenrobot.eventbus.EventBus
 import top.easelink.framework.base.BaseViewHolder
 import top.easelink.lcg.R
-import top.easelink.lcg.ui.main.articles.viewmodel.ArticleFetcher
 import top.easelink.lcg.ui.search.model.OpenSearchResultEvent
 import top.easelink.lcg.ui.search.model.SearchResult
+import top.easelink.lcg.ui.search.viewmodel.SearchResultAdapter.SearchAdapterListener.Companion.FETCH_MORE
 import java.util.*
 
 class SearchResultAdapter(private var mListener: SearchAdapterListener) :
@@ -106,7 +106,7 @@ class SearchResultAdapter(private var mListener: SearchAdapterListener) :
     inner class LoadMoreViewHolder internal constructor(view: View) :
         BaseViewHolder(view) {
         override fun onBind(position: Int) {
-            mListener.doSearchQuery(ArticleFetcher.FETCH_MORE)
+            mListener.doSearchQuery(FETCH_MORE)
         }
     }
 

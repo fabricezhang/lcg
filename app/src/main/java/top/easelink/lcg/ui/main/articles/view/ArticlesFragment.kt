@@ -14,7 +14,7 @@ import top.easelink.lcg.BR
 import top.easelink.lcg.LCGApp
 import top.easelink.lcg.R
 import top.easelink.lcg.databinding.FragmentArticlesBinding
-import top.easelink.lcg.ui.main.articles.viewmodel.ArticleFetcher.Companion.FETCH_INIT
+import top.easelink.lcg.ui.main.articles.viewmodel.ArticleFetcher
 import top.easelink.lcg.ui.main.articles.viewmodel.ArticlesAdapter
 import top.easelink.lcg.ui.main.articles.viewmodel.ArticlesViewModel
 
@@ -75,7 +75,7 @@ class ArticlesFragment : BaseFragment<FragmentArticlesBinding, ArticlesViewModel
             // Set the scrolling view in the custom SwipeRefreshLayout.
             setScrollUpChild(viewDataBinding.recyclerView)
             setOnRefreshListener {
-                viewModel.fetchArticles(FETCH_INIT)
+                viewModel.fetchArticles(ArticleFetcher.FetchType.FETCH_INIT)
             }
         }
     }

@@ -17,7 +17,7 @@ import top.easelink.lcg.ui.main.source.model.Article
 import java.lang.ref.WeakReference
 
 class ArticlesAdapter(
-    private var mListener: ArticleFetcher?
+    private var articleFetcher: ArticleFetcher
 ) : RecyclerView.Adapter<BaseViewHolder>() {
 
     private var fragmentManager: WeakReference<FragmentManager>? = null
@@ -133,7 +133,7 @@ class ArticlesAdapter(
         }
 
         override fun onRetryClick() {
-            mListener?.fetchArticles(ArticleFetcher.FETCH_INIT)
+            articleFetcher.fetchArticles(ArticleFetcher.FetchType.FETCH_INIT)
         }
 
     }
@@ -141,7 +141,7 @@ class ArticlesAdapter(
     inner class LoadMoreViewHolder internal constructor(view: View) :
         BaseViewHolder(view) {
         override fun onBind(position: Int) {
-            mListener?.fetchArticles(ArticleFetcher.FETCH_MORE)
+            articleFetcher.fetchArticles(ArticleFetcher.FetchType.FETCH_MORE)
         }
     }
 

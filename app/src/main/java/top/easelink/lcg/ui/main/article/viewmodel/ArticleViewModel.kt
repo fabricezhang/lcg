@@ -10,8 +10,8 @@ import timber.log.Timber
 import top.easelink.lcg.R
 import top.easelink.lcg.mta.EVENT_ADD_TO_FAVORITE
 import top.easelink.lcg.mta.sendEvent
-import top.easelink.lcg.ui.main.articles.viewmodel.ArticleFetcher.Companion.FETCH_INIT
-import top.easelink.lcg.ui.main.articles.viewmodel.ArticleFetcher.Companion.FETCH_MORE
+import top.easelink.lcg.ui.main.article.viewmodel.ArticleAdapterListener.Companion.FETCH_POST_INIT
+import top.easelink.lcg.ui.main.article.viewmodel.ArticleAdapterListener.Companion.FETCH_POST_MORE
 import top.easelink.lcg.ui.main.model.BlockException
 import top.easelink.lcg.ui.main.model.NetworkException
 import top.easelink.lcg.ui.main.source.local.ArticlesLocalDataSource
@@ -47,8 +47,8 @@ class ArticleViewModel: ViewModel(), ArticleAdapterListener {
         isLoading.value = true
         val query: String? =
             when (type) {
-                FETCH_INIT -> mUrl
-                FETCH_MORE -> nextPageUrl
+                FETCH_POST_INIT -> mUrl
+                FETCH_POST_MORE -> nextPageUrl
                 else -> null
             }
 
@@ -64,7 +64,7 @@ class ArticleViewModel: ViewModel(), ArticleAdapterListener {
                         articleTitle.postValue(it.articleTitle)
                     }
                     if (it.postList.isNotEmpty()) {
-                        if (type == FETCH_INIT) {
+                        if (type == FETCH_POST_INIT) {
                             posts.postValue(it.postList.toMutableList())
                         } else {
                             val list = posts.value

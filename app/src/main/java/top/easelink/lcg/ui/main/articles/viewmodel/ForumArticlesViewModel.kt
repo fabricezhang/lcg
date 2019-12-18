@@ -14,13 +14,14 @@ import top.easelink.lcg.utils.showMessage
 
 const val LAST_POST_ORDER = "&orderby=lastpost"
 const val DATE_LINE_ORDER = "&orderby=dateline"
+const val DEFAULT_ORDER = ""
 
 class ForumArticlesViewModel : ViewModel(), ArticleFetcher {
     private var mUrl: String? = null
-    private var mFetchType = 0
+    private var mFetchType = ArticleFetcher.FetchType.FETCH_INIT
+    private var mPageType = PageType.DEFAULT_PAGE
+    private var orderType = DEFAULT_ORDER
     private var mCurrentPage = 1
-
-    var orderType = ""
 
     val title = MutableLiveData<String>()
     val articles = MutableLiveData<List<Article>>()
@@ -28,9 +29,11 @@ class ForumArticlesViewModel : ViewModel(), ArticleFetcher {
     val threadList = MutableLiveData<List<ForumThread>>()
     val isLoading = MutableLiveData<Boolean>()
 
-    fun initUrl(url: String, type: Int) {
+    fun initUrlAndFetch(url: String, fetchType: ArticleFetcher.FetchType, pageType: PageType, order: String = DEFAULT_ORDER) {
         mUrl = url
-        mFetchType = type
+        mFetchType = fetchType
+        mPageType = pageType
+        orderType = order
         fetchArticles(mFetchType)
     }
 
@@ -39,42 +42,32 @@ class ForumArticlesViewModel : ViewModel(), ArticleFetcher {
         title.value = t
     }
 
-    private fun composeUrlByRequestType(type: Int): String {
-        return when (type) {
-            ArticleFetcher.FETCH_MORE -> {
-                nextPage()
-                when (mFetchType) {
-                    ArticleFetcher.FETCH_BY_THREAD -> "$mUrl&page=$mCurrentPage$orderType"
-                    // todo add order feature
-                    ArticleFetcher.FETCH_INIT -> String.format(mUrl!!, mCurrentPage)
-                    else -> String.format(mUrl!!, mCurrentPage)
-                }
+    private fun composeUrlByRequestType(type: ArticleFetcher.FetchType, pageType: PageType): String {
+        when (type) {
+            ArticleFetcher.FetchType.FETCH_INIT -> rewindPageNum()
+            ArticleFetcher.FetchType.FETCH_MORE -> nextPage()
+        }
+        return when (pageType) {
+            PageType.DEFAULT_PAGE -> {
+                String.format(mUrl!!, mCurrentPage)
             }
-            ArticleFetcher.FETCH_BY_THREAD -> {
-                rewindPageNum()
-                mUrl!!+orderType
-            }
-            ArticleFetcher.FETCH_INIT -> {
-                rewindPageNum()
-                String.format(mUrl!!, mCurrentPage) + orderType
-            }
-            else -> {
-                rewindPageNum()
-                String.format(mUrl!!, mCurrentPage) + orderType
+            PageType.THREAD_PAGE -> {
+                "$mUrl&page=$mCurrentPage$orderType"
             }
         }
     }
 
-    override fun fetchArticles(type: Int) {
+    override fun fetchArticles(fetchType: ArticleFetcher.FetchType) {
         isLoading.value = true
         GlobalScope.launch(Dispatchers.IO) {
-            val query = composeUrlByRequestType(type)
-            val forumPage = getForumArticles(query, type == ArticleFetcher.FETCH_INIT)
+            val query = composeUrlByRequestType(fetchType, mPageType)
+            val forumPage = getForumArticles(query, mPageType == PageType.DEFAULT_PAGE)
             if (forumPage != null) {
                 val articleList = forumPage.articleList
                 if (articleList.isNotEmpty()) {
                     val list = articles.value
-                    if (type == ArticleFetcher.FETCH_MORE && !list.isNullOrEmpty()) {
+                    if ((fetchType == ArticleFetcher.FetchType.FETCH_MORE)
+                        && !list.isNullOrEmpty()) {
                         val articleA = articleList[articleList.size - 1]
                         val articleB = list[list.size - 1]
                         if (articleA.title == articleB.title) {
@@ -88,14 +81,17 @@ class ForumArticlesViewModel : ViewModel(), ArticleFetcher {
                     }
                     shouldDisplayArticles.postValue(true)
                 }
-                if (type == ArticleFetcher.FETCH_INIT) {
-                    val threads = forumPage.threadList
-                    if (threads.isNotEmpty()) {
-                        threadList.postValue(threads)
-                    } else {
-                        threadList.postValue(emptyList())
+                if (mPageType == PageType.DEFAULT_PAGE) {
+                    forumPage.threadList.let {
+                        threadList.postValue(
+                            if (it.isNotEmpty())
+                                it
+                            else
+                                emptyList()
+                        )
                     }
                 }
+
             }
             isLoading.postValue(false)
         }
@@ -107,5 +103,10 @@ class ForumArticlesViewModel : ViewModel(), ArticleFetcher {
 
     private fun nextPage() {
         mCurrentPage++
+    }
+
+    enum class PageType{
+        DEFAULT_PAGE,
+        THREAD_PAGE
     }
 }

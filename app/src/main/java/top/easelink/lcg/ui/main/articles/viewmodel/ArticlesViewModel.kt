@@ -5,8 +5,6 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import top.easelink.lcg.ui.main.articles.viewmodel.ArticleFetcher.Companion.FETCH_INIT
-import top.easelink.lcg.ui.main.articles.viewmodel.ArticleFetcher.Companion.FETCH_MORE
 import top.easelink.lcg.ui.main.source.model.Article
 import top.easelink.lcg.ui.main.source.remote.ArticlesRemoteDataSource
 
@@ -19,21 +17,20 @@ class ArticlesViewModel : ViewModel(),
 
     fun initUrl(url: String?) {
         mUrl = url
-        fetchArticles(FETCH_INIT)
+        fetchArticles(ArticleFetcher.FetchType.FETCH_INIT)
     }
 
-    override fun fetchArticles(type: Int) {
-        val pageNum: Int = when (type) {
-            FETCH_MORE -> mCurrentPage + 1
-            FETCH_INIT -> 1
-            else -> 1
+    override fun fetchArticles(fetchType: ArticleFetcher.FetchType) {
+        val pageNum: Int = when (fetchType) {
+            ArticleFetcher.FetchType.FETCH_MORE -> mCurrentPage + 1
+            ArticleFetcher.FetchType.FETCH_INIT -> 1
         }
         isLoading.value = true
         GlobalScope.launch(Dispatchers.IO){
             ArticlesRemoteDataSource.getHomePageArticles(mUrl!!, pageNum).let {
                 if (it.isNotEmpty()) {
                     val list = articles.value?.toMutableList()
-                    if (type == FETCH_MORE && list != null && list.size != 0) {
+                    if (fetchType == ArticleFetcher.FetchType.FETCH_MORE && list != null && list.size != 0) {
                         list.addAll(it)
                         articles.postValue(list)
                     } else {
