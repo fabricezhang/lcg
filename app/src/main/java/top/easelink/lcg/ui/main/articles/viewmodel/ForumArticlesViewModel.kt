@@ -63,7 +63,9 @@ class ForumArticlesViewModel : ViewModel(), ArticleFetcher {
         isLoading.value = true
         GlobalScope.launch(Dispatchers.IO) {
             val query = composeUrlByRequestType(fetchType, mPageType)
-            val forumPage = getForumArticles(query, mPageType == PageType.DEFAULT_PAGE)
+            val forumPage = getForumArticles(query,
+                mPageType == PageType.DEFAULT_PAGE
+                        && fetchType == ArticleFetcher.FetchType.FETCH_INIT )
             if (forumPage != null) {
                 val articleList = forumPage.articleList
                 if (articleList.isNotEmpty()) {
@@ -74,8 +76,7 @@ class ForumArticlesViewModel : ViewModel(), ArticleFetcher {
                         if (articleA.title == articleB.title) {
                             showMessage(R.string.no_more_content)
                         } else {
-                            list.toMutableList().addAll(articleList)
-                            articles.postValue(list)
+                            articles.postValue(list.plus(articleList))
                         }
                     } else {
                         articles.postValue(articleList)
