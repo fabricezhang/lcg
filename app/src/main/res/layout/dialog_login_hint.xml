@@ -42,7 +42,7 @@
         android:layout_height="@dimen/dp_30"
         android:textColor="@color/white"
         android:textSize="@dimen/sp_14"
-        android:text="@string/login_cancel_btn"
+        android:text="@string/cancel_btn"
         android:background="@drawable/button_bg"
         android:backgroundTint="@color/light_gray"
         app:layout_constraintBottom_toBottomOf="@id/login_hint_btn"

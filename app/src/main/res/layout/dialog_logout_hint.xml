@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:clickable="true"
+    android:focusable="true"
+    android:paddingTop="@dimen/dp_20"
+    android:paddingEnd="@dimen/dp_20"
+    android:paddingStart="@dimen/dp_20"
+    android:paddingBottom="@dimen/dp_5"
+    android:background="@drawable/login_bg">
+
+
+    <TextView
+        android:id="@+id/logout_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/logout_confirm_message"
+        app:layout_constraintTop_toTopOf="parent"
+        android:textSize="@dimen/sp_16"
+        tools:text="是否退出登陆" />
+
+
+    <Button
+        android:id="@+id/logout_confirm_btn"
+        android:layout_width="@dimen/dp_50"
+        android:layout_height="@dimen/dp_25"
+        android:textColor="@color/white"
+        android:layout_marginTop="@dimen/dp_20"
+        android:textSize="@dimen/sp_14"
+        android:text="@string/logout_confirm_btn"
+        android:layout_marginBottom="@dimen/dp_5"
+        android:background="@drawable/button_bg"
+        android:backgroundTint="@color/pojie_logo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/logout_message"
+        app:layout_constraintStart_toEndOf="@id/cancel_btn"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/cancel_btn"
+        android:layout_width="@dimen/dp_50"
+        android:layout_height="@dimen/dp_25"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_14"
+        android:text="@string/cancel_btn"
+        android:background="@drawable/button_bg"
+        android:backgroundTint="@color/light_gray"
+        app:layout_constraintBottom_toBottomOf="@id/logout_confirm_btn"
+        app:layout_constraintTop_toTopOf="@id/logout_confirm_btn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/logout_confirm_btn" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

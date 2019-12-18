@@ -1,7 +1,6 @@
 package top.easelink.lcg.ui.main.source.local
 
 import androidx.annotation.WorkerThread
-import io.reactivex.Observable
 import top.easelink.lcg.ui.main.source.FavoritesLocalDataSource
 import top.easelink.lcg.ui.main.source.model.ArticleEntity
 

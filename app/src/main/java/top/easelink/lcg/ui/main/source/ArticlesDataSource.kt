@@ -1,8 +1,10 @@
 package top.easelink.lcg.ui.main.source
 
 import androidx.annotation.WorkerThread
-import io.reactivex.Observable
-import top.easelink.lcg.ui.main.source.model.*
+import top.easelink.lcg.ui.main.source.model.Article
+import top.easelink.lcg.ui.main.source.model.ArticleDetail
+import top.easelink.lcg.ui.main.source.model.ForumPage
+import top.easelink.lcg.ui.main.source.model.PreviewPost
 
 /**
  * author : junzhang

@@ -32,12 +32,23 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
 
     @WorkerThread
     override fun getForumArticles(query: String, processThreadList: Boolean): ForumPage? {
-        return processForumArticlesDocument(Client.sendRequestWithQuery(query), processThreadList)
+        return try {
+            processForumArticlesDocument(
+                Client.sendRequestWithQuery(query),
+                processThreadList
+            )
+        } catch (e: Exception) {
+            null
+        }
     }
 
     @WorkerThread
     override fun getHomePageArticles(param: String, pageNum: Int): List<Article> {
-        return getArticles("$FORUM_BASE_URL$param&page=$pageNum")
+        return try {
+            getArticles("$FORUM_BASE_URL$param&page=$pageNum")
+        } catch (e: Exception) {
+            emptyList()
+        }
     }
 
     @Throws(BlockException::class, HttpStatusException::class)
@@ -156,58 +167,66 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
                     throw LoginRequiredException()
                 }
             }
-            val articleList: MutableList<Article> = ArrayList()
-            for (element in elements) {
+            val articleList: List<Article> = elements.mapNotNull { element ->
+                var article: Article? = null
                 try {
                     val reply = extractFrom(element, "td.num", "a.xi2").toInt()
                     val view = extractFrom(element, "td.num", "em").toInt()
-                    val title = extractFrom(element, "th.new", ".xst").also {
-                        if (it.isBlank()){
+                    val title = extractFrom(element, "th.new", ".xst").let {
+                        if (it.isBlank()) {
                             extractFrom(element, "th.common", ".xst")
+                        } else {
+                            it
                         }
+
                     }
                     val author = extractFrom(element, "td.by", "a[href*=uid]")
                     val date = extractFrom(element, "td.by", "span")
-                    val url = extractAttrFrom(element, "href", "th.new", "a.xst").also {
+                    val url = extractAttrFrom(element, "href", "th.new", "a.xst").let {
                         if (it.isBlank()) {
                             extractAttrFrom(element, "href", "th.common", "a.xst")
+                        } else {
+                            it
                         }
                     }
                     val origin = extractFrom(element, "td.by", "a[target]")
                     if (!TextUtils.isEmpty(title) && !TextUtils.isEmpty(author)) {
-                        articleList.add(
-                            Article(title, author, date, url, view, reply, origin)
-                        )
+                        article = Article(title, author, date, url, view, reply, origin)
                     }
                 } catch (nbe: NumberFormatException) {
                     Timber.v(nbe)
                 } catch (e: Exception) {
                     Timber.e(e)
                 }
+                article
             }
+
             // for thread part
-            val threadList: MutableList<ForumThread> = ArrayList()
+            var threadList: List<ForumThread>? = null
             if (processThreadList) {
-                val threadTypes = doc.getElementById("thread_types")
-                if (threadTypes != null) {
-                    for (elementByTag in threadTypes.getElementsByTag("li")) {
-                        try {
-                            val element = elementByTag.getElementsByTag("a").first()
-                            elements = element.getElementsByTag("span")
-                            if (elements.size > 0) {
-                                elements.remove()
+                doc.getElementById("thread_types")?.let {threadTypes ->
+                    threadList = threadTypes
+                        .getElementsByTag("li")
+                        .mapNotNull { elementByTag ->
+                            try {
+                                val element = elementByTag.getElementsByTag("a").first()
+                                elements = element.getElementsByTag("span")
+                                if (elements.size > 0) {
+                                    elements.remove()
+                                }
+                                val threadUrl = element.attr("href")
+                                val name = element.text().trim { it <= ' ' }
+                                if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(threadUrl)) {
+                                    return@mapNotNull ForumThread(name, threadUrl)
+                                }
+                            } catch (e: Exception) { // don't care
                             }
-                            val threadUrl = element.attr("href")
-                            val name = element.text().trim { it <= ' ' }
-                            if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(threadUrl)) {
-                                threadList.add(ForumThread(name, threadUrl))
-                            }
-                        } catch (e: Exception) { // don't care
+                            null
                         }
-                    }
+
                 }
             }
-            return ForumPage(articleList, threadList)
+            return ForumPage(articleList, threadList?: emptyList())
         } catch (e: Exception) {
             Timber.e(e)
             return null

@@ -30,7 +30,6 @@ import top.easelink.lcg.ui.main.model.ScreenCaptureEvent;
 import top.easelink.lcg.ui.main.source.model.Post;
 import top.easelink.lcg.utils.FileUtilsKt;
 
-import static top.easelink.lcg.ui.main.articles.viewmodel.ArticleFetcher.FETCH_MORE;
 import static top.easelink.lcg.utils.CopyUtilsKt.copyContent;
 import static top.easelink.lcg.utils.ToastUtilsKt.showMessage;
 
@@ -205,7 +204,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
         @Override
         public void onBind(int position) {
-            mListener.fetchArticlePost(FETCH_MORE);
+            mListener.fetchArticlePost(ArticleAdapterListener.FETCH_POST_MORE);
         }
     }
 }

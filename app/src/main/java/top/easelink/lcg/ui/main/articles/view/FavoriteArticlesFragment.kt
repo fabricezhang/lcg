@@ -40,7 +40,7 @@ class FavoriteArticlesFragment : BaseFragment<FragmentFavoriteArticlesBinding, F
         super.onViewCreated(view, savedInstanceState)
         setUpRecyclerView()
         setupMenu()
-        viewModel.fetchArticles(ArticleFetcher.FETCH_INIT)
+        viewModel.fetchArticles(ArticleFetcher.FetchType.FETCH_INIT)
     }
 
     override fun onCreateOptionsMenu(

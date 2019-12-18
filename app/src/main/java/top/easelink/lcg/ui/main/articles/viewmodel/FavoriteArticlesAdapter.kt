@@ -117,7 +117,7 @@ class FavoriteArticlesAdapter(private var mListener: ArticleFetcher) :
     inner class LoadMoreViewHolder internal constructor(view: View?) :
         BaseViewHolder(view) {
         override fun onBind(position: Int) {
-            mListener.fetchArticles(ArticleFetcher.FETCH_MORE)
+            mListener.fetchArticles(ArticleFetcher.FetchType.FETCH_MORE)
         }
     }
 

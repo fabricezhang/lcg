@@ -38,8 +38,7 @@ class SearchViewModel : ViewModel(), SearchAdapterListener {
                     val list = searchResults.value
                     mNextPageUrl = nextPageUrl
                     if (type == SearchAdapterListener.FETCH_MORE && list != null && list.isNotEmpty()) {
-                        list.toMutableList().addAll(searchResultList)
-                        searchResults.postValue(list)
+                        searchResults.postValue(list.plus(searchResultList))
                     } else {
                         searchResults.postValue(searchResultList)
                     }

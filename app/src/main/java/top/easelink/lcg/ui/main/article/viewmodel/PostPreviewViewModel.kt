@@ -2,13 +2,11 @@ package top.easelink.lcg.ui.main.article.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import kotlinx.android.synthetic.main.dialog_post_preview.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import top.easelink.lcg.R
 import top.easelink.lcg.ui.main.source.remote.ArticlesRemoteDataSource
-import java.lang.Exception
 
 class PostPreviewViewModel : ViewModel() {
 

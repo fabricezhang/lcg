@@ -31,7 +31,6 @@ import top.easelink.lcg.databinding.FragmentMeBinding
 import top.easelink.lcg.ui.main.login.view.LoginHintDialog
 import top.easelink.lcg.ui.main.me.viewmodel.MeViewModel
 import top.easelink.lcg.ui.main.model.OpenNotificationsPageEvent
-import top.easelink.lcg.utils.addFragmentInActivity
 import top.easelink.lcg.utils.addFragmentInFragment
 import top.easelink.lcg.utils.showMessage
 
@@ -65,12 +64,13 @@ class MeFragment : BaseFragment<FragmentMeBinding, MeViewModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.setFragment(this)
         updateIconButtons()
         registerObservers()
     }
 
     private fun registerObservers() {
-        viewModel.loginState.observe(this, Observer<Boolean> {
+        viewModel.mLoginState.observe(this, Observer<Boolean> {
             updateViewVisibility(it)
             if (!it) {
                 // add a blur effect
@@ -87,7 +87,7 @@ class MeFragment : BaseFragment<FragmentMeBinding, MeViewModel>() {
                 }
             }
         })
-        viewModel.notificationInfo.observe(this, Observer {
+        viewModel.mNotificationInfo.observe(this, Observer {
             val notificationBadge =
                 cardview_me_notifications
                     .findViewById<View>(R.id.icon_notifications)
@@ -99,7 +99,7 @@ class MeFragment : BaseFragment<FragmentMeBinding, MeViewModel>() {
                 notificationBadge.visibility = View.GONE
             }
         })
-        viewModel.syncFavorite.observe(this, Observer {
+        viewModel.mSyncFavoriteEnable.observe(this, Observer {
             if (it) {
                 viewDataBinding.favoriteSettingsSwitch.apply {
                     playAnimation()
@@ -121,7 +121,7 @@ class MeFragment : BaseFragment<FragmentMeBinding, MeViewModel>() {
                 }
             }
         })
-        viewModel.autoSignEnable.observe(this, Observer {
+        viewModel.mAutoSignInEnable.observe(this, Observer {
             auto_sign_in_switch.apply {
                 if (it) {
                     playAnimation()
