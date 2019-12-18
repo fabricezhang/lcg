@@ -23,6 +23,8 @@ class ForumArticlesViewModel : ViewModel(), ArticleFetcher {
     private var orderType = DEFAULT_ORDER
     private var mCurrentPage = 1
 
+    private var isTabSet = false
+
     val title = MutableLiveData<String>()
     val articles = MutableLiveData<List<Article>>()
     val shouldDisplayArticles = MutableLiveData<Boolean>()
@@ -66,8 +68,7 @@ class ForumArticlesViewModel : ViewModel(), ArticleFetcher {
                 val articleList = forumPage.articleList
                 if (articleList.isNotEmpty()) {
                     val list = articles.value
-                    if ((fetchType == ArticleFetcher.FetchType.FETCH_MORE)
-                        && !list.isNullOrEmpty()) {
+                    if ((fetchType == ArticleFetcher.FetchType.FETCH_MORE) && !list.isNullOrEmpty()) {
                         val articleA = articleList[articleList.size - 1]
                         val articleB = list[list.size - 1]
                         if (articleA.title == articleB.title) {
@@ -80,8 +81,10 @@ class ForumArticlesViewModel : ViewModel(), ArticleFetcher {
                         articles.postValue(articleList)
                     }
                     shouldDisplayArticles.postValue(true)
+                } else {
+                    shouldDisplayArticles.postValue(false)
                 }
-                if (mPageType == PageType.DEFAULT_PAGE) {
+                if (mPageType == PageType.DEFAULT_PAGE && !isTabSet) {
                     forumPage.threadList.let {
                         threadList.postValue(
                             if (it.isNotEmpty())
@@ -90,6 +93,7 @@ class ForumArticlesViewModel : ViewModel(), ArticleFetcher {
                                 emptyList()
                         )
                     }
+                    isTabSet = true
                 }
 
             }

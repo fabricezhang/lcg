@@ -12,6 +12,7 @@ import top.easelink.lcg.ui.main.source.checkMessages
 import top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL
 import top.easelink.lcg.utils.getCookies
 import top.easelink.lcg.utils.setCookies
+import java.net.SocketTimeoutException
 
 object Client {
 
@@ -20,6 +21,7 @@ object Client {
     private const val TIME_OUT_LIMIT = 15 * 1000
     private const val BASE_URL = SERVER_BASE_URL
 
+    @Throws(SocketTimeoutException::class)
     fun sendRequestWithQuery(query: String): Document {
         return Jsoup
             .connect("$BASE_URL$query")

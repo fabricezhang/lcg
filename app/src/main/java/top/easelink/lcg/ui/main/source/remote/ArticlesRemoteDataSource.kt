@@ -32,12 +32,23 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
 
     @WorkerThread
     override fun getForumArticles(query: String, processThreadList: Boolean): ForumPage? {
-        return processForumArticlesDocument(Client.sendRequestWithQuery(query), processThreadList)
+        return try {
+            processForumArticlesDocument(
+                Client.sendRequestWithQuery(query),
+                processThreadList
+            )
+        } catch (e: Exception) {
+            null
+        }
     }
 
     @WorkerThread
     override fun getHomePageArticles(param: String, pageNum: Int): List<Article> {
-        return getArticles("$FORUM_BASE_URL$param&page=$pageNum")
+        return try {
+            getArticles("$FORUM_BASE_URL$param&page=$pageNum")
+        } catch (e: Exception) {
+            emptyList()
+        }
     }
 
     @Throws(BlockException::class, HttpStatusException::class)
