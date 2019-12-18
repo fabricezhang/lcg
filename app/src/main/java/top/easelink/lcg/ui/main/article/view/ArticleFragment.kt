@@ -69,8 +69,10 @@ class ArticleFragment : BaseFragment<FragmentArticleBinding, ArticleViewModel>()
     }
 
     private fun setUp() {
-        viewDataBinding.backToTop.setOnClickListener {
-            scrollToTop()
+        viewDataBinding.comment.setOnClickListener {
+            viewModel.posts.value?.get(0)?.replyUrl?.let {
+                CommentArticleDialog.newInstance(it).show(fragmentManager)
+            }
         }
         viewDataBinding.postRecyclerView.apply {
             val mLayoutManager = LinearLayoutManager(context).also {
@@ -91,18 +93,12 @@ class ArticleFragment : BaseFragment<FragmentArticleBinding, ArticleViewModel>()
                     recyclerView: RecyclerView,
                     newState: Int
                 ) {
-                    val firstVisibleItemPosition = mLayoutManager.findFirstVisibleItemPosition()
-                    val backToTop = viewDataBinding!!.backToTop
-                    if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                        if (firstVisibleItemPosition == 0) {
-                            backToTop.visibility = View.GONE
-                            backToTop.pauseAnimation()
-                        } else {
-                            backToTop.visibility = View.VISIBLE
+                    viewDataBinding.comment.run {
+                        if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                            visibility = View.VISIBLE
+                        } else if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
+                            visibility = View.GONE
                         }
-                    } else if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
-                        backToTop.visibility = View.GONE
-                        backToTop.pauseAnimation()
                     }
                 }
             })
@@ -134,10 +130,6 @@ class ArticleFragment : BaseFragment<FragmentArticleBinding, ArticleViewModel>()
             }
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    private fun scrollToTop() {
-        viewDataBinding.postRecyclerView.smoothScrollToPosition(0)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

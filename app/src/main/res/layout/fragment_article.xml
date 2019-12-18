@@ -39,7 +39,6 @@
                 android:visibility="@{viewModel.shouldDisplayPosts? View.VISIBLE:View.GONE, default = gone}" />
         </com.google.android.material.appbar.AppBarLayout>
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -82,21 +81,22 @@
                 android:text="@string/not_found_info"/>
         </LinearLayout>
 
-        <com.airbnb.lottie.LottieAnimationView
+        <ImageButton
             android:layout_gravity="bottom|end"
-            android:id="@+id/back_to_top"
+            android:id="@+id/comment"
+            android:padding="@dimen/dp_8"
             android:layout_width="@dimen/dp_40"
             android:layout_height="@dimen/dp_40"
             android:scaleType="fitCenter"
             android:layout_marginEnd="@dimen/dp_20"
-            android:layout_marginBottom="@dimen/dp_40"
+            android:layout_marginBottom="@dimen/dp_60"
             android:focusable="true"
             android:clickable="true"
-            android:visibility="gone"
-            android:background="@drawable/bg_oval"
-            app:lottie_rawRes="@raw/swipe_up"
-            app:lottie_loop="true"
-            app:lottie_autoPlay="false"/>
+            android:visibility="visible"
+            android:src="@drawable/ic_comment"
+            android:tint="@color/translucent_white"
+            android:backgroundTint="@color/light_gray"
+            android:background="@drawable/bg_oval" />
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/fetching_progress_bar"
