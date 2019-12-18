@@ -3,7 +3,6 @@ package top.easelink.lcg.ui.main.me.viewmodel
 import android.annotation.SuppressLint
 import android.view.View
 import androidx.annotation.WorkerThread
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.work.Constraints
@@ -18,7 +17,6 @@ import timber.log.Timber
 import top.easelink.framework.base.BaseFragment
 import top.easelink.lcg.R
 import top.easelink.lcg.mta.*
-import top.easelink.lcg.service.web.WebViewWrapper
 import top.easelink.lcg.service.work.SignInWorker
 import top.easelink.lcg.service.work.SignInWorker.Companion.DEFAULT_TIME_UNIT
 import top.easelink.lcg.service.work.SignInWorker.Companion.WORK_INTERVAL
@@ -43,11 +41,11 @@ class MeViewModel: ViewModel() {
 
     private var mFragment: WeakReference<BaseFragment<*,*>>? = null
 
-    private val mLoginState = MutableLiveData<Boolean>()
-    private val mUserInfo = MutableLiveData<UserInfo>()
-    private val mAutoSignInEnable = MutableLiveData<Boolean>()
-    private val mSyncFavoriteEnable = MutableLiveData<Boolean>()
-    private val mNotificationInfo = MutableLiveData<NotificationInfo>()
+    val mLoginState = MutableLiveData<Boolean>()
+    val mUserInfo = MutableLiveData<UserInfo>()
+    val mAutoSignInEnable = MutableLiveData<Boolean>()
+    val mSyncFavoriteEnable = MutableLiveData<Boolean>()
+    val mNotificationInfo = MutableLiveData<NotificationInfo>()
 
     init {
         mAutoSignInEnable.postValue(SharedPreferencesHelper
@@ -57,21 +55,6 @@ class MeViewModel: ViewModel() {
             .getUserSp()
             .getBoolean(SP_KEY_SYNC_FAVORITE, false))
     }
-
-    val loginState: LiveData<Boolean>
-        get() = mLoginState
-
-    val userInfo:LiveData<UserInfo>
-        get() = mUserInfo
-
-    val autoSignEnable: LiveData<Boolean>
-        get() = mAutoSignInEnable
-
-    val syncFavorite: LiveData<Boolean>
-        get() = mSyncFavoriteEnable
-
-    val notificationInfo: LiveData<NotificationInfo>
-        get() = mNotificationInfo
 
     fun scheduleJob(v: View) {
         val nextState = (mAutoSignInEnable.value != true)
@@ -132,6 +115,7 @@ class MeViewModel: ViewModel() {
                 mNotificationInfo.postValue(parseNotificationInfo(doc))
             } catch (e: Exception) {
                 Timber.e(e)
+                mLoginState.postValue(false)
             }
         }
     }
@@ -142,7 +126,6 @@ class MeViewModel: ViewModel() {
                 positive = {
                     UserData.loggedInState = false
                     clearCookies()
-                    WebViewWrapper.getInstance().clearCookies()
                     showMessage(R.string.me_tab_clear_cookie)
                     activity?.onBackPressed()
                 },

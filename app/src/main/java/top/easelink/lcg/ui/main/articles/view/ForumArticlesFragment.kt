@@ -84,7 +84,7 @@ class ForumArticlesFragment : BaseFragment<FragmentForumArticlesBinding, ForumAr
                         url = it,
                         pageType = if(pos == 0) ForumArticlesViewModel.PageType.DEFAULT_PAGE else ForumArticlesViewModel.PageType.THREAD_PAGE,
                         fetchType = ArticleFetcher.FetchType.FETCH_INIT,
-                        order = order
+                        order = if(pos == 0) DEFAULT_ORDER else order
                     )
                 }
         } catch (e: Exception) {
