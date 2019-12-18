@@ -53,7 +53,6 @@ class ForumArticlesFragment : BaseFragment<FragmentForumArticlesBinding, ForumAr
         arguments?.let {
             viewModel.initUrlAndFetch(
                 url = it.getString(ARG_PARAM)!!,
-                pageType = ForumArticlesViewModel.PageType.DEFAULT_PAGE,
                 fetchType = ArticleFetcher.FetchType.FETCH_INIT)
             viewModel.setTitle(it.getString(ARG_TITLE).orEmpty())
         }
@@ -82,9 +81,8 @@ class ForumArticlesFragment : BaseFragment<FragmentForumArticlesBinding, ForumAr
                 ?.let {
                     viewModel.initUrlAndFetch(
                         url = it,
-                        pageType = if(pos == 0) ForumArticlesViewModel.PageType.DEFAULT_PAGE else ForumArticlesViewModel.PageType.THREAD_PAGE,
                         fetchType = ArticleFetcher.FetchType.FETCH_INIT,
-                        order = if(pos == 0) DEFAULT_ORDER else order
+                        order = order
                     )
                 }
         } catch (e: Exception) {
@@ -110,14 +108,8 @@ class ForumArticlesFragment : BaseFragment<FragmentForumArticlesBinding, ForumAr
             addOnTabSelectedListener(object : OnTabSelectedListener {
                 override fun onTabSelected(tab: TabLayout.Tab) {
                     StatService.trackCustomEvent(context, CHANGE_THREAD)
-                    val pageType = if (tab.position == 0) {
-                        ForumArticlesViewModel.PageType.DEFAULT_PAGE
-                    } else {
-                        ForumArticlesViewModel.PageType.THREAD_PAGE
-                    }
                     viewModel.initUrlAndFetch(
                         url = forumThreadList[tab.position].threadUrl,
-                        pageType = pageType,
                         fetchType = ArticleFetcher.FetchType.FETCH_INIT
                     )
                 }

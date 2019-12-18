@@ -23,8 +23,7 @@ class ForumNavigationFragment :
     }
 
     override fun getViewModel(): ForumNavigationViewModel {
-        return ViewModelProviders.of(this)
-            .get(ForumNavigationViewModel::class.java)
+        return ViewModelProviders.of(this).get(ForumNavigationViewModel::class.java)
     }
 
     override fun onViewCreated(

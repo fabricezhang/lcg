@@ -31,7 +31,6 @@ import top.easelink.lcg.databinding.FragmentMeBinding
 import top.easelink.lcg.ui.main.login.view.LoginHintDialog
 import top.easelink.lcg.ui.main.me.viewmodel.MeViewModel
 import top.easelink.lcg.ui.main.model.OpenNotificationsPageEvent
-import top.easelink.lcg.utils.addFragmentInActivity
 import top.easelink.lcg.utils.addFragmentInFragment
 import top.easelink.lcg.utils.showMessage
 

@@ -8,8 +8,6 @@ import top.easelink.framework.base.SafeShowDialogFragment
 import top.easelink.framework.customview.htmltextview.HtmlTextView
 import top.easelink.lcg.R
 import top.easelink.lcg.ui.webview.view.WebViewActivity
-import top.easelink.lcg.utils.WebsiteConstant.LOGIN_URL
-import top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL
 
 class LoginHintDialog : SafeShowDialogFragment() {
 

@@ -6,10 +6,12 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import top.easelink.lcg.R
 import top.easelink.lcg.ui.main.source.model.Article
 import top.easelink.lcg.ui.main.source.model.ForumThread
 import top.easelink.lcg.ui.main.source.remote.ArticlesRemoteDataSource.getForumArticles
+import top.easelink.lcg.utils.WebsiteConstant.FORUM_URL_TEMPLATE
 import top.easelink.lcg.utils.showMessage
 
 const val LAST_POST_ORDER = "&orderby=lastpost"
@@ -19,7 +21,6 @@ const val DEFAULT_ORDER = ""
 class ForumArticlesViewModel : ViewModel(), ArticleFetcher {
     private var mUrl: String? = null
     private var mFetchType = ArticleFetcher.FetchType.FETCH_INIT
-    private var mPageType = PageType.DEFAULT_PAGE
     private var orderType = DEFAULT_ORDER
     private var mCurrentPage = 1
 
@@ -31,10 +32,19 @@ class ForumArticlesViewModel : ViewModel(), ArticleFetcher {
     val threadList = MutableLiveData<List<ForumThread>>()
     val isLoading = MutableLiveData<Boolean>()
 
-    fun initUrlAndFetch(url: String, fetchType: ArticleFetcher.FetchType, pageType: PageType, order: String = DEFAULT_ORDER) {
-        mUrl = url
+    fun initUrlAndFetch(url: String, fetchType: ArticleFetcher.FetchType, order: String = DEFAULT_ORDER) {
+        //Fabrice: add a workaround to  map forum-16-1.html to forum.php?mod=forumdisplay&fid=16
+        mUrl = if (url.startsWith("forum-") && url.endsWith("html")) {
+            try {
+                String.format(FORUM_URL_TEMPLATE, url.split("-")[1])
+            } catch (e: Exception) {
+                Timber.e(e)
+                url
+            }
+        } else {
+            url
+        }
         mFetchType = fetchType
-        mPageType = pageType
         orderType = order
         fetchArticles(mFetchType)
     }
@@ -44,28 +54,20 @@ class ForumArticlesViewModel : ViewModel(), ArticleFetcher {
         title.value = t
     }
 
-    private fun composeUrlByRequestType(type: ArticleFetcher.FetchType, pageType: PageType): String {
+    private fun composeUrlByRequestType(type: ArticleFetcher.FetchType): String {
         when (type) {
             ArticleFetcher.FetchType.FETCH_INIT -> rewindPageNum()
             ArticleFetcher.FetchType.FETCH_MORE -> nextPage()
         }
-        return when (pageType) {
-            PageType.DEFAULT_PAGE -> {
-                String.format(mUrl!!, mCurrentPage)
-            }
-            PageType.THREAD_PAGE -> {
-                "$mUrl&page=$mCurrentPage$orderType"
-            }
-        }
+        return "$mUrl&page=$mCurrentPage$orderType"
     }
 
     override fun fetchArticles(fetchType: ArticleFetcher.FetchType) {
         isLoading.value = true
         GlobalScope.launch(Dispatchers.IO) {
-            val query = composeUrlByRequestType(fetchType, mPageType)
+            val query = composeUrlByRequestType(fetchType)
             val forumPage = getForumArticles(query,
-                mPageType == PageType.DEFAULT_PAGE
-                        && fetchType == ArticleFetcher.FetchType.FETCH_INIT )
+                fetchType == ArticleFetcher.FetchType.FETCH_INIT )
             if (forumPage != null) {
                 val articleList = forumPage.articleList
                 if (articleList.isNotEmpty()) {
@@ -85,7 +87,7 @@ class ForumArticlesViewModel : ViewModel(), ArticleFetcher {
                 } else {
                     shouldDisplayArticles.postValue(false)
                 }
-                if (mPageType == PageType.DEFAULT_PAGE && !isTabSet) {
+                if (!isTabSet) {
                     forumPage.threadList.let {
                         threadList.postValue(
                             if (it.isNotEmpty())
@@ -108,10 +110,5 @@ class ForumArticlesViewModel : ViewModel(), ArticleFetcher {
 
     private fun nextPage() {
         mCurrentPage++
-    }
-
-    enum class PageType{
-        DEFAULT_PAGE,
-        THREAD_PAGE
     }
 }
