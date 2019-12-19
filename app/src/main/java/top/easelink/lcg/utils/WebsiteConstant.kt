@@ -34,5 +34,5 @@ object WebsiteConstant {
     const val SYSTEM_NOTIFICATION_URL = "home.php?mod=space&do=notice&view=system"
     const val HOME_URL = "home.php"
     const val LOGIN_URL = "member.php?mod=logging&action=login"
-    const val APP_RELEASE_PAGE = "thread-1060219-1-1.html"
+    const val APP_RELEASE_PAGE = "thread-1073834-1-1.html"
 }

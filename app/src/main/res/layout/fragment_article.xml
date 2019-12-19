@@ -92,7 +92,7 @@
             android:layout_marginBottom="@dimen/dp_60"
             android:focusable="true"
             android:clickable="true"
-            android:visibility="visible"
+            android:visibility="@{viewModel.shouldDisplayPosts? View.VISIBLE:View.GONE, default = gone}"
             android:src="@drawable/ic_comment"
             android:tint="@color/translucent_white"
             android:backgroundTint="@color/light_gray"
