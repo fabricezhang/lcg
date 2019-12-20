@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.tencent.stat.StatService
+import kotlinx.android.synthetic.main.fragment_forum_articles.*
 import timber.log.Timber
 import top.easelink.framework.base.BaseFragment
 import top.easelink.lcg.BR
@@ -41,10 +42,41 @@ class ForumArticlesFragment : BaseFragment<FragmentForumArticlesBinding, ForumAr
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setHasOptionsMenu(true)
-        (activity as AppCompatActivity?)?.setSupportActionBar(viewDataBinding.articleToolbar)
+        setUpToolbar()
         setUp()
     }
+
+    private fun setUpToolbar() {
+        article_toolbar.apply {
+            inflateMenu(R.menu.forum_articles)
+            setOnMenuItemClickListener { menuItem ->
+                val order = when (menuItem.itemId) {
+                    R.id.action_order_by_datetime -> DATE_LINE_ORDER
+                    R.id.action_order_by_lastpost -> LAST_POST_ORDER
+                    else -> DEFAULT_ORDER
+                }
+                try {
+                    val pos = viewDataBinding.forumTab.selectedTabPosition
+                    viewModel
+                        .threadList
+                        .value
+                        ?.get(pos)
+                        ?.threadUrl
+                        ?.let {
+                            viewModel.initUrlAndFetch(
+                                url = it,
+                                fetchType = ArticleFetcher.FetchType.FETCH_INIT,
+                                order = order
+                            )
+                        }
+                } catch (e: Exception) {
+                    Timber.e(e)
+                }
+                return@setOnMenuItemClickListener true
+            }
+        }
+    }
+
 
     private fun setUp() {
         viewModel.threadList.observe(this, Observer {
@@ -57,12 +89,6 @@ class ForumArticlesFragment : BaseFragment<FragmentForumArticlesBinding, ForumAr
             viewModel.setTitle(it.getString(ARG_TITLE).orEmpty())
         }
         setUpRecyclerView()
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        menu.clear()
-        inflater.inflate(R.menu.forum_articles, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

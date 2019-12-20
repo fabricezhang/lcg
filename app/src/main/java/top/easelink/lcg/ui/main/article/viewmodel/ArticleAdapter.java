@@ -138,7 +138,12 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                 }
                 if (UserData.INSTANCE.getLoggedInState()) {
                     mBinding.btnGroup.setVisibility(View.VISIBLE);
-                    mBinding.btnReply.setOnClickListener(this);
+                    if (TextUtils.isEmpty(post.getReplyUrl())) {
+                        mBinding.btnReply.setVisibility(View.GONE);
+                    } else {
+                        mBinding.btnReply.setVisibility(View.VISIBLE);
+                        mBinding.btnReply.setOnClickListener(this);
+                    }
                     if (TextUtils.isEmpty(post.getReplyAddUrl())) {
                         mBinding.btnThumbUp.setVisibility(View.GONE);
                     } else {
@@ -159,17 +164,21 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.btn_reply:
-                    EventBus.getDefault().post(new ReplyPostEvent(post.getReplyUrl(), post.getAuthor()));
+                    if (post.getReplyUrl() != null) {
+                        EventBus.getDefault().post(new ReplyPostEvent(post.getReplyUrl(), post.getAuthor()));
+                    }
                     break;
                 case R.id.btn_copy:
-                    if(copyContent(post.getContent(), post.getReplyUrl())) {
+                    if (copyContent(post.getContent(), post.getAuthor())) {
                         showMessage(R.string.copy_succeed);
                     } else {
                         showMessage(R.string.copy_failed);
                     }
                     break;
                 case R.id.btn_thumb_up:
-                    mListener.replyAdd(post.getReplyAddUrl());
+                    if (post.getReplyAddUrl() != null) {
+                        mListener.replyAdd(post.getReplyAddUrl());
+                    }
                     break;
                 case R.id.btn_capture:
                     Bitmap bmp = ScreenUtilsKt.convertViewToBitmap(itemView);

@@ -28,7 +28,10 @@ object WebsiteConstant {
     const val VIRUS_ANALYSIS_URL = "forum-32-%d.html"
     const val VIRUS_RESCUE_URL = "forum-50-%d.html"
     const val VIRUS_SAMPLE_URL = "forum-40-%d.html"
-    const val FAVORITE_URL = "home.php?mod=spacecp&ac=favorite&type=thread&id=%s&formhash=%s&infloat=yes&handlekey=k_favorite&inajax=1&ajaxtarget=fwin_content_k_favorite"
+
+
+    const val GET_FAVORITE_QUERY = "home.php?mod=space&do=favorite&view=me"
+    const val ADD_TO_FAVORITE_QUERY = "home.php?mod=spacecp&ac=favorite&type=thread&id=%s&formhash=%s&infloat=yes&handlekey=k_favorite&inajax=1&ajaxtarget=fwin_content_k_favorite"
 
     const val CHECK_RULE_URL = SERVER_BASE_URL + "forum.php?mod=ajax&action=checkpostrule&inajax=yes&ac=reply&infloat=yes&handlekey=reply"
     const val SYSTEM_NOTIFICATION_URL = "home.php?mod=space&do=notice&view=system"

@@ -8,8 +8,7 @@ import kotlinx.coroutines.launch
 import top.easelink.lcg.ui.main.source.model.Article
 import top.easelink.lcg.ui.main.source.remote.ArticlesRemoteDataSource
 
-class ArticlesViewModel : ViewModel(),
-    ArticleFetcher {
+class ArticlesViewModel : ViewModel(), ArticleFetcher {
     private var mCurrentPage = 0
     private var mUrl: String? = null
     val isLoading = MutableLiveData<Boolean>()

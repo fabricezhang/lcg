@@ -17,6 +17,6 @@ class Post
     val avatar: String,
     val date: String,
     val content: String,
-    val replyUrl: String,
+    val replyUrl: String?,
     val replyAddUrl: String?
 )

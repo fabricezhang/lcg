@@ -134,11 +134,11 @@ class ArticleViewModel: ViewModel(), ArticleAdapterListener {
                 val author = posts[0].author
                 val content = articleAbstract?.description ?: ""
                 val articleEntity = ArticleEntity(
-                    title ?: "未知标题",
-                    author,
-                    mUrl!!,
-                    content,
-                    System.currentTimeMillis()
+                    title = title ?: "未知标题",
+                    author = author,
+                    url = mUrl!!,
+                    content = content,
+                    timestamp = System.currentTimeMillis()
                 )
                 val syncFavoritesEnable =
                     SharedPreferencesHelper.getUserSp().getBoolean(SP_KEY_SYNC_FAVORITE, false)

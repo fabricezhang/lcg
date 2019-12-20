@@ -1,20 +1,24 @@
 package top.easelink.lcg.ui.main.articles.viewmodel
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.item_favorite_article_view.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import org.greenrobot.eventbus.EventBus
 import timber.log.Timber
 import top.easelink.framework.base.BaseViewHolder
 import top.easelink.lcg.R
-import top.easelink.lcg.databinding.ItemFavoriteArticleViewBinding
+import top.easelink.lcg.ui.main.model.OpenArticleEvent
 import top.easelink.lcg.ui.main.source.local.ArticlesLocalDataSource.delArticleFromFavorite
 import top.easelink.lcg.ui.main.source.model.ArticleEntity
 
-class FavoriteArticlesAdapter(private var mListener: ArticleFetcher) :
+class FavoriteArticlesAdapter(private var favoriteArticlesViewModel: FavoriteArticlesViewModel) :
     RecyclerView.Adapter<BaseViewHolder>() {
     private val mArticleEntities: MutableList<ArticleEntity> = mutableListOf()
 
@@ -44,13 +48,10 @@ class FavoriteArticlesAdapter(private var mListener: ArticleFetcher) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         return when (viewType) {
-            VIEW_TYPE_NORMAL -> {
-                val favoriteArticleViewBinding = ItemFavoriteArticleViewBinding.inflate(
-                    LayoutInflater.from(parent.context),
-                    parent, false
-                )
-                ArticleViewHolder(favoriteArticleViewBinding, this)
-            }
+            VIEW_TYPE_NORMAL -> ArticleViewHolder(
+                LayoutInflater.from(parent.context).inflate(
+                    R.layout.item_favorite_article_view, parent, false)
+            )
             VIEW_TYPE_LOAD_MORE -> LoadMoreViewHolder(
                 LayoutInflater.from(parent.context).inflate(
                     R.layout.item_load_more_view, parent, false
@@ -78,46 +79,64 @@ class FavoriteArticlesAdapter(private var mListener: ArticleFetcher) :
         mArticleEntities.clear()
     }
 
-    inner class ArticleViewHolder internal constructor(
-        private val mBinding: ItemFavoriteArticleViewBinding,
-        private val mAdapter: FavoriteArticlesAdapter
-    ) : BaseViewHolder(mBinding.root) {
-        private var favoriteArticleItemViewModel: FavoriteArticleItemViewModel? = null
+    inner class ArticleViewHolder internal constructor(private val view: View) : BaseViewHolder(view) {
+
+        // will be assigned in onBind(), should not be called before onBind()
+        private lateinit var articleEntity: ArticleEntity
+
+        private fun onItemClick() {
+            val event = OpenArticleEvent(articleEntity.url)
+            EventBus.getDefault().post(event)
+        }
 
         override fun onBind(position: Int) {
-            val articleEntity = mArticleEntities[position]
-            mBinding.removeButton.setOnClickListener {
-                GlobalScope.launch(Dispatchers.IO) {
-                    if (delArticleFromFavorite(articleEntity.id)) {
-                        mArticleEntities.remove(articleEntity)
-                        GlobalScope.launch(Dispatchers.Main) {
-                            notifyItemRemoved(position)
-                            notifyItemRangeChanged(position, mArticleEntities.size - position)
+            articleEntity = mArticleEntities[position].also {entity ->
+                view.remove_button.setOnClickListener {
+                    GlobalScope.launch(Dispatchers.IO) {
+                        if (delArticleFromFavorite(entity.id)) {
+                            mArticleEntities.remove(entity)
+                            GlobalScope.launch(Dispatchers.Main) {
+                                notifyItemRemoved(position)
+                                notifyItemRangeChanged(position, mArticleEntities.size - position)
+                            }
                         }
                     }
                 }
             }
-            favoriteArticleItemViewModel = FavoriteArticleItemViewModel(articleEntity)
-            try {
-                mBinding.contentTextView.setHtml(articleEntity.content.trim { it <= ' ' })
-            } catch (e: Exception) {
-                Timber.e(e)
+            view.run {
+                favorite_container.apply {
+                    if (position % 2 ==1) {
+                        setBackgroundColor(ContextCompat.getColor(view.context, R.color.slight_light_gray))
+                    } else {
+                        setBackgroundColor(Color.WHITE)
+                    }
+                }.setOnClickListener {
+                    onItemClick()
+                }
+                title_text_view.text = articleEntity.title
+                if (articleEntity.author.isNotBlank()) {
+                    author_text_view.apply {
+                        text = articleEntity.author
+                        visibility = View.VISIBLE
+                    }
+                }  else {
+                    author_text_view.visibility = View.GONE
+                }
             }
-            mBinding.viewModel = favoriteArticleItemViewModel
-            mBinding.executePendingBindings()
         }
 
     }
 
     inner class EmptyViewHolder internal constructor(view: View?) :
         BaseViewHolder(view) {
-        override fun onBind(position: Int) {}
+        override fun onBind(position: Int) {
+        }
     }
 
     inner class LoadMoreViewHolder internal constructor(view: View?) :
         BaseViewHolder(view) {
         override fun onBind(position: Int) {
-            mListener.fetchArticles(ArticleFetcher.FetchType.FETCH_MORE)
+            favoriteArticlesViewModel.fetchArticles(ArticleFetcher.FetchType.FETCH_MORE)
         }
     }
 

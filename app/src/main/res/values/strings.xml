@@ -11,6 +11,7 @@
     <string name="extract_urls">提取下载链接</string>
     <string name="add_to_my_favorite">添加到收藏</string>
     <string name="clear_all_from_my_favorite">清空收藏夹</string>
+    <string name="sync_my_favorite">同步网络收藏</string>
 
     <string name="order_by_datetime">按发帖时间排序</string>
     <string name="order_by_lastpost">按回帖时间排序</string>

@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import org.jsoup.nodes.Entities
 import top.easelink.lcg.ui.main.source.model.ArticleEntity
 
 /**
@@ -21,6 +22,10 @@ interface ArticlesDao {
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertArticle(articleEntity: ArticleEntity)
+
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAllArticles(articleEntities: List<ArticleEntity>)
 
     /**
      * Select all articles from my collections.

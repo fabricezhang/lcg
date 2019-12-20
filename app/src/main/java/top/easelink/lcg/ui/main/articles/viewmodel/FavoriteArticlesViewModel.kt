@@ -7,6 +7,9 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import top.easelink.lcg.R
+import top.easelink.lcg.ui.main.articles.source.FavoriteDataSource.getAllRemoteFavorites
+import top.easelink.lcg.ui.main.source.ArticlesDataSource
+import top.easelink.lcg.ui.main.source.local.ArticlesDao
 import top.easelink.lcg.ui.main.source.local.ArticlesLocalDataSource
 import top.easelink.lcg.ui.main.source.model.ArticleEntity
 import top.easelink.lcg.utils.showMessage
@@ -33,12 +36,14 @@ class FavoriteArticlesViewModel : ViewModel(), ArticleFetcher {
                 }
             } catch (e: Exception) {
                 Timber.e(e)
+            } finally {
+                isLoading.postValue(false)
             }
-            isLoading.postValue(false)
         }
     }
 
     fun removeAllFavorites() {
+        isLoading.value = true
         GlobalScope.launch(Dispatchers.IO) {
             try {
                 if(ArticlesLocalDataSource.delAllArticlesFromFavorite()){
@@ -50,6 +55,25 @@ class FavoriteArticlesViewModel : ViewModel(), ArticleFetcher {
             } catch (e: Exception) {
                 Timber.e(e)
                 showMessage(R.string.remove_all_favorites_failed)
+            } finally {
+                isLoading.postValue(false)
+            }
+        }
+    }
+
+    fun syncFavorites() {
+        isLoading.value = true
+        GlobalScope.launch(Dispatchers.IO) {
+            try {
+                val articleEntities = getAllRemoteFavorites()
+                if(ArticlesLocalDataSource.addAllArticleToFavorite(articleEntities)) {
+                    articles.postValue(ArticlesLocalDataSource.getAllFavoriteArticles())
+                }
+            } catch (e: Exception) {
+                Timber.e(e)
+                showMessage(R.string.sync_favorite_failed)
+            } finally {
+                isLoading.postValue(false)
             }
         }
     }
