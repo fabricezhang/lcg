@@ -65,11 +65,6 @@ class ArticleFragment : BaseFragment<FragmentArticleBinding, ArticleViewModel>()
     }
 
     private fun setUp() {
-        viewModel.posts.value?.get(0)?.replyUrl?.let { url ->
-            viewDataBinding.comment.setOnClickListener {
-                CommentArticleDialog.newInstance(url).show(fragmentManager)
-            }
-        }
         viewDataBinding.postRecyclerView.apply {
             val mLayoutManager = LinearLayoutManager(context).also {
                 it.orientation = RecyclerView.VERTICAL
@@ -79,6 +74,16 @@ class ArticleFragment : BaseFragment<FragmentArticleBinding, ArticleViewModel>()
             adapter = ArticleAdapter(viewModel)
 
             viewModel.posts.observe(this@ArticleFragment, androidx.lifecycle.Observer{
+                val url = it[0].replyUrl
+                if (it.size > 0 && url != null) {
+                    comment.apply {
+                        visibility = View.VISIBLE
+                    }.setOnClickListener {
+                        CommentArticleDialog.newInstance(url).show(fragmentManager)
+                    }
+                } else {
+                    comment.visibility = View.GONE
+                }
                 (adapter as? ArticleAdapter)?.run {
                     clearItems()
                     addItems(it)

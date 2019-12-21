@@ -20,7 +20,6 @@ import kotlinx.android.synthetic.main.fragment_me.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import org.greenrobot.eventbus.EventBus
 import top.easelink.framework.base.BaseFragment
 import top.easelink.framework.utils.bitmapBlur
 import top.easelink.framework.utils.convertViewToBitmap
@@ -30,7 +29,6 @@ import top.easelink.lcg.R
 import top.easelink.lcg.databinding.FragmentMeBinding
 import top.easelink.lcg.ui.main.login.view.LoginHintDialog
 import top.easelink.lcg.ui.main.me.viewmodel.MeViewModel
-import top.easelink.lcg.ui.main.model.OpenNotificationsPageEvent
 import top.easelink.lcg.utils.addFragmentInFragment
 import top.easelink.lcg.utils.showMessage
 
@@ -146,15 +144,10 @@ class MeFragment : BaseFragment<FragmentMeBinding, MeViewModel>() {
     private fun updateIconButtons() {
         icon_notifications?.apply {
             setOnClickListener {
-                EventBus.getDefault().post(OpenNotificationsPageEvent)
+                showFragment(MeNotificationFragment())
                 findViewById<View>(R.id.badge).visibility = View.GONE
             }
-            findViewById<ImageView>(R.id.btn_icon).apply {
-                setImageResource(R.drawable.ic_notifications)
-                setOnClickListener {
-                    showFragment(MeNotificationFragment())
-                }
-            }
+            findViewById<ImageView>(R.id.btn_icon).setImageResource(R.drawable.ic_notifications)
             findViewById<TextView>(R.id.tv_icon).setText(R.string.ic_notifications)
         }
         icon_deja_vue?.apply {

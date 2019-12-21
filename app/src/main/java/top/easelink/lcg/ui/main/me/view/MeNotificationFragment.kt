@@ -42,7 +42,7 @@ class MeNotificationFragment: TopFragment(){
             itemAnimator = DefaultItemAnimator()
             adapter = NotificationsAdapter()
             notificationViewModel
-                .systemNotifications
+                .notifications
                 .observe(this@MeNotificationFragment, Observer { notifications ->
                     (adapter as NotificationsAdapter).run {
                         clearItems()

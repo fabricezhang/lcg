@@ -8,6 +8,4 @@ data class OpenForumEvent(val title: String, val url: String)
 
 data class OpenArticleEvent(val url: String)
 
-object OpenNotificationsPageEvent
-
 data class NewMessageEvent(val notificationInfo: NotificationInfo)

@@ -1,17 +1,14 @@
 package top.easelink.lcg.ui.main.articles.viewmodel
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_favorite_article_view.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
-import timber.log.Timber
 import top.easelink.framework.base.BaseViewHolder
 import top.easelink.lcg.R
 import top.easelink.lcg.ui.main.model.OpenArticleEvent
@@ -105,10 +102,15 @@ class FavoriteArticlesAdapter(private var favoriteArticlesViewModel: FavoriteArt
             }
             view.run {
                 favorite_container.apply {
-                    if (position % 2 ==1) {
-                        setBackgroundColor(ContextCompat.getColor(view.context, R.color.slight_light_gray))
-                    } else {
-                        setBackgroundColor(Color.WHITE)
+                    when {
+                        // odd
+                        position % 2 == 1 -> {
+                            setBackgroundResource(R.drawable.rectangle_bg_slightly_light_gray_4dp)
+                        }
+                        // even
+                        else -> {
+                            setBackgroundResource(R.drawable.rectangle_bg_white_4dp)
+                        }
                     }
                 }.setOnClickListener {
                     onItemClick()

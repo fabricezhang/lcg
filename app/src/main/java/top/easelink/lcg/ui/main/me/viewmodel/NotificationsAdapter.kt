@@ -3,30 +3,34 @@ package top.easelink.lcg.ui.main.me.viewmodel
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestOptions
+import kotlinx.android.synthetic.main.item_notification_view.view.*
 import top.easelink.framework.base.BaseViewHolder
-import top.easelink.framework.customview.htmltextview.HtmlTextView
+import top.easelink.framework.utils.dpToPx
 import top.easelink.lcg.R
-import top.easelink.lcg.ui.main.model.SystemNotification
+import top.easelink.lcg.ui.main.model.BaseNotification
 
 class NotificationsAdapter : RecyclerView.Adapter<BaseViewHolder>() {
 
-    private val systemNotifications: MutableList<SystemNotification> = mutableListOf()
+    private val bgPadding = 1
+    private val mNotifications: MutableList<BaseNotification> = mutableListOf()
 
     override fun getItemCount(): Int {
-        return if (systemNotifications.isEmpty()) {
+        return if (mNotifications.isEmpty()) {
             1
         } else {
-            systemNotifications.size + 1
+            mNotifications.size + 1
         }
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (systemNotifications.isEmpty()) {
+        return if (mNotifications.isEmpty()) {
             VIEW_TYPE_EMPTY
         } else {
-            if (position == systemNotifications.size) {
+            if (position == mNotifications.size) {
                 VIEW_TYPE_LOAD_MORE
             } else VIEW_TYPE_NORMAL
         }
@@ -55,22 +59,35 @@ class NotificationsAdapter : RecyclerView.Adapter<BaseViewHolder>() {
         }
     }
 
-    fun addItems(notifications: List<SystemNotification>) {
-        systemNotifications.addAll(notifications)
+    fun addItems(notifications: List<BaseNotification>) {
+        mNotifications.addAll(notifications)
         notifyDataSetChanged()
     }
 
     fun clearItems() {
-        systemNotifications.clear()
+        mNotifications.clear()
     }
 
     inner class ArticleViewHolder internal constructor(private val view: View) :
         BaseViewHolder(view) {
         override fun onBind(position: Int) {
-            val notification = systemNotifications[position]
+            val notification = mNotifications[position]
             view.apply {
-                findViewById<HtmlTextView>(R.id.notification_title).setHtml(notification.title)
-                findViewById<TextView>(R.id.date_time).text = notification.dateTime
+                when (position) {
+                    0 -> setPadding( bgPadding, bgPadding, bgPadding, 0)
+                    mNotifications.size - 1 ->
+                        setPadding( bgPadding, 0, bgPadding, bgPadding)
+                    else -> setPadding(bgPadding, 0, bgPadding, 0)
+                }
+                notification_title.setHtml(notification.content)
+                date_time.text = notification.dateTime
+                Glide.with(notification_avatar)
+                    .load(notification.avatar)
+                    .apply(RequestOptions.bitmapTransform(
+                        RoundedCorners(8.dpToPx(view.context).toInt())
+                    ))
+                    .placeholder(R.drawable.ic_noavatar_middle_gray)
+                    .into(notification_avatar)
             }
         }
 

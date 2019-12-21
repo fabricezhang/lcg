@@ -62,7 +62,6 @@ import top.easelink.lcg.ui.main.model.NewMessageEvent;
 import top.easelink.lcg.ui.main.model.NotificationInfo;
 import top.easelink.lcg.ui.main.model.OpenArticleEvent;
 import top.easelink.lcg.ui.main.model.OpenForumEvent;
-import top.easelink.lcg.ui.main.model.OpenNotificationsPageEvent;
 import top.easelink.lcg.ui.main.model.TabModel;
 import top.easelink.lcg.ui.main.viewmodel.MainViewModel;
 import top.easelink.lcg.ui.search.view.SearchActivity;
@@ -263,11 +262,6 @@ public class MainActivity
         prop.setProperty(PROP_FORUM_NAME, event.getTitle());
         EventHelperKt.sendKVEvent(EVENT_OPEN_FORUM, prop);
         showFragment(ForumArticlesFragment.newInstance(event.getTitle(), event.getUrl()));
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(OpenNotificationsPageEvent event) {
-
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
