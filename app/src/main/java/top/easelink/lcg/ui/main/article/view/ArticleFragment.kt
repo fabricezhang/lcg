@@ -1,11 +1,7 @@
 package top.easelink.lcg.ui.main.article.view
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -69,9 +65,9 @@ class ArticleFragment : BaseFragment<FragmentArticleBinding, ArticleViewModel>()
     }
 
     private fun setUp() {
-        viewDataBinding.comment.setOnClickListener {
-            viewModel.posts.value?.get(0)?.replyUrl?.let {
-                CommentArticleDialog.newInstance(it).show(fragmentManager)
+        viewModel.posts.value?.get(0)?.replyUrl?.let { url ->
+            viewDataBinding.comment.setOnClickListener {
+                CommentArticleDialog.newInstance(url).show(fragmentManager)
             }
         }
         viewDataBinding.postRecyclerView.apply {
@@ -86,20 +82,6 @@ class ArticleFragment : BaseFragment<FragmentArticleBinding, ArticleViewModel>()
                 (adapter as? ArticleAdapter)?.run {
                     clearItems()
                     addItems(it)
-                }
-            })
-            addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrollStateChanged(
-                    recyclerView: RecyclerView,
-                    newState: Int
-                ) {
-                    viewDataBinding.comment.run {
-                        if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                            visibility = View.VISIBLE
-                        } else if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
-                            visibility = View.GONE
-                        }
-                    }
                 }
             })
         }

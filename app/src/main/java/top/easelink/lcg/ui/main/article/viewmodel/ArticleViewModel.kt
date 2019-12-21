@@ -30,6 +30,7 @@ class ArticleViewModel: ViewModel(), ArticleAdapterListener {
     val isBlocked = MutableLiveData<Boolean>()
     val isNotFound = MutableLiveData<Boolean>()
     val shouldDisplayPosts = MutableLiveData<Boolean>()
+    val displayComment = MutableLiveData<Boolean>()
     val articleTitle = MutableLiveData<String>()
     val isLoading = MutableLiveData<Boolean>()
 
@@ -75,6 +76,9 @@ class ArticleViewModel: ViewModel(), ArticleAdapterListener {
                                 posts.postValue(it.postList.toMutableList())
                             }
                         }
+                    }
+                    posts.value?.get(0)?.replyUrl?.let { url ->
+                        displayComment.postValue(url.isNotBlank())
                     }
                     nextPageUrl = it.nextPageUrl
                     mFormHash = it.fromHash
