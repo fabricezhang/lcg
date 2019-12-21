@@ -275,6 +275,7 @@
             android:layout_marginEnd="@dimen/dp_5"
             app:cardCornerRadius="@dimen/dp_6"
             app:cardElevation="@dimen/dp_3"
+            android:visibility="gone"
             android:id="@+id/child_fragment_container"
             android:layout_width="match_parent"
             android:layout_height="0dp"

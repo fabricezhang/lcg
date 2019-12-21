@@ -15,9 +15,11 @@ import top.easelink.lcg.utils.WebsiteConstant.NOTIFICATION_HOME_URL
 class NotificationViewModel: ViewModel(){
 
     val notifications= MutableLiveData<List<BaseNotification>>()
+    val isLoading = MutableLiveData<Boolean>()
 
     fun fetchNotifications() {
         GlobalScope.launch(Dispatchers.IO) {
+            isLoading.postValue(true)
             try {
                 Client.sendRequestWithQuery(NOTIFICATION_HOME_URL).let {
                     notifications.postValue(parseResponse(it))
@@ -25,6 +27,7 @@ class NotificationViewModel: ViewModel(){
             } catch (e: Exception) {
                 Timber.e(e)
             }
+            isLoading.postValue(false)
         }
     }
 

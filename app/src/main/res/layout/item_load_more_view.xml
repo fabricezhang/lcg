@@ -6,5 +6,5 @@
       android:layout_marginBottom="@dimen/dp_8"
       android:layout_marginStart="@dimen/dp_50"
       android:layout_marginEnd="@dimen/dp_50"
-      android:background="@color/light_gray"
+      android:background="@color/slight_light_gray"
 />

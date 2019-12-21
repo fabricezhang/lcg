@@ -177,6 +177,7 @@ class MeFragment : BaseFragment<FragmentMeBinding, MeViewModel>() {
     }
 
     private fun showFragment(fragment: Fragment) {
+        child_fragment_container.visibility = View.VISIBLE
         addFragmentInFragment(
             childFragmentManager,
             fragment,

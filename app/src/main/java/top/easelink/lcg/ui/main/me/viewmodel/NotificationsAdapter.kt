@@ -8,14 +8,18 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.item_notification_view.view.*
+import org.greenrobot.eventbus.EventBus
+import org.jsoup.Jsoup
+import timber.log.Timber
 import top.easelink.framework.base.BaseViewHolder
 import top.easelink.framework.utils.dpToPx
+import top.easelink.lcg.BuildConfig
 import top.easelink.lcg.R
 import top.easelink.lcg.ui.main.model.BaseNotification
+import top.easelink.lcg.ui.main.model.OpenArticleEvent
 
 class NotificationsAdapter : RecyclerView.Adapter<BaseViewHolder>() {
 
-    private val bgPadding = 1
     private val mNotifications: MutableList<BaseNotification> = mutableListOf()
 
     override fun getItemCount(): Int {
@@ -73,13 +77,25 @@ class NotificationsAdapter : RecyclerView.Adapter<BaseViewHolder>() {
         override fun onBind(position: Int) {
             val notification = mNotifications[position]
             view.apply {
-                when (position) {
-                    0 -> setPadding( bgPadding, bgPadding, bgPadding, 0)
-                    mNotifications.size - 1 ->
-                        setPadding( bgPadding, 0, bgPadding, bgPadding)
-                    else -> setPadding(bgPadding, 0, bgPadding, 0)
+                if (BuildConfig.DEBUG) {
+                    //TODO update this part
+                    notification_container.setOnClickListener {
+                        try {
+                            val url = Jsoup
+                                .parse(notification.content)
+                                .selectFirst("a")
+                                .attr("href")
+                            EventBus.getDefault().post(OpenArticleEvent(url))
+                        } catch (e: Exception) {
+                            Timber.e(e)
+                        }
+                    }
                 }
-                notification_title.setHtml(notification.content)
+                line.visibility = if(position == 0) View.GONE else View.VISIBLE
+                notification_title.apply {
+                    setHtml(notification.content)
+                    linksClickable = false
+                }
                 date_time.text = notification.dateTime
                 Glide.with(notification_avatar)
                     .load(notification.avatar)

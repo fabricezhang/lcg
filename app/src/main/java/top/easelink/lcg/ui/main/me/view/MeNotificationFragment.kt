@@ -41,14 +41,24 @@ class MeNotificationFragment: TopFragment(){
             }
             itemAnimator = DefaultItemAnimator()
             adapter = NotificationsAdapter()
-            notificationViewModel
-                .notifications
-                .observe(this@MeNotificationFragment, Observer { notifications ->
-                    (adapter as NotificationsAdapter).run {
-                        clearItems()
-                        addItems(notifications)
+            notificationViewModel.apply {
+                isLoading.observe(this@MeNotificationFragment, Observer {
+                    if (it) {
+                        loading.visibility = View.VISIBLE
+                        notification_recycler_view.visibility = View.GONE
+                    } else {
+                        loading.visibility = View.GONE
+                        notification_recycler_view.visibility = View.VISIBLE
                     }
                 })
+                notifications
+                    .observe(this@MeNotificationFragment, Observer { notifications ->
+                        (adapter as NotificationsAdapter).run {
+                            clearItems()
+                            addItems(notifications)
+                        }
+                    })
+            }
         }
     }
 }

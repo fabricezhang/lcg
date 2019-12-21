@@ -6,22 +6,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/notification_container"
     android:minHeight="@dimen/dp_50"
-    android:background="@drawable/rectangle_bg_borderline"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/dp_4"
-    android:layout_marginBottom="@dimen/dp_4">
+    android:layout_height="wrap_content">
+
+    <View
+        android:id="@+id/line"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_1"
+        android:backgroundTint="@color/slight_light_gray"
+        android:background="@drawable/rectangle_bg"
+        app:layout_constraintWidth_percent="0.98"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/notification_avatar"
         android:layout_width="@dimen/dp_40"
         android:layout_height="@dimen/dp_40"
-        android:padding="@dimen/dp_1"
-        android:background="@drawable/rectangle_bg_avatar"
         android:layout_marginTop="@dimen/dp_6"
         android:layout_marginStart="@dimen/dp_4"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@id/line"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintVertical_bias="0"
         tools:ignore="ContentDescription" />
@@ -53,6 +59,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         tools:text="您在主题 开源吾爱破解论坛App Android 1.5版本 的帖子被 评分 吾爱币 +1 CB / 热心值 +1 点"/>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
