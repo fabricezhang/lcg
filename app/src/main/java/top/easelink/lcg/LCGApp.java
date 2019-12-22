@@ -16,7 +16,10 @@ import io.reactivex.exceptions.UndeliverableException;
 import io.reactivex.plugins.RxJavaPlugins;
 import timber.log.Timber;
 import top.easelink.lcg.di.component.DaggerAppComponent;
+import top.easelink.lcg.mta.EventHelperKt;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+
+import static top.easelink.lcg.mta.MTAConstantKt.EVENT_APP_LAUNCH;
 
 public class LCGApp extends Application implements HasActivityInjector {
 
@@ -72,8 +75,10 @@ public class LCGApp extends Application implements HasActivityInjector {
     private void initBulgy() {
         Bugly.init(getApplicationContext(), BuildConfig.BUGLY_APP_ID, false);
         Beta.largeIconId = R.drawable.ic_noavatar_middle;
-        Beta.enableHotfix = true;
+        Beta.smallIconId = R.drawable.ic_noavatar_middle;
+        Beta.enableHotfix = false;
 
         StatService.registerActivityLifecycleCallbacks(LCGApp.this);
+        EventHelperKt.sendEvent(EVENT_APP_LAUNCH);
     }
 }
