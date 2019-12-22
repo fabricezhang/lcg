@@ -37,8 +37,6 @@
             android:layout_height="0dp"
             android:visibility="visible"
             android:padding="@dimen/dp_5"
-            android:backgroundTint="@color/slight_light_gray"
-            android:background="@drawable/rectangle_bg"
             app:layout_constraintTop_toBottomOf="@id/article_toolbar"
             app:layout_constraintBottom_toBottomOf="@id/bottom_line"
             />

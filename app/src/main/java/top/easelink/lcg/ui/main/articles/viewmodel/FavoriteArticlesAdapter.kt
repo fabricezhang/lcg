@@ -104,7 +104,7 @@ class FavoriteArticlesAdapter(private var favoriteArticlesViewModel: FavoriteArt
                 favorite_container.apply {
                     when {
                         // odd
-                        position % 2 == 1 -> {
+                        position % 2 == 0 -> {
                             setBackgroundResource(R.drawable.rectangle_bg_slightly_light_gray_4dp)
                         }
                         // even

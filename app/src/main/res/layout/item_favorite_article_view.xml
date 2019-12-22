@@ -6,8 +6,9 @@
     android:id="@+id/favorite_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:minHeight="@dimen/dp_60"
     android:layout_marginTop="@dimen/dp_5"
-    android:paddingEnd="@dimen/dp_20"
+    android:paddingEnd="@dimen/dp_15"
     android:paddingStart="@dimen/dp_3"
     android:paddingBottom="@dimen/dp_5"
     tools:targetApi="m">
@@ -27,16 +28,14 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toStartOf="@id/remove_button"
         app:layout_constraintHorizontal_bias="0"
-        tools:text="Title"/>
+        tools:text="This repository contains a detailed sample app that implements MVVM architecture using Android Room, RxJava2 ,etc"/>
 
-    <ImageButton
+    <View
         android:id="@+id/remove_button"
         android:layout_width="@dimen/dp_18"
         android:layout_height="@dimen/dp_18"
-        android:src="@drawable/ic_delete_gray_24dp"
-        android:contentDescription="@null"
-        android:scaleType="fitCenter"
-        android:background="@color/transparent"
+        android:backgroundTint="@color/semi_gray"
+        android:background="@drawable/ic_close_black_24dp"
         app:layout_constraintTop_toTopOf="@id/title_text_view"
         app:layout_constraintEnd_toEndOf="parent"
         />
@@ -49,7 +48,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/dp_6"
+        app:layout_constraintVertical_bias="0.9"
         app:layout_constraintTop_toBottomOf="@id/title_text_view"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@id/title_text_view"
         tools:text="Author"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
