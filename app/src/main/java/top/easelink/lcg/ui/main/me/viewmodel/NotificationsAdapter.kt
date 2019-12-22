@@ -18,7 +18,9 @@ import top.easelink.lcg.R
 import top.easelink.lcg.ui.main.model.BaseNotification
 import top.easelink.lcg.ui.main.model.OpenArticleEvent
 
-class NotificationsAdapter : RecyclerView.Adapter<BaseViewHolder>() {
+class NotificationsAdapter(
+    val notificationViewModel: NotificationViewModel
+) : RecyclerView.Adapter<BaseViewHolder>() {
 
     private val mNotifications: MutableList<BaseNotification> = mutableListOf()
 
@@ -66,6 +68,12 @@ class NotificationsAdapter : RecyclerView.Adapter<BaseViewHolder>() {
     fun addItems(notifications: List<BaseNotification>) {
         mNotifications.addAll(notifications)
         notifyDataSetChanged()
+    }
+
+    fun append(notifications: List<BaseNotification>) {
+        val count = itemCount
+        mNotifications.addAll(notifications)
+        notifyItemRangeInserted(count - 1, notifications.size)
     }
 
     fun clearItems() {
@@ -116,7 +124,7 @@ class NotificationsAdapter : RecyclerView.Adapter<BaseViewHolder>() {
     inner class LoadMoreViewHolder internal constructor(view: View) :
         BaseViewHolder(view) {
         override fun onBind(position: Int) {
-
+            notificationViewModel.fetchMoreNotifications()
         }
     }
 

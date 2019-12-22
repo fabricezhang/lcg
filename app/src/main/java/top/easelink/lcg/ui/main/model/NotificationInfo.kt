@@ -20,6 +20,11 @@ data class SystemNotification(
     val dateTime: String
 )
 
+class NotificationModel(
+    val notifications: List<BaseNotification>,
+    val nextPageUrl: String
+)
+
 data class BaseNotification(
     val avatar: String,
     val content: String,
