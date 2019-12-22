@@ -70,7 +70,7 @@ class NotificationsAdapter(
         notifyDataSetChanged()
     }
 
-    fun append(notifications: List<BaseNotification>) {
+    fun appendItems(notifications: List<BaseNotification>) {
         val count = itemCount
         mNotifications.addAll(notifications)
         notifyItemRangeInserted(count - 1, notifications.size)

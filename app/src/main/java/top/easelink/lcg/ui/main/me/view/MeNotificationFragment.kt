@@ -54,8 +54,8 @@ class MeNotificationFragment: TopFragment(){
                 notifications
                     .observe(this@MeNotificationFragment, Observer { model ->
                         (adapter as NotificationsAdapter).run {
-                            if (itemCount > 0) {
-                                append(model.notifications)
+                            if (itemCount > 1) {
+                                appendItems(model.notifications)
                             } else {
                                 clearItems()
                                 addItems(model.notifications)

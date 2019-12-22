@@ -28,7 +28,6 @@ class ForumArticlesViewModel : ViewModel(), ArticleFetcher {
 
     val title = MutableLiveData<String>()
     val articles = MutableLiveData<List<Article>>()
-    val shouldDisplayArticles = MutableLiveData<Boolean>()
     val threadList = MutableLiveData<List<ForumThread>>()
     val isLoading = MutableLiveData<Boolean>()
 
@@ -83,9 +82,6 @@ class ForumArticlesViewModel : ViewModel(), ArticleFetcher {
                     } else {
                         articles.postValue(articleList)
                     }
-                    shouldDisplayArticles.postValue(true)
-                } else {
-                    shouldDisplayArticles.postValue(false)
                 }
                 if (!isTabSet) {
                     forumPage.threadList.let {

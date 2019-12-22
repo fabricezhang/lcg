@@ -41,29 +41,16 @@
         <top.easelink.framework.customview.ScrollChildSwipeRefreshLayout
             android:id="@+id/refresh_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            app:refreshing="@{viewModel.isLoading &amp;&amp; (viewModel.articles != null) }"
+            app:refreshing="@{viewModel.isLoading}"
             app:layout_constraintTop_toBottomOf="@id/forum_tab">
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="@{viewModel.shouldDisplayArticles ? View.VISIBLE:View.GONE, default = gone}" />
+                android:layout_height="match_parent" />
         </top.easelink.framework.customview.ScrollChildSwipeRefreshLayout>
-
-        <com.airbnb.lottie.LottieAnimationView
-            android:layout_gravity="center"
-            android:id="@+id/loading"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="@dimen/dp_30"
-            android:scaleType="fitCenter"
-            android:background="@color/white"
-            android:visibility="@{viewModel.articles == null? View.VISIBLE:View.GONE, default = gone}"
-            app:lottie_rawRes="@raw/search_file_2"
-            app:lottie_loop="true"
-            app:lottie_autoPlay="true"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>
