@@ -14,9 +14,11 @@ class PostPreviewViewModel : ViewModel() {
     val avatar = MutableLiveData<String>()
     val date = MutableLiveData<String>()
     val content = MutableLiveData<String>()
-    val loadFailed = MutableLiveData<Int>()
+    // -1 means loaded successfully
+    val loadingResult = MutableLiveData<Int>()
 
     fun initUrl(query: String) {
+        loadingResult.value = R.string.preview_loading
         GlobalScope.launch(Dispatchers.IO) {
             try {
                 val post = ArticlesRemoteDataSource.getPostPreview(query)
@@ -27,11 +29,12 @@ class PostPreviewViewModel : ViewModel() {
                         date.postValue(it.date)
                         content.postValue(it.content)
                     }
+                    loadingResult.postValue(-1)
                 } else {
-                    loadFailed.postValue(R.string.preview_fail_info_post_deleted)
+                    loadingResult.postValue(R.string.preview_fail_info_post_deleted)
                 }
             } catch (e: Exception) {
-                loadFailed.postValue(R.string.preview_fail_info)
+                loadingResult.postValue(R.string.preview_fail_info)
             }
         }
 

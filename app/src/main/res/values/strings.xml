@@ -134,6 +134,7 @@
     <!--block-->
     <string name="not_found_info">抱歉，文章可能已经被删除了</string>
     <string name="block_info">抱歉，本帖要求阅读权限高于 10 才能浏览</string>
+    <string name="preview_loading">加载中，请稍候</string>
     <string name="preview_fail_info">预览失败，请检查阅读权限</string>
     <string name="preview_fail_info_post_deleted">帖子违规，已被管理员删除</string>
 

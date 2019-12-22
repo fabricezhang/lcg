@@ -25,7 +25,7 @@
 
         <LinearLayout
             android:orientation="vertical"
-            android:id="@+id/loading_fail"
+            android:id="@+id/loading_status"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="gone"
@@ -43,7 +43,7 @@
                 app:lottie_rawRes="@raw/shark"
                 app:lottie_loop="true" />
             <TextView
-                android:id="@+id/error_info"
+                android:id="@+id/loading_info"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:gravity="center"
