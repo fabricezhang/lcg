@@ -96,7 +96,8 @@
             android:src="@drawable/ic_comment"
             android:tint="@color/translucent_white"
             android:backgroundTint="@color/light_gray"
-            android:background="@drawable/bg_oval" />
+            android:background="@drawable/bg_oval"
+            android:contentDescription="@null" />
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/fetching_progress_bar"

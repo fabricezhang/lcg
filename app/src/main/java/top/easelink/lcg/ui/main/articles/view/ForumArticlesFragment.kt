@@ -171,10 +171,19 @@ class ForumArticlesFragment : BaseFragment<FragmentForumArticlesBinding, ForumAr
             }
         }
         // Add articles observer
-        viewModel.articles.observe(this@ForumArticlesFragment, Observer {
-            (viewDataBinding.recyclerView.adapter as? ArticlesAdapter)?.run {
-                clearItems()
-                addItems(it)
+        viewModel.articles.observe(this@ForumArticlesFragment, Observer { articleList ->
+            if (articleList.isEmpty() && viewModel.isLoading.value == true) {
+                viewDataBinding.recyclerView.visibility = View.GONE
+            } else {
+                viewDataBinding.recyclerView.visibility = View.VISIBLE
+                (viewDataBinding.recyclerView.adapter as? ArticlesAdapter)?.apply {
+                    if (itemCount > 1) {
+                        appendItems(articleList)
+                    } else {
+                        clearItems()
+                        addItems(articleList)
+                    }
+                }
             }
         })
     }

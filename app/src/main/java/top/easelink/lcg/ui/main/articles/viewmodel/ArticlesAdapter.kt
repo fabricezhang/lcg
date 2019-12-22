@@ -89,6 +89,12 @@ class ArticlesAdapter(
         notifyDataSetChanged()
     }
 
+    fun appendItems(notifications: List<Article>) {
+        val count = itemCount
+        mArticleList.addAll(notifications)
+        notifyItemRangeInserted(count - 1, notifications.size)
+    }
+
     fun clearItems() {
         mArticleList.clear()
     }

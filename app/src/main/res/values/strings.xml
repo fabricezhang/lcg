@@ -71,6 +71,7 @@
     <!--Notification-->
     <string name="notification_arrival">有新的消息</string>
     <string name="notification_read">知道了</string>
+    <string name="notification_title">全部通知</string>
     <!--about fragment-->
     <string name="version">"version"</string>
     <string name="github_title">Github源码地址</string>

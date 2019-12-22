@@ -54,10 +54,19 @@ class ArticlesFragment : BaseFragment<FragmentArticlesBinding, ArticlesViewModel
     private fun setUpView() {
         setupRecyclerView()
         arguments?.getString(ARG_PARAM)?.let {
-            viewModel.articles.observe(this, Observer {
-                (viewDataBinding.recyclerView.adapter as? ArticlesAdapter)?.apply {
-                    clearItems()
-                    addItems(it)
+            viewModel.articles.observe(this, Observer {articleList ->
+                if (articleList.isEmpty() && viewModel.isLoading.value == true) {
+                    viewDataBinding.recyclerView.visibility = View.GONE
+                } else {
+                    viewDataBinding.recyclerView.visibility = View.VISIBLE
+                    (viewDataBinding.recyclerView.adapter as? ArticlesAdapter)?.apply {
+                        if (itemCount > 1) {
+                            appendItems(articleList)
+                        } else {
+                            clearItems()
+                            addItems(articleList)
+                        }
+                    }
                 }
             })
             viewModel.initUrl(it)
