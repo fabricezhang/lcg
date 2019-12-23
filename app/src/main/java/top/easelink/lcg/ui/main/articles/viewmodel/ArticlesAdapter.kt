@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.item_load_more_view.view.*
 import org.greenrobot.eventbus.EventBus
 import top.easelink.framework.base.BaseViewHolder
 import top.easelink.lcg.R
@@ -139,15 +140,20 @@ class ArticlesAdapter(
         }
 
         override fun onRetryClick() {
-            articleFetcher.fetchArticles(ArticleFetcher.FetchType.FETCH_INIT)
+            articleFetcher.fetchArticles(ArticleFetcher.FetchType.FETCH_INIT){}
         }
 
     }
 
-    inner class LoadMoreViewHolder internal constructor(view: View) :
+    inner class LoadMoreViewHolder internal constructor(val view: View) :
         BaseViewHolder(view) {
         override fun onBind(position: Int) {
-            articleFetcher.fetchArticles(ArticleFetcher.FetchType.FETCH_MORE)
+            view.loading.visibility = View.VISIBLE
+            articleFetcher.fetchArticles(ArticleFetcher.FetchType.FETCH_MORE){
+                view.post {
+                    view.loading.visibility = View.GONE
+                }
+            }
         }
     }
 

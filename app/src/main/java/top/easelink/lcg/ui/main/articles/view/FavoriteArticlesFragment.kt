@@ -37,7 +37,7 @@ class FavoriteArticlesFragment : BaseFragment<FragmentFavoriteArticlesBinding, F
         super.onViewCreated(view, savedInstanceState)
         setUpRecyclerView()
         setupToolBar()
-        viewModel.fetchArticles(ArticleFetcher.FetchType.FETCH_INIT)
+        viewModel.fetchArticles(ArticleFetcher.FetchType.FETCH_INIT){}
     }
 
     private fun setUpRecyclerView() {

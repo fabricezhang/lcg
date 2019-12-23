@@ -1,11 +1,8 @@
 package top.easelink.lcg.ui.main.articles.view
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -167,7 +164,7 @@ class ForumArticlesFragment : BaseFragment<FragmentForumArticlesBinding, ForumAr
                 }
             )
             setOnRefreshListener {
-                viewModel.fetchArticles(ArticleFetcher.FetchType.FETCH_INIT)
+                viewModel.fetchArticles(ArticleFetcher.FetchType.FETCH_INIT){}
             }
         }
         // Add articles observer
@@ -177,12 +174,9 @@ class ForumArticlesFragment : BaseFragment<FragmentForumArticlesBinding, ForumAr
             } else {
                 viewDataBinding.recyclerView.visibility = View.VISIBLE
                 (viewDataBinding.recyclerView.adapter as? ArticlesAdapter)?.apply {
-                    if (itemCount > 1) {
-                        appendItems(articleList)
-                    } else {
-                        clearItems()
-                        addItems(articleList)
-                    }
+                    // a workaround for distinguish fetch_init / fetch_more / thread
+                    clearItems()
+                    addItems(articleList)
                 }
             }
         })

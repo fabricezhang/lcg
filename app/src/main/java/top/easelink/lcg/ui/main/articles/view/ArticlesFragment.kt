@@ -84,7 +84,7 @@ class ArticlesFragment : BaseFragment<FragmentArticlesBinding, ArticlesViewModel
             // Set the scrolling view in the custom SwipeRefreshLayout.
             setScrollUpChild(viewDataBinding.recyclerView)
             setOnRefreshListener {
-                viewModel.fetchArticles(ArticleFetcher.FetchType.FETCH_INIT)
+                viewModel.fetchArticles(ArticleFetcher.FetchType.FETCH_INIT){}
             }
         }
     }

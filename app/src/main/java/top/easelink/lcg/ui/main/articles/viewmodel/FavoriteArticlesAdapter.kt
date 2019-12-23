@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_favorite_article_view.view.*
+import kotlinx.android.synthetic.main.item_load_more_view.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -129,16 +130,20 @@ class FavoriteArticlesAdapter(private var favoriteArticlesViewModel: FavoriteArt
 
     }
 
-    inner class EmptyViewHolder internal constructor(view: View?) :
+    inner class EmptyViewHolder internal constructor(view: View) :
         BaseViewHolder(view) {
         override fun onBind(position: Int) {
         }
     }
 
-    inner class LoadMoreViewHolder internal constructor(view: View?) :
-        BaseViewHolder(view) {
+    inner class LoadMoreViewHolder internal constructor(val view: View) : BaseViewHolder(view) {
         override fun onBind(position: Int) {
-            favoriteArticlesViewModel.fetchArticles(ArticleFetcher.FetchType.FETCH_MORE)
+            view.loading.visibility = View.VISIBLE
+            favoriteArticlesViewModel.fetchArticles(ArticleFetcher.FetchType.FETCH_MORE) {
+                view.post {
+                    view.loading.visibility = View.GONE
+                }
+            }
         }
     }
 

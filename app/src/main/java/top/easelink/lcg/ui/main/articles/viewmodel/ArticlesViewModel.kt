@@ -16,10 +16,10 @@ class ArticlesViewModel : ViewModel(), ArticleFetcher {
 
     fun initUrl(url: String?) {
         mUrl = url
-        fetchArticles(ArticleFetcher.FetchType.FETCH_INIT)
+        fetchArticles(ArticleFetcher.FetchType.FETCH_INIT){}
     }
 
-    override fun fetchArticles(fetchType: ArticleFetcher.FetchType) {
+    override fun fetchArticles(fetchType: ArticleFetcher.FetchType, callback: (Boolean) -> Unit) {
         val pageNum: Int = when (fetchType) {
             ArticleFetcher.FetchType.FETCH_MORE -> mCurrentPage + 1
             ArticleFetcher.FetchType.FETCH_INIT -> 1
@@ -37,6 +37,9 @@ class ArticlesViewModel : ViewModel(), ArticleFetcher {
                     }
                     // current page fetch successfully, record current page
                     mCurrentPage = pageNum
+                    callback.invoke(true)
+                } else {
+                    callback.invoke(false)
                 }
             }
             isLoading.postValue(false)

@@ -45,7 +45,7 @@ class ForumArticlesViewModel : ViewModel(), ArticleFetcher {
         }
         mFetchType = fetchType
         orderType = order
-        fetchArticles(mFetchType)
+        fetchArticles(mFetchType){}
     }
 
     @MainThread
@@ -61,7 +61,7 @@ class ForumArticlesViewModel : ViewModel(), ArticleFetcher {
         return "$mUrl&page=$mCurrentPage$orderType"
     }
 
-    override fun fetchArticles(fetchType: ArticleFetcher.FetchType) {
+    override fun fetchArticles(fetchType: ArticleFetcher.FetchType, callback: (Boolean) -> Unit) {
         isLoading.value = true
         GlobalScope.launch(Dispatchers.IO) {
             val query = composeUrlByRequestType(fetchType)

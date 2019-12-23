@@ -19,15 +19,20 @@ class NotificationViewModel: ViewModel(){
     val isLoading = MutableLiveData<Boolean>()
     var nextPageUrl = ""
 
-    fun fetchMoreNotifications() {
-        if (nextPageUrl.isEmpty()) return
+    fun fetchMoreNotifications(callback: (Boolean) -> Unit) {
+        if (nextPageUrl.isEmpty()) {
+            callback.invoke(false)
+            return
+        }
         GlobalScope.launch(Dispatchers.IO) {
             try {
                 Client.sendRequestWithQuery(nextPageUrl).let {
-                    notifications.postValue(parseResponse(it))
+                    val model = parseResponse(it)
+                    notifications.postValue(model)
                 }
             } catch (e: Exception) {
                 Timber.e(e)
+                callback.invoke(false)
             }
         }
     }
