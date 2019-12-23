@@ -1,6 +1,7 @@
 package top.easelink.lcg.ui.main.me.viewmodel
 
 import android.view.LayoutInflater
+import android.view.MotionEvent.ACTION_UP
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -14,10 +15,11 @@ import org.jsoup.Jsoup
 import timber.log.Timber
 import top.easelink.framework.base.BaseViewHolder
 import top.easelink.framework.utils.dpToPx
-import top.easelink.lcg.BuildConfig
 import top.easelink.lcg.R
 import top.easelink.lcg.ui.main.model.BaseNotification
 import top.easelink.lcg.ui.main.model.OpenArticleEvent
+import top.easelink.lcg.utils.showMessage
+
 
 class NotificationsAdapter(
     val notificationViewModel: NotificationViewModel
@@ -86,22 +88,28 @@ class NotificationsAdapter(
         override fun onBind(position: Int) {
             val notification = mNotifications[position]
             view.apply {
-                if (BuildConfig.DEBUG) {
-                    //TODO update this part
-                    notification_container.setOnClickListener {
-                        try {
-                            val url = Jsoup
-                                .parse(notification.content)
-                                .selectFirst("a")
-                                .attr("href")
+                notification_container.setOnClickListener {
+                    try {
+                        val url = Jsoup
+                            .parse(notification.content)
+                            .getElementsByTag("a")
+                            .map {
+                                it.attr("href")
+                            }.firstOrNull() {
+                                it.contains("forum")
+                            }
+                        if (url.isNullOrEmpty()) {
+                            showMessage(R.string.todo_tips)
+                        } else {
                             EventBus.getDefault().post(OpenArticleEvent(url))
-                        } catch (e: Exception) {
-                            Timber.e(e)
                         }
+                    } catch (e: Exception) {
+                        Timber.e(e)
                     }
                 }
                 line.visibility = if(position == 0) View.GONE else View.VISIBLE
                 notification_title.apply {
+
                     setHtml(notification.content)
                     linksClickable = false
                 }
