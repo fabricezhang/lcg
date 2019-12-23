@@ -95,7 +95,7 @@ class NotificationsAdapter(
                             .getElementsByTag("a")
                             .map {
                                 it.attr("href")
-                            }.firstOrNull() {
+                            }.firstOrNull {
                                 it.contains("forum")
                             }
                         if (url.isNullOrEmpty()) {
