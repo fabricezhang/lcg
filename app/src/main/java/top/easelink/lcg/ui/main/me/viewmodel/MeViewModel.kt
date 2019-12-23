@@ -128,6 +128,7 @@ class MeViewModel: ViewModel() {
                         coin = userInfo.wuaiCoin.orEmpty()
                         credit = userInfo.credit.orEmpty()
                         group = userInfo.groupInfo.orEmpty()
+                        signInState = userInfo.signInStateUrl.orEmpty()
                     }
                 }
                 mNotificationInfo.postValue(parseNotificationInfo(doc))
