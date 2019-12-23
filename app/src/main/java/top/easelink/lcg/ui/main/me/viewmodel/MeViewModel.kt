@@ -25,7 +25,6 @@ import top.easelink.lcg.ui.main.logout.view.LogoutHintDialog
 import top.easelink.lcg.ui.main.me.model.UserInfo
 import top.easelink.lcg.ui.main.model.NotificationInfo
 import top.easelink.lcg.ui.main.source.local.SP_KEY_AUTO_SIGN_IN
-import top.easelink.lcg.ui.main.source.local.SP_KEY_LOGGED_IN
 import top.easelink.lcg.ui.main.source.local.SP_KEY_SYNC_FAVORITE
 import top.easelink.lcg.ui.main.source.local.SharedPreferencesHelper
 import top.easelink.lcg.ui.main.source.parseNotificationInfo
@@ -89,6 +88,20 @@ class MeViewModel: ViewModel() {
 
 
     fun fetchUserInfoDirect() {
+        if(UserData.loggedInState) {
+            mLoginState.postValue(true)
+            UserData.apply {
+                mUserInfo.value =
+                    UserInfo(
+                        userName = username,
+                        avatarUrl = avatar,
+                        wuaiCoin = coin,
+                        credit = credit,
+                        groupInfo = group,
+                        signInStateUrl = null
+                    )
+            }
+        }
         GlobalScope.launch(Dispatchers.IO) {
             try {
                 val doc = Jsoup
@@ -97,20 +110,25 @@ class MeViewModel: ViewModel() {
                     .ignoreHttpErrors(true)
                     .get()
                 val userInfo = parseUserInfo(doc)
+                // login failed
                 if (userInfo.userName.isNullOrEmpty()) {
                     disableAutoSign()
                     clearCookies()
-                    UserData.loggedInState = false
+                    UserData.clearAll()
                     mLoginState.postValue(false)
-                } else {
+                } else if (mUserInfo.value != userInfo) {
+                    // login successfully but userInfo not changed
+                    mLoginState.postValue(true)
+                    mUserInfo.postValue(userInfo)
+                    UserData.loggedInState = true
                     UserData.apply {
                         loggedInState = true
                         username = userInfo.userName.toString()
+                        avatar = userInfo.avatarUrl.orEmpty()
+                        coin = userInfo.wuaiCoin.orEmpty()
+                        credit = userInfo.credit.orEmpty()
+                        group = userInfo.groupInfo.orEmpty()
                     }
-                    mLoginState.postValue(true)
-                    mUserInfo.postValue(userInfo)
-                    SharedPreferencesHelper.getUserSp().edit().putBoolean(SP_KEY_LOGGED_IN, true)
-                        .apply()
                 }
                 mNotificationInfo.postValue(parseNotificationInfo(doc))
             } catch (e: Exception) {
