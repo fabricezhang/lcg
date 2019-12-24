@@ -60,12 +60,8 @@ class ArticlesFragment : BaseFragment<FragmentArticlesBinding, ArticlesViewModel
                 } else {
                     viewDataBinding.recyclerView.visibility = View.VISIBLE
                     (viewDataBinding.recyclerView.adapter as? ArticlesAdapter)?.apply {
-                        if (itemCount > 1) {
-                            appendItems(articleList)
-                        } else {
-                            clearItems()
-                            addItems(articleList)
-                        }
+                        clearItems()
+                        addItems(articleList)
                     }
                 }
             })
