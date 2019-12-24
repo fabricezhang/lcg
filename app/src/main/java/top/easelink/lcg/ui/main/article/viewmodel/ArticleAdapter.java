@@ -17,6 +17,7 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.ArrayList;
 import java.util.List;
 
+import kotlin.Unit;
 import timber.log.Timber;
 import top.easelink.framework.base.BaseViewHolder;
 import top.easelink.framework.customview.htmltextview.DrawTableLinkSpan;
@@ -50,8 +51,11 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         if (mPostList.isEmpty()) {
             // show empty view
             return 1;
-        } else {
+        } else if (mPostList.size() > 10) {
+            // for post more than 10 add a load more item
             return mPostList.size() + 1;
+        } else {
+            return mPostList.size();
         }
     }
 
@@ -206,14 +210,19 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     }
 
     public class LoadMoreViewHolder extends BaseViewHolder{
+        private View mView;
 
         LoadMoreViewHolder(View view) {
             super(view);
+            mView = view;
         }
 
         @Override
         public void onBind(int position) {
-            mListener.fetchArticlePost(ArticleAdapterListener.FETCH_POST_MORE);
+            mListener.fetchArticlePost(ArticleAdapterListener.FETCH_POST_MORE, (res -> {
+                mView.setVisibility(res? View.GONE: View.VISIBLE);
+                return Unit.INSTANCE;
+            }));
         }
     }
 }

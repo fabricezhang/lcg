@@ -43,7 +43,7 @@ class ArticleViewModel: ViewModel(), ArticleAdapterListener {
         mUrl = url
     }
 
-    override fun fetchArticlePost(type: Int) {
+    override fun fetchArticlePost(type: Int, callback: (Boolean) -> Unit) {
         isLoading.value = true
         val query: String? =
             when (type) {
@@ -76,7 +76,9 @@ class ArticleViewModel: ViewModel(), ArticleAdapterListener {
                             }
                         }
                     }
-                    nextPageUrl = it.nextPageUrl
+                    nextPageUrl = it.nextPageUrl.also {url ->
+                        callback.invoke(url.isEmpty())
+                    }
                     mFormHash = it.fromHash
                     shouldDisplayPosts.postValue(true)
                 }

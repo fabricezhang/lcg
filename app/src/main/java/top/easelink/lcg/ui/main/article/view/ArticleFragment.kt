@@ -56,7 +56,7 @@ class ArticleFragment : BaseFragment<FragmentArticleBinding, ArticleViewModel>()
         setUp()
         setupToolBar()
         viewModel.setUrl(articleUrl!!)
-        viewModel.fetchArticlePost(FETCH_POST_INIT)
+        viewModel.fetchArticlePost(FETCH_POST_INIT){}
     }
 
     override fun onDetach() {

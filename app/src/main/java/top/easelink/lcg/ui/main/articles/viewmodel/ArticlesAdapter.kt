@@ -25,10 +25,11 @@ class ArticlesAdapter(
     private val mArticleList: MutableList<Article> = mutableListOf()
 
     override fun getItemCount(): Int {
-        return if (mArticleList.isEmpty()) {
-            1
-        } else {
-            mArticleList.size + 1
+        return when {
+            mArticleList.isEmpty() -> 1
+            // for articles more than 10, add a load more
+            mArticleList.size > 10 -> mArticleList.size + 1
+            else -> mArticleList.size
         }
     }
 
