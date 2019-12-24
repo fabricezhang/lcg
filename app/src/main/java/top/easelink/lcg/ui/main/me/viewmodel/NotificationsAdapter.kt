@@ -9,15 +9,10 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.item_load_more_view.view.*
 import kotlinx.android.synthetic.main.item_notification_view.view.*
-import org.greenrobot.eventbus.EventBus
-import org.jsoup.Jsoup
-import timber.log.Timber
 import top.easelink.framework.base.BaseViewHolder
 import top.easelink.framework.utils.dpToPx
 import top.easelink.lcg.R
 import top.easelink.lcg.ui.main.model.BaseNotification
-import top.easelink.lcg.ui.main.model.OpenArticleEvent
-import top.easelink.lcg.utils.showMessage
 
 
 class NotificationsAdapter(
@@ -87,28 +82,8 @@ class NotificationsAdapter(
         override fun onBind(position: Int) {
             val notification = mNotifications[position]
             view.apply {
-                notification_container.setOnClickListener {
-                    try {
-                        val url = Jsoup
-                            .parse(notification.content)
-                            .getElementsByTag("a")
-                            .map {
-                                it.attr("href")
-                            }.firstOrNull {
-                                it.contains("forum")
-                            }
-                        if (url.isNullOrEmpty()) {
-                            showMessage(R.string.todo_tips)
-                        } else {
-                            EventBus.getDefault().post(OpenArticleEvent(url))
-                        }
-                    } catch (e: Exception) {
-                        Timber.e(e)
-                    }
-                }
                 line.visibility = if(position == 0) View.GONE else View.VISIBLE
                 notification_title.apply {
-
                     setHtml(notification.content)
                     linksClickable = false
                 }

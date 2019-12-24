@@ -30,12 +30,15 @@ import com.airbnb.lottie.LottieAnimationView;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 
+import java.util.Objects;
+
 import timber.log.Timber;
 import top.easelink.framework.customview.HorizontalScrollDisableWebView;
 import top.easelink.lcg.LCGApp;
 import top.easelink.lcg.R;
 import top.easelink.lcg.service.web.HookInterface;
 import top.easelink.lcg.ui.main.view.MainActivity;
+import top.easelink.lcg.utils.WebsiteConstant;
 
 import static top.easelink.lcg.ui.webview.WebViewConstantsKt.FORCE_ENABLE_JS_KEY;
 import static top.easelink.lcg.ui.webview.WebViewConstantsKt.OPEN_LOGIN_PAGE;
@@ -100,47 +103,46 @@ public class WebViewActivity extends AppCompatActivity {
     protected void initWebView() {
         mWebView.setWebViewClient(getWebViewClient());
         Intent intent = getIntent();
-        if (Intent.ACTION_VIEW.equals(intent.getAction()) && intent.getData() != null) {
+        // load url from intent data
+        isOpenLoginEvent = getIntent().getBooleanExtra(OPEN_LOGIN_PAGE, false);
+        mForceEnableJs = intent.getBooleanExtra(FORCE_ENABLE_JS_KEY, false);
+        if (!TextUtils.isEmpty(mUrl)) {
             updateWebViewSettingsRemote();
-            mWebView.loadUrl(intent.getData().toString());
-        } else {
-            isOpenLoginEvent = getIntent().getBooleanExtra(OPEN_LOGIN_PAGE, false);
-            mForceEnableJs = intent.getBooleanExtra(FORCE_ENABLE_JS_KEY, false);
-            if (!TextUtils.isEmpty(mUrl)) {
-                updateWebViewSettingsRemote();
-                if (isOpenLoginEvent) {
-                    mWebView.removeJavascriptInterface(HOOK_NAME);
-                    mWebView.addJavascriptInterface(new HookInterface() {
-                        @Override
-                        @JavascriptInterface
-                        public void processHtml(String html) {
-                            try {
-                                Element element = Jsoup.parse(html).selectFirst("div.avt");
-                                if (element != null) {
-                                    mWebView.post(() -> {
-                                        mWebView.stopLoading();
-                                        startActivity(new Intent(mWebView.getContext(), MainActivity.class));
-                                    });
-                                }
-                            } catch (Exception e) {
-                                Timber.w(html);
+            if (isOpenLoginEvent) {
+                mWebView.removeJavascriptInterface(HOOK_NAME);
+                mWebView.addJavascriptInterface(new HookInterface() {
+                    @Override
+                    @JavascriptInterface
+                    public void processHtml(String html) {
+                        try {
+                            Element element = Jsoup.parse(html).selectFirst("div.avt");
+                            if (element != null) {
+                                mWebView.post(() -> {
+                                    mWebView.stopLoading();
+                                    startActivity(new Intent(mWebView.getContext(), MainActivity.class));
+                                });
                             }
+                        } catch (Exception e) {
+                            Timber.w(html);
                         }
-                    }, HOOK_NAME);
-                    mWebView.loadUrl(mUrl);
-                } else {
-                    mWebView.loadUrl(mUrl);
-                }
-            } else if(!TextUtils.isEmpty(mHtml)) {
-                updateWebViewSettingsLocal();
-                mWebView.loadData(mHtml, "text/html", "UTF-8");
+                    }
+                }, HOOK_NAME);
+
             }
+            mWebView.loadUrl(mUrl);
+        } else if(!TextUtils.isEmpty(mHtml)) {
+            updateWebViewSettingsLocal();
+            mWebView.loadData(mHtml, "text/html", "UTF-8");
         }
     }
 
     protected void initData() {
         Intent intent = getIntent();
         Uri uri = intent.getData();
+        if (uri != null && Objects.equals(uri.getScheme(), "lcg")) {
+            mUrl = uri.toString().replace("lcg:", SERVER_BASE_URL);
+            return;
+        }
         mUrl = intent.getStringExtra(URL_KEY);
         if (TextUtils.isEmpty(mUrl) && uri != null) {
             mUrl = uri.toString();

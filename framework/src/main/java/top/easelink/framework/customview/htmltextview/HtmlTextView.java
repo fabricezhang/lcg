@@ -87,8 +87,7 @@ public class HtmlTextView extends JellyBeanSpanFixTextView {
         setText(HtmlFormatter.formatHtml(html, imageGetter, clickableSpecialSpan, drawTableLinkSpan, indent, removeTrailingWhiteSpace));
 
         // make links work
-        //TODO understand this method
-//        setMovementMethod(LocalLinkMovementMethod.getInstance());
+        setMovementMethod(LocalLinkMovementMethod.getInstance());
     }
 
     /**

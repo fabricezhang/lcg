@@ -12,6 +12,7 @@ import top.easelink.lcg.ui.main.model.BaseNotification
 import top.easelink.lcg.ui.main.model.NotificationModel
 import top.easelink.lcg.ui.main.model.SystemNotification
 import top.easelink.lcg.utils.WebsiteConstant.NOTIFICATION_HOME_URL
+import top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL
 
 class NotificationViewModel: ViewModel(){
 
@@ -68,9 +69,18 @@ class NotificationViewModel: ViewModel(){
     private fun parseResponse(doc: Document): NotificationModel {
         val notifications = doc.select("dl.cl").mapNotNull { element ->
             try {
+                val ntc = element.selectFirst("dd.ntc_body")
+                ntc
+                    .getElementsByTag("a")
+                    .forEach {
+                        val href = it.attr("href")
+                        if (href.isNotEmpty()) {
+                            it.attr("href", "lcg:$href")
+                        }
+                    }
                 BaseNotification(
                     avatar = element.selectFirst("img").attr("src"),
-                    content = element.selectFirst("dd.ntc_body").html(),
+                    content = ntc.html(),
                     dateTime = element.selectFirst("span.xg1").text()
                 )
             } catch (e: Exception) {
