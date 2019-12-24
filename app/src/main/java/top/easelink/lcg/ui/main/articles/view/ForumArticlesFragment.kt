@@ -25,6 +25,8 @@ import top.easelink.lcg.ui.main.source.model.ForumThread
 
 class ForumArticlesFragment : BaseFragment<FragmentForumArticlesBinding, ForumArticlesViewModel>() {
 
+    private var showTab = false
+
     override fun getBindingVariable(): Int {
         return BR.viewModel
     }
@@ -39,6 +41,9 @@ class ForumArticlesFragment : BaseFragment<FragmentForumArticlesBinding, ForumAr
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        arguments?.run {
+            showTab = getBoolean(ARG_SHOW_TAB, true)
+        }
         setUpToolbar()
         setUp()
     }
@@ -88,34 +93,9 @@ class ForumArticlesFragment : BaseFragment<FragmentForumArticlesBinding, ForumAr
         setUpRecyclerView()
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val order = when (item.itemId) {
-            R.id.action_order_by_datetime -> DATE_LINE_ORDER
-            R.id.action_order_by_lastpost -> LAST_POST_ORDER
-            else -> DEFAULT_ORDER
-        }
-        try {
-            val pos = viewDataBinding.forumTab.selectedTabPosition
-            viewModel
-                .threadList
-                .value
-                ?.get(pos)
-                ?.threadUrl
-                ?.let {
-                    viewModel.initUrlAndFetch(
-                        url = it,
-                        fetchType = ArticleFetcher.FetchType.FETCH_INIT,
-                        order = order
-                    )
-                }
-        } catch (e: Exception) {
-            Timber.e(e)
-        }
-        return true
-    }
-
     private fun setUpTabLayout(forumThreadList: List<ForumThread>?) {
-        if (forumThreadList.isNullOrEmpty()) {
+        // hide tab if showTab has been set to false or there's no tab item
+        if (forumThreadList.isNullOrEmpty() || !showTab) {
             viewDataBinding.forumTab.apply {
                 visibility = View.GONE
                 removeAllTabs()
@@ -185,11 +165,13 @@ class ForumArticlesFragment : BaseFragment<FragmentForumArticlesBinding, ForumAr
     companion object {
         private const val ARG_PARAM = "url"
         private const val ARG_TITLE = "title"
+        private const val ARG_SHOW_TAB = "showTab"
         @JvmStatic
-        fun newInstance(title: String, param: String): ForumArticlesFragment {
+        fun newInstance(title: String, param: String, showTab: Boolean = true): ForumArticlesFragment {
             val args = Bundle()
             args.putString(ARG_PARAM, param)
             args.putString(ARG_TITLE, title)
+            args.putBoolean(ARG_SHOW_TAB, showTab)
             val fragment = ForumArticlesFragment()
             fragment.arguments = args
             return fragment

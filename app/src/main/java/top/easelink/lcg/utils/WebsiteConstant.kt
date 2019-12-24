@@ -29,7 +29,7 @@ object WebsiteConstant {
     const val VIRUS_RESCUE_URL = "forum-50-%d.html"
     const val VIRUS_SAMPLE_URL = "forum-40-%d.html"
 
-
+    const val MY_ARTICLES_URL = "forum.php?mod=guide&view=my"
     const val GET_FAVORITE_QUERY = "home.php?mod=space&do=favorite&view=me"
     const val ADD_TO_FAVORITE_QUERY = "home.php?mod=spacecp&ac=favorite&type=thread&id=%s&formhash=%s&infloat=yes&handlekey=k_favorite&inajax=1&ajaxtarget=fwin_content_k_favorite"
 

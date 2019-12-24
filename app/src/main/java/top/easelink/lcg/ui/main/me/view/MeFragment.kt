@@ -20,6 +20,7 @@ import kotlinx.android.synthetic.main.fragment_me.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import org.greenrobot.eventbus.EventBus
 import top.easelink.framework.base.BaseFragment
 import top.easelink.framework.utils.bitmapBlur
 import top.easelink.framework.utils.convertViewToBitmap
@@ -29,6 +30,8 @@ import top.easelink.lcg.R
 import top.easelink.lcg.databinding.FragmentMeBinding
 import top.easelink.lcg.ui.main.login.view.LoginHintDialog
 import top.easelink.lcg.ui.main.me.viewmodel.MeViewModel
+import top.easelink.lcg.ui.main.model.OpenForumEvent
+import top.easelink.lcg.utils.WebsiteConstant.MY_ARTICLES_URL
 import top.easelink.lcg.utils.addFragmentInFragment
 import top.easelink.lcg.utils.showMessage
 
@@ -155,12 +158,15 @@ class MeFragment : BaseFragment<FragmentMeBinding, MeViewModel>() {
             findViewById<ImageView>(R.id.btn_icon).setImageResource(R.drawable.ic_notifications)
             findViewById<TextView>(R.id.tv_icon).setText(R.string.ic_notifications)
         }
-        icon_deja_vue?.apply {
+        icon_my_articles?.apply {
             setOnClickListener {
-                showMessage(R.string.todo_tips)
+                EventBus
+                    .getDefault()
+                    .post(OpenForumEvent(
+                        getString(R.string.ic_my_articles), MY_ARTICLES_URL, false))
             }
-            findViewById<ImageView>(R.id.btn_icon).setImageResource(R.drawable.ic_deja_vue)
-            findViewById<TextView>(R.id.tv_icon).setText(R.string.ic_deja_vue)
+            findViewById<ImageView>(R.id.btn_icon).setImageResource(R.drawable.ic_my_articles)
+            findViewById<TextView>(R.id.tv_icon).setText(R.string.ic_my_articles)
         }
         icon_feedback?.apply {
             setOnClickListener {

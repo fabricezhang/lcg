@@ -22,7 +22,7 @@
             android:baselineAligned="false">
 
         <include layout="@layout/layout_icon_button"
-                android:id="@+id/icon_deja_vue"
+                android:id="@+id/icon_my_articles"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp" />

@@ -261,7 +261,8 @@ public class MainActivity
         Properties prop = new Properties();
         prop.setProperty(PROP_FORUM_NAME, event.getTitle());
         EventHelperKt.sendKVEvent(EVENT_OPEN_FORUM, prop);
-        showFragment(ForumArticlesFragment.newInstance(event.getTitle(), event.getUrl()));
+        showFragment(ForumArticlesFragment
+                .newInstance(event.getTitle(), event.getUrl(), event.getShowTab()));
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

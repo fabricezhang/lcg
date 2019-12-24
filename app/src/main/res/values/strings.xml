@@ -55,7 +55,7 @@
 
     <string name="ic_notifications">消息提醒</string>
     <string name="ic_feedback">问题反馈</string>
-    <string name="ic_deja_vue">最近浏览</string>
+    <string name="ic_my_articles">我的帖子</string>
 
     <!--Login Dialog-->
     <string name="login_username">用户名</string>
