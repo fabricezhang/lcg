@@ -17,10 +17,23 @@
     <com.airbnb.lottie.LottieAnimationView
             android:layout_marginTop="@dimen/dp_20"
             android:layout_gravity="center"
-            android:layout_width="@dimen/dp_260"
-            android:layout_height="@dimen/dp_260"
+            android:layout_width="@dimen/dp_240"
+            android:layout_height="@dimen/dp_240"
             android:scaleType="fitCenter"
             app:lottie_rawRes="@raw/item_not_found"
             app:lottie_loop="false"
             app:lottie_autoPlay="true"/>
+
+    <Button
+        android:id="@+id/sync_favorites"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/sp_12"
+        android:paddingStart="@dimen/dp_3"
+        android:paddingEnd="@dimen/dp_3"
+        android:backgroundTint="@color/slight_light_gray"
+        android:background="@drawable/rectangle_bg"
+        android:text="@string/start_sync"
+        android:layout_gravity="center"/>
 </LinearLayout>

@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.item_favorite_article_empty_view.view.*
 import kotlinx.android.synthetic.main.item_favorite_article_view.view.*
 import kotlinx.android.synthetic.main.item_load_more_view.view.*
 import kotlinx.coroutines.Dispatchers
@@ -130,9 +131,12 @@ class FavoriteArticlesAdapter(private var favoriteArticlesViewModel: FavoriteArt
 
     }
 
-    inner class EmptyViewHolder internal constructor(view: View) :
+    inner class EmptyViewHolder internal constructor(val view: View) :
         BaseViewHolder(view) {
         override fun onBind(position: Int) {
+            view.sync_favorites.setOnClickListener {
+                favoriteArticlesViewModel.syncFavorites()
+            }
         }
     }
 
