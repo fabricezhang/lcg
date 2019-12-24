@@ -27,7 +27,7 @@ class ArticlesViewModel : ViewModel(), ArticleFetcher {
         isLoading.value = true
         GlobalScope.launch(Dispatchers.IO){
             ArticlesRemoteDataSource.getHomePageArticles(mUrl!!, pageNum).let {
-                if (it.isNotEmpty()) {
+                if (it.isNotEmpty().also(callback)) {
                     val list = articles.value?.toMutableList()
                     if (fetchType == ArticleFetcher.FetchType.FETCH_MORE && list != null && list.size != 0) {
                         list.addAll(it)
@@ -37,9 +37,6 @@ class ArticlesViewModel : ViewModel(), ArticleFetcher {
                     }
                     // current page fetch successfully, record current page
                     mCurrentPage = pageNum
-                    callback.invoke(true)
-                } else {
-                    callback.invoke(false)
                 }
             }
             isLoading.postValue(false)

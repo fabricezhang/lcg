@@ -69,7 +69,7 @@ class ForumArticlesViewModel : ViewModel(), ArticleFetcher {
                 fetchType == ArticleFetcher.FetchType.FETCH_INIT )
             if (forumPage != null) {
                 val articleList = forumPage.articleList
-                if (articleList.isNotEmpty()) {
+                if (articleList.isNotEmpty().also(callback)) {
                     val list = articles.value
                     if ((fetchType == ArticleFetcher.FetchType.FETCH_MORE) && !list.isNullOrEmpty()) {
                         val articleA = articleList[articleList.size - 1]
