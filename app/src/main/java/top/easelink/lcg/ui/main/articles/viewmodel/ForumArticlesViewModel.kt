@@ -28,7 +28,6 @@ class ForumArticlesViewModel : ViewModel(), ArticleFetcher {
 
     val title = MutableLiveData<String>()
     val articles = MutableLiveData<List<Article>>()
-    val shouldDisplayArticles = MutableLiveData<Boolean>()
     val threadList = MutableLiveData<List<ForumThread>>()
     val isLoading = MutableLiveData<Boolean>()
 
@@ -46,7 +45,7 @@ class ForumArticlesViewModel : ViewModel(), ArticleFetcher {
         }
         mFetchType = fetchType
         orderType = order
-        fetchArticles(mFetchType)
+        fetchArticles(mFetchType){}
     }
 
     @MainThread
@@ -62,7 +61,7 @@ class ForumArticlesViewModel : ViewModel(), ArticleFetcher {
         return "$mUrl&page=$mCurrentPage$orderType"
     }
 
-    override fun fetchArticles(fetchType: ArticleFetcher.FetchType) {
+    override fun fetchArticles(fetchType: ArticleFetcher.FetchType, callback: (Boolean) -> Unit) {
         isLoading.value = true
         GlobalScope.launch(Dispatchers.IO) {
             val query = composeUrlByRequestType(fetchType)
@@ -70,7 +69,7 @@ class ForumArticlesViewModel : ViewModel(), ArticleFetcher {
                 fetchType == ArticleFetcher.FetchType.FETCH_INIT )
             if (forumPage != null) {
                 val articleList = forumPage.articleList
-                if (articleList.isNotEmpty()) {
+                if (articleList.isNotEmpty().also(callback)) {
                     val list = articles.value
                     if ((fetchType == ArticleFetcher.FetchType.FETCH_MORE) && !list.isNullOrEmpty()) {
                         val articleA = articleList[articleList.size - 1]
@@ -83,9 +82,6 @@ class ForumArticlesViewModel : ViewModel(), ArticleFetcher {
                     } else {
                         articles.postValue(articleList)
                     }
-                    shouldDisplayArticles.postValue(true)
-                } else {
-                    shouldDisplayArticles.postValue(false)
                 }
                 if (!isTabSet) {
                     forumPage.threadList.let {

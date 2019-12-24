@@ -19,3 +19,14 @@ data class SystemNotification(
     val comment: String? = null,
     val dateTime: String
 )
+
+class NotificationModel(
+    val notifications: List<BaseNotification>,
+    val nextPageUrl: String
+)
+
+data class BaseNotification(
+    val avatar: String,
+    val content: String,
+    val dateTime: String
+)

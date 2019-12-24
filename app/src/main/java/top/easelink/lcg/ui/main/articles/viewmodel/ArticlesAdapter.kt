@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.item_load_more_view.view.*
 import org.greenrobot.eventbus.EventBus
 import top.easelink.framework.base.BaseViewHolder
 import top.easelink.lcg.R
@@ -24,10 +25,11 @@ class ArticlesAdapter(
     private val mArticleList: MutableList<Article> = mutableListOf()
 
     override fun getItemCount(): Int {
-        return if (mArticleList.isEmpty()) {
-            1
-        } else {
-            mArticleList.size + 1
+        return when {
+            mArticleList.isEmpty() -> 1
+            // for articles more than 10, add a load more
+            mArticleList.size > 10 -> mArticleList.size + 1
+            else -> mArticleList.size
         }
     }
 
@@ -89,6 +91,12 @@ class ArticlesAdapter(
         notifyDataSetChanged()
     }
 
+    fun appendItems(notifications: List<Article>) {
+        val count = itemCount
+        mArticleList.addAll(notifications)
+        notifyItemRangeInserted(count - 1, notifications.size)
+    }
+
     fun clearItems() {
         mArticleList.clear()
     }
@@ -133,15 +141,20 @@ class ArticlesAdapter(
         }
 
         override fun onRetryClick() {
-            articleFetcher.fetchArticles(ArticleFetcher.FetchType.FETCH_INIT)
+            articleFetcher.fetchArticles(ArticleFetcher.FetchType.FETCH_INIT){}
         }
 
     }
 
-    inner class LoadMoreViewHolder internal constructor(view: View) :
+    inner class LoadMoreViewHolder internal constructor(val view: View) :
         BaseViewHolder(view) {
         override fun onBind(position: Int) {
-            articleFetcher.fetchArticles(ArticleFetcher.FetchType.FETCH_MORE)
+            view.loading.visibility = View.VISIBLE
+            articleFetcher.fetchArticles(ArticleFetcher.FetchType.FETCH_MORE){
+                view.post {
+                    view.loading.visibility = View.GONE
+                }
+            }
         }
     }
 

@@ -1,46 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/notification_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingEnd="@dimen/dp_5"
-        android:paddingStart="@dimen/dp_5"
-        android:layout_marginTop="@dimen/dp_3"
-        android:layout_marginBottom="@dimen/dp_3" >
-    <TextView
-            android:id="@+id/date_time"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:lines="1"
-            android:textSize="@dimen/sp_12"
-            android:textColor="@color/semi_gray"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="2019-11-13 22:08"/>
-
-    <top.easelink.framework.customview.htmltextview.HtmlTextView
-            android:id="@+id/notification_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black_effective"
-            android:textSize="@dimen/sp_12"
-            android:clickable="false"
-            android:focusable="false"
-            android:textIsSelectable="false"
-            app:layout_constraintTop_toBottomOf="@id/date_time"
-            tools:text="您在主题 开源吾爱破解论坛App Android 1.5版本 的帖子被 评分 吾爱币 +1 CB / 热心值 +1 点"/>
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/notification_container"
+    android:minHeight="@dimen/dp_50"
+    android:clickable="true"
+    android:focusable="true"
+    android:descendantFocusability="blocksDescendants"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_0_1"
-            android:background="@color/semi_gray"
-            android:layout_marginTop="@dimen/dp_2"
-            android:layout_marginBottom="@dimen/dp_1"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/notification_title"
-        />
+        android:id="@+id/line"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_1"
+        android:backgroundTint="@color/slight_light_gray"
+        android:background="@drawable/rectangle_bg"
+        app:layout_constraintWidth_percent="0.98"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/notification_avatar"
+        android:layout_width="@dimen/dp_40"
+        android:layout_height="@dimen/dp_40"
+        android:layout_marginTop="@dimen/dp_6"
+        android:layout_marginStart="@dimen/dp_4"
+        android:clickable="false"
+        android:longClickable="false"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/line"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0"
+        tools:ignore="ContentDescription" />
+    <TextView
+        android:id="@+id/date_time"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:lines="1"
+        android:textSize="@dimen/sp_12"
+        android:clickable="false"
+        android:longClickable="false"
+        android:textColor="@color/semi_gray"
+        android:layout_marginStart="@dimen/dp_20"
+        app:layout_constraintStart_toEndOf="@id/notification_avatar"
+        app:layout_constraintTop_toTopOf="@id/notification_avatar"
+        tools:text="2019-11-13 22:08"/>
+
+    <top.easelink.framework.customview.htmltextview.HtmlTextView
+        android:id="@+id/notification_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black_effective"
+        android:textSize="@dimen/sp_12"
+        android:clickable="false"
+        android:longClickable="false"
+        android:textIsSelectable="false"
+        android:layout_marginBottom="@dimen/dp_6"
+        android:layout_marginEnd="@dimen/dp_4"
+        app:layout_constraintStart_toStartOf="@id/date_time"
+        app:layout_constraintTop_toBottomOf="@id/date_time"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="您在主题 开源吾爱破解论坛App Android 1.5版本 的帖子被 评分 吾爱币 +1 CB / 热心值 +1 点"/>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

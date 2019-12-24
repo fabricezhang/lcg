@@ -30,7 +30,8 @@ import top.easelink.lcg.R
 import top.easelink.lcg.databinding.FragmentMeBinding
 import top.easelink.lcg.ui.main.login.view.LoginHintDialog
 import top.easelink.lcg.ui.main.me.viewmodel.MeViewModel
-import top.easelink.lcg.ui.main.model.OpenNotificationsPageEvent
+import top.easelink.lcg.ui.main.model.OpenForumEvent
+import top.easelink.lcg.utils.WebsiteConstant.MY_ARTICLES_URL
 import top.easelink.lcg.utils.addFragmentInFragment
 import top.easelink.lcg.utils.showMessage
 
@@ -74,16 +75,21 @@ class MeFragment : BaseFragment<FragmentMeBinding, MeViewModel>() {
             updateViewVisibility(it)
             if (!it) {
                 // add a blur effect
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && isAdded && view != null) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     GlobalScope.launch(Dispatchers.IO){
-                        bitmapBlur(baseActivity, convertViewToBitmap(view!!), 20)?.let {
-                            GlobalScope.launch(Dispatchers.Main) {
-                                view!!.setBackgroundColor(Color.WHITE)
-                                view!!.foreground = BitmapDrawable(resources, it)
-                                LoginHintDialog().show(baseActivity.supportFragmentManager, null)
+                        val bitmap = bitmapBlur(baseActivity, convertViewToBitmap(view), 20)
+                        GlobalScope.launch(Dispatchers.Main) {
+                            bitmap?.let {
+                                view?.apply {
+                                    setBackgroundColor(Color.WHITE)
+                                    foreground = BitmapDrawable(resources, it)
+                                }
                             }
+                            LoginHintDialog().show(baseActivity.supportFragmentManager, null)
                         }
                     }
+                } else {
+                    LoginHintDialog().show(baseActivity.supportFragmentManager, null)
                 }
             }
         })
@@ -146,23 +152,21 @@ class MeFragment : BaseFragment<FragmentMeBinding, MeViewModel>() {
     private fun updateIconButtons() {
         icon_notifications?.apply {
             setOnClickListener {
-                EventBus.getDefault().post(OpenNotificationsPageEvent)
+                showFragment(MeNotificationFragment())
                 findViewById<View>(R.id.badge).visibility = View.GONE
             }
-            findViewById<ImageView>(R.id.btn_icon).apply {
-                setImageResource(R.drawable.ic_notifications)
-                setOnClickListener {
-                    showFragment(MeNotificationFragment())
-                }
-            }
+            findViewById<ImageView>(R.id.btn_icon).setImageResource(R.drawable.ic_notifications)
             findViewById<TextView>(R.id.tv_icon).setText(R.string.ic_notifications)
         }
-        icon_deja_vue?.apply {
+        icon_my_articles?.apply {
             setOnClickListener {
-                showMessage(R.string.todo_tips)
+                EventBus
+                    .getDefault()
+                    .post(OpenForumEvent(
+                        getString(R.string.ic_my_articles), MY_ARTICLES_URL, false))
             }
-            findViewById<ImageView>(R.id.btn_icon).setImageResource(R.drawable.ic_deja_vue)
-            findViewById<TextView>(R.id.tv_icon).setText(R.string.ic_deja_vue)
+            findViewById<ImageView>(R.id.btn_icon).setImageResource(R.drawable.ic_my_articles)
+            findViewById<TextView>(R.id.tv_icon).setText(R.string.ic_my_articles)
         }
         icon_feedback?.apply {
             setOnClickListener {
@@ -184,6 +188,7 @@ class MeFragment : BaseFragment<FragmentMeBinding, MeViewModel>() {
     }
 
     private fun showFragment(fragment: Fragment) {
+        child_fragment_container.visibility = View.VISIBLE
         addFragmentInFragment(
             childFragmentManager,
             fragment,

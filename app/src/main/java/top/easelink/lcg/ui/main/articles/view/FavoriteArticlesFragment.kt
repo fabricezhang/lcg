@@ -1,16 +1,13 @@
 package top.easelink.lcg.ui.main.articles.view
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.fragment_favorite_articles.*
 import top.easelink.framework.base.BaseFragment
 import top.easelink.lcg.BR
 import top.easelink.lcg.R
@@ -39,27 +36,8 @@ class FavoriteArticlesFragment : BaseFragment<FragmentFavoriteArticlesBinding, F
     ) {
         super.onViewCreated(view, savedInstanceState)
         setUpRecyclerView()
-        setupMenu()
-        viewModel.fetchArticles(ArticleFetcher.FetchType.FETCH_INIT)
-    }
-
-    override fun onCreateOptionsMenu(
-        menu: Menu,
-        inflater: MenuInflater
-    ) {
-        super.onCreateOptionsMenu(menu, inflater)
-        menu.clear()
-        inflater.inflate(R.menu.favorite_articles, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.action_remove_all -> viewModel.removeAllFavorites()
-            else -> {
-                // to add more
-            }
-        }
-        return super.onOptionsItemSelected(item)
+        setupToolBar()
+        viewModel.fetchArticles(ArticleFetcher.FetchType.FETCH_INIT){}
     }
 
     private fun setUpRecyclerView() {
@@ -79,9 +57,21 @@ class FavoriteArticlesFragment : BaseFragment<FragmentFavoriteArticlesBinding, F
 
     }
 
-    private fun setupMenu() {
-        setHasOptionsMenu(true)
-        (activity as? AppCompatActivity)?.setSupportActionBar(viewDataBinding?.articleToolbar)
+    private fun setupToolBar() {
+        article_toolbar.apply {
+            inflateMenu(R.menu.favorite_articles)
+            setOnMenuItemClickListener {
+                when (it.itemId) {
+                    R.id.action_remove_all -> viewModel.removeAllFavorites()
+                    R.id.action_sync_my_favorites -> viewModel.syncFavorites()
+                    else -> {
+                        // to add mores
+                    }
+                }
+                return@setOnMenuItemClickListener true
+            }
+        }
+
     }
 
     companion object {

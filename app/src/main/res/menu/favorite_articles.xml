@@ -7,4 +7,9 @@
             android:title="@string/clear_all_from_my_favorite"
             app:showAsAction="collapseActionView"/>
 
+    <item
+        android:id="@+id/action_sync_my_favorites"
+        android:title="@string/sync_my_favorite"
+        app:showAsAction="collapseActionView"/>
+
 </menu>

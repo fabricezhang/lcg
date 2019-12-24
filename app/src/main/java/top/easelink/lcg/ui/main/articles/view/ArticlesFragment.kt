@@ -35,14 +35,14 @@ class ArticlesFragment : BaseFragment<FragmentArticlesBinding, ArticlesViewModel
     private fun scrollToTop() {
         viewDataBinding.backToTop.playAnimation()
         viewDataBinding.recyclerView.let {
-            //            val pos = (it.layoutManager as? LinearLayoutManager)?.findFirstVisibleItemPosition()
-//            if (pos != null && pos > 30) {
-//                it.smoothScrollToPosition(pos - 5)
-//                it.scrollToPosition(0)
-//            } else {
-//                it.smoothScrollToPosition(0)
-//            }
-            it.smoothScrollToPosition(0)
+            val pos = (it.layoutManager as? LinearLayoutManager)?.findLastCompletelyVisibleItemPosition()
+            if (pos != null && pos > 30) {
+                it.scrollToPosition(30)
+                it.smoothScrollToPosition(0)
+
+            } else {
+                it.smoothScrollToPosition(0)
+            }
         }
     }
 
@@ -54,10 +54,19 @@ class ArticlesFragment : BaseFragment<FragmentArticlesBinding, ArticlesViewModel
     private fun setUpView() {
         setupRecyclerView()
         arguments?.getString(ARG_PARAM)?.let {
-            viewModel.articles.observe(this, Observer {
-                (viewDataBinding.recyclerView.adapter as? ArticlesAdapter)?.apply {
-                    clearItems()
-                    addItems(it)
+            viewModel.articles.observe(this, Observer {articleList ->
+                if (articleList.isEmpty() && viewModel.isLoading.value == true) {
+                    viewDataBinding.recyclerView.visibility = View.GONE
+                } else {
+                    viewDataBinding.recyclerView.visibility = View.VISIBLE
+                    (viewDataBinding.recyclerView.adapter as? ArticlesAdapter)?.apply {
+                        if (itemCount > 1) {
+                            appendItems(articleList)
+                        } else {
+                            clearItems()
+                            addItems(articleList)
+                        }
+                    }
                 }
             })
             viewModel.initUrl(it)
@@ -75,7 +84,7 @@ class ArticlesFragment : BaseFragment<FragmentArticlesBinding, ArticlesViewModel
             // Set the scrolling view in the custom SwipeRefreshLayout.
             setScrollUpChild(viewDataBinding.recyclerView)
             setOnRefreshListener {
-                viewModel.fetchArticles(ArticleFetcher.FetchType.FETCH_INIT)
+                viewModel.fetchArticles(ArticleFetcher.FetchType.FETCH_INIT){}
             }
         }
     }

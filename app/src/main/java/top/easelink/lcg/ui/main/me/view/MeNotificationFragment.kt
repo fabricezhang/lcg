@@ -40,15 +40,29 @@ class MeNotificationFragment: TopFragment(){
                 it.orientation = RecyclerView.VERTICAL
             }
             itemAnimator = DefaultItemAnimator()
-            adapter = NotificationsAdapter()
-            notificationViewModel
-                .systemNotifications
-                .observe(this@MeNotificationFragment, Observer { notifications ->
-                    (adapter as NotificationsAdapter).run {
-                        clearItems()
-                        addItems(notifications)
+            adapter = NotificationsAdapter(notificationViewModel)
+            notificationViewModel.apply {
+                isLoading.observe(this@MeNotificationFragment, Observer {
+                    if (it) {
+                        loading.visibility = View.VISIBLE
+                        notification_recycler_view.visibility = View.GONE
+                    } else {
+                        loading.visibility = View.GONE
+                        notification_recycler_view.visibility = View.VISIBLE
                     }
                 })
+                notifications
+                    .observe(this@MeNotificationFragment, Observer { model ->
+                        (adapter as NotificationsAdapter).run {
+                            if (itemCount > 1) {
+                                appendItems(model.notifications)
+                            } else {
+                                clearItems()
+                                addItems(model.notifications)
+                            }
+                        }
+                    })
+            }
         }
     }
 }

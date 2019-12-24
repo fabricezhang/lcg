@@ -7,6 +7,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import top.easelink.lcg.R
+import top.easelink.lcg.ui.main.articles.source.FavoriteDataSource.getAllRemoteFavorites
 import top.easelink.lcg.ui.main.source.local.ArticlesLocalDataSource
 import top.easelink.lcg.ui.main.source.model.ArticleEntity
 import top.easelink.lcg.utils.showMessage
@@ -14,31 +15,36 @@ import top.easelink.lcg.utils.showMessage
 class FavoriteArticlesViewModel : ViewModel(), ArticleFetcher {
     val articles = MutableLiveData<List<ArticleEntity>>()
     val isLoading = MutableLiveData<Boolean>()
-
-    //TODO add pagination later
     private var mCurrentPage = 0
 
-    override fun fetchArticles(fetchType: ArticleFetcher.FetchType) {
+
+    override fun fetchArticles(fetchType: ArticleFetcher.FetchType, callback: (Boolean) -> Unit) {
         when (fetchType) {
-            ArticleFetcher.FetchType.FETCH_MORE -> return
+            ArticleFetcher.FetchType.FETCH_MORE -> {
+                callback.invoke(false)
+                // TODO add pagination
+                return
+            }
             ArticleFetcher.FetchType.FETCH_INIT -> rewindPageNum()
         }
         isLoading.value = true
         GlobalScope.launch(Dispatchers.IO) {
             try {
                 ArticlesLocalDataSource.getAllFavoriteArticles().let {
-                    if (!it.isNullOrEmpty()) {
+                    if(it.isNotEmpty().also(callback))  {
                         articles.postValue(it)
                     }
                 }
             } catch (e: Exception) {
                 Timber.e(e)
+            } finally {
+                isLoading.postValue(false)
             }
-            isLoading.postValue(false)
         }
     }
 
     fun removeAllFavorites() {
+        isLoading.value = true
         GlobalScope.launch(Dispatchers.IO) {
             try {
                 if(ArticlesLocalDataSource.delAllArticlesFromFavorite()){
@@ -50,6 +56,25 @@ class FavoriteArticlesViewModel : ViewModel(), ArticleFetcher {
             } catch (e: Exception) {
                 Timber.e(e)
                 showMessage(R.string.remove_all_favorites_failed)
+            } finally {
+                isLoading.postValue(false)
+            }
+        }
+    }
+
+    fun syncFavorites() {
+        isLoading.value = true
+        GlobalScope.launch(Dispatchers.IO) {
+            try {
+                val articleEntities = getAllRemoteFavorites()
+                if(ArticlesLocalDataSource.addAllArticleToFavorite(articleEntities)) {
+                    articles.postValue(ArticlesLocalDataSource.getAllFavoriteArticles())
+                }
+            } catch (e: Exception) {
+                Timber.e(e)
+                showMessage(R.string.sync_favorite_failed)
+            } finally {
+                isLoading.postValue(false)
             }
         }
     }

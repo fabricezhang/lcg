@@ -17,7 +17,7 @@ import top.easelink.lcg.ui.main.model.NetworkException
 import top.easelink.lcg.ui.main.source.ArticlesDataSource
 import top.easelink.lcg.ui.main.source.FavoritesRemoteDataSource
 import top.easelink.lcg.ui.main.source.model.*
-import top.easelink.lcg.utils.WebsiteConstant
+import top.easelink.lcg.utils.WebsiteConstant.ADD_TO_FAVORITE_QUERY
 import top.easelink.lcg.utils.WebsiteConstant.FORUM_BASE_URL
 import java.net.SocketTimeoutException
 import java.util.*
@@ -71,15 +71,16 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
     override fun getArticleDetail(query: String): ArticleDetail? {
         try {
             val doc = Client.sendRequestWithQuery(query)
-            var articleAbstract: ArticleAbstractResponse? = null
-            doc.selectFirst("script")?.run {
-                try {
-                    val json = html().trim().replace("\u00a0".toRegex(), "")
-                    articleAbstract = gson.fromJson(json, ArticleAbstractResponse::class.java)
-                } catch (e: Exception) {
-                    // no need to handle
+            val articleAbstract: ArticleAbstractResponse? =
+                doc.selectFirst("script")?.let {
+                    try {
+                        val json = it.html().trim().replace("\u00a0".toRegex(), "")
+                        return@let gson.fromJson(json, ArticleAbstractResponse::class.java)
+                    } catch (e: Exception) {
+                        // no need to handle
+                    }
+                    null
                 }
-            }
             val title = doc.selectFirst("span#thread_subject")?.text().orEmpty()
             if (title.isEmpty()) {
                 throw BlockException()
@@ -98,12 +99,17 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
                     } else {
                         replyAddUrls[i]
                     }
+                    val replyUrl: String? = if (i >= replyUrls.size) {
+                        null
+                    } else {
+                        replyUrls[i]
+                    }
                     val post = Post(
                         avatarsAndNames[i]["name"].toString(),
                         avatarsAndNames[i]["avatar"].toString(),
                         dateTimes[i],
                         contents[i],
-                        replyUrls[i],
+                        replyUrl,
                         replyAddUrl
                     )
                     postList.add(post)
@@ -133,8 +139,12 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
                 .select("tbody")
                 .map {
                     try {
-                        val reply = extractFrom(it, "td.num", "a.xi2").toInt()
-                        val view = extractFrom(it, "td.num", "em").toInt()
+                        val reply = extractFrom(it, "td.num", "a.xi2")
+                            .ifBlank { return@map null }
+                            .toInt()
+                        val view = extractFrom(it, "td.num", "em")
+                            .ifBlank { return@map null }
+                            .toInt()
                         val title = extractFrom(it, "th.common", ".xst")
                         val author = extractFrom(it, "td.by", "a[href*=uid]")
                         val date = extractFrom(it, "td.by", "span")
@@ -143,8 +153,6 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
                         if (title.isNotBlank() && author.isNotEmpty()) {
                             return@map Article(title, author, date, url, view, reply, origin)
                         }
-                    } catch (nbe: NumberFormatException) {
-                        Timber.v(nbe)
                     } catch (e: Exception) {
                         Timber.e(e)
                     }
@@ -371,7 +379,7 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
     override fun addFavorites(threadId: String, formHash: String): Boolean {
         return try {
             Client.sendRequestWithQuery(String.format(
-                WebsiteConstant.FAVORITE_URL,
+                ADD_TO_FAVORITE_QUERY,
                 threadId,
                 formHash
             ))
@@ -392,8 +400,6 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
         return try {
             val doc = Client.sendRequestWithQuery(query)
             val message = doc.getElementsByClass("nfl").first().text()
-            Timber.d(doc.html())
-            Timber.d(message)
             message
         } catch (e: Exception) {
             Timber.e(e)

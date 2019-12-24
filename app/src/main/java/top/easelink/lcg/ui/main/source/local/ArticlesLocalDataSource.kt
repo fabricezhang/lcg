@@ -18,6 +18,12 @@ object ArticlesLocalDataSource : FavoritesLocalDataSource {
     }
 
     @WorkerThread
+    override fun addAllArticleToFavorite(articleEntities: List<ArticleEntity>): Boolean {
+        mArticlesDao.insertAllArticles(articleEntities)
+        return true
+    }
+
+    @WorkerThread
     override fun addArticleToFavorite(articleEntity: ArticleEntity): Boolean {
         mArticlesDao.insertArticle(articleEntity)
         return true

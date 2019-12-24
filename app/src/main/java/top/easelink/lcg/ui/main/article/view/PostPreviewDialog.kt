@@ -71,9 +71,13 @@ class PostPreviewDialog : SafeShowDialogFragment() {
                 mViewModel.date.observe(this, Observer {
                     date_text_view.text = it
                 })
-                mViewModel.loadFailed.observe(this, Observer {
-                    loading_fail.visibility = View.VISIBLE
-                    error_info.setText(it)
+                mViewModel.loadingResult.observe(this, Observer {
+                    if (it == -1) {
+                        loading_status.visibility = View.GONE
+                    } else {
+                        loading_status.visibility = View.VISIBLE
+                        loading_info.setText(it)
+                    }
                 })
                 mViewModel.initUrl(query)
             }

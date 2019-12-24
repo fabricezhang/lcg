@@ -8,8 +8,7 @@ import kotlinx.coroutines.launch
 import top.easelink.lcg.ui.main.source.model.Article
 import top.easelink.lcg.ui.main.source.remote.ArticlesRemoteDataSource
 
-class ArticlesViewModel : ViewModel(),
-    ArticleFetcher {
+class ArticlesViewModel : ViewModel(), ArticleFetcher {
     private var mCurrentPage = 0
     private var mUrl: String? = null
     val isLoading = MutableLiveData<Boolean>()
@@ -17,10 +16,10 @@ class ArticlesViewModel : ViewModel(),
 
     fun initUrl(url: String?) {
         mUrl = url
-        fetchArticles(ArticleFetcher.FetchType.FETCH_INIT)
+        fetchArticles(ArticleFetcher.FetchType.FETCH_INIT){}
     }
 
-    override fun fetchArticles(fetchType: ArticleFetcher.FetchType) {
+    override fun fetchArticles(fetchType: ArticleFetcher.FetchType, callback: (Boolean) -> Unit) {
         val pageNum: Int = when (fetchType) {
             ArticleFetcher.FetchType.FETCH_MORE -> mCurrentPage + 1
             ArticleFetcher.FetchType.FETCH_INIT -> 1
@@ -28,7 +27,7 @@ class ArticlesViewModel : ViewModel(),
         isLoading.value = true
         GlobalScope.launch(Dispatchers.IO){
             ArticlesRemoteDataSource.getHomePageArticles(mUrl!!, pageNum).let {
-                if (it.isNotEmpty()) {
+                if (it.isNotEmpty().also(callback)) {
                     val list = articles.value?.toMutableList()
                     if (fetchType == ArticleFetcher.FetchType.FETCH_MORE && list != null && list.size != 0) {
                         list.addAll(it)

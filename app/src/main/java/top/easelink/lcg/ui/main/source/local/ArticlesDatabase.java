@@ -24,10 +24,13 @@ public abstract class ArticlesDatabase extends RoomDatabase {
     public static ArticlesDatabase getInstance() {
         synchronized (sLock) {
             if (mInstance == null) {
-                mInstance = Room.databaseBuilder(
-                        LCGApp.getContext(),
-                        ArticlesDatabase.class,
-                        BuildConfig.DB_NAME).build();
+                mInstance = Room
+                        .databaseBuilder(
+                                LCGApp.getContext(),
+                                ArticlesDatabase.class,
+                                BuildConfig.DB_NAME)
+                        .fallbackToDestructiveMigration()
+                        .build();
             }
         }
         return mInstance;

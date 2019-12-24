@@ -11,6 +11,8 @@
     <string name="extract_urls">提取下载链接</string>
     <string name="add_to_my_favorite">添加到收藏</string>
     <string name="clear_all_from_my_favorite">清空收藏夹</string>
+    <string name="sync_my_favorite">同步网络收藏</string>
+    <string name="start_sync">开始同步</string>
 
     <string name="order_by_datetime">按发帖时间排序</string>
     <string name="order_by_lastpost">按回帖时间排序</string>
@@ -53,7 +55,7 @@
 
     <string name="ic_notifications">消息提醒</string>
     <string name="ic_feedback">问题反馈</string>
-    <string name="ic_deja_vue">最近浏览</string>
+    <string name="ic_my_articles">我的帖子</string>
 
     <!--Login Dialog-->
     <string name="login_username">用户名</string>
@@ -70,6 +72,7 @@
     <!--Notification-->
     <string name="notification_arrival">有新的消息</string>
     <string name="notification_read">知道了</string>
+    <string name="notification_title">全部通知</string>
     <!--about fragment-->
     <string name="version">"version"</string>
     <string name="github_title">Github源码地址</string>
@@ -133,6 +136,7 @@
     <!--block-->
     <string name="not_found_info">抱歉，文章可能已经被删除了</string>
     <string name="block_info">抱歉，本帖要求阅读权限高于 10 才能浏览</string>
+    <string name="preview_loading">加载中，请稍候</string>
     <string name="preview_fail_info">预览失败，请检查阅读权限</string>
     <string name="preview_fail_info_post_deleted">帖子违规，已被管理员删除</string>
 

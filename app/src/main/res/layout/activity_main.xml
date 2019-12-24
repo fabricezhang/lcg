@@ -1,98 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        tools:context="top.easelink.lcg.ui.main.view.MainActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="top.easelink.lcg.ui.main.view.MainActivity">
 
     <data>
         <import type="android.view.View" />
         <variable
-                name="viewModel"
-                type="top.easelink.lcg.ui.main.viewmodel.MainViewModel" />
+            name="viewModel"
+            type="top.easelink.lcg.ui.main.viewmodel.MainViewModel" />
     </data>
     <androidx.drawerlayout.widget.DrawerLayout
-            android:id="@+id/drawerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fitsSystemWindows="true">
+        android:id="@+id/drawerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
-                android:id="@+id/clRootView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clipChildren="false">
+            android:id="@+id/clRootView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipChildren="false">
 
             <com.google.android.material.appbar.AppBarLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:elevation="@dimen/dp_5">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fitsSystemWindows="true"
+                app:elevation="@dimen/dp_5">
 
                 <androidx.appcompat.widget.Toolbar
-                        android:id="@+id/toolbar"
-                        style="@style/Toolbar"
-                        android:elevation="@dimen/dp_4"
-                        app:subtitleTextColor="@color/white"
-                        app:title="@string/app_name"
-                        app:titleTextAppearance="@style/Toolbar.TitleText"
-                        app:titleTextColor="@color/white"
-                        app:layout_scrollFlags="scroll|enterAlways"/>
+                    android:id="@+id/toolbar"
+                    style="@style/Toolbar"
+                    android:elevation="@dimen/dp_4"
+                    app:subtitleTextColor="@color/white"
+                    app:title="@string/app_name"
+                    app:titleTextAppearance="@style/Toolbar.TitleText"
+                    app:titleTextColor="@color/white"
+                    app:layout_scrollFlags="scroll|enterAlways"/>
                 <com.google.android.material.tabs.TabLayout
-                        android:id="@+id/main_tab"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:minHeight="@dimen/dp_40"
-                        android:background="@color/white"
-                        app:tabIndicatorColor="@color/colorAccent"
-                        app:tabIndicatorHeight="@dimen/dp_3"
-                        app:tabTextColor="@color/gray"
-                        app:tabSelectedTextColor="@color/colorAccent"
-                        app:tabMode="fixed"
-                        app:tabTextAppearance="@style/Widget.Design.TabLayout"
-                        />
+                    android:id="@+id/main_tab"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="@dimen/dp_40"
+                    android:background="@color/white"
+                    app:tabIndicatorColor="@color/colorAccent"
+                    app:tabIndicatorHeight="@dimen/dp_3"
+                    app:tabTextColor="@color/gray"
+                    app:tabSelectedTextColor="@color/colorAccent"
+                    app:tabMode="fixed"
+                    app:tabTextAppearance="@style/Widget.Design.TabLayout"
+                    />
             </com.google.android.material.appbar.AppBarLayout>
             <androidx.viewpager.widget.ViewPager
-                    android:id="@+id/main_view_pager"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:focusableInTouchMode="true"
-                    android:focusable="true"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+                android:id="@+id/main_view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusableInTouchMode="true"
+                android:focusable="true"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
             <com.google.android.material.bottomnavigation.BottomNavigationView
-                    android:id="@+id/bottom_navigation"
-                    android:layout_gravity="bottom"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/white"
-                    app:itemIconSize="@dimen/dp_22"
-                    app:itemIconTint="@color/gray"
-                    app:itemTextAppearanceActive="@style/BottomNavigationView.Active"
-                    app:itemTextAppearanceInactive="@style/BottomNavigationView"
-                    app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"
-                    app:menu="@menu/nav_bottom"/>
+                android:id="@+id/bottom_navigation"
+                android:layout_gravity="bottom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                app:itemIconSize="@dimen/dp_22"
+                app:itemIconTint="@color/gray"
+                app:itemTextAppearanceActive="@style/BottomNavigationView.Active"
+                app:itemTextAppearanceInactive="@style/BottomNavigationView"
+                app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"
+                app:menu="@menu/nav_bottom"/>
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         <com.google.android.material.navigation.NavigationView
-                android:id="@+id/navigationView"
-                style="@style/Widget.Design.NavigationView"
-                android:layout_width="@dimen/dp_200"
-                android:layout_height="match_parent"
-                android:layout_gravity="start"
-                android:background="@color/white"
-                app:itemBackground="@color/white"
-                app:itemIconTint="@color/black_effective"
-                app:itemTextColor="@color/black_effective"
-                app:itemIconPadding="@dimen/dp_5"
-                app:menu="@menu/drawer">
+            android:id="@+id/navigationView"
+            style="@style/Widget.Design.NavigationView"
+            android:layout_width="@dimen/dp_200"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:background="@color/white"
+            app:itemBackground="@color/white"
+            app:itemIconTint="@color/black_effective"
+            app:itemTextColor="@color/black_effective"
+            app:itemIconPadding="@dimen/dp_5"
+            app:menu="@menu/drawer">
 
             <TextView
-                    android:id="@+id/tvAppVersion"
-                    style="@style/TextStyle.Title.Sub"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom|end"
-                    android:padding="5dp"
-                    android:text="@{viewModel.appVersion}" />
+                android:id="@+id/tvAppVersion"
+                style="@style/TextStyle.Title.Sub"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:padding="5dp"
+                android:text="@{viewModel.appVersion}" />
         </com.google.android.material.navigation.NavigationView>
     </androidx.drawerlayout.widget.DrawerLayout>
 

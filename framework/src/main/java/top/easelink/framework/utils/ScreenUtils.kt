@@ -27,19 +27,21 @@ fun dp2px(context: Context, dp: Float): Float {
     return dp * context.resources.displayMetrics.density
 }
 
-fun convertViewToBitmap(view: View): Bitmap? {
-    try {
-        val bitmap = Bitmap.createBitmap(
-            view.measuredWidth,
-            view.measuredHeight,
-            Bitmap.Config.ARGB_8888
-        )
-        val canvas = Canvas(bitmap)
-        view.layout(view.left, view.top, view.right, view.bottom)
-        view.draw(canvas)
-        return bitmap
-    } catch (e: Exception) {
-        Timber.e(e)
+fun convertViewToBitmap(view: View?): Bitmap? {
+    view?.apply {
+        try {
+            val bitmap = Bitmap.createBitmap(
+                measuredWidth,
+                measuredHeight,
+                Bitmap.Config.ARGB_8888
+            )
+            val canvas = Canvas(bitmap)
+            layout(left, top, right, bottom)
+            draw(canvas)
+            return bitmap
+        } catch (e: Exception) {
+            Timber.e(e)
+        }
     }
     return null
 }

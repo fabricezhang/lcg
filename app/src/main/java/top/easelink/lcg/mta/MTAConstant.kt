@@ -3,6 +3,8 @@ package top.easelink.lcg.mta
 const val EVENT_OPEN_FORUM = "open_forum"
 const val PROP_FORUM_NAME = "prop_forum_name"
 
+const val EVENT_APP_LAUNCH = "app_launch"
+
 const val EVENT_ADD_TO_FAVORITE = "add_to_favorite"
 
 const val EVENT_OPEN_ARTICLE = "open_article"

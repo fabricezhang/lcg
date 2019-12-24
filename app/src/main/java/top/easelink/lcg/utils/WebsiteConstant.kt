@@ -28,11 +28,21 @@ object WebsiteConstant {
     const val VIRUS_ANALYSIS_URL = "forum-32-%d.html"
     const val VIRUS_RESCUE_URL = "forum-50-%d.html"
     const val VIRUS_SAMPLE_URL = "forum-40-%d.html"
-    const val FAVORITE_URL = "home.php?mod=spacecp&ac=favorite&type=thread&id=%s&formhash=%s&infloat=yes&handlekey=k_favorite&inajax=1&ajaxtarget=fwin_content_k_favorite"
+
+    const val MY_ARTICLES_URL = "forum.php?mod=guide&view=my"
+    const val GET_FAVORITE_QUERY = "home.php?mod=space&do=favorite&view=me"
+    const val ADD_TO_FAVORITE_QUERY = "home.php?mod=spacecp&ac=favorite&type=thread&id=%s&formhash=%s&infloat=yes&handlekey=k_favorite&inajax=1&ajaxtarget=fwin_content_k_favorite"
 
     const val CHECK_RULE_URL = SERVER_BASE_URL + "forum.php?mod=ajax&action=checkpostrule&inajax=yes&ac=reply&infloat=yes&handlekey=reply"
+
+    // notifications
+    const val NOTIFICATION_HOME_URL = "home.php?mod=space&do=notice"
     const val SYSTEM_NOTIFICATION_URL = "home.php?mod=space&do=notice&view=system"
+    const val MYPOST_NOTIFICATION_URL = "home.php?mod=space&do=notice&view=mypost"
+    // im
+    const val IM_HOME_URL = "home.php?mod=space&do=pm"
+
     const val HOME_URL = "home.php"
     const val LOGIN_URL = "member.php?mod=logging&action=login"
-    const val APP_RELEASE_PAGE = "thread-1060219-1-1.html"
+    const val APP_RELEASE_PAGE = "thread-1073834-1-1.html"
 }

@@ -10,46 +10,76 @@
             type="top.easelink.lcg.ui.main.articles.viewmodel.FavoriteArticlesViewModel"/>
     </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/clRootView"
+        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipChildren="false"
         android:focusable="true"
         android:clickable="true">
 
-        <com.google.android.material.appbar.AppBarLayout
+        <androidx.appcompat.widget.Toolbar
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/article_toolbar"
+            style="@style/Toolbar"
+            app:title="@string/my_favorite"
+            app:subtitleTextColor="@color/white"
+            app:titleTextAppearance="@style/Toolbar.TitleText"
+            app:titleTextColor="@color/white"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_margin="@dimen/dp_5"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:visibility="visible"
+            android:padding="@dimen/dp_5"
+            app:layout_constraintTop_toBottomOf="@id/article_toolbar"
+            app:layout_constraintBottom_toBottomOf="@id/bottom_line"
+            />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/bottom_line"
+            android:layout_width="@dimen/dp_0"
             android:layout_height="match_parent"
-            android:background="@color/white"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            app:elevation="@dimen/dp_5">
-
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/article_toolbar"
-                style="@style/Toolbar"
-                app:title="@string/my_favorite"
-                app:subtitleTextColor="@color/white"
-                app:titleTextAppearance="@style/Toolbar.TitleText"
-                app:titleTextColor="@color/white" />
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="visible"/>
-
-        </com.google.android.material.appbar.AppBarLayout>
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.92" />
 
         <com.airbnb.lottie.LottieAnimationView
             android:layout_gravity="center"
-            android:id="@+id/loading"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="@dimen/dp_40"
             android:scaleType="fitCenter"
-            android:visibility="@{viewModel.isLoading? View.VISIBLE:View.GONE, default = gone}"
-            app:lottie_rawRes="@raw/search_file_2"
+            android:visibility="visible"
+            app:lottie_rawRes="@raw/shark"
             app:lottie_loop="true"
-            app:lottie_autoPlay="true"/>
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+            app:lottie_autoPlay="true"
+            app:layout_constraintTop_toBottomOf="@id/bottom_line"
+            />
+
+        <FrameLayout
+            android:visibility="@{viewModel.isLoading? View.VISIBLE:View.GONE, default = gone}"
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/recycler_view"
+            app:layout_constraintBottom_toBottomOf="@id/recycler_view">
+            <com.airbnb.lottie.LottieAnimationView
+                android:layout_gravity="center"
+                android:id="@+id/loading"
+                android:layout_width="@dimen/dp_40"
+                android:layout_height="@dimen/dp_40"
+                android:scaleType="fitCenter"
+                android:visibility="visible"
+                app:lottie_rawRes="@raw/sync_icon"
+                app:lottie_loop="true"
+                app:lottie_autoPlay="true"/>
+        </FrameLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

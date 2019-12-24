@@ -1,15 +1,12 @@
 package top.easelink.lcg.ui.main.article.view
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.fragment_article.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -57,10 +54,9 @@ class ArticleFragment : BaseFragment<FragmentArticleBinding, ArticleViewModel>()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUp()
-        setHasOptionsMenu(true)
-        (activity as AppCompatActivity?)?.setSupportActionBar(viewDataBinding.articleToolbar)
+        setupToolBar()
         viewModel.setUrl(articleUrl!!)
-        viewModel.fetchArticlePost(FETCH_POST_INIT)
+        viewModel.fetchArticlePost(FETCH_POST_INIT){}
     }
 
     override fun onDetach() {
@@ -69,11 +65,6 @@ class ArticleFragment : BaseFragment<FragmentArticleBinding, ArticleViewModel>()
     }
 
     private fun setUp() {
-        viewDataBinding.comment.setOnClickListener {
-            viewModel.posts.value?.get(0)?.replyUrl?.let {
-                CommentArticleDialog.newInstance(it).show(fragmentManager)
-            }
-        }
         viewDataBinding.postRecyclerView.apply {
             val mLayoutManager = LinearLayoutManager(context).also {
                 it.orientation = RecyclerView.VERTICAL
@@ -83,53 +74,49 @@ class ArticleFragment : BaseFragment<FragmentArticleBinding, ArticleViewModel>()
             adapter = ArticleAdapter(viewModel)
 
             viewModel.posts.observe(this@ArticleFragment, androidx.lifecycle.Observer{
+                val url = it[0].replyUrl
+                if (it.size > 0 && url != null) {
+                    comment.apply {
+                        visibility = View.VISIBLE
+                    }.setOnClickListener {
+                        CommentArticleDialog.newInstance(url).show(fragmentManager)
+                    }
+                } else {
+                    comment.visibility = View.GONE
+                }
                 (adapter as? ArticleAdapter)?.run {
                     clearItems()
                     addItems(it)
                 }
             })
-            addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrollStateChanged(
-                    recyclerView: RecyclerView,
-                    newState: Int
-                ) {
-                    viewDataBinding.comment.run {
-                        if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                            visibility = View.VISIBLE
-                        } else if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
-                            visibility = View.GONE
+        }
+    }
+
+    private fun setupToolBar() {
+        article_toolbar.apply {
+            inflateMenu(R.menu.article)
+            setOnMenuItemClickListener {
+                when (it.itemId) {
+                    R.id.action_open_in_webview -> WebViewActivity.startWebViewWith(
+                        WebsiteConstant.SERVER_BASE_URL + articleUrl,
+                        context
+                    )
+                    R.id.action_extract_urls -> {
+                        val linkList: ArrayList<String>? = viewModel.extractDownloadUrl()
+                        if (linkList != null && linkList.isNotEmpty()) {
+                            newInstance(linkList).show(fragmentManager)
+                        } else {
+                            showMessage(R.string.download_link_not_found)
                         }
                     }
+                    R.id.action_add_to_my_favorite -> viewModel.addToFavorite()
+                    else -> {
+                    }
                 }
-            })
-        }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        menu.clear()
-        inflater.inflate(R.menu.article, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.action_open_in_webview -> WebViewActivity.startWebViewWith(
-                WebsiteConstant.SERVER_BASE_URL + articleUrl,
-                context
-            )
-            R.id.action_extract_urls -> {
-                val linkList: ArrayList<String>? = viewModel.extractDownloadUrl()
-                if (linkList != null && linkList.isNotEmpty()) {
-                    newInstance(linkList).show(fragmentManager)
-                } else {
-                    showMessage(R.string.download_link_not_found)
-                }
-            }
-            R.id.action_add_to_my_favorite -> viewModel.addToFavorite()
-            else -> {
+                return@setOnMenuItemClickListener true
             }
         }
-        return super.onOptionsItemSelected(item)
+
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
