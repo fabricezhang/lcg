@@ -1,10 +1,11 @@
 # LCG
 第三方自制吾爱破解论坛APP
 UI参照知乎和虎扑App, 架构参考Google官方MVVM代码结构.
-论坛讨论贴: https://www.52pojie.cn/forum.php?mod=viewthread&tid=990363
 
+论坛讨论贴: https://www.52pojie.cn/thread-1073834-1-1.html
 
 APK下载 蓝奏云
+ - [V1.6.4](https://www.lanzous.com/i88wy1i)
  - [V1.6.2](https://www.lanzous.com/i80uh1g)
  - [V1.5.0](https://www.lanzous.com/i6wmceb)
  - [V1.4.0](https://www.lanzous.com/i6tersj)
