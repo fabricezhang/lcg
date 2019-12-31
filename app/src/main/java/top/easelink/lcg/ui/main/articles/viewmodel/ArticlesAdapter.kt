@@ -109,7 +109,7 @@ class ArticlesAdapter(
         BaseViewHolder(view) {
         override fun onBind(position: Int) {
             val article = mArticleList[position]
-            view.findViewById<View>(R.id.article_container).apply {
+            view.findViewById<View>(R.id.layout).apply {
                 setOnLongClickListener {
                     fragmentManager?.get()?.let {
                         PostPreviewDialog.newInstance(mArticleList[position].url)

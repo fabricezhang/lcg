@@ -38,7 +38,6 @@ import top.easelink.lcg.LCGApp;
 import top.easelink.lcg.R;
 import top.easelink.lcg.service.web.HookInterface;
 import top.easelink.lcg.ui.main.view.MainActivity;
-import top.easelink.lcg.utils.WebsiteConstant;
 
 import static top.easelink.lcg.ui.webview.WebViewConstantsKt.FORCE_ENABLE_JS_KEY;
 import static top.easelink.lcg.ui.webview.WebViewConstantsKt.OPEN_LOGIN_PAGE;
