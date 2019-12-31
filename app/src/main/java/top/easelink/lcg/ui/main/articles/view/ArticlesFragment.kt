@@ -39,7 +39,6 @@ class ArticlesFragment : BaseFragment<FragmentArticlesBinding, ArticlesViewModel
             if (pos != null && pos > 30) {
                 it.scrollToPosition(30)
                 it.smoothScrollToPosition(0)
-
             } else {
                 it.smoothScrollToPosition(0)
             }

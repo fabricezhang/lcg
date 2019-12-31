@@ -1,7 +1,6 @@
 package top.easelink.lcg.ui.main.articles.view
 
 import android.os.Bundle
-import android.view.MenuItem
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
