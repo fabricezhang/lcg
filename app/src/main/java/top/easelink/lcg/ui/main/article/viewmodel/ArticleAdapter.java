@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -122,6 +123,17 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         public void onBind(int position) {
             post = mPostList.get(position);
             try {
+                if (post.getAuthor().equals(UserData.INSTANCE.getUsername())) {
+                    mBinding.postCard.setStrokeColor(
+                            ContextCompat.getColor(
+                                    mBinding.postCard.getContext(),
+                                    R.color.pojie_logo
+                            ));
+                    mBinding.postCard.setStrokeWidth(
+                            (int)ScreenUtilsKt.dp2px(mBinding.postCard.getContext(), 1f));
+                } else  {
+                    mBinding.postCard.setStrokeWidth(0);
+                }
                 mBinding.authorTextView.setText(post.getAuthor());
                 mBinding.dateTextView.setText(post.getDate());
                 Glide.with(mBinding.postAvatar)
