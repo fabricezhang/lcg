@@ -25,7 +25,7 @@ object FavoriteDataSource {
             return getElementById("favorite_ul")
                 .children()
                 .map {
-                    //                    val delUrl = it.selectFirst("a.y").attr("href")
+                    val delUrl = it.selectFirst("a.y").attr("href")
                     val dateAdded = it.selectFirst("span.xg1").text()
                     it.getElementsByAttribute("target").first().let { target ->
                         val title = target.text()
@@ -35,7 +35,8 @@ object FavoriteDataSource {
                             author = "",
                             url = articleUrl,
                             content = "",
-                            timestamp = toTimeStamp(dateAdded)
+                            timestamp = toTimeStamp(dateAdded),
+                            delUrl = delUrl
                         )
                     }
                 }

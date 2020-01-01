@@ -14,6 +14,7 @@ class ArticleEntity(
     @field:ColumnInfo(name = "title") var title: String,
     @field:ColumnInfo(name = "author") var author: String,
     @field:ColumnInfo(name = "url") var url: String,
+    @field:ColumnInfo(name = "del_url") var delUrl: String = "",
     content: String,
     timestamp: Long
 ) {
