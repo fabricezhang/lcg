@@ -10,7 +10,14 @@ import top.easelink.lcg.utils.toTimeStamp
 object FavoriteDataSource {
     @WorkerThread
     fun getAllRemoteFavorites(): List<ArticleEntity> {
-        return parseFavorites(Client.sendRequestWithQuery(GET_FAVORITE_QUERY))
+        val favorites = mutableListOf<ArticleEntity>()
+        var nextPageUrl: String? = GET_FAVORITE_QUERY
+        while (nextPageUrl != null) {
+            val doc = Client.sendRequestWithQuery(nextPageUrl)
+            favorites.addAll(parseFavorites(doc))
+            nextPageUrl = doc.selectFirst("a.nxt")?.attr("href")
+        }
+        return favorites
     }
 
     private fun parseFavorites(doc: Document): List<ArticleEntity> {
@@ -18,7 +25,7 @@ object FavoriteDataSource {
             return getElementById("favorite_ul")
                 .children()
                 .map {
-//                    val delUrl = it.selectFirst("a.y").attr("href")
+                    //                    val delUrl = it.selectFirst("a.y").attr("href")
                     val dateAdded = it.selectFirst("span.xg1").text()
                     it.getElementsByAttribute("target").first().let { target ->
                         val title = target.text()
@@ -33,5 +40,6 @@ object FavoriteDataSource {
                     }
                 }
         }
+
     }
 }
