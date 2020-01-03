@@ -166,6 +166,8 @@ public class MainActivity
                 view.setSelectedItemId(R.id.action_message);
             } else if (topFragment.equals(ForumNavigationFragment.class.getSimpleName())) {
                 view.setSelectedItemId(R.id.action_forum_navigation);
+            } else if (topFragment.equals(MeFragment.class.getSimpleName())) {
+                view.setSelectedItemId(R.id.action_about_me);
             }
         } catch (EmptyStackException ese) {
             view.setSelectedItemId(R.id.action_home);
