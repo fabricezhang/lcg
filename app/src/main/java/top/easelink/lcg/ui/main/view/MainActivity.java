@@ -340,6 +340,12 @@ public class MainActivity
                 showFragment(MeFragment.newInstance());
                 break;
             case R.id.action_home:
+                // remove all fragments unless it's the ArticlesFragment
+                while (!mFragmentTags.isEmpty()
+                        && !mFragmentTags.peek().equals(TAG_PREFIX + ArticlesFragment.class.getSimpleName())) {
+                    onFragmentDetached(mFragmentTags.pop());
+                }
+                break;
             default:
                 break;
         }
