@@ -20,6 +20,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
@@ -277,6 +278,23 @@ public class MainActivity
         }
     }
 
+    public boolean onFragmentDetached(@NotNull List<String> tags) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        List<Fragment> fragments = new ArrayList<>(tags.size());
+        for (String tag: tags) {
+            fragments.add(fragmentManager.findFragmentByTag(tag.replace(TAG_PREFIX, "")));
+        }
+        if (!fragments.isEmpty()) {
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            for (Fragment fragment: fragments) {
+                transaction.remove(fragment);
+            }
+            transaction.commitNow();
+            return true;
+        }
+        return false;
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         menu.clear();
@@ -341,10 +359,12 @@ public class MainActivity
                 break;
             case R.id.action_home:
                 // remove all fragments unless it's the ArticlesFragment
+                List<String> tags = new ArrayList<>();
                 while (!mFragmentTags.isEmpty()
                         && !mFragmentTags.peek().equals(TAG_PREFIX + ArticlesFragment.class.getSimpleName())) {
-                    onFragmentDetached(mFragmentTags.pop());
+                    tags.add(mFragmentTags.pop());
                 }
+                onFragmentDetached(tags);
                 break;
             default:
                 break;
