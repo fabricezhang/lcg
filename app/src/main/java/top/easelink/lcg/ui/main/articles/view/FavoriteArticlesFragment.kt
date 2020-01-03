@@ -73,11 +73,4 @@ class FavoriteArticlesFragment : BaseFragment<FragmentFavoriteArticlesBinding, F
         }
 
     }
-
-    companion object {
-        @JvmStatic
-        fun newInstance(): FavoriteArticlesFragment {
-            return FavoriteArticlesFragment()
-        }
-    }
 }

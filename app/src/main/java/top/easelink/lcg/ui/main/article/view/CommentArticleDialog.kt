@@ -4,14 +4,13 @@ import android.os.Bundle
 import android.view.*
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import top.easelink.framework.base.BaseDialog
+import top.easelink.framework.topbase.ControllableFragment.TAG_PREFIX
 import top.easelink.lcg.R
 import top.easelink.lcg.ui.main.article.viewmodel.ReplyPostViewModel
-import top.easelink.lcg.utils.TAG_PREFIX
 
 class CommentArticleDialog : BaseDialog() {
 

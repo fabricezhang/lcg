@@ -37,15 +37,9 @@ import java.util.EmptyStackException;
 import java.util.List;
 import java.util.Properties;
 
-import javax.inject.Inject;
-
 import dagger.android.AndroidInjection;
-import dagger.android.AndroidInjector;
-import dagger.android.DispatchingAndroidInjector;
-import dagger.android.support.HasSupportFragmentInjector;
 import pub.devrel.easypermissions.EasyPermissions;
 import top.easelink.framework.base.BaseActivity;
-import top.easelink.framework.base.BaseFragment;
 import top.easelink.lcg.BR;
 import top.easelink.lcg.R;
 import top.easelink.lcg.databinding.ActivityMainBinding;
@@ -54,10 +48,10 @@ import top.easelink.lcg.mta.EventHelperKt;
 import top.easelink.lcg.ui.main.about.view.AboutFragment;
 import top.easelink.lcg.ui.main.article.view.ArticleFragment;
 import top.easelink.lcg.ui.main.articles.view.ArticlesFragment;
-import top.easelink.lcg.ui.main.articles.view.FavoriteArticlesFragment;
 import top.easelink.lcg.ui.main.articles.view.ForumArticlesFragment;
 import top.easelink.lcg.ui.main.forumnav.view.ForumNavigationFragment;
 import top.easelink.lcg.ui.main.me.view.MeFragment;
+import top.easelink.lcg.ui.main.message.view.MessageFragment;
 import top.easelink.lcg.ui.main.model.NewMessageEvent;
 import top.easelink.lcg.ui.main.model.NotificationInfo;
 import top.easelink.lcg.ui.main.model.OpenArticleEvent;
@@ -68,21 +62,17 @@ import top.easelink.lcg.ui.search.view.SearchActivity;
 import top.easelink.lcg.utils.ActivityUtilsKt;
 import top.easelink.lcg.utils.ToastUtilsKt;
 
+import static top.easelink.framework.topbase.ControllableFragment.TAG_PREFIX;
 import static top.easelink.lcg.mta.MTAConstantKt.EVENT_OPEN_FORUM;
 import static top.easelink.lcg.mta.MTAConstantKt.PROP_FORUM_NAME;
-import static top.easelink.lcg.utils.ActivityUtilsKt.TAG_PREFIX;
 import static top.easelink.lcg.utils.WebsiteConstant.APP_RELEASE_PAGE;
 import static top.easelink.lcg.utils.WebsiteConstant.SEARCH_URL;
 import static top.easelink.lcg.utils.WebsiteConstant.URL_KEY;
 
 public class MainActivity
         extends BaseActivity<ActivityMainBinding, MainViewModel>
-        implements HasSupportFragmentInjector,
-        BottomNavigationView.OnNavigationItemSelectedListener,
-        EasyPermissions.PermissionCallbacks {
+        implements BottomNavigationView.OnNavigationItemSelectedListener, EasyPermissions.PermissionCallbacks {
 
-    @Inject
-    DispatchingAndroidInjector<Fragment> fragmentDispatchingAndroidInjector;
     private static WeakReference<MainActivity> mainActivityWeakReference;
     private DrawerLayout mDrawer;
     private Long lastBackPressed = 0L;
@@ -114,23 +104,20 @@ public class MainActivity
                 // check viewpager
                 ViewPager viewPager = getViewDataBinding().mainViewPager;
                 if (viewPager.isShown() && viewPager.getCurrentItem() != 0) {
-                    viewPager.setCurrentItem(0, true);
+                    viewPager.setCurrentItem(viewPager.getCurrentItem() -1, true);
                     return;
                 }
             }
         }
         if (System.currentTimeMillis() - lastBackPressed > 2000) {
+            // ##WorkAround: Empty stacks as it should be empty since we gonna exit the app
+            mFragmentTags.empty();
             Toast.makeText(this, R.string.app_exit_tip, Toast.LENGTH_SHORT).show();
             lastBackPressed = System.currentTimeMillis();
         } else {
             finish();
             System.exit(0);
         }
-    }
-
-    @Override
-    public AndroidInjector<Fragment> supportFragmentInjector() {
-        return fragmentDispatchingAndroidInjector;
     }
 
     @Override
@@ -170,19 +157,19 @@ public class MainActivity
     private void syncBottomViewNavItemState() {
         BottomNavigationView view = getViewDataBinding().bottomNavigation;
         try {
-            String topFragment = mFragmentTags.peek();
             view.setOnNavigationItemSelectedListener(null);
-            if (topFragment.startsWith("android")) {
-                // means that current top fragment is the tab-layout
+            String topFragment = mFragmentTags.peek().replace(TAG_PREFIX, "");
+            if (topFragment.equals(ArticlesFragment.class.getSimpleName())) {
                 view.setSelectedItemId(R.id.action_home);
                 unlockDrawer();
-            } else if (topFragment.endsWith(FavoriteArticlesFragment.class.getSimpleName())) {
-                view.setSelectedItemId(R.id.action_favorite);
-            } else if (topFragment.endsWith(ForumNavigationFragment.class.getSimpleName())) {
+            } else if (topFragment.equals(MessageFragment.class.getSimpleName())) {
+                view.setSelectedItemId(R.id.action_message);
+            } else if (topFragment.equals(ForumNavigationFragment.class.getSimpleName())) {
                 view.setSelectedItemId(R.id.action_forum_navigation);
             }
         } catch (EmptyStackException ese) {
             view.setSelectedItemId(R.id.action_home);
+            unlockDrawer();
         } finally {
             view.setOnNavigationItemSelectedListener(this);
         }
@@ -273,15 +260,15 @@ public class MainActivity
         }
     }
 
-    private void showFragment(BaseFragment fragment) {
+    private void showFragment(Fragment fragment) {
         ActivityUtilsKt.addFragmentInActivity(getSupportFragmentManager(),
                 fragment,
                 R.id.clRootView);
     }
 
     @Override
-    public boolean onFragmentDetached(String tag) {
-        if (tag != null && tag.startsWith(TAG_PREFIX)) {
+    public boolean onFragmentDetached(@NotNull String tag) {
+        if (tag.startsWith(TAG_PREFIX)) {
             return super.onFragmentDetached(tag);
         } else {
             return false;
@@ -340,13 +327,9 @@ public class MainActivity
         if (getViewDataBinding().bottomNavigation.getSelectedItemId() == menuItem.getItemId()) {
             return false;
         }
-        while (!mFragmentTags.isEmpty()
-                && mFragmentTags.peek().startsWith(TAG_PREFIX)) {
-            onFragmentDetached(mFragmentTags.pop());
-        }
         switch (menuItem.getItemId()) {
-            case R.id.action_favorite:
-                showFragment(FavoriteArticlesFragment.newInstance());
+            case R.id.action_message:
+                showFragment(new MessageFragment());
                 break;
             case R.id.action_forum_navigation:
                 showFragment(ForumNavigationFragment.newInstance());
@@ -406,7 +389,7 @@ public class MainActivity
         @Override
         @NonNull
         public Fragment getItem(int position) {
-            return ArticlesFragment.newInstance(tabModels.get(position).getUrl());
+            return ArticlesFragment.newInstance(tabModels.get(position).getUrl(), true);
         }
 
         @Override

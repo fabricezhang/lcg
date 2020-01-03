@@ -18,14 +18,19 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModel;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Stack;
 
 import dagger.android.AndroidInjection;
+import top.easelink.framework.topbase.TopFragment;
 import top.easelink.framework.utils.CommonUtils;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
+import static top.easelink.framework.topbase.ControllableFragment.TAG_PREFIX;
+
 public abstract class BaseActivity<T extends ViewDataBinding, V extends ViewModel> extends AppCompatActivity
-        implements BaseFragment.Callback {
+        implements TopFragment.Callback {
 
     private ProgressDialog mProgressDialog;
     private T mViewDataBinding;
@@ -55,15 +60,16 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends ViewMode
     public abstract V getViewModel();
 
     @Override
-    public void onFragmentAttached(String tag) {
+    public void onFragmentAttached(@NotNull String tag) {
         mFragmentTags.push(tag);
     }
 
     @Override
-    public boolean onFragmentDetached(String tag) {
+    public boolean onFragmentDetached(@NotNull String tag) {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        Fragment fragment = fragmentManager.findFragmentByTag(tag);
+        Fragment fragment = fragmentManager.findFragmentByTag(tag.replace(TAG_PREFIX, ""));
         if (fragment != null) {
+            fragmentManager.executePendingTransactions();
             fragmentManager
                     .beginTransaction()
 //                    .setCustomAnimations(R.anim.slide_left, R.anim.slide_right)

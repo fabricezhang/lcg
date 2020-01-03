@@ -7,16 +7,13 @@ import java.util.*
 
 abstract class TopActivity : AppCompatActivity(), TopFragment.Callback {
 
-    private var mFragmentTags = Stack<String>()
+    private val mFragmentTags = Stack<String>()
 
     override fun onFragmentAttached(tag: String) {
         mFragmentTags.push(tag)
     }
 
     override fun onFragmentDetached(tag: String): Boolean {
-        repeat(mFragmentTags.search(tag)) {
-            mFragmentTags.pop()
-        }
         supportFragmentManager.findFragmentByTag(tag)?.let {
             supportFragmentManager
                 .beginTransaction()
@@ -27,7 +24,7 @@ abstract class TopActivity : AppCompatActivity(), TopFragment.Callback {
         return false
     }
 
-    override fun attachBaseContext(newBase: Context) {
+    override fun attachBaseContext(newBase: Context?) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase))
     }
 }

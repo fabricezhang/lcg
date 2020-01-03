@@ -2,22 +2,19 @@ package top.easelink.framework.topbase
 
 import android.content.Context
 import androidx.fragment.app.Fragment
+import top.easelink.framework.topbase.ControllableFragment.TAG_PREFIX
 
 abstract class TopFragment : Fragment() {
 
-    var topActivity: TopActivity? = null
+    lateinit var mContext: Context
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is TopActivity) {
-            topActivity = context
-            context.onFragmentAttached(tag?:this::class.java.simpleName)
+        mContext = context.also {
+            if (this is ControllableFragment && this.isControllable) {
+                (it as? Callback)?.onFragmentAttached(TAG_PREFIX + this.javaClass.simpleName)
+            }
         }
-    }
-
-    override fun onDetach() {
-        topActivity = null
-        super.onDetach()
     }
 
     interface Callback {

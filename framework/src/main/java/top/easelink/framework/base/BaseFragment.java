@@ -14,7 +14,9 @@ import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModel;
 
-public abstract class BaseFragment<T extends ViewDataBinding, V extends ViewModel> extends Fragment {
+import top.easelink.framework.topbase.ControllableFragment;
+
+public abstract class BaseFragment<T extends ViewDataBinding, V extends ViewModel> extends Fragment implements ControllableFragment {
 
     private BaseActivity mActivity;
     private View mRootView;
@@ -48,7 +50,9 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends ViewMode
         if (context instanceof BaseActivity) {
             BaseActivity activity = (BaseActivity) context;
             this.mActivity = activity;
-            activity.onFragmentAttached(getTag());
+            if (this.isControllable()) {
+                activity.onFragmentAttached(TAG_PREFIX + this.getClass().getSimpleName());
+            }
         }
     }
 
@@ -93,12 +97,5 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends ViewMode
         if (mActivity != null) {
             mActivity.hideKeyboard();
         }
-    }
-
-    public interface Callback {
-
-        void onFragmentAttached(String tag);
-
-        boolean onFragmentDetached(String tag);
     }
 }

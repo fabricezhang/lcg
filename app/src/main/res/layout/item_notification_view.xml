@@ -25,8 +25,8 @@
 
     <ImageView
         android:id="@+id/notification_avatar"
-        android:layout_width="@dimen/dp_40"
-        android:layout_height="@dimen/dp_40"
+        android:layout_width="@dimen/dp_32"
+        android:layout_height="@dimen/dp_32"
         android:layout_marginTop="@dimen/dp_6"
         android:layout_marginStart="@dimen/dp_4"
         android:clickable="false"
@@ -45,7 +45,7 @@
         android:clickable="false"
         android:longClickable="false"
         android:textColor="@color/semi_gray"
-        android:layout_marginStart="@dimen/dp_20"
+        android:layout_marginStart="@dimen/dp_12"
         app:layout_constraintStart_toEndOf="@id/notification_avatar"
         app:layout_constraintTop_toTopOf="@id/notification_avatar"
         tools:text="2019-11-13 22:08"/>

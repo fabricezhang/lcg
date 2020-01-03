@@ -6,8 +6,8 @@ import androidx.fragment.app.DialogFragment
 import com.bumptech.glide.Glide
 import timber.log.Timber
 import top.easelink.framework.base.SafeShowDialogFragment
+import top.easelink.framework.topbase.ControllableFragment.TAG_PREFIX
 import top.easelink.lcg.R
-import top.easelink.lcg.utils.TAG_PREFIX
 
 class ScreenCaptureDialog : SafeShowDialogFragment() {
 

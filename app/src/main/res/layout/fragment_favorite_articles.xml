@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/article_toolbar"
             style="@style/Toolbar"
-            app:title="@string/my_favorite"
+            app:title="@string/ic_favorite"
             app:subtitleTextColor="@color/white"
             app:titleTextAppearance="@style/Toolbar.TitleText"
             app:titleTextColor="@color/white"

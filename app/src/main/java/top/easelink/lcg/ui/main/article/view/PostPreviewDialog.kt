@@ -12,11 +12,11 @@ import kotlinx.android.synthetic.main.dialog_post_preview.*
 import timber.log.Timber
 import top.easelink.framework.base.SafeShowDialogFragment
 import top.easelink.framework.customview.htmltextview.HtmlGlideImageGetter
+import top.easelink.framework.topbase.ControllableFragment.TAG_PREFIX
 import top.easelink.framework.utils.dpToPx
 import top.easelink.lcg.LCGApp
 import top.easelink.lcg.R
 import top.easelink.lcg.ui.main.article.viewmodel.PostPreviewViewModel
-import top.easelink.lcg.utils.TAG_PREFIX
 
 class PostPreviewDialog : SafeShowDialogFragment() {
 

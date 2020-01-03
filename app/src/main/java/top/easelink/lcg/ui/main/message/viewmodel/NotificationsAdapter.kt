@@ -1,4 +1,4 @@
-package top.easelink.lcg.ui.main.me.viewmodel
+package top.easelink.lcg.ui.main.message.viewmodel
 
 import android.view.LayoutInflater
 import android.view.View

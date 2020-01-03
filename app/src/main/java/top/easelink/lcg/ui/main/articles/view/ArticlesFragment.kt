@@ -20,6 +20,12 @@ import top.easelink.lcg.ui.main.articles.viewmodel.ArticlesViewModel
 
 class ArticlesFragment : BaseFragment<FragmentArticlesBinding, ArticlesViewModel>() {
 
+    var controllableFlag: Boolean = true
+
+    override fun isControllable(): Boolean {
+        return controllableFlag
+    }
+
     override fun getBindingVariable(): Int {
         return BR.viewModel
     }
@@ -122,11 +128,12 @@ class ArticlesFragment : BaseFragment<FragmentArticlesBinding, ArticlesViewModel
     companion object {
         private const val ARG_PARAM = "param"
         @JvmStatic
-        fun newInstance(param: String): ArticlesFragment {
+        fun newInstance(param: String, isControllable: Boolean = true): ArticlesFragment {
             return ArticlesFragment().apply {
                 arguments = Bundle().also {
                     it.putString(ARG_PARAM, param)
                 }
+                controllableFlag = isControllable
             }
         }
     }

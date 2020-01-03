@@ -19,7 +19,7 @@
 
     <!--Toolbar menus-->
     <string name="about_me">我的</string>
-    <string name="my_favorite">收藏</string>
+    <string name="message">消息</string>
     <string name="forum_page">专区</string>
     <string name="home_page">首页</string>
 
@@ -55,6 +55,7 @@
 
     <string name="ic_notifications">消息提醒</string>
     <string name="ic_feedback">问题反馈</string>
+    <string name="ic_favorite">我的收藏</string>
     <string name="ic_my_articles">我的帖子</string>
 
     <!--Login Dialog-->
@@ -93,6 +94,10 @@
     <string name="load_more">加载更多</string>
     <string name="no_more_content">没有更多了</string>
     <string name="tap_for_code">『点击显示代码』</string>
+
+    <!--message fragment-->
+    <string name="tab_title_private_message">私信</string>
+    <string name="tab_title_notification">通知</string>
 
     <!--download link dialog-->
     <string name="download_title">下载链接</string>
