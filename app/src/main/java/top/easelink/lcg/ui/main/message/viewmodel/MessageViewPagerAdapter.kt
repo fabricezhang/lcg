@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentPagerAdapter
 import top.easelink.lcg.R
 import top.easelink.lcg.ui.main.message.model.MessageTabModel
 import top.easelink.lcg.ui.main.message.view.NotificationFragment
+import top.easelink.lcg.ui.main.message.view.ConversationListFragment
 
 class MessageViewPagerAdapter internal constructor(
     fm: FragmentManager,
@@ -19,7 +20,10 @@ class MessageViewPagerAdapter internal constructor(
     )
 
     override fun getItem(position: Int): Fragment {
-        return NotificationFragment()
+        return when (position) {
+            0 -> ConversationListFragment()
+            else -> NotificationFragment()
+        }
     }
 
     override fun getCount(): Int {

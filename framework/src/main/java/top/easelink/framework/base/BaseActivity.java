@@ -22,7 +22,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Stack;
 
-import dagger.android.AndroidInjection;
 import top.easelink.framework.topbase.TopFragment;
 import top.easelink.framework.utils.CommonUtils;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -69,7 +68,6 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends ViewMode
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment fragment = fragmentManager.findFragmentByTag(tag.replace(TAG_PREFIX, ""));
         if (fragment != null) {
-            fragmentManager.executePendingTransactions();
             fragmentManager
                     .beginTransaction()
 //                    .setCustomAnimations(R.anim.slide_left, R.anim.slide_right)

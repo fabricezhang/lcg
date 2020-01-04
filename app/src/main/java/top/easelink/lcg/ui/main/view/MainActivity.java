@@ -282,7 +282,10 @@ public class MainActivity
         FragmentManager fragmentManager = getSupportFragmentManager();
         List<Fragment> fragments = new ArrayList<>(tags.size());
         for (String tag: tags) {
-            fragments.add(fragmentManager.findFragmentByTag(tag.replace(TAG_PREFIX, "")));
+            Fragment fragment = fragmentManager.findFragmentByTag(tag.replace(TAG_PREFIX, ""));
+            if (fragment != null) {
+                fragments.add(fragment);
+            }
         }
         if (!fragments.isEmpty()) {
             FragmentTransaction transaction = fragmentManager.beginTransaction();
