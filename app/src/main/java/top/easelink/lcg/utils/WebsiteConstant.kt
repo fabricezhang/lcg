@@ -39,6 +39,9 @@ object WebsiteConstant {
     const val NOTIFICATION_HOME_URL = "home.php?mod=space&do=notice"
     const val SYSTEM_NOTIFICATION_URL = "home.php?mod=space&do=notice&view=system"
     const val MYPOST_NOTIFICATION_URL = "home.php?mod=space&do=notice&view=mypost"
+
+    // private message
+    const val PRIVATE_MESSAGE_URL = "home.php?mod=space&do=pm"
     // im
     const val IM_HOME_URL = "home.php?mod=space&do=pm"
 

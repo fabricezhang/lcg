@@ -36,6 +36,7 @@ class ConversationListFragment: TopFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpRV()
+        mConversationVM.fetchConversations()
     }
 
     private fun setUpRV(){

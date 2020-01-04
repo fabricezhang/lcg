@@ -110,9 +110,13 @@ public class MainActivity
                 }
             }
         }
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        int count = fragmentManager.getBackStackEntryCount();
+        for (int i = 0; i < count; ++i) {
+            fragmentManager.popBackStack();
+        }
         if (System.currentTimeMillis() - lastBackPressed > 2000) {
             // ##WorkAround: Empty stacks as it should be empty since we gonna exit the app
-            mFragmentTags.empty();
             Toast.makeText(this, R.string.app_exit_tip, Toast.LENGTH_SHORT).show();
             lastBackPressed = System.currentTimeMillis();
         } else {

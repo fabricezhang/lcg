@@ -4,39 +4,46 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/notification_container"
+    android:id="@+id/conversation_list_container"
     android:minHeight="@dimen/dp_50"
     android:clickable="true"
     android:focusable="true"
+    android:paddingTop="@dimen/dp_10"
+    android:paddingStart="@dimen/dp_10"
+    android:paddingEnd="@dimen/dp_10"
     android:descendantFocusability="blocksDescendants"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-
-    <View
-        android:id="@+id/line"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/dp_1"
-        android:backgroundTint="@color/slight_light_gray"
-        android:background="@drawable/rectangle_bg"
-        app:layout_constraintWidth_percent="0.98"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <ImageView
-        android:id="@+id/notification_avatar"
-        android:layout_width="@dimen/dp_32"
-        android:layout_height="@dimen/dp_32"
+        android:id="@+id/conversation_user_avatar"
+        android:layout_width="@dimen/dp_48"
+        android:layout_height="@dimen/dp_48"
         android:layout_marginTop="@dimen/dp_6"
         android:layout_marginStart="@dimen/dp_4"
         android:clickable="false"
         android:longClickable="false"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/line"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintVertical_bias="0"
         tools:ignore="ContentDescription" />
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/username"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:lines="1"
+            android:textSize="@dimen/sp_14"
+            android:clickable="false"
+            android:longClickable="false"
+            android:textColor="@color/black_effective"
+            android:layout_marginStart="@dimen/dp_12"
+            app:layout_constraintStart_toEndOf="@id/conversation_user_avatar"
+            app:layout_constraintTop_toTopOf="@id/conversation_user_avatar"
+            app:layout_constraintVertical_chainStyle="spread_inside"
+            app:layout_constraintBottom_toTopOf="@id/last_message"
+            tools:text="Fabrice"/>
+
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/date_time"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -45,28 +52,40 @@
         android:clickable="false"
         android:longClickable="false"
         android:textColor="@color/semi_gray"
-        android:layout_marginStart="@dimen/dp_12"
-        app:layout_constraintStart_toEndOf="@id/notification_avatar"
-        app:layout_constraintTop_toTopOf="@id/notification_avatar"
+        app:layout_constraintEnd_toEndOf="@id/last_message"
+        app:layout_constraintTop_toTopOf="@id/conversation_user_avatar"
         tools:text="2019-11-13 22:08"/>
 
-    <top.easelink.framework.customview.htmltextview.HtmlTextView
-        android:id="@+id/notification_title"
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/last_message"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textColor="@color/black_effective"
+        android:textColor="@color/semi_gray"
         android:textSize="@dimen/sp_12"
         android:clickable="false"
         android:longClickable="false"
         android:textIsSelectable="false"
         android:layout_marginBottom="@dimen/dp_6"
         android:layout_marginEnd="@dimen/dp_4"
-        app:layout_constraintStart_toStartOf="@id/date_time"
-        app:layout_constraintTop_toBottomOf="@id/date_time"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:ellipsize="end"
+        android:lines="1"
+        app:layout_constraintStart_toStartOf="@id/username"
+        app:layout_constraintTop_toBottomOf="@id/username"
+        app:layout_constraintBottom_toBottomOf="@id/conversation_user_avatar"
         app:layout_constraintEnd_toEndOf="parent"
         tools:text="您在主题 开源吾爱破解论坛App Android 1.5版本 的帖子被 评分 吾爱币 +1 CB / 热心值 +1 点"/>
 
-
+    <View
+            android:id="@+id/line"
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_1"
+            android:backgroundTint="@color/slight_light_gray"
+            android:background="@drawable/rectangle_bg"
+            app:layout_constraintWidth_percent="0.8"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/conversation_user_avatar"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

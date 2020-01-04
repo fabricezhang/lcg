@@ -4,9 +4,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import kotlinx.android.synthetic.main.item_conversation_view.view.*
+import kotlinx.android.synthetic.main.item_load_more_view.view.*
 import top.easelink.framework.base.BaseViewHolder
 import top.easelink.lcg.R
 import top.easelink.lcg.ui.main.model.Conversation
+import top.easelink.lcg.ui.webview.view.WebViewActivity
+import top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL
 
 
 class ConversationListAdapter(
@@ -19,7 +24,8 @@ class ConversationListAdapter(
         return if (mConversations.isEmpty()) {
             1
         } else {
-            mConversations.size + 1
+            // todo add load more in the future
+            mConversations.size
         }
     }
 
@@ -76,7 +82,20 @@ class ConversationListAdapter(
         override fun onBind(position: Int) {
             val conversation = mConversations[position]
             view.apply {
-
+                date_time.text = conversation.lastMessageDateTime
+                conversation.avatar?.let {
+                    Glide
+                        .with(this)
+                        .load(it)
+                        .error(R.drawable.ic_noavatar_middle_gray)
+                        .into(conversation_user_avatar)
+                }
+                last_message.text = conversation.lastMessage
+                username.text = conversation.username
+                conversation_list_container.setOnClickListener {
+                    WebViewActivity.startWebViewWith(SERVER_BASE_URL + conversation.replyUrl, context)
+//                    context.startActivity(Intent(context, ConversationDetailActivity::class.java))
+                }
             }
         }
 
@@ -90,6 +109,7 @@ class ConversationListAdapter(
         BaseViewHolder(view) {
         override fun onBind(position: Int) {
             //TODO add fetch more in the future
+            view.loading.visibility = View.GONE
         }
     }
 
