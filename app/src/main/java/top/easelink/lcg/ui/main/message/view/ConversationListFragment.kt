@@ -5,18 +5,24 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.fragment_conversation_list.*
 import top.easelink.framework.topbase.TopFragment
 import top.easelink.lcg.R
+import top.easelink.lcg.ui.main.message.viewmodel.ConversationListAdapter
 import top.easelink.lcg.ui.main.message.viewmodel.ConversationListViewModel
 
 class ConversationListFragment: TopFragment() {
 
-    private lateinit var pmVM: ConversationListViewModel
+    private lateinit var mConversationVM: ConversationListViewModel
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        pmVM = ViewModelProviders.of(this).get(ConversationListViewModel::class.java)
+        mConversationVM = ViewModelProviders.of(this).get(ConversationListViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -33,6 +39,24 @@ class ConversationListFragment: TopFragment() {
     }
 
     private fun setUpRV(){
-
+        conversation_list.apply {
+            layoutManager = LinearLayoutManager(context).also {
+                it.orientation = RecyclerView.VERTICAL
+            }
+            itemAnimator = DefaultItemAnimator()
+            adapter = ConversationListAdapter(mConversationVM)
+            mConversationVM.apply {
+                conversations.observe(this@ConversationListFragment, Observer {
+                    (adapter as ConversationListAdapter).run {
+                        if (itemCount > 1) {
+                            appendItems(it)
+                        } else {
+                            clearItems()
+                            addItems(it)
+                        }
+                    }
+                })
+            }
+        }
     }
 }

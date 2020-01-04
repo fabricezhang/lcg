@@ -4,36 +4,30 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.bumptech.glide.request.RequestOptions
-import kotlinx.android.synthetic.main.item_load_more_view.view.*
-import kotlinx.android.synthetic.main.item_notification_view.view.*
 import top.easelink.framework.base.BaseViewHolder
-import top.easelink.framework.utils.dpToPx
 import top.easelink.lcg.R
-import top.easelink.lcg.ui.main.model.BaseNotification
+import top.easelink.lcg.ui.main.model.Conversation
 
 
 class ConversationListAdapter(
-    val notificationViewModel: NotificationViewModel
+    val mConversationVM: ConversationListViewModel
 ) : RecyclerView.Adapter<BaseViewHolder>() {
 
-    private val mNotifications: MutableList<BaseNotification> = mutableListOf()
+    private val mConversations: MutableList<Conversation> = mutableListOf()
 
     override fun getItemCount(): Int {
-        return if (mNotifications.isEmpty()) {
+        return if (mConversations.isEmpty()) {
             1
         } else {
-            mNotifications.size + 1
+            mConversations.size + 1
         }
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (mNotifications.isEmpty()) {
+        return if (mConversations.isEmpty()) {
             VIEW_TYPE_EMPTY
         } else {
-            if (position == mNotifications.size) {
+            if (position == mConversations.size) {
                 VIEW_TYPE_LOAD_MORE
             } else VIEW_TYPE_NORMAL
         }
@@ -48,7 +42,7 @@ class ConversationListAdapter(
             VIEW_TYPE_NORMAL -> { ArticleViewHolder(
                 LayoutInflater
                     .from(parent.context)
-                    .inflate(R.layout.item_notification_view, parent, false))
+                    .inflate(R.layout.item_conversation_view, parent, false))
             }
             VIEW_TYPE_LOAD_MORE -> LoadMoreViewHolder(
                 LayoutInflater
@@ -62,39 +56,27 @@ class ConversationListAdapter(
         }
     }
 
-    fun addItems(notifications: List<BaseNotification>) {
-        mNotifications.addAll(notifications)
+    fun addItems(conversations: List<Conversation>) {
+        mConversations.addAll(conversations)
         notifyDataSetChanged()
     }
 
-    fun appendItems(notifications: List<BaseNotification>) {
+    fun appendItems(conversations: List<Conversation>) {
         val count = itemCount
-        mNotifications.addAll(notifications)
-        notifyItemRangeInserted(count - 1, notifications.size)
+        mConversations.addAll(conversations)
+        notifyItemRangeInserted(count - 1, conversations.size)
     }
 
     fun clearItems() {
-        mNotifications.clear()
+        mConversations.clear()
     }
 
     inner class ArticleViewHolder internal constructor(private val view: View) :
         BaseViewHolder(view) {
         override fun onBind(position: Int) {
-            val notification = mNotifications[position]
+            val conversation = mConversations[position]
             view.apply {
-                line.visibility = if(position == 0) View.GONE else View.VISIBLE
-                notification_title.apply {
-                    setHtml(notification.content)
-                    linksClickable = false
-                }
-                date_time.text = notification.dateTime
-                Glide.with(notification_avatar)
-                    .load(notification.avatar)
-                    .apply(RequestOptions.bitmapTransform(
-                        RoundedCorners(8.dpToPx(view.context).toInt())
-                    ))
-                    .placeholder(R.drawable.ic_noavatar_middle_gray)
-                    .into(notification_avatar)
+
             }
         }
 
@@ -107,12 +89,7 @@ class ConversationListAdapter(
     inner class LoadMoreViewHolder internal constructor(val view: View) :
         BaseViewHolder(view) {
         override fun onBind(position: Int) {
-            view.loading.visibility = View.VISIBLE
-            notificationViewModel.fetchMoreNotifications {
-                view.post {
-                    view.loading.visibility = View.GONE
-                }
-            }
+            //TODO add fetch more in the future
         }
     }
 

@@ -6,8 +6,8 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import top.easelink.lcg.R
 import top.easelink.lcg.ui.main.message.model.MessageTabModel
-import top.easelink.lcg.ui.main.message.view.NotificationFragment
 import top.easelink.lcg.ui.main.message.view.ConversationListFragment
+import top.easelink.lcg.ui.main.message.view.NotificationFragment
 
 class MessageViewPagerAdapter internal constructor(
     fm: FragmentManager,
@@ -21,8 +21,9 @@ class MessageViewPagerAdapter internal constructor(
 
     override fun getItem(position: Int): Fragment {
         return when (position) {
-            0 -> ConversationListFragment()
-            else -> NotificationFragment()
+            0 -> NotificationFragment()
+            1 -> ConversationListFragment()
+            else -> throw IllegalStateException("can't reach here")
         }
     }
 
