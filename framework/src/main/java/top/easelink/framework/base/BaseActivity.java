@@ -26,8 +26,6 @@ import top.easelink.framework.topbase.TopFragment;
 import top.easelink.framework.utils.CommonUtils;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-import static top.easelink.framework.topbase.ControllableFragment.TAG_PREFIX;
-
 public abstract class BaseActivity<T extends ViewDataBinding, V extends ViewModel> extends AppCompatActivity
         implements TopFragment.Callback {
 
@@ -66,7 +64,7 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends ViewMode
     @Override
     public boolean onFragmentDetached(@NotNull String tag) {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        Fragment fragment = fragmentManager.findFragmentByTag(tag.replace(TAG_PREFIX, ""));
+        Fragment fragment = fragmentManager.findFragmentByTag(tag);
         if (fragment != null) {
             fragmentManager
                     .beginTransaction()

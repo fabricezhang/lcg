@@ -7,4 +7,8 @@
         android:title=""
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="ifRoom|collapseActionView" />
+    <item
+        android:id="@+id/other"
+        android:title="其他内容"
+        app:showAsAction="never" />
 </menu>

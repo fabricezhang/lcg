@@ -1,5 +1,6 @@
 package top.easelink.framework.base;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
@@ -17,15 +18,19 @@ import androidx.fragment.app.FragmentTransaction;
 
 import org.jetbrains.annotations.NotNull;
 
+import top.easelink.framework.topbase.TopActivity;
+
 public abstract class BaseDialog extends DialogFragment {
 
-    private BaseActivity mActivity;
+    private Activity mActivity;
 
     @Override
     public void onAttach(@NotNull Context context) {
         super.onAttach(context);
         if (context instanceof BaseActivity) {
             this.mActivity = (BaseActivity) context;
+        } else if (context instanceof TopActivity) {
+            this.mActivity = (TopActivity) context;
         }
     }
 
@@ -68,34 +73,11 @@ public abstract class BaseDialog extends DialogFragment {
         show(transaction, tag);
     }
 
-    public boolean onBackPressed() {
-        dismissDialog();
-        return true;
-    }
-
     protected void dismissDialog() {
         dismissAllowingStateLoss();
     }
 
-    protected BaseActivity getBaseActivity() {
+    protected Activity getBaseActivity() {
         return mActivity;
-    }
-
-    public void hideKeyboard() {
-        if (mActivity != null) {
-            mActivity.hideKeyboard();
-        }
-    }
-
-    public void hideLoading() {
-        if (mActivity != null) {
-            mActivity.hideLoading();
-        }
-    }
-
-    public void showLoading() {
-        if (mActivity != null) {
-            mActivity.showLoading();
-        }
     }
 }

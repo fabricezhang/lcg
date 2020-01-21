@@ -12,7 +12,6 @@ import android.widget.ArrayAdapter
 import androidx.fragment.app.FragmentManager
 import kotlinx.android.synthetic.main.dialog_download_link.*
 import top.easelink.framework.base.SafeShowDialogFragment
-import top.easelink.framework.topbase.ControllableFragment.TAG_PREFIX
 import top.easelink.lcg.R
 import top.easelink.lcg.utils.showMessage
 import java.util.*
@@ -64,7 +63,7 @@ class DownloadLinkDialog : SafeShowDialogFragment() {
     }
 
     companion object {
-        private val TAG: String = TAG_PREFIX + DownloadLinkDialog::class.java.simpleName
+        private val TAG: String = DownloadLinkDialog::class.java.simpleName
         private const val KEY_LINK_LIST = "KEY_LINK_LIST"
         @JvmStatic
         fun newInstance(downloadLinkList: ArrayList<String>): DownloadLinkDialog {

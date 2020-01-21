@@ -6,13 +6,12 @@ import androidx.fragment.app.DialogFragment
 import com.bumptech.glide.Glide
 import timber.log.Timber
 import top.easelink.framework.base.SafeShowDialogFragment
-import top.easelink.framework.topbase.ControllableFragment.TAG_PREFIX
 import top.easelink.lcg.R
 
 class ScreenCaptureDialog : SafeShowDialogFragment() {
 
     companion object {
-        val TAG = TAG_PREFIX + ScreenCaptureDialog::class.java.simpleName
+        val TAG: String = ScreenCaptureDialog::class.java.simpleName
         private const val IMAGE_PATH = "image_path"
         @JvmStatic
         fun newInstance(imagePath: String): ScreenCaptureDialog {

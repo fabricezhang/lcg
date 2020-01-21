@@ -2,7 +2,6 @@ package top.easelink.framework.base
 
 import android.content.DialogInterface
 import android.view.ViewConfiguration
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import timber.log.Timber
 

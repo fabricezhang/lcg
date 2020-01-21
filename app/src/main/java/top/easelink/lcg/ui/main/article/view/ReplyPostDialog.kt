@@ -9,7 +9,6 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import top.easelink.framework.base.BaseDialog
-import top.easelink.framework.topbase.ControllableFragment.TAG_PREFIX
 import top.easelink.lcg.R
 import top.easelink.lcg.ui.main.article.viewmodel.ReplyPostViewModel
 
@@ -85,7 +84,7 @@ class ReplyPostDialog : BaseDialog() {
     }
 
     companion object {
-        private val TAG = TAG_PREFIX + ReplyPostDialog::class.java.simpleName
+        private val TAG = ReplyPostDialog::class.java.simpleName
         private const val REPLY_POST_URL = "reply_post_url"
         private const val REPLY_POST_AUTHOR = "reply_post_author"
         @JvmStatic

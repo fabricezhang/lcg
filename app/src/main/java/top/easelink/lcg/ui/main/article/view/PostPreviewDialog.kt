@@ -12,7 +12,6 @@ import kotlinx.android.synthetic.main.dialog_post_preview.*
 import timber.log.Timber
 import top.easelink.framework.base.SafeShowDialogFragment
 import top.easelink.framework.customview.htmltextview.HtmlGlideImageGetter
-import top.easelink.framework.topbase.ControllableFragment.TAG_PREFIX
 import top.easelink.framework.utils.dpToPx
 import top.easelink.lcg.LCGApp
 import top.easelink.lcg.R
@@ -23,7 +22,7 @@ class PostPreviewDialog : SafeShowDialogFragment() {
     private lateinit var mViewModel: PostPreviewViewModel
 
     companion object {
-        val TAG = TAG_PREFIX + PostPreviewDialog::class.java.simpleName
+        val TAG: String = PostPreviewDialog::class.java.simpleName
         private const val ARTICLE_QUERY = "article_query"
         @JvmStatic
         fun newInstance(url: String): PostPreviewDialog {

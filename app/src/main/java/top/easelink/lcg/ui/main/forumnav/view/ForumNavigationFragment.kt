@@ -50,11 +50,4 @@ class ForumNavigationFragment :
         }
         viewModel.initOptions(baseActivity)
     }
-
-    companion object {
-        @JvmStatic
-        fun newInstance(): ForumNavigationFragment {
-            return ForumNavigationFragment()
-        }
-    }
 }

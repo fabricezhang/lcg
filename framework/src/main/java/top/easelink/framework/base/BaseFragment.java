@@ -9,16 +9,20 @@ import android.view.ViewGroup;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModel;
 
+import org.jetbrains.annotations.NotNull;
+
 import top.easelink.framework.topbase.ControllableFragment;
+import top.easelink.framework.topbase.TopActivity;
 
 public abstract class BaseFragment<T extends ViewDataBinding, V extends ViewModel> extends Fragment implements ControllableFragment {
 
-    private BaseActivity mActivity;
+    private AppCompatActivity mActivity;
     private View mRootView;
     private T mViewDataBinding;
     private V mViewModel;
@@ -45,13 +49,19 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends ViewMode
     public abstract V getViewModel();
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NotNull Context context) {
         super.onAttach(context);
         if (context instanceof BaseActivity) {
             BaseActivity activity = (BaseActivity) context;
             this.mActivity = activity;
             if (this.isControllable()) {
-                activity.onFragmentAttached(TAG_PREFIX + this.getClass().getSimpleName());
+                activity.onFragmentAttached(this.getClass().getSimpleName());
+            }
+        } else if (context instanceof TopActivity) {
+            TopActivity topActivity = (TopActivity) context;
+            this.mActivity = topActivity;
+            if (isControllable()) {
+                topActivity.onFragmentAttached(this.getClass().getSimpleName());
             }
         }
     }
@@ -85,17 +95,11 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends ViewMode
         mViewDataBinding.executePendingBindings();
     }
 
-    protected BaseActivity getBaseActivity() {
+    protected AppCompatActivity getBaseActivity() {
         return mActivity;
     }
 
     protected T getViewDataBinding() {
         return mViewDataBinding;
-    }
-
-    public void hideKeyboard() {
-        if (mActivity != null) {
-            mActivity.hideKeyboard();
-        }
     }
 }

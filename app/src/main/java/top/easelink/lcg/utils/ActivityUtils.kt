@@ -9,13 +9,19 @@ import androidx.fragment.app.FragmentManager
  * performed by the `fragmentManager`.
  *
  */
-fun addFragmentInActivity(fragmentManager: FragmentManager, fragment: Fragment, frameId: Int) {
-    val transaction = fragmentManager
+fun addFragmentInActivity(fragmentManager: FragmentManager,
+                          fragment: Fragment,
+                          frameId: Int) {
+    fragmentManager
         .beginTransaction()
-        // .setCustomAnimations(R.anim.slide_left, R.anim.slide_right)
         .add(frameId, fragment, fragment.javaClass.simpleName)
-    transaction.commitNow()
+        .commitNow()
 }
+
+fun popBackFragmentUntil(fragmentManager: FragmentManager, tag: String): Boolean {
+    return fragmentManager.popBackStackImmediate(tag, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+}
+
 
 fun addFragmentInFragment(fragmentManager: FragmentManager, fragment: Fragment, frameId: Int) {
     val transaction = fragmentManager
@@ -30,10 +36,11 @@ fun addFragmentInFragment(fragmentManager: FragmentManager, fragment: Fragment, 
  * performed by the `fragmentManager`.
  *
  */
-fun replaceFragmentInActivity(fragmentManager: FragmentManager, fragment: Fragment, tag: String?) {
-    val transaction = fragmentManager.beginTransaction()
-    transaction.add(fragment, tag)
-    transaction.commit()
+fun replaceFragmentInActivity(fragmentManager: FragmentManager, fragment: Fragment, frameId: Int) {
+    val transaction = fragmentManager
+        .beginTransaction()
+        .replace(frameId, fragment, fragment.javaClass.simpleName)
+    transaction.commitNow()
 }
 
 fun isOnMainThread(): Boolean {

@@ -53,6 +53,8 @@ dependencies {
     // parser
     api "com.google.code.gson:gson:$rootProject.gsonVersion"
 
+    api 'com.implimentz:unsafe:0.0.6'
+
     // dependency injection
     api "com.google.dagger:dagger:$rootProject.dagger2Version"
     kapt "com.google.dagger:dagger-compiler:$rootProject.dagger2Version"

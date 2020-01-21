@@ -196,14 +196,4 @@ class MeFragment : BaseFragment<FragmentMeBinding, MeViewModel>() {
         super.onResume()
         viewModel.fetchUserInfoDirect()
     }
-
-    companion object {
-        @JvmStatic
-        fun newInstance(): MeFragment {
-            val args = Bundle()
-            val fragment = MeFragment()
-            fragment.arguments = args
-            return fragment
-        }
-    }
 }
