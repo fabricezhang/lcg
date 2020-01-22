@@ -75,7 +75,7 @@ class MainActivity : TopActivity(), BottomNavigationView.OnNavigationItemSelecte
         try {
             view.setOnNavigationItemSelectedListener(null)
             when (mFragmentTags.peek()) {
-                ArticlesFragment::class.java.simpleName -> {
+                RecommendFragment::class.java.simpleName -> {
                     view.selectedItemId = R.id.action_home
                 }
                 MessageFragment::class.java.simpleName -> {
@@ -118,8 +118,7 @@ class MainActivity : TopActivity(), BottomNavigationView.OnNavigationItemSelecte
 
     private fun showFragmentWithTag(tag: String): Boolean {
         supportFragmentManager.findFragmentByTag(tag)?.let {
-            popBackFragmentUntil(supportFragmentManager, tag)
-            return true
+            return popBackFragmentUntil(supportFragmentManager, tag)
         }
         return false
     }

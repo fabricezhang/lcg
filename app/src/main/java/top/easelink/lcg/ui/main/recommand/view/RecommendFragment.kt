@@ -17,6 +17,10 @@ import top.easelink.lcg.utils.WebsiteConstant.URL_KEY
 
 class RecommendFragment: TopFragment(), ControllableFragment {
 
+    override fun isControllable(): Boolean {
+        return true
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)

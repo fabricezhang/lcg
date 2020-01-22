@@ -14,6 +14,11 @@ import top.easelink.lcg.ui.main.model.OpenForumEvent
 
 class ForumNavigationFragment :
     BaseFragment<FragmentForumsNavigationBinding, ForumNavigationViewModel>() {
+
+    override fun isControllable(): Boolean {
+        return true
+    }
+
     override fun getBindingVariable(): Int {
         return BR.viewModel
     }

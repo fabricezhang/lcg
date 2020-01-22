@@ -3,6 +3,6 @@ package top.easelink.framework.topbase;
 public interface ControllableFragment {
 
     default boolean isControllable() {
-        return true;
+        return false;
     }
 }

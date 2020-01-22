@@ -24,6 +24,10 @@ class MessageFragment: TopFragment(), ControllableFragment{
         return inflater.inflate(R.layout.fragment_message, container, false)
     }
 
+    override fun isControllable(): Boolean {
+        return true
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (!UserData.loggedInState) {

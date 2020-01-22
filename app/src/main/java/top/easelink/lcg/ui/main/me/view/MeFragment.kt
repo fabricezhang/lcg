@@ -52,6 +52,10 @@ class MeFragment : BaseFragment<FragmentMeBinding, MeViewModel>() {
         )
     }
 
+    override fun isControllable(): Boolean {
+        return true
+    }
+
     override fun getBindingVariable(): Int {
         return BR.viewModel
     }
