@@ -6,6 +6,7 @@ import androidx.annotation.StringRes
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import top.easelink.framework.utils.isOnMainThread
 import top.easelink.lcg.LCGApp
 
 

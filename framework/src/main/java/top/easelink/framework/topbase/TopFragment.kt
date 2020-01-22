@@ -10,7 +10,7 @@ abstract class TopFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mContext = context.also {
-            if (this is ControllableFragment && this.isControllable) {
+            if (this is ControllableFragment && isControllable()) {
                 (it as? Callback)?.onFragmentAttached(this.javaClass.simpleName)
             }
         }

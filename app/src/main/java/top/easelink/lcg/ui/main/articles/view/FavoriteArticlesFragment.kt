@@ -18,6 +18,10 @@ import top.easelink.lcg.ui.main.articles.viewmodel.FavoriteArticlesViewModel
 
 class FavoriteArticlesFragment : BaseFragment<FragmentFavoriteArticlesBinding, FavoriteArticlesViewModel>() {
 
+    override fun isControllable(): Boolean {
+        return true
+    }
+
     override fun getBindingVariable(): Int {
         return BR.viewModel
     }

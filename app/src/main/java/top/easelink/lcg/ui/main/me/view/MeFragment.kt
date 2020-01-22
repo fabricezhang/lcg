@@ -22,6 +22,7 @@ import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import timber.log.Timber
 import top.easelink.framework.base.BaseFragment
+import top.easelink.framework.utils.addFragmentInActivity
 import top.easelink.framework.utils.bitmapBlur
 import top.easelink.framework.utils.convertViewToBitmap
 import top.easelink.lcg.BR
@@ -33,7 +34,6 @@ import top.easelink.lcg.ui.main.login.view.LoginHintDialog
 import top.easelink.lcg.ui.main.me.viewmodel.MeViewModel
 import top.easelink.lcg.ui.main.model.OpenForumEvent
 import top.easelink.lcg.utils.WebsiteConstant.MY_ARTICLES_URL
-import top.easelink.lcg.utils.addFragmentInFragment
 import top.easelink.lcg.utils.showMessage
 
 class MeFragment : BaseFragment<FragmentMeBinding, MeViewModel>() {
@@ -188,7 +188,7 @@ class MeFragment : BaseFragment<FragmentMeBinding, MeViewModel>() {
 
     private fun showFragment(fragment: Fragment) {
         activity?.supportFragmentManager?.let {
-            addFragmentInFragment(
+            addFragmentInActivity(
                 it,
                 fragment,
                 R.id.clRootView

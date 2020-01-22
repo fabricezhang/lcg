@@ -1,8 +1,11 @@
-package top.easelink.lcg.utils
+package top.easelink.framework.utils
 
 import android.os.Looper
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE
+import top.easelink.framework.topbase.ControllableFragment
+import top.easelink.framework.topbase.TopFragment
 
 /**
  * The `fragment` is added to the container view with id `frameId`. The operation is
@@ -14,13 +17,23 @@ fun addFragmentInActivity(fragmentManager: FragmentManager,
                           frameId: Int) {
     fragmentManager
         .beginTransaction()
-        .addToBackStack(fragment.javaClass.simpleName)
+        .apply {
+            (fragment as? ControllableFragment)?.also {
+                if (it.isControllable()) {
+                    addToBackStack(fragment.javaClass.simpleName)
+                }
+            }
+        }
         .add(frameId, fragment, fragment.javaClass.simpleName)
         .commitAllowingStateLoss()
 }
 
 fun popBackFragmentUntil(fragmentManager: FragmentManager, tag: String): Boolean {
     return fragmentManager.popBackStackImmediate(tag, 0)
+}
+
+fun popBackFragmentInclusive(fragmentManager: FragmentManager, tag: String): Boolean {
+    return fragmentManager.popBackStackImmediate(tag, POP_BACK_STACK_INCLUSIVE)
 }
 
 

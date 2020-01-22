@@ -10,12 +10,13 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import top.easelink.framework.topbase.TopActivity
+import top.easelink.framework.utils.addFragmentInActivity
+import top.easelink.framework.utils.popBackFragmentUntil
 import top.easelink.lcg.R
 import top.easelink.lcg.mta.EVENT_OPEN_FORUM
 import top.easelink.lcg.mta.PROP_FORUM_NAME
 import top.easelink.lcg.mta.sendKVEvent
 import top.easelink.lcg.ui.main.article.view.ArticleFragment.Companion.newInstance
-import top.easelink.lcg.ui.main.articles.view.ArticlesFragment
 import top.easelink.lcg.ui.main.articles.view.ForumArticlesFragment.Companion.newInstance
 import top.easelink.lcg.ui.main.forumnav.view.ForumNavigationFragment
 import top.easelink.lcg.ui.main.me.view.MeFragment
@@ -24,8 +25,6 @@ import top.easelink.lcg.ui.main.model.NewMessageEvent
 import top.easelink.lcg.ui.main.model.OpenArticleEvent
 import top.easelink.lcg.ui.main.model.OpenForumEvent
 import top.easelink.lcg.ui.main.recommand.view.RecommendFragment
-import top.easelink.lcg.utils.addFragmentInActivity
-import top.easelink.lcg.utils.popBackFragmentUntil
 import top.easelink.lcg.utils.showMessage
 import java.util.*
 import kotlin.system.exitProcess
@@ -34,7 +33,7 @@ class MainActivity : TopActivity(), BottomNavigationView.OnNavigationItemSelecte
     private var lastBackPressed = 0L
 
     override fun onBackPressed() {
-        if (mFragmentTags.isNotEmpty()) {
+        if (mFragmentTags.isNotEmpty() && mFragmentTags.size > 1) {
             if (onFragmentDetached(mFragmentTags.pop())) {
                 syncBottomViewNavItemState()
                 return
@@ -118,7 +117,14 @@ class MainActivity : TopActivity(), BottomNavigationView.OnNavigationItemSelecte
 
     private fun showFragmentWithTag(tag: String): Boolean {
         supportFragmentManager.findFragmentByTag(tag)?.let {
-            return popBackFragmentUntil(supportFragmentManager, tag)
+            if (popBackFragmentUntil(supportFragmentManager, tag)) {
+                var d = mFragmentTags.search(tag)
+                while (d > 1) {
+                    mFragmentTags.pop()
+                    d--
+                }
+                return true
+            }
         }
         return false
     }
@@ -132,7 +138,6 @@ class MainActivity : TopActivity(), BottomNavigationView.OnNavigationItemSelecte
             )
         }
     }
-
 
     private fun showFragment(fragment: Fragment) {
         addFragmentInActivity(

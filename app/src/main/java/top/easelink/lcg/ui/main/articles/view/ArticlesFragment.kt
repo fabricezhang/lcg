@@ -20,7 +20,7 @@ import top.easelink.lcg.ui.main.articles.viewmodel.ArticlesViewModel
 
 class ArticlesFragment : BaseFragment<FragmentArticlesBinding, ArticlesViewModel>() {
 
-    var controllableFlag: Boolean = false
+    var controllableFlag: Boolean = true
 
     override fun isControllable(): Boolean {
         return controllableFlag

@@ -26,6 +26,10 @@ class ForumArticlesFragment : BaseFragment<FragmentForumArticlesBinding, ForumAr
 
     private var showTab = false
 
+    override fun isControllable(): Boolean {
+        return true
+    }
+
     override fun getBindingVariable(): Int {
         return BR.viewModel
     }
