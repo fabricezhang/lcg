@@ -54,7 +54,7 @@ class MainActivity : TopActivity(), BottomNavigationView.OnNavigationItemSelecte
         setContentView(R.layout.activity_main)
         EventBus.getDefault().register(this)
         setupBottomNavMenu()
-        showFragment(RecommendFragment())
+        showFragment(RecommendFragment::class.java)
     }
 
     override fun onDestroy() {
@@ -116,12 +116,26 @@ class MainActivity : TopActivity(), BottomNavigationView.OnNavigationItemSelecte
         }
     }
 
-    private fun showFragment(fragment: Fragment) {
-        val tag = fragment::class.java.simpleName
-        if (supportFragmentManager.findFragmentByTag(tag) != null
-            && popBackFragmentUntil(supportFragmentManager, tag)){
-            return
+    private fun showFragmentWithTag(tag: String): Boolean {
+        supportFragmentManager.findFragmentByTag(tag)?.let {
+            popBackFragmentUntil(supportFragmentManager, tag)
+            return true
         }
+        return false
+    }
+
+    private fun showFragment(clazz: Class<*>) {
+        if (!showFragmentWithTag(clazz.simpleName)) {
+            addFragmentInActivity(
+                supportFragmentManager,
+                clazz.newInstance() as Fragment,
+                R.id.clRootView
+            )
+        }
+    }
+
+
+    private fun showFragment(fragment: Fragment) {
         addFragmentInActivity(
             supportFragmentManager,
             fragment,
@@ -134,10 +148,12 @@ class MainActivity : TopActivity(), BottomNavigationView.OnNavigationItemSelecte
             false
         } else {
             when (item.itemId) {
-                R.id.action_message -> showFragment(MessageFragment())
-                R.id.action_forum_navigation -> showFragment(ForumNavigationFragment())
-                R.id.action_about_me -> showFragment(MeFragment())
-                R.id.action_home -> showFragment(RecommendFragment())
+                R.id.action_message -> {
+                    showFragment(MessageFragment::class.java)
+                }
+                R.id.action_forum_navigation -> showFragment(ForumNavigationFragment::class.java)
+                R.id.action_about_me -> showFragment(MeFragment::class.java)
+                R.id.action_home -> showFragment(RecommendFragment::class.java)
                 else -> { }
             }
             true

@@ -14,12 +14,13 @@ fun addFragmentInActivity(fragmentManager: FragmentManager,
                           frameId: Int) {
     fragmentManager
         .beginTransaction()
+        .addToBackStack(fragment.javaClass.simpleName)
         .add(frameId, fragment, fragment.javaClass.simpleName)
-        .commitNow()
+        .commitAllowingStateLoss()
 }
 
 fun popBackFragmentUntil(fragmentManager: FragmentManager, tag: String): Boolean {
-    return fragmentManager.popBackStackImmediate(tag, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+    return fragmentManager.popBackStackImmediate(tag, 0)
 }
 
 
