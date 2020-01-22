@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -15,34 +15,15 @@
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true"
         app:elevation="@dimen/dp_5">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_40"
-            android:background="@color/white" >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:layout_marginStart="@dimen/dp_5"
-                android:textColor="@color/colorAccent"
-                android:fontFamily="sans-serif"
-                android:text="LCG"
-                />
-
-            <ImageView
-                android:layout_marginStart="@dimen/dp_20"
-                android:layout_marginEnd="@dimen/dp_20"
-                android:textColor="@color/gray"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:background="@drawable/rectangle_bg"
-                android:backgroundTint="@color/light_gray"
-                android:layout_gravity="center"
-                android:layout_height="@dimen/dp_25"
-                android:text="@string/ic_favorite"
-                />
-        </LinearLayout>
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            style="@style/Toolbar"
+            android:elevation="@dimen/dp_4"
+            app:subtitleTextColor="@color/white"
+            app:title="@string/app_name"
+            app:titleTextAppearance="@style/Toolbar.TitleText"
+            app:titleTextColor="@color/white"
+            app:layout_scrollFlags="scroll|enterAlways"/>
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/main_tab"
             android:layout_width="match_parent"
@@ -64,4 +45,4 @@
         android:focusableInTouchMode="true"
         android:focusable="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
-</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
