@@ -29,6 +29,7 @@ import top.easelink.lcg.BR
 import top.easelink.lcg.LCGApp
 import top.easelink.lcg.R
 import top.easelink.lcg.databinding.FragmentMeBinding
+import top.easelink.lcg.ui.main.about.view.AboutFragment
 import top.easelink.lcg.ui.main.articles.view.FavoriteArticlesFragment
 import top.easelink.lcg.ui.main.login.view.LoginHintDialog
 import top.easelink.lcg.ui.main.me.viewmodel.MeViewModel
@@ -169,9 +170,9 @@ class MeFragment : BaseFragment<FragmentMeBinding, MeViewModel>() {
         }
         icon_feedback?.apply {
             setOnClickListener {
-                showMessage(R.string.todo_tips)
+                showFragment(AboutFragment())
             }
-            icon_feedback.btn_icon.setImageResource(R.drawable.ic_feedback)
+            icon_feedback.btn_icon.setImageResource(R.drawable.ic_about)
             icon_feedback.tv_icon.setText(R.string.ic_feedback)
         }
     }

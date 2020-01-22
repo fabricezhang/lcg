@@ -27,6 +27,12 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends ViewMode
     private T mViewDataBinding;
     private V mViewModel;
 
+
+    @Override
+    public boolean isControllable() {
+        return true;
+    }
+
     /**
      * Override for set binding variable
      *
