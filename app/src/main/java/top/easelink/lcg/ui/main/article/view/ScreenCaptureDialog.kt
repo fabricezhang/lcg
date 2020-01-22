@@ -7,12 +7,11 @@ import com.bumptech.glide.Glide
 import timber.log.Timber
 import top.easelink.framework.base.SafeShowDialogFragment
 import top.easelink.lcg.R
-import top.easelink.lcg.utils.TAG_PREFIX
 
 class ScreenCaptureDialog : SafeShowDialogFragment() {
 
     companion object {
-        val TAG = TAG_PREFIX + ScreenCaptureDialog::class.java.simpleName
+        val TAG: String = ScreenCaptureDialog::class.java.simpleName
         private const val IMAGE_PATH = "image_path"
         @JvmStatic
         fun newInstance(imagePath: String): ScreenCaptureDialog {

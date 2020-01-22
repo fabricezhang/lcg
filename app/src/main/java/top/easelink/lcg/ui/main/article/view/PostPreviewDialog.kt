@@ -16,14 +16,13 @@ import top.easelink.framework.utils.dpToPx
 import top.easelink.lcg.LCGApp
 import top.easelink.lcg.R
 import top.easelink.lcg.ui.main.article.viewmodel.PostPreviewViewModel
-import top.easelink.lcg.utils.TAG_PREFIX
 
 class PostPreviewDialog : SafeShowDialogFragment() {
 
     private lateinit var mViewModel: PostPreviewViewModel
 
     companion object {
-        val TAG = TAG_PREFIX + PostPreviewDialog::class.java.simpleName
+        val TAG: String = PostPreviewDialog::class.java.simpleName
         private const val ARTICLE_QUERY = "article_query"
         @JvmStatic
         fun newInstance(url: String): PostPreviewDialog {

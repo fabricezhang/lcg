@@ -7,8 +7,6 @@ import android.graphics.drawable.BitmapDrawable
 import android.os.Build
 import android.os.Bundle
 import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -17,22 +15,26 @@ import com.airbnb.lottie.LottieProperty
 import com.airbnb.lottie.model.KeyPath
 import kotlinx.android.synthetic.main.cardview_me_notifications.*
 import kotlinx.android.synthetic.main.fragment_me.*
+import kotlinx.android.synthetic.main.layout_icon_button.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
+import timber.log.Timber
 import top.easelink.framework.base.BaseFragment
+import top.easelink.framework.utils.addFragmentInActivity
 import top.easelink.framework.utils.bitmapBlur
 import top.easelink.framework.utils.convertViewToBitmap
 import top.easelink.lcg.BR
 import top.easelink.lcg.LCGApp
 import top.easelink.lcg.R
 import top.easelink.lcg.databinding.FragmentMeBinding
+import top.easelink.lcg.ui.main.about.view.AboutFragment
+import top.easelink.lcg.ui.main.articles.view.FavoriteArticlesFragment
 import top.easelink.lcg.ui.main.login.view.LoginHintDialog
 import top.easelink.lcg.ui.main.me.viewmodel.MeViewModel
 import top.easelink.lcg.ui.main.model.OpenForumEvent
 import top.easelink.lcg.utils.WebsiteConstant.MY_ARTICLES_URL
-import top.easelink.lcg.utils.addFragmentInFragment
 import top.easelink.lcg.utils.showMessage
 
 class MeFragment : BaseFragment<FragmentMeBinding, MeViewModel>() {
@@ -49,6 +51,10 @@ class MeFragment : BaseFragment<FragmentMeBinding, MeViewModel>() {
             ContextCompat.getColor(LCGApp.getContext(), R.color.pojie_logo),
             PorterDuff.Mode.SRC_ATOP
         )
+    }
+
+    override fun isControllable(): Boolean {
+        return true
     }
 
     override fun getBindingVariable(): Int {
@@ -79,30 +85,23 @@ class MeFragment : BaseFragment<FragmentMeBinding, MeViewModel>() {
                     GlobalScope.launch(Dispatchers.IO){
                         val bitmap = bitmapBlur(baseActivity, convertViewToBitmap(view), 20)
                         GlobalScope.launch(Dispatchers.Main) {
-                            bitmap?.let {
-                                view?.apply {
-                                    setBackgroundColor(Color.WHITE)
-                                    foreground = BitmapDrawable(resources, it)
+                            try {
+                                bitmap?.let {
+                                    view?.apply {
+                                        setBackgroundColor(Color.WHITE)
+                                        foreground = BitmapDrawable(resources, it)
+                                    }
                                 }
+                            } catch (e: Exception) {
+                                Timber.e(e)
+                            } finally {
+                                LoginHintDialog().show(baseActivity.supportFragmentManager, null)
                             }
-                            LoginHintDialog().show(baseActivity.supportFragmentManager, null)
                         }
                     }
                 } else {
                     LoginHintDialog().show(baseActivity.supportFragmentManager, null)
                 }
-            }
-        })
-        viewModel.mNotificationInfo.observe(this, Observer {
-            val notificationBadge =
-                cardview_me_notifications
-                    .findViewById<View>(R.id.icon_notifications)
-                    .findViewById<View>(R.id.badge)
-            if (it.isNotEmpty()) {
-                notificationBadge.visibility = View.VISIBLE
-                showMessage(R.string.notification_arrival)
-            } else {
-                notificationBadge.visibility = View.GONE
             }
         })
         viewModel.mSyncFavoriteEnable.observe(this, Observer {
@@ -152,28 +151,29 @@ class MeFragment : BaseFragment<FragmentMeBinding, MeViewModel>() {
     private fun updateIconButtons() {
         icon_notifications?.apply {
             setOnClickListener {
-                showFragment(MeNotificationFragment())
+                showFragment(FavoriteArticlesFragment())
                 findViewById<View>(R.id.badge).visibility = View.GONE
             }
-            findViewById<ImageView>(R.id.btn_icon).setImageResource(R.drawable.ic_notifications)
-            findViewById<TextView>(R.id.tv_icon).setText(R.string.ic_notifications)
+            icon_notifications.btn_icon.setImageResource(R.drawable.ic_favorite)
+            icon_notifications.tv_icon.setText(R.string.ic_favorite)
         }
         icon_my_articles?.apply {
             setOnClickListener {
                 EventBus
                     .getDefault()
                     .post(OpenForumEvent(
-                        getString(R.string.ic_my_articles), MY_ARTICLES_URL, false))
+                        getString(R.string.ic_my_articles), MY_ARTICLES_URL, false
+                    ))
             }
-            findViewById<ImageView>(R.id.btn_icon).setImageResource(R.drawable.ic_my_articles)
-            findViewById<TextView>(R.id.tv_icon).setText(R.string.ic_my_articles)
+            icon_my_articles.btn_icon.setImageResource(R.drawable.ic_my_articles)
+            icon_my_articles.tv_icon.setText(R.string.ic_my_articles)
         }
         icon_feedback?.apply {
             setOnClickListener {
-                showMessage(R.string.todo_tips)
+                showFragment(AboutFragment())
             }
-            findViewById<ImageView>(R.id.btn_icon).setImageResource(R.drawable.ic_comment)
-            findViewById<TextView>(R.id.tv_icon).setText(R.string.ic_feedback)
+            icon_feedback.btn_icon.setImageResource(R.drawable.ic_about)
+            icon_feedback.tv_icon.setText(R.string.ic_feedback)
         }
     }
 
@@ -188,26 +188,17 @@ class MeFragment : BaseFragment<FragmentMeBinding, MeViewModel>() {
     }
 
     private fun showFragment(fragment: Fragment) {
-        child_fragment_container.visibility = View.VISIBLE
-        addFragmentInFragment(
-            childFragmentManager,
-            fragment,
-            R.id.child_fragment_container
-        )
+        activity?.supportFragmentManager?.let {
+            addFragmentInActivity(
+                it,
+                fragment,
+                R.id.clRootView
+            )
+        }
     }
 
     override fun onResume() {
         super.onResume()
         viewModel.fetchUserInfoDirect()
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance(): MeFragment {
-            val args = Bundle()
-            val fragment = MeFragment()
-            fragment.arguments = args
-            return fragment
-        }
     }
 }

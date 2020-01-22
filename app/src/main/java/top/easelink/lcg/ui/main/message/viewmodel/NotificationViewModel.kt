@@ -1,4 +1,4 @@
-package top.easelink.lcg.ui.main.me.viewmodel
+package top.easelink.lcg.ui.main.message.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,7 +12,6 @@ import top.easelink.lcg.ui.main.model.BaseNotification
 import top.easelink.lcg.ui.main.model.NotificationModel
 import top.easelink.lcg.ui.main.model.SystemNotification
 import top.easelink.lcg.utils.WebsiteConstant.NOTIFICATION_HOME_URL
-import top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL
 
 class NotificationViewModel: ViewModel(){
 

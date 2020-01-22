@@ -51,6 +51,10 @@
                     android:scheme="https" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.main.message.view.ConversationDetailActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait">
+        </activity>
         <activity android:name=".ui.search.view.SearchActivity"
             android:screenOrientation="portrait">
         </activity>

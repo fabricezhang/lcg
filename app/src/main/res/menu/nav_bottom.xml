@@ -4,23 +4,23 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
             android:id="@+id/action_home"
-            android:icon="@drawable/ic_home_black_24dp"
+            android:icon="@drawable/ic_home"
             android:title="@string/home_page"
             app:showAsAction="ifRoom"/>
     <item
             android:id="@+id/action_forum_navigation"
-            android:icon="@drawable/ic_message_black_24dp"
+            android:icon="@drawable/ic_topic"
             android:title="@string/forum_page"
             app:showAsAction="ifRoom"/>
     <item
-            android:id="@+id/action_favorite"
-            android:icon="@drawable/ic_favorite_black_24dp"
-            android:title="@string/my_favorite"
+            android:id="@+id/action_message"
+            android:icon="@drawable/ic_comment"
+            android:title="@string/message"
             app:showAsAction="ifRoom"/>
     <item
             android:id="@+id/action_about_me"
             android:title="@string/about_me"
-            android:icon="@drawable/ic_person_black_24dp"
+            android:icon="@drawable/ic_me"
             app:showAsAction="ifRoom"/>
 
 </menu>

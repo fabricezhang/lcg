@@ -2,10 +2,10 @@
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/layout">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/post_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/dp_8"
@@ -93,43 +93,44 @@
                 app:layout_constraintEnd_toEndOf="@id/guide_line"
                 android:layout_marginTop="@dimen/dp_3"
                 android:layout_marginBottom="@dimen/dp_1"
-                android:layout_marginEnd="@dimen/dp_5"
-                >
-                <Button
+                android:layout_marginEnd="@dimen/dp_5" >
+                <ImageButton
                     android:id="@+id/btn_capture"
                     android:layout_width="@dimen/dp_15"
                     android:layout_height="@dimen/dp_15"
                     android:background="@drawable/btn_selector_capture"
                     android:backgroundTint="@color/btn_color"
-                    android:layout_marginEnd="@dimen/dp_25" />
+                    android:layout_marginEnd="@dimen/dp_25"
+                    android:contentDescription="@null" />
 
-                <Button
+                <ImageButton
                     android:id="@+id/btn_thumb_up"
                     android:layout_width="@dimen/dp_15"
                     android:layout_height="@dimen/dp_15"
                     android:background="@drawable/btn_selector_thubm_up"
                     android:backgroundTint="@color/btn_color"
                     android:layout_marginEnd="@dimen/dp_25"
-                    />
+                    android:contentDescription="@null" />
 
-                <Button
+                <ImageButton
                     android:id="@+id/btn_reply"
                     android:layout_width="@dimen/dp_15"
                     android:layout_height="@dimen/dp_15"
                     android:background="@drawable/btn_selector_reply"
                     android:backgroundTint="@color/btn_color"
                     android:layout_marginEnd="@dimen/dp_25"
-                    />
+                    android:contentDescription="@null" />
 
-                <Button
+                <ImageButton
                     android:id="@+id/btn_copy"
                     android:layout_width="@dimen/dp_15"
                     android:layout_height="@dimen/dp_15"
                     android:background="@drawable/btn_selector_copy"
-                    android:backgroundTint="@color/btn_color" />
+                    android:backgroundTint="@color/btn_color"
+                    android:contentDescription="@null" />
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 
 </layout>

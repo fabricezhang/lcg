@@ -92,6 +92,10 @@ class FavoriteArticlesAdapter(private var favoriteArticlesViewModel: FavoriteArt
             articleEntity = mArticleEntities[position].also {entity ->
                 view.remove_button.setOnClickListener {
                     GlobalScope.launch(Dispatchers.IO) {
+                        //TODO del url has a confirmation button to click, support this in the future
+//                        if (entity.delUrl.isNotEmpty()) {
+//                            val doc = Client.sendRequestWithQuery(entity.delUrl)
+//                        }
                         if (delArticleFromFavorite(entity.id)) {
                             mArticleEntities.remove(entity)
                             GlobalScope.launch(Dispatchers.Main) {

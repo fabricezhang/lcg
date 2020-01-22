@@ -13,7 +13,7 @@ import top.easelink.lcg.ui.main.source.model.ArticleEntity;
  * date   : 2019-07-26 13:53
  * desc   :
  */
-@Database(entities = {ArticleEntity.class}, version = 1, exportSchema = false)
+@Database(entities = {ArticleEntity.class}, version = 2, exportSchema = false)
 public abstract class ArticlesDatabase extends RoomDatabase {
     private static ArticlesDatabase mInstance;
 

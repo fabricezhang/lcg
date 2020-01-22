@@ -6,7 +6,7 @@ import timber.log.Timber
 import top.easelink.lcg.LCGApp
 import java.io.File
 
-
+@Suppress("unused")
 object PreloadManager {
 
     private val PRELOAD_FOLDER = "${LCGApp.getContext().externalCacheDir}/articles"

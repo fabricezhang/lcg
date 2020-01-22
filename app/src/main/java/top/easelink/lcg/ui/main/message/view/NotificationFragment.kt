@@ -1,4 +1,4 @@
-package top.easelink.lcg.ui.main.me.view
+package top.easelink.lcg.ui.main.message.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,10 +12,10 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_notification.*
 import top.easelink.framework.topbase.TopFragment
 import top.easelink.lcg.R
-import top.easelink.lcg.ui.main.me.viewmodel.NotificationViewModel
-import top.easelink.lcg.ui.main.me.viewmodel.NotificationsAdapter
+import top.easelink.lcg.ui.main.message.viewmodel.NotificationViewModel
+import top.easelink.lcg.ui.main.message.viewmodel.NotificationsAdapter
 
-class MeNotificationFragment: TopFragment(){
+class NotificationFragment: TopFragment(){
 
     private lateinit var notificationViewModel: NotificationViewModel
 
@@ -40,9 +40,12 @@ class MeNotificationFragment: TopFragment(){
                 it.orientation = RecyclerView.VERTICAL
             }
             itemAnimator = DefaultItemAnimator()
-            adapter = NotificationsAdapter(notificationViewModel)
+            adapter =
+                NotificationsAdapter(
+                    notificationViewModel
+                )
             notificationViewModel.apply {
-                isLoading.observe(this@MeNotificationFragment, Observer {
+                isLoading.observe(this@NotificationFragment, Observer {
                     if (it) {
                         loading.visibility = View.VISIBLE
                         notification_recycler_view.visibility = View.GONE
@@ -52,7 +55,7 @@ class MeNotificationFragment: TopFragment(){
                     }
                 })
                 notifications
-                    .observe(this@MeNotificationFragment, Observer { model ->
+                    .observe(this@NotificationFragment, Observer { model ->
                         (adapter as NotificationsAdapter).run {
                             if (itemCount > 1) {
                                 appendItems(model.notifications)

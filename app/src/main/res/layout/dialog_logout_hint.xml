@@ -16,7 +16,7 @@
     android:background="@drawable/login_bg">
 
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/logout_message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -26,7 +26,7 @@
         tools:text="是否退出登陆" />
 
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/logout_confirm_btn"
         android:layout_width="@dimen/dp_50"
         android:layout_height="@dimen/dp_25"
@@ -42,7 +42,7 @@
         app:layout_constraintStart_toEndOf="@id/cancel_btn"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/cancel_btn"
         android:layout_width="@dimen/dp_50"
         android:layout_height="@dimen/dp_25"

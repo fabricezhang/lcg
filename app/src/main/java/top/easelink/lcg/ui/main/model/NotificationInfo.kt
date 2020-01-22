@@ -30,3 +30,12 @@ data class BaseNotification(
     val content: String,
     val dateTime: String
 )
+
+data class Conversation(
+    val avatar: String?,
+    val username: String,
+    val lastMessage: String,
+    val lastMessageDateTime: String,
+    val totalMessage: String?,
+    val replyUrl: String?
+)

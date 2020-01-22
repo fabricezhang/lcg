@@ -1,41 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto" >
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <LinearLayout
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/web_view_toolbar"
+        style="@style/Toolbar"
+        app:subtitleTextColor="@color/white"
+        app:title="@string/app_name"
+        app:titleTextAppearance="@style/Toolbar.TitleText"
+        app:titleTextColor="@color/white" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <top.easelink.framework.customview.HorizontalScrollDisableWebView
+            android:id="@+id/web_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:visibility="invisible"/>
 
-        <androidx.appcompat.widget.Toolbar
-                android:id="@+id/web_view_toolbar"
-                style="@style/Toolbar"
-                app:subtitleTextColor="@color/white"
-                app:title="@string/app_name"
-                app:titleTextAppearance="@style/Toolbar.TitleText"
-                app:titleTextColor="@color/white" />
-
-        <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-            <top.easelink.framework.customview.HorizontalScrollDisableWebView
-                    android:id="@+id/web_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:visibility="invisible"/>
-
-            <com.airbnb.lottie.LottieAnimationView
-                    android:id="@+id/searching_file"
-                    android:layout_gravity="center"
-                    android:layout_width="@dimen/dp_200"
-                    android:layout_height="@dimen/dp_200"
-                    android:scaleType="fitCenter"
-                    android:visibility="invisible"
-                    app:lottie_rawRes="@raw/search_file"
-                    app:lottie_loop="true"
-                    app:lottie_autoPlay="true"/>
-        </FrameLayout>
-    </LinearLayout>
-
-</layout>
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/searching_file"
+            android:layout_gravity="center"
+            android:layout_width="@dimen/dp_200"
+            android:layout_height="@dimen/dp_200"
+            android:scaleType="fitCenter"
+            android:visibility="invisible"
+            app:lottie_rawRes="@raw/search_file"
+            app:lottie_loop="true"
+            app:lottie_autoPlay="true"/>
+    </FrameLayout>
+</LinearLayout>

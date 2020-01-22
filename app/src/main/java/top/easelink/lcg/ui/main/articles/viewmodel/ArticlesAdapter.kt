@@ -3,14 +3,17 @@ package top.easelink.lcg.ui.main.articles.viewmodel
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.item_article_view.view.*
 import kotlinx.android.synthetic.main.item_load_more_view.view.*
 import org.greenrobot.eventbus.EventBus
 import top.easelink.framework.base.BaseViewHolder
+import top.easelink.framework.utils.dpToPx
 import top.easelink.lcg.R
 import top.easelink.lcg.databinding.ItemArticleEmptyViewBinding
+import top.easelink.lcg.ui.info.UserData
 import top.easelink.lcg.ui.main.article.view.PostPreviewDialog
 import top.easelink.lcg.ui.main.articles.viewmodel.ArticleEmptyItemViewModel.ArticleEmptyItemViewModelListener
 import top.easelink.lcg.ui.main.model.OpenArticleEvent
@@ -109,7 +112,7 @@ class ArticlesAdapter(
         BaseViewHolder(view) {
         override fun onBind(position: Int) {
             val article = mArticleList[position]
-            view.findViewById<View>(R.id.article_container).apply {
+            view.layout.apply {
                 setOnLongClickListener {
                     fragmentManager?.get()?.let {
                         PostPreviewDialog.newInstance(mArticleList[position].url)
@@ -120,14 +123,19 @@ class ArticlesAdapter(
                 setOnClickListener {
                     EventBus.getDefault().post(OpenArticleEvent(article.url))
                 }
+                if (article.author == UserData.username) {
+                    layout.strokeColor = ContextCompat.getColor(context, R.color.google)
+                    layout.strokeWidth = 1.dpToPx(context).toInt()
+                } else {
+                    layout.strokeWidth = 0
+                }
             }
-
             view.apply {
-                findViewById<TextView>(R.id.title_text_view).text = article.title
-                findViewById<TextView>(R.id.author_text_view).text = article.author
-                findViewById<TextView>(R.id.date_text_view).text = article.date
-                findViewById<TextView>(R.id.reply_and_view).text = article.let { "${it.reply} / ${it.view}" }
-                findViewById<TextView>(R.id.origin).text = article.origin
+                title_text_view.text = article.title
+                author_text_view.text = article.author
+                date_text_view.text = article.date
+                reply_and_view.text = article.let { "${it.reply} / ${it.view}" }
+                origin.text = article.origin
             }
         }
 

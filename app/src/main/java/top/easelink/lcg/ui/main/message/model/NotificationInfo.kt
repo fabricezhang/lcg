@@ -1,4 +1,4 @@
-package top.easelink.lcg.ui.main.me.model
+package top.easelink.lcg.ui.main.message.model
 
 data class MyPostInfo(val dateTime: String, val ntcBody: String, val collapseMsg: String)
 

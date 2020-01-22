@@ -5,19 +5,15 @@ import androidx.fragment.app.Fragment
 
 abstract class TopFragment : Fragment() {
 
-    var topActivity: TopActivity? = null
+    lateinit var mContext: Context
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is TopActivity) {
-            topActivity = context
-            context.onFragmentAttached(tag?:this::class.java.simpleName)
+        mContext = context.also {
+            if (this is ControllableFragment && isControllable()) {
+                (it as? Callback)?.onFragmentAttached(this.javaClass.simpleName)
+            }
         }
-    }
-
-    override fun onDetach() {
-        topActivity = null
-        super.onDetach()
     }
 
     interface Callback {

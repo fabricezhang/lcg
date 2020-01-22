@@ -20,29 +20,34 @@
         app:refreshing="@{viewModel.isLoading}"
         android:focusable="true"
         android:clickable="true">
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone"
-            tools:visibility="visible"
-            />
+            android:layout_height="match_parent">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                tools:visibility="visible"
+                />
 
-        <com.airbnb.lottie.LottieAnimationView
-            android:layout_gravity="bottom|end"
-            android:id="@+id/back_to_top"
-            android:layout_width="@dimen/dp_40"
-            android:layout_height="@dimen/dp_40"
-            android:scaleType="fitCenter"
-            android:layout_marginEnd="@dimen/dp_20"
-            android:layout_marginBottom="@dimen/dp_40"
-            android:focusable="true"
-            android:clickable="true"
-            android:visibility="gone"
-            android:background="@drawable/bg_oval"
-            app:lottie_rawRes="@raw/swipe_up"
-            app:lottie_loop="true"
-            app:lottie_autoPlay="false"/>
+            <com.airbnb.lottie.LottieAnimationView
+                android:layout_gravity="bottom|end"
+                android:id="@+id/back_to_top"
+                android:layout_width="@dimen/dp_40"
+                android:layout_height="@dimen/dp_40"
+                android:scaleType="fitCenter"
+                android:layout_marginEnd="@dimen/dp_20"
+                android:layout_marginBottom="@dimen/dp_54"
+                android:focusable="true"
+                android:clickable="true"
+                android:visibility="gone"
+                android:background="@drawable/bg_oval"
+                tools:visibility="visible"
+                app:lottie_rawRes="@raw/swipe_up"
+                app:lottie_loop="true"
+                app:lottie_autoPlay="false"/>
+        </FrameLayout>
 
     </top.easelink.framework.customview.ScrollChildSwipeRefreshLayout>
 

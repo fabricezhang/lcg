@@ -1,7 +1,6 @@
 package top.easelink.lcg.ui.main.articles.view
 
 import android.os.Bundle
-import android.view.MenuItem
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
@@ -26,6 +25,10 @@ import top.easelink.lcg.ui.main.source.model.ForumThread
 class ForumArticlesFragment : BaseFragment<FragmentForumArticlesBinding, ForumArticlesViewModel>() {
 
     private var showTab = false
+
+    override fun isControllable(): Boolean {
+        return true
+    }
 
     override fun getBindingVariable(): Int {
         return BR.viewModel

@@ -41,16 +41,15 @@ ext {
 
     // App dependencies
     supportLibraryVersion = '1.1.0'
-    materialVersion = '1.2.0-alpha02'
+    materialVersion = '1.2.0-alpha03'
     vectorDrawableVersion = '1.1.0'
     animatedVectorDrawableVersion = '1.1.0'
     gsonVersion = '2.8.6'
     calligraphyVersion = '2.2.0'
     glideVersion = '4.10.0'
-    roomDatabaseVersion = '2.0.0'
     dataBindingVersion = '3.1.4'
     workVersion = '1.0.1'
-    multiTypeVersion = "4.0.0"
+    multiTypeVersion = '4.2.0'
 
     dagger2Version = '2.23.1'
     rxjava2Version = '2.1.9'
@@ -59,13 +58,12 @@ ext {
     debugDBVersion = '1.0.3'
     timberVersion = '4.7.1'
     lifecycleVersion = '2.1.0'
-    roomVersion = '2.2.2'
-    guavaVersion = '28.1-jre'
-    lottieVersion = '3.2.2'
+    roomVersion = '2.2.3'
+    guavaVersion = '28.2-jre'
+    lottieVersion = '3.3.1'
     buglyVersion = '1.3.8'
     eventbusVersion = '3.1.1'
     viewpager2 = '1.0.0'
-
 
     // kotlin
     coroutineVersion = '1.3.2'
@@ -73,6 +71,7 @@ ext {
     okHttpVersion = '4.2.2'
     jsoupVersion = '1.12.1'
 
+    // Statistics
     mtaVersion = '3.4.2'
     midVersion = '3.73-release'
 

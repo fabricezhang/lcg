@@ -31,6 +31,11 @@ import java.util.*
 
 class ArticleFragment : BaseFragment<FragmentArticleBinding, ArticleViewModel>() {
     private var articleUrl: String? = null
+
+    override fun isControllable(): Boolean {
+        return true
+    }
+
     override fun getBindingVariable(): Int {
         return BR.viewModel
     }

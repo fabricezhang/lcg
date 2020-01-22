@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/article_toolbar"
             style="@style/Toolbar"
-            app:title="@string/my_favorite"
+            app:title="@string/ic_favorite"
             app:subtitleTextColor="@color/white"
             app:titleTextAppearance="@style/Toolbar.TitleText"
             app:titleTextColor="@color/white"
@@ -47,18 +47,6 @@
             android:layout_height="match_parent"
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.92" />
-
-        <com.airbnb.lottie.LottieAnimationView
-            android:layout_gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_40"
-            android:scaleType="fitCenter"
-            android:visibility="visible"
-            app:lottie_rawRes="@raw/shark"
-            app:lottie_loop="true"
-            app:lottie_autoPlay="true"
-            app:layout_constraintTop_toBottomOf="@id/bottom_line"
-            />
 
         <FrameLayout
             android:visibility="@{viewModel.isLoading? View.VISIBLE:View.GONE, default = gone}"

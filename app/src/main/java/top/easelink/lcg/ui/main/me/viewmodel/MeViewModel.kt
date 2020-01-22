@@ -23,11 +23,9 @@ import top.easelink.lcg.service.work.SignInWorker.Companion.WORK_INTERVAL
 import top.easelink.lcg.ui.info.UserData
 import top.easelink.lcg.ui.main.logout.view.LogoutHintDialog
 import top.easelink.lcg.ui.main.me.model.UserInfo
-import top.easelink.lcg.ui.main.model.NotificationInfo
 import top.easelink.lcg.ui.main.source.local.SP_KEY_AUTO_SIGN_IN
 import top.easelink.lcg.ui.main.source.local.SP_KEY_SYNC_FAVORITE
 import top.easelink.lcg.ui.main.source.local.SharedPreferencesHelper
-import top.easelink.lcg.ui.main.source.parseNotificationInfo
 import top.easelink.lcg.ui.main.source.parseUserInfo
 import top.easelink.lcg.utils.WebsiteConstant.HOME_URL
 import top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL
@@ -44,7 +42,6 @@ class MeViewModel: ViewModel() {
     val mUserInfo = MutableLiveData<UserInfo>()
     val mAutoSignInEnable = MutableLiveData<Boolean>()
     val mSyncFavoriteEnable = MutableLiveData<Boolean>()
-    val mNotificationInfo = MutableLiveData<NotificationInfo>()
 
     init {
         mAutoSignInEnable.postValue(SharedPreferencesHelper
@@ -131,7 +128,6 @@ class MeViewModel: ViewModel() {
                         signInState = userInfo.signInStateUrl.orEmpty()
                     }
                 }
-                mNotificationInfo.postValue(parseNotificationInfo(doc))
             } catch (e: Exception) {
                 Timber.e(e)
                 mLoginState.postValue(false)
