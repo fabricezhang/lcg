@@ -5,7 +5,7 @@ buildscript {
     repositories {
         google()
         jcenter()
-        
+
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.5.3'
@@ -51,9 +51,6 @@ ext {
     workVersion = '1.0.1'
     multiTypeVersion = '4.2.0'
 
-    dagger2Version = '2.23.1'
-    rxjava2Version = '2.1.9'
-    rxandroidVersion = '2.1.1'
     placeholderviewVersion = '0.6.1'
     debugDBVersion = '1.0.3'
     timberVersion = '4.7.1'

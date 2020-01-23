@@ -7,8 +7,6 @@ import com.tencent.bugly.Bugly;
 import com.tencent.bugly.beta.Beta;
 import com.tencent.stat.StatService;
 
-import io.reactivex.exceptions.UndeliverableException;
-import io.reactivex.plugins.RxJavaPlugins;
 import timber.log.Timber;
 import top.easelink.lcg.mta.EventHelperKt;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
@@ -28,7 +26,6 @@ public class LCGApp extends Application {
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
         }
-        initRx();
     }
 
     public static Context getContext() {
@@ -36,18 +33,6 @@ public class LCGApp extends Application {
     }
     public static LCGApp getInstance() {
         return INSTANCE;
-    }
-
-    private void initRx() {
-        RxJavaPlugins.setErrorHandler(e -> {
-            if (e instanceof UndeliverableException) {
-                Timber.e(e);
-            } else {
-                Thread.currentThread()
-                        .getUncaughtExceptionHandler()
-                        .uncaughtException(Thread.currentThread(), e);
-            }
-        });
     }
 
     private void initBulgy() {
