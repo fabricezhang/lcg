@@ -12,5 +12,6 @@ class Article(
     val url: String,
     val view: Int,
     val reply: Int,
-    val origin: String = ""
+    val origin: String = "",
+    val helpCoin: Int = 0
 )

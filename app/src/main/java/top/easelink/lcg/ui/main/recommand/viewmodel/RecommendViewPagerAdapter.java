@@ -26,6 +26,7 @@ public class RecommendViewPagerAdapter extends FragmentPagerAdapter {
         tabModels.add(new TabModel(context.getString(R.string.tab_title_tech), "tech"));
         tabModels.add(new TabModel(context.getString(R.string.tab_title_digest), "digest"));
         tabModels.add(new TabModel(context.getString(R.string.tab_title_new_thread), "newthread"));
+        tabModels.add(new TabModel(context.getString(R.string.tab_title_help), "help"));
     }
 
     @Override

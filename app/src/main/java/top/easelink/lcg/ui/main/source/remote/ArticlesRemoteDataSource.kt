@@ -145,13 +145,28 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
                         val view = extractFrom(it, "td.num", "em")
                             .ifBlank { return@map null }
                             .toInt()
-                        val title = extractFrom(it, "th.common", ".xst")
+                        val title = it.selectFirst("th.common > .xst")?.text().orEmpty()
                         val author = extractFrom(it, "td.by", "a[href*=uid]")
                         val date = extractFrom(it, "td.by", "span")
                         val url = extractAttrFrom(it, "href", "th.common", "a.xst")
-                        val origin = extractFrom(it, "td.by", "a[target]")
+                        val origin = it.selectFirst("td.by > a[target]")?.text().orEmpty()
+                        val helpInfo = it.select("th.common > span.xi1 > span.xw1")?.text().orEmpty()
+                        var helpCoin = 0
+                        if (helpInfo.isEmpty()) {
+                            if (it.selectFirst("th.common")
+                                    ?.text()
+                                    ?.contains("- [已解决]") == true) {
+                                helpCoin = -1
+                            }
+                        } else {
+                            helpCoin = try {
+                                helpInfo.toInt()
+                            } catch (e: Exception) {
+                                0
+                            }
+                        }
                         if (title.isNotBlank() && author.isNotEmpty()) {
-                            return@map Article(title, author, date, url, view, reply, origin)
+                            return@map Article(title, author, date, url, view, reply, origin, helpCoin)
                         }
                     } catch (e: Exception) {
                         Timber.e(e)

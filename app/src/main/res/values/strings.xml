@@ -38,6 +38,8 @@
     <string name="tab_title_tech">技术分享</string>
     <string name="tab_title_new_thread">新鲜出炉</string>
     <string name="tab_title_digest">精华采撷</string>
+    <string name="tab_title_help">求助新帖</string>
+    <string name="help_request_solved">解</string>
     <string name="app_exit_tip">再按一次退出应用</string>
 
     <!--Me Fragment-->
