@@ -33,7 +33,11 @@ fun parseUserInfo(doc: Document): UserInfo {
             val parentCredit = element?.parent()
             element?.remove()
             val credit = parentCredit?.text()
-            val signInState = selectFirst("img.qq_bind")?.attr("src")
+            val signInState = select("img.qq_bind")
+                ?.firstOrNull {
+                    !(it.attr("src")?.contains("qq")?:true)
+                }
+                ?.attr("src")
             UserInfo(userName, avatar, groupInfo, coin, credit, signInState)
         } else {
             UserInfo(getElementById("messagetext")?.text())
