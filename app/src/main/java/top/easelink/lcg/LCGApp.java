@@ -1,6 +1,5 @@
 package top.easelink.lcg;
 
-import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 
@@ -8,45 +7,24 @@ import com.tencent.bugly.Bugly;
 import com.tencent.bugly.beta.Beta;
 import com.tencent.stat.StatService;
 
-import javax.inject.Inject;
-
-import dagger.android.DispatchingAndroidInjector;
-import dagger.android.HasActivityInjector;
 import io.reactivex.exceptions.UndeliverableException;
 import io.reactivex.plugins.RxJavaPlugins;
 import timber.log.Timber;
-import top.easelink.lcg.di.component.DaggerAppComponent;
 import top.easelink.lcg.mta.EventHelperKt;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 import static top.easelink.lcg.mta.MTAConstantKt.EVENT_APP_LAUNCH;
 
-public class LCGApp extends Application implements HasActivityInjector {
-
-    @Inject
-    DispatchingAndroidInjector<Activity> activityDispatchingAndroidInjector;
-
-    @Inject
-    CalligraphyConfig mCalligraphyConfig;
-
-    @Override
-    public DispatchingAndroidInjector<Activity> activityInjector() {
-        return activityDispatchingAndroidInjector;
-    }
+public class LCGApp extends Application {
 
     private static LCGApp INSTANCE;
 
     @Override
     public void onCreate() {
         super.onCreate();
-
-        DaggerAppComponent.builder()
-                .application(this)
-                .build()
-                .inject(this);
         INSTANCE = this;
         initBulgy();
-        CalligraphyConfig.initDefault(mCalligraphyConfig);
+        CalligraphyConfig.initDefault(provideCalligraphyDefaultConfig());
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
         }
@@ -80,5 +58,12 @@ public class LCGApp extends Application implements HasActivityInjector {
 
         StatService.registerActivityLifecycleCallbacks(LCGApp.this);
         EventHelperKt.sendEvent(EVENT_APP_LAUNCH);
+    }
+
+    private CalligraphyConfig provideCalligraphyDefaultConfig() {
+        return new CalligraphyConfig.Builder()
+                .setDefaultFontPath("fonts/alibaba/Alibaba_Regular.ttf")
+                .setFontAttrId(R.attr.fontPath)
+                .build();
     }
 }
