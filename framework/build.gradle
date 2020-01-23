@@ -55,13 +55,6 @@ dependencies {
 
     api 'com.implimentz:unsafe:0.0.6'
 
-    // dependency injection
-    api "com.google.dagger:dagger:$rootProject.dagger2Version"
-    kapt "com.google.dagger:dagger-compiler:$rootProject.dagger2Version"
-    kapt "com.google.dagger:dagger-android-processor:$rootProject.dagger2Version"
-    //noinspection GradleDependency
-    api "com.google.dagger:dagger-android-support:$rootProject.dagger2Version"
-
     // view
     api "com.mindorks:placeholderview:$rootProject.placeholderviewVersion"
 //    api "androidx.viewpager2:viewpager2:$rootProject.viewpager2"
@@ -71,9 +64,6 @@ dependencies {
     api "com.drakeet.multitype:multitype:$rootProject.multiTypeVersion"
     // logger
     api "com.jakewharton.timber:timber:$rootProject.timberVersion"
-    // reactive
-    api "io.reactivex.rxjava2:rxjava:$rootProject.rxjava2Version"
-    api "io.reactivex.rxjava2:rxandroid:$rootProject.rxandroidVersion"
     // view model
     api "androidx.lifecycle:lifecycle-extensions:$rootProject.lifecycleVersion"
     api "androidx.lifecycle:lifecycle-common-java8:$rootProject.lifecycleVersion"

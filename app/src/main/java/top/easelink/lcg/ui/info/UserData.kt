@@ -1,5 +1,8 @@
 package top.easelink.lcg.ui.info
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import top.easelink.lcg.ui.main.source.local.*
 
 object UserData {
@@ -34,6 +37,9 @@ object UserData {
 
     fun clearAll() {
         SharedPreferencesHelper.getUserSp().edit().clear().apply()
+        GlobalScope.launch(Dispatchers.IO) {
+            ArticlesLocalDataSource.delAllArticlesFromFavorite()
+        }
     }
 
     @Suppress("UNCHECKED_CAST", "IMPLICIT_CAST_TO_ANY")
