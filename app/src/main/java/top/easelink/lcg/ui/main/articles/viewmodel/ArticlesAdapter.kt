@@ -21,8 +21,7 @@ import top.easelink.lcg.ui.main.source.model.Article
 import java.lang.ref.WeakReference
 
 class ArticlesAdapter(
-    private var articleFetcher: ArticleFetcher,
-    private val type: Int = 0
+    private var articleFetcher: ArticleFetcher
 ) : RecyclerView.Adapter<BaseViewHolder>() {
 
     private var fragmentManager: WeakReference<FragmentManager>? = null
@@ -140,12 +139,14 @@ class ArticlesAdapter(
                 when (article.helpCoin) {
                     0 -> stamp.visibility = View.GONE
                     -1 -> {
+                        stamp.setDrawSpotEnable(true)
                         stamp.setStampColor(ContextCompat.getColor(context, R.color.light_gray))
                         stamp.setText(context.getString(R.string.help_request_solved))
                         stamp.visibility = View.VISIBLE
                         stamp.reDraw()
                     }
                     else -> {
+                        stamp.setDrawSpotEnable(true)
                         stamp.setStampColor(ContextCompat.getColor(context, R.color.colorAccent))
                         stamp.setText(article.helpCoin.toString())
                         stamp.visibility = View.VISIBLE

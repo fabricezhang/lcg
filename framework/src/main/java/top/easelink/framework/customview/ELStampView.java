@@ -74,7 +74,7 @@ public class ELStampView extends View {
 
     private void initStampView() {
         mSpotPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mSpotPaint.setColor(0xffffffff);
+        mSpotPaint.setColor(Color.WHITE);
 
 
         mOutStrokePaint = new Paint();
@@ -129,7 +129,7 @@ public class ELStampView extends View {
     }
 
     private void drawSpot(Canvas canvas) {
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 20; i++) {
             Path mirrorPath = getRandomSpotPath(
                     3,
                     new Random().nextInt(mWidth/2) + new Random().nextInt(mWidth/2),
