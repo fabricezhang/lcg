@@ -96,6 +96,7 @@
     <string name="load_more">加载更多</string>
     <string name="no_more_content">没有更多了</string>
     <string name="tap_for_code">『点击显示代码』</string>
+    <string name="tap_for_large_image_failed">查看失败</string>
 
     <!--message fragment-->
     <string name="tab_title_private_message">私信</string>

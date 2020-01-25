@@ -77,7 +77,7 @@ class MeFragment : BaseFragment<FragmentMeBinding, MeViewModel>() {
     }
 
     private fun registerObservers() {
-        viewModel.mLoginState.observe(this, Observer<Boolean> {
+        viewModel.mLoginState.observe(viewLifecycleOwner, Observer<Boolean> {
             updateViewVisibility(it)
             if (!it) {
                 // add a blur effect
@@ -104,7 +104,7 @@ class MeFragment : BaseFragment<FragmentMeBinding, MeViewModel>() {
                 }
             }
         })
-        viewModel.mSyncFavoriteEnable.observe(this, Observer {
+        viewModel.mSyncFavoriteEnable.observe(viewLifecycleOwner, Observer {
             if (it) {
                 viewDataBinding.favoriteSettingsSwitch.apply {
                     playAnimation()
@@ -126,7 +126,7 @@ class MeFragment : BaseFragment<FragmentMeBinding, MeViewModel>() {
                 }
             }
         })
-        viewModel.mAutoSignInEnable.observe(this, Observer {
+        viewModel.mAutoSignInEnable.observe(viewLifecycleOwner, Observer {
             auto_sign_in_switch.apply {
                 if (it) {
                     playAnimation()

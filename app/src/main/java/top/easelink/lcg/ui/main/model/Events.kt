@@ -9,3 +9,5 @@ data class OpenForumEvent(val title: String, val url: String, val showTab: Boole
 data class OpenArticleEvent(val url: String)
 
 data class NewMessageEvent(val notificationInfo: NotificationInfo)
+
+data class OpenLargeImageViewEvent(val url: String)

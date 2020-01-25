@@ -78,13 +78,15 @@ class ArticleFragment : BaseFragment<FragmentArticleBinding, ArticleViewModel>()
             itemAnimator = DefaultItemAnimator()
             adapter = ArticleAdapter(viewModel)
 
-            viewModel.posts.observe(this@ArticleFragment, androidx.lifecycle.Observer{
+            viewModel.posts.observe(viewLifecycleOwner, androidx.lifecycle.Observer{
                 val url = it[0].replyUrl
                 if (it.size > 0 && url != null) {
                     comment.apply {
                         visibility = View.VISIBLE
                     }.setOnClickListener {
-                        CommentArticleDialog.newInstance(url).show(fragmentManager)
+                        CommentArticleDialog.newInstance(url).show(
+                            if (isAdded) parentFragmentManager else childFragmentManager
+                        )
                     }
                 } else {
                     comment.visibility = View.GONE
@@ -109,7 +111,7 @@ class ArticleFragment : BaseFragment<FragmentArticleBinding, ArticleViewModel>()
                     R.id.action_extract_urls -> {
                         val linkList: ArrayList<String>? = viewModel.extractDownloadUrl()
                         if (linkList != null && linkList.isNotEmpty()) {
-                            newInstance(linkList).show(fragmentManager)
+                            newInstance(linkList).show(if (isAdded) parentFragmentManager else childFragmentManager)
                         } else {
                             showMessage(R.string.download_link_not_found)
                         }
@@ -126,12 +128,17 @@ class ArticleFragment : BaseFragment<FragmentArticleBinding, ArticleViewModel>()
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageEvent(event: ReplyPostEvent) {
-        newInstance(event.replyUrl, event.author).show(fragmentManager)
+        newInstance(event.replyUrl, event.author).show(
+            if (isAdded) parentFragmentManager else childFragmentManager
+        )
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageEvent(event: ScreenCaptureEvent) {
-        ScreenCaptureDialog.newInstance(event.imagePath).show(fragmentManager!!, TAG)
+        ScreenCaptureDialog.newInstance(event.imagePath).show(
+            if (isAdded) parentFragmentManager else childFragmentManager,
+            TAG
+        )
     }
 
     companion object {

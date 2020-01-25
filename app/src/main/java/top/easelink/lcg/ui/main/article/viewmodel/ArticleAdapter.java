@@ -27,6 +27,7 @@ import top.easelink.framework.utils.ScreenUtilsKt;
 import top.easelink.lcg.R;
 import top.easelink.lcg.databinding.ItemPostViewBinding;
 import top.easelink.lcg.ui.info.UserData;
+import top.easelink.lcg.ui.main.model.OpenLargeImageViewEvent;
 import top.easelink.lcg.ui.main.model.ReplyPostEvent;
 import top.easelink.lcg.ui.main.model.ScreenCaptureEvent;
 import top.easelink.lcg.ui.main.source.model.Post;
@@ -147,6 +148,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                 mBinding.contentTextView.setDrawTableLinkSpan(drawTableLinkSpan);
                 mBinding.contentTextView.setImageTagClickListener(((c, imageUrl, pos) -> {
                     Timber.d("image clicked %s", imageUrl);
+                    EventBus.getDefault().post(new OpenLargeImageViewEvent(imageUrl));
                 }));
                 mBinding.contentTextView.setHtml(post.getContent(), htmlHttpImageGetter);
                 if (position == 0) {
