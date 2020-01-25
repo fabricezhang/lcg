@@ -84,7 +84,7 @@
         <ImageButton
             android:layout_gravity="bottom|end"
             android:id="@+id/comment"
-            android:padding="@dimen/dp_4"
+            android:padding="@dimen/dp_6"
             android:layout_width="@dimen/dp_28"
             android:layout_height="@dimen/dp_28"
             android:scaleType="fitCenter"
@@ -92,10 +92,11 @@
             android:layout_marginBottom="@dimen/dp_60"
             android:focusable="true"
             android:clickable="true"
+            android:elevation="@dimen/dp_4"
             android:visibility="gone"
             android:src="@drawable/ic_post"
             android:tint="@color/dark_gray"
-            android:backgroundTint="@color/light_gray"
+            android:backgroundTint="@color/white"
             android:background="@drawable/bg_oval"
             android:contentDescription="@null" />
 
