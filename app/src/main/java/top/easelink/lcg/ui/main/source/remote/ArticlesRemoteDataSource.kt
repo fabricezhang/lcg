@@ -6,6 +6,8 @@ import androidx.annotation.WorkerThread
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import org.jsoup.HttpStatusException
+import org.jsoup.nodes.Attribute
+import org.jsoup.nodes.Attributes
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
@@ -342,7 +344,7 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
         return doc.selectFirst("div.pcb")
             .let {
                     element -> element.selectFirst("td.t_f")?.let {
-                    tmp -> processContentElement(tmp)
+                    tmp -> processContentElement(tmp).html()
             }
                 ?: element.selectFirst("div.locked").html()
             }
@@ -354,6 +356,13 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
             .mapTo(ArrayList<String>(), {
                 it.selectFirst("td.t_f")?.let {
                         tmp -> processContentElement(tmp)
+                }?.let {res ->
+                    it.select("div.savephotop > img")?.forEach {imgElement ->
+                        res.appendChild(
+                            imgElement.attr("src", imgElement.attr("file"))
+                        )
+                    }
+                    res.html()
                 } ?: it.selectFirst("div.locked").html()
             })
     }
@@ -364,17 +373,21 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
         }
     }
 
-    private fun processContentElement(element: Element): String { // remove picture tips
+    private fun processContentElement(element: Element): Element { // remove picture tips
         element.select("div.tip").remove()
         // remove user level info etc
         element.select("script").remove()
         // convert all code
         for (e in element.getElementsByTag("pre")) {
             e.siblingElements().remove()
-            val s =
-                e.html().replace("\r\n".toRegex(), "<br/>").replace(" ".toRegex(), "&nbsp;")
+            val s = e.html()
+                .replace("\r\n", "<br/>")
+                .replace("\r", "<br/>")
+                .replace("\n", "<br/>")
+                .replace(" ", "&nbsp;")
             e.html(s)
         }
+        // move gif from file to src
         val imgElements = element.getElementsByTag("img")
         for (i in imgElements.indices) {
             val imgElement = imgElements[i]
@@ -387,7 +400,7 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
                 imgElement.attr("src", attr)
             }
         }
-        return element.html()
+        return element
     }
 
     @WorkerThread
