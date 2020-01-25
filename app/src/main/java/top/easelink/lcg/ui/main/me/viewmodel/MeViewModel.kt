@@ -2,6 +2,8 @@ package top.easelink.lcg.ui.main.me.viewmodel
 
 import android.annotation.SuppressLint
 import android.view.View
+import android.webkit.CookieManager
+import android.webkit.WebView
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -27,6 +29,7 @@ import top.easelink.lcg.ui.main.source.local.SP_KEY_AUTO_SIGN_IN
 import top.easelink.lcg.ui.main.source.local.SP_KEY_SYNC_FAVORITE
 import top.easelink.lcg.ui.main.source.local.SharedPreferencesHelper
 import top.easelink.lcg.ui.main.source.parseUserInfo
+import top.easelink.lcg.ui.webview.view.WebViewActivity
 import top.easelink.lcg.utils.WebsiteConstant.HOME_URL
 import top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL
 import top.easelink.lcg.utils.getCookies
@@ -139,7 +142,7 @@ class MeViewModel: ViewModel() {
         mFragment?.get()?.apply {
             LogoutHintDialog(
                 positive = {
-                    UserData.loggedInState = false
+                    UserData.clearAll()
                     clearCookies()
                     showMessage(R.string.me_tab_clear_cookie)
                     activity?.onBackPressed()
@@ -154,6 +157,7 @@ class MeViewModel: ViewModel() {
 
     private fun clearCookies() {
         SharedPreferencesHelper.getCookieSp().edit().clear().apply()
+        CookieManager.getInstance().removeAllCookies(null)
     }
 
     @SuppressLint("ApplySharedPref")

@@ -145,6 +145,9 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                 DrawTableLinkSpan drawTableLinkSpan = new DrawTableLinkSpan();
                 drawTableLinkSpan.setTableLinkText(itemView.getContext().getString(R.string.tap_for_code));
                 mBinding.contentTextView.setDrawTableLinkSpan(drawTableLinkSpan);
+                mBinding.contentTextView.setImageTagClickListener(((c, imageUrl, pos) -> {
+                    Timber.d("image clicked %s", imageUrl);
+                }));
                 mBinding.contentTextView.setHtml(post.getContent(), htmlHttpImageGetter);
                 if (position == 0) {
                     mBinding.btnCapture.setVisibility(View.VISIBLE);

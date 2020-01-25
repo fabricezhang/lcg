@@ -67,8 +67,6 @@ dependencies {
     kapt "androidx.room:room-compiler:$roomVersion"
     kapt "com.android.databinding:compiler:$dataBindingVersion"
 
-    kapt "com.google.dagger:dagger-compiler:$rootProject.dagger2Version"
-    kapt "com.google.dagger:dagger-android-processor:$rootProject.dagger2Version"
     implementation project(':framework')
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 

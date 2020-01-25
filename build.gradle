@@ -5,7 +5,7 @@ buildscript {
     repositories {
         google()
         jcenter()
-        
+
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.5.3'
@@ -41,23 +41,20 @@ ext {
 
     // App dependencies
     supportLibraryVersion = '1.1.0'
-    materialVersion = '1.2.0-alpha03'
+    materialVersion = '1.2.0-alpha04'
     vectorDrawableVersion = '1.1.0'
     animatedVectorDrawableVersion = '1.1.0'
     gsonVersion = '2.8.6'
     calligraphyVersion = '2.2.0'
-    glideVersion = '4.10.0'
+    glideVersion = '4.11.0'
     dataBindingVersion = '3.1.4'
     workVersion = '1.0.1'
     multiTypeVersion = '4.2.0'
 
-    dagger2Version = '2.23.1'
-    rxjava2Version = '2.1.9'
-    rxandroidVersion = '2.1.1'
     placeholderviewVersion = '0.6.1'
     debugDBVersion = '1.0.3'
     timberVersion = '4.7.1'
-    lifecycleVersion = '2.1.0'
+    lifecycleVersion = '2.2.0'
     roomVersion = '2.2.3'
     guavaVersion = '28.2-jre'
     lottieVersion = '3.3.1'
@@ -76,7 +73,7 @@ ext {
     midVersion = '3.73-release'
 
     // Test dependencies
-    junitVersion = '4.12'
+    junitVersion = '4.13'
     espressoVersion = '3.2.0'
     mockitoVersion = '2.15.0'
     runnerVersion = '1.2.0'

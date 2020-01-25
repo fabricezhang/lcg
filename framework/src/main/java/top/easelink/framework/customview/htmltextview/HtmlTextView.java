@@ -36,6 +36,8 @@ public class HtmlTextView extends JellyBeanSpanFixTextView {
     private ClickableSpecialSpan clickableSpecialSpan;
     @Nullable
     private DrawTableLinkSpan drawTableLinkSpan;
+
+    private OnImgTagClickListener onImgTagClickListener;
     private float indent = 24.0f; // Default to 24px.
 
     private boolean removeTrailingWhiteSpace = true;
@@ -84,7 +86,18 @@ public class HtmlTextView extends JellyBeanSpanFixTextView {
      *                    HtmlLocalImageGetter and HtmlRemoteImageGetter
      */
     public void setHtml(@NonNull String html, @Nullable Html.ImageGetter imageGetter) {
-        setText(HtmlFormatter.formatHtml(html, imageGetter, clickableSpecialSpan, drawTableLinkSpan, indent, removeTrailingWhiteSpace));
+
+        setText(
+                HtmlFormatter.formatHtml(
+                        html,
+                        imageGetter,
+                        clickableSpecialSpan,
+                        drawTableLinkSpan,
+                        indent,
+                        removeTrailingWhiteSpace,
+                        getContext(),
+                        onImgTagClickListener)
+        );
 
         // make links work
         setMovementMethod(LocalLinkMovementMethod.getInstance());
@@ -123,6 +136,10 @@ public class HtmlTextView extends JellyBeanSpanFixTextView {
 
     public void setDrawTableLinkSpan(@Nullable DrawTableLinkSpan drawTableLinkSpan) {
         this.drawTableLinkSpan = drawTableLinkSpan;
+    }
+
+    public void setImageTagClickListener(OnImgTagClickListener onImgTagClickListener) {
+        this.onImgTagClickListener = onImgTagClickListener;
     }
 
     /**
