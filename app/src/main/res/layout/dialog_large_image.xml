@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.google.android.material.card.MaterialCardView android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_margin="@dimen/dp_10"
+        app:cardBackgroundColor="@color/translucent_gray"
+        app:cardCornerRadius="@dimen/dp_4"
+        app:cardUseCompatPadding="true"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.github.chrisbanes.photoview.PhotoView
+            android:id="@+id/photo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/translucent_gray"
+            android:contentDescription="@null" />
+    <ImageView
+            android:id="@+id/exit"
+            android:layout_marginTop="@dimen/dp_8"
+            android:layout_marginEnd="@dimen/dp_8"
+            android:layout_width="@dimen/dp_20"
+            android:layout_height="@dimen/dp_20"
+            android:layout_gravity="end"
+            android:foregroundTint="@color/semi_gray"
+            android:src="@drawable/ic_close_black_24dp"
+            android:contentDescription="@null"/>
+</com.google.android.material.card.MaterialCardView>

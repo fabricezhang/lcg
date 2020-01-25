@@ -32,12 +32,12 @@
             android:background="@color/white"
             app:tabIndicatorColor="@color/colorAccent"
             app:tabIndicatorHeight="@dimen/dp_3"
-            app:tabPaddingStart="@dimen/dp_m_2"
-            app:tabPaddingEnd="@dimen/dp_m_2"
+            app:tabPaddingStart="@dimen/dp_m_1"
+            app:tabPaddingEnd="@dimen/dp_m_1"
             app:tabTextColor="@color/gray"
             app:tabSelectedTextColor="@color/colorAccent"
             app:tabMode="fixed"
-            app:tabTextAppearance="@style/Widget.Design.TabLayout"
+            app:tabTextAppearance="@style/AppTab.TextAppearance"
             />
     </com.google.android.material.appbar.AppBarLayout>
     <androidx.viewpager.widget.ViewPager
