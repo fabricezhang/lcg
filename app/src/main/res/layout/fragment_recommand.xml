@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -32,8 +32,6 @@
             android:background="@color/white"
             app:tabIndicatorColor="@color/colorAccent"
             app:tabIndicatorHeight="@dimen/dp_3"
-            app:tabPaddingStart="@dimen/dp_m_1"
-            app:tabPaddingEnd="@dimen/dp_m_1"
             app:tabTextColor="@color/gray"
             app:tabSelectedTextColor="@color/colorAccent"
             app:tabMode="fixed"
@@ -47,4 +45,4 @@
         android:focusableInTouchMode="true"
         android:focusable="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</LinearLayout>

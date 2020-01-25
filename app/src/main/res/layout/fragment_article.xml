@@ -24,7 +24,7 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:elevation="@dimen/dp_5">
 
-            <androidx.appcompat.widget.Toolbar
+            <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/article_toolbar"
                 android:textSize="@dimen/sp_12"
                 style="@style/Toolbar"

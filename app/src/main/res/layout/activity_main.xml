@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/clRootView"
@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         app:itemIconSize="@dimen/dp_20"
+        app:itemRippleColor="@color/translucent_gray"
         app:itemIconTint="@color/bottom_nav_state"
         app:itemTextColor="@color/bottom_nav_state"
         app:labelVisibilityMode="labeled"
@@ -19,4 +20,4 @@
         app:itemTextAppearanceInactive="@style/BottomNavigationView"
         app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"
         app:menu="@menu/nav_bottom"/>
-</FrameLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

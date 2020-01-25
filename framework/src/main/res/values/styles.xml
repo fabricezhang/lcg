@@ -188,12 +188,12 @@
         <item name="colorControlActivated">@color/pojie_logo</item>
     </style>
 
-    <style name="BottomNavigationView" parent="@style/TextAppearance.AppCompat.Caption">
-        <item name="android:textSize">@dimen/sp_8</item>
+    <style name="BottomNavigationView" parent="@style/AppTab.TextAppearance">
+        <item name="android:textSize">9sp</item>
     </style>
 
-    <style name="BottomNavigationView.Active" parent="@style/TextAppearance.AppCompat.Caption">
-        <item name="android:textSize">@dimen/sp_10</item>
+    <style name="BottomNavigationView.Active" parent="@style/AppTab.TextAppearance">
+        <item name="android:textSize">12sp</item>
     </style>
 
 
