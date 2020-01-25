@@ -7,14 +7,15 @@
     android:id="@+id/layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/dp_7"
+    android:layout_marginTop="@dimen/dp_2"
+    android:layout_marginBottom="@dimen/dp_6"
     android:clickable="true"
     android:focusable="true"
     android:background="@color/white"
     android:foreground="?attr/selectableItemBackgroundBorderless"
     android:longClickable="true"
     android:orientation="vertical"
-    app:cardCornerRadius="@dimen/dp_6"
+    app:cardCornerRadius="0dp"
     app:cardElevation="@dimen/dp_3">
 
     <androidx.constraintlayout.widget.ConstraintLayout

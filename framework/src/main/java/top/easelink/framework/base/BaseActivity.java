@@ -24,7 +24,6 @@ import java.util.Stack;
 
 import top.easelink.framework.topbase.TopFragment;
 import top.easelink.framework.utils.CommonUtils;
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public abstract class BaseActivity<T extends ViewDataBinding, V extends ViewModel> extends AppCompatActivity
         implements TopFragment.Callback {
@@ -74,11 +73,6 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends ViewMode
             return true;
         }
         return false;
-    }
-
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
     @Override

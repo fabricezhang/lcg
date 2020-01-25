@@ -9,7 +9,6 @@ import com.tencent.stat.StatService;
 
 import timber.log.Timber;
 import top.easelink.lcg.mta.EventHelperKt;
-import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 import static top.easelink.lcg.mta.MTAConstantKt.EVENT_APP_LAUNCH;
 

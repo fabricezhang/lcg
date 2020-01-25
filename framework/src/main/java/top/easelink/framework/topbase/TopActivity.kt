@@ -1,9 +1,7 @@
 package top.easelink.framework.topbase
 
-import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import top.easelink.framework.utils.popBackFragmentInclusive
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
 import java.util.*
 
 
@@ -20,9 +18,5 @@ abstract class TopActivity : AppCompatActivity(), TopFragment.Callback {
             return popBackFragmentInclusive(supportFragmentManager, tag)
         }
         return false
-    }
-
-    override fun attachBaseContext(newBase: Context?) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase))
     }
 }

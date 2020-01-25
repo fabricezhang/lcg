@@ -46,8 +46,6 @@ dependencies {
     api "android.arch.work:work-runtime:$rootProject.workVersion"
     api 'pub.devrel:easypermissions:1.0.1'
 
-    // font
-    api "uk.co.chrisjenx:calligraphy:$rootProject.calligraphyVersion"
     // image
     api "com.github.bumptech.glide:glide:$rootProject.glideVersion"
     api 'com.github.chrisbanes:PhotoView:2.0.0'
