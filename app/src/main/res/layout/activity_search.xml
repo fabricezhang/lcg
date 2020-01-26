@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <import type="android.view.View" />
@@ -9,15 +10,31 @@
                 name="viewModel"
                 type="top.easelink.lcg.ui.search.viewmodel.SearchViewModel" />
     </data>
-    <top.easelink.framework.customview.ScrollChildSwipeRefreshLayout
-            android:id="@+id/refresh_layout"
+    <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white"
-            app:refreshing="@{viewModel.isLoading}">
-        <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_view"
+            android:orientation="vertical">
+        <TextView
+                android:textAppearance="@style/TextStyle.SearchResult.Title"
+                android:id="@+id/total_info"
+                android:layout_marginStart="@dimen/dp_4"
+                android:layout_marginTop="@dimen/dp_6"
+                android:layout_marginBottom="@dimen/dp_4"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-    </top.easelink.framework.customview.ScrollChildSwipeRefreshLayout>
+                android:layout_height="wrap_content"
+                android:text="@string/search_result_title"
+                />
+        <top.easelink.framework.customview.ScrollChildSwipeRefreshLayout
+                android:id="@+id/refresh_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/slight_light_light_gray"
+                app:refreshing="@{viewModel.isLoading}">
+            <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+        </top.easelink.framework.customview.ScrollChildSwipeRefreshLayout>
+    </LinearLayout>
+
 </layout>

@@ -16,7 +16,7 @@ import top.easelink.lcg.utils.showMessage
  * desc   :
  */
 
-object RxSearchService {
+object SearchService {
 
     @WorkerThread
     fun doSearchRequest(requestUrl: String): SearchResults {
@@ -37,10 +37,15 @@ object RxSearchService {
                     null
                 }
                 .filterNotNull()
+            if (list.isNullOrEmpty()) {
+                throw Exception("Empty Result")
+            }
             return SearchResults(list).also {
                 try {
-                    it.nextPageUrl =
-                        doc.select("a.pager-next-foot").attr("href")
+                    it.nextPageUrl = doc.
+                        selectFirst("a.pager-next-foot")
+                        .attr("href")
+                    it.totalResult = doc.getElementsByClass("support-text-top").first().text()
                 } catch (e: Exception) { // mute
                     it.nextPageUrl = null
                 }

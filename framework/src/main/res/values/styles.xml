@@ -70,8 +70,12 @@
         <item name="android:textSize">@dimen/sp_16</item>
     </style>
 
-    <style name="TextStyle.Comment" parent="TextAppearance.MaterialComponents.Tooltip">
-        <item name="android:textSize">@dimen/sp_16</item>
+    <style name="TextStyle.SearchResult.Abstract" parent="TextAppearance.MaterialComponents.Subtitle1">
+        <item name="android:textSize">@dimen/sp_12</item>
+        <item name="android:textColor">@color/semi_gray</item>
+    </style>
+    <style name="TextStyle.SearchResult.Title" parent="TextAppearance.MaterialComponents.Subtitle1">
+        <item name="android:textSize">@dimen/sp_14</item>
     </style>
 
     <style name="Toolbar" parent="Widget.MaterialComponents.Toolbar">
