@@ -8,7 +8,7 @@ import top.easelink.framework.base.SafeShowDialogFragment
 import top.easelink.framework.utils.dpToPx
 import top.easelink.lcg.LCGApp
 import top.easelink.lcg.R
-import top.easelink.lcg.ui.info.UserData
+import top.easelink.lcg.spipedata.UserData
 
 class LogoutHintDialog(
     private val positive: ()-> Unit,

@@ -3,7 +3,6 @@ package top.easelink.lcg.ui.main.me.viewmodel
 import android.annotation.SuppressLint
 import android.view.View
 import android.webkit.CookieManager
-import android.webkit.WebView
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -22,14 +21,13 @@ import top.easelink.lcg.mta.*
 import top.easelink.lcg.service.work.SignInWorker
 import top.easelink.lcg.service.work.SignInWorker.Companion.DEFAULT_TIME_UNIT
 import top.easelink.lcg.service.work.SignInWorker.Companion.WORK_INTERVAL
-import top.easelink.lcg.ui.info.UserData
+import top.easelink.lcg.spipedata.UserData
 import top.easelink.lcg.ui.main.logout.view.LogoutHintDialog
 import top.easelink.lcg.ui.main.me.model.UserInfo
-import top.easelink.lcg.ui.main.source.local.SP_KEY_AUTO_SIGN_IN
-import top.easelink.lcg.ui.main.source.local.SP_KEY_SYNC_FAVORITE
-import top.easelink.lcg.ui.main.source.local.SharedPreferencesHelper
+import top.easelink.lcg.spipedata.SP_KEY_AUTO_SIGN_IN
+import top.easelink.lcg.spipedata.SP_KEY_SYNC_FAVORITE
+import top.easelink.lcg.utils.SharedPreferencesHelper
 import top.easelink.lcg.ui.main.source.parseUserInfo
-import top.easelink.lcg.ui.webview.view.WebViewActivity
 import top.easelink.lcg.utils.WebsiteConstant.HOME_URL
 import top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL
 import top.easelink.lcg.utils.getCookies
@@ -47,10 +45,12 @@ class MeViewModel: ViewModel() {
     val mSyncFavoriteEnable = MutableLiveData<Boolean>()
 
     init {
-        mAutoSignInEnable.postValue(SharedPreferencesHelper
+        mAutoSignInEnable.postValue(
+            SharedPreferencesHelper
             .getUserSp()
             .getBoolean(SP_KEY_AUTO_SIGN_IN, false))
-        mSyncFavoriteEnable.postValue(SharedPreferencesHelper
+        mSyncFavoriteEnable.postValue(
+            SharedPreferencesHelper
             .getUserSp()
             .getBoolean(SP_KEY_SYNC_FAVORITE, false))
     }
@@ -164,7 +164,8 @@ class MeViewModel: ViewModel() {
     @WorkerThread
     private fun disableAutoSign() {
         WorkManager.getInstance().cancelAllWorkByTag(SignInWorker::class.java.simpleName)
-        SharedPreferencesHelper.getUserSp().edit().putBoolean(SP_KEY_AUTO_SIGN_IN, false).commit()
+        SharedPreferencesHelper.getUserSp().edit().putBoolean(
+            SP_KEY_AUTO_SIGN_IN, false).commit()
         mAutoSignInEnable.postValue(false)
     }
 

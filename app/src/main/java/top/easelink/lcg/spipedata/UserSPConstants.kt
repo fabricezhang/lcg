@@ -1,4 +1,7 @@
-package top.easelink.lcg.ui.main.source.local
+package top.easelink.lcg.spipedata
+
+const val SP_USER = "sp_user"
+const val SP_COOKIE = "sp_cookie"
 
 const val SP_KEY_LOGGED_IN = "sp_key_logged_in"
 const val SP_KEY_AUTO_SIGN_IN = "sp_key_auto_sign_in"

@@ -1,4 +1,4 @@
-package top.easelink.lcg.ui.main.source.local;
+package top.easelink.lcg.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -9,11 +9,11 @@ import java.util.List;
 
 import top.easelink.lcg.LCGApp;
 
+import static top.easelink.lcg.spipedata.UserSPConstantsKt.SP_COOKIE;
+import static top.easelink.lcg.spipedata.UserSPConstantsKt.SP_USER;
+
 @SuppressWarnings("unused")
 public class SharedPreferencesHelper {
-
-    private static final String SP_USER = "sp_user";
-    private static final String SP_COOKIE = "sp_cookie";
 
     public static SharedPreferences getUserSp() {
         return LCGApp.getInstance().getSharedPreferences(SP_USER, Context.MODE_PRIVATE);

@@ -26,7 +26,7 @@ import top.easelink.framework.customview.htmltextview.HtmlGlideImageGetter;
 import top.easelink.framework.utils.ScreenUtilsKt;
 import top.easelink.lcg.R;
 import top.easelink.lcg.databinding.ItemPostViewBinding;
-import top.easelink.lcg.ui.info.UserData;
+import top.easelink.lcg.spipedata.UserData;
 import top.easelink.lcg.ui.main.model.OpenArticleEvent;
 import top.easelink.lcg.ui.main.model.OpenLargeImageViewEvent;
 import top.easelink.lcg.ui.main.model.ReplyPostEvent;

@@ -8,7 +8,7 @@ import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import org.jsoup.nodes.Document
 import timber.log.Timber
-import top.easelink.lcg.ui.info.UserData
+import top.easelink.lcg.spipedata.UserData
 import top.easelink.lcg.ui.main.me.model.UserInfo
 import top.easelink.lcg.ui.main.model.NewMessageEvent
 import top.easelink.lcg.ui.main.model.NotificationInfo

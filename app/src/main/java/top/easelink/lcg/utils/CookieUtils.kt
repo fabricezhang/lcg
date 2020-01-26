@@ -1,6 +1,5 @@
 package top.easelink.lcg.utils
 
-import top.easelink.lcg.ui.main.source.local.SharedPreferencesHelper
 import java.util.*
 
 fun getCookies() = SharedPreferencesHelper

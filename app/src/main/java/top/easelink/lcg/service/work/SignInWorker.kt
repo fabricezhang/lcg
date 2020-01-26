@@ -6,7 +6,7 @@ import androidx.work.WorkerParameters
 import org.jsoup.Jsoup
 import timber.log.Timber
 import top.easelink.lcg.BuildConfig
-import top.easelink.lcg.ui.main.source.local.SharedPreferencesHelper
+import top.easelink.lcg.utils.SharedPreferencesHelper
 import java.util.concurrent.TimeUnit
 
 class SignInWorker(context: Context, workerParams: WorkerParameters) :

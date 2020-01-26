@@ -13,7 +13,7 @@ import top.easelink.framework.base.BaseViewHolder
 import top.easelink.framework.utils.dpToPx
 import top.easelink.lcg.R
 import top.easelink.lcg.databinding.ItemArticleEmptyViewBinding
-import top.easelink.lcg.ui.info.UserData
+import top.easelink.lcg.spipedata.UserData
 import top.easelink.lcg.ui.main.article.view.PostPreviewDialog
 import top.easelink.lcg.ui.main.articles.viewmodel.ArticleEmptyItemViewModel.ArticleEmptyItemViewModelListener
 import top.easelink.lcg.ui.main.model.OpenArticleEvent
