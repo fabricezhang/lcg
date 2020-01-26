@@ -36,7 +36,7 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
     override fun getForumArticles(query: String, processThreadList: Boolean): ForumPage? {
         return try {
             processForumArticlesDocument(
-                Client.sendRequestWithQuery(query),
+                Client.sendGetRequestWithQuery(query),
                 processThreadList
             )
         } catch (e: Exception) {
@@ -57,7 +57,7 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
     @WorkerThread
     override fun getPostPreview(query: String): PreviewPost? {
         return try {
-            getFirstPost(Client.sendRequestWithQuery(query))
+            getFirstPost(Client.sendGetRequestWithQuery(query))
         } catch (e: Exception) {
             when(e) {
                 is BlockException,
@@ -72,7 +72,7 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
     @WorkerThread
     override fun getArticleDetail(query: String): ArticleDetail? {
         try {
-            val doc = Client.sendRequestWithQuery(query)
+            val doc = Client.sendGetRequestWithQuery(query)
             val articleAbstract: ArticleAbstractResponse? =
                 doc.selectFirst("script")?.let {
                     try {
@@ -137,7 +137,7 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
         var list: List<Article> = emptyList()
         try {
             list = Client
-                .sendRequestWithQuery(query)
+                .sendGetRequestWithQuery(query)
                 .select("tbody")
                 .map {
                     try {
@@ -406,7 +406,7 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
     @WorkerThread
     override fun addFavorites(threadId: String, formHash: String): Boolean {
         return try {
-            Client.sendRequestWithQuery(String.format(
+            Client.sendGetRequestWithQuery(String.format(
                 ADD_TO_FAVORITE_QUERY,
                 threadId,
                 formHash
@@ -426,7 +426,7 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
     @WorkerThread
     fun replyAdd(query: String): String {
         return try {
-            val doc = Client.sendRequestWithQuery(query)
+            val doc = Client.sendGetRequestWithQuery(query)
             val message = doc.getElementsByClass("nfl").first().text()
             message
         } catch (e: Exception) {

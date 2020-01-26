@@ -13,7 +13,7 @@ object FavoriteDataSource {
         val favorites = mutableListOf<ArticleEntity>()
         var nextPageUrl: String? = GET_FAVORITE_QUERY
         while (nextPageUrl != null) {
-            val doc = Client.sendRequestWithQuery(nextPageUrl)
+            val doc = Client.sendGetRequestWithQuery(nextPageUrl)
             favorites.addAll(parseFavorites(doc))
             nextPageUrl = doc.selectFirst("a.nxt")?.attr("href")
         }

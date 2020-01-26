@@ -71,7 +71,9 @@ dependencies {
     api "com.google.guava:guava:$rootProject.guavaVersion"
     // jsoup
     api "org.jsoup:jsoup:$rootProject.jsoupVersion"
-//    api "com.squareup.okhttp3:okhttp:$rootProject.okHttpVersion"
+    api "com.squareup.okhttp3:okhttp:$rootProject.okHttpVersion"
+    api "com.github.franmontiel:PersistentCookieJar:v1.0.1"
+//    api "com.squareup.retrofit2:retrofit:2.7.1"
     // database
     api "androidx.room:room-runtime:$rootProject.roomVersion"
     // event-bus

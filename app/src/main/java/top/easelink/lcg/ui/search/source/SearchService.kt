@@ -5,7 +5,7 @@ import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
 import timber.log.Timber
 import top.easelink.lcg.R
-import top.easelink.lcg.network.Client
+import top.easelink.lcg.network.ApiClient
 import top.easelink.lcg.ui.search.model.SearchResult
 import top.easelink.lcg.ui.search.model.SearchResults
 import top.easelink.lcg.utils.showMessage
@@ -21,9 +21,9 @@ object SearchService {
     @WorkerThread
     fun doSearchRequest(requestUrl: String): SearchResults {
         try {
-            val doc = Client.sendRequestWithUrl(requestUrl)
-            val list: List<SearchResult> = doc.select("div.result")
-                .map {
+            val doc = ApiClient.sendGetRequestWithUrl(requestUrl)
+            val list: List<SearchResult> = doc?.select("div.result")
+                ?.map {
                     try {
                         val title = extractFrom(it, "h3.c-title", "a")
                         val url = extractAttrFrom(it, "href", "h3.c-title", "a")
@@ -36,16 +36,20 @@ object SearchService {
                     }
                     null
                 }
-                .filterNotNull()
+                ?.filterNotNull()
+                .orEmpty()
             if (list.isNullOrEmpty()) {
                 throw Exception("Empty Result")
             }
             return SearchResults(list).also {
                 try {
-                    it.nextPageUrl = doc.
+                    it.nextPageUrl = doc?.
                         selectFirst("a.pager-next-foot")
-                        .attr("href")
-                    it.totalResult = doc.getElementsByClass("support-text-top").first().text()
+                        ?.attr("href")
+                    it.totalResult = doc
+                        ?.getElementsByClass("support-text-top")
+                        ?.first()
+                        ?.text()
                 } catch (e: Exception) { // mute
                     it.nextPageUrl = null
                 }
