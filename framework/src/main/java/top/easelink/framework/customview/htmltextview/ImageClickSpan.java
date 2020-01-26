@@ -13,7 +13,7 @@ public class ImageClickSpan extends ClickableSpan {
     private OnImgTagClickListener listener;
     private int position;
 
-    public ImageClickSpan(Context context, String imageUrl, int position) {
+    ImageClickSpan(Context context, String imageUrl, int position) {
         this.context = context;
         this.imageUrl = imageUrl;
         this.position = position;

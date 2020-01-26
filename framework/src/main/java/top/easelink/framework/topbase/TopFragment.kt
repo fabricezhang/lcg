@@ -11,7 +11,7 @@ abstract class TopFragment : Fragment() {
         super.onAttach(context)
         mContext = context.also {
             if (this is ControllableFragment && isControllable()) {
-                (it as? Callback)?.onFragmentAttached(this.javaClass.simpleName)
+                (it as? Callback)?.onFragmentAttached(this.getBackStackTag())
             }
         }
     }

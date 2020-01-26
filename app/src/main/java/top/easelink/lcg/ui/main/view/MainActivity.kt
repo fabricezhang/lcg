@@ -16,7 +16,7 @@ import top.easelink.lcg.R
 import top.easelink.lcg.mta.EVENT_OPEN_FORUM
 import top.easelink.lcg.mta.PROP_FORUM_NAME
 import top.easelink.lcg.mta.sendKVEvent
-import top.easelink.lcg.ui.main.article.view.ArticleFragment.Companion.newInstance
+import top.easelink.lcg.ui.main.article.view.ArticleFragment
 import top.easelink.lcg.ui.main.articles.view.ForumArticlesFragment.Companion.newInstance
 import top.easelink.lcg.ui.main.forumnav.view.ForumNavigationFragment
 import top.easelink.lcg.ui.main.largeimg.view.LargeImageDialog
@@ -36,7 +36,7 @@ class MainActivity : TopActivity(), BottomNavigationView.OnNavigationItemSelecte
 
     override fun onBackPressed() {
         if (mFragmentTags.isNotEmpty() && mFragmentTags.size > 1) {
-            if (onFragmentDetached(mFragmentTags.pop())) {
+            while (onFragmentDetached(mFragmentTags.pop())) {
                 syncBottomViewNavItemState()
                 return
             }
@@ -98,7 +98,7 @@ class MainActivity : TopActivity(), BottomNavigationView.OnNavigationItemSelecte
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageEvent(event: OpenArticleEvent) {
-        showFragment(newInstance(event.url))
+        showFragment(ArticleFragment(event.url))
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

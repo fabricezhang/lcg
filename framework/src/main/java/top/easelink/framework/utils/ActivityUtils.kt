@@ -5,7 +5,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE
 import top.easelink.framework.topbase.ControllableFragment
-import top.easelink.framework.topbase.TopFragment
 
 /**
  * The `fragment` is added to the container view with id `frameId`. The operation is
@@ -15,16 +14,18 @@ import top.easelink.framework.topbase.TopFragment
 fun addFragmentInActivity(fragmentManager: FragmentManager,
                           fragment: Fragment,
                           frameId: Int) {
+    var tag = fragment.javaClass.simpleName
     fragmentManager
         .beginTransaction()
         .apply {
             (fragment as? ControllableFragment)?.also {
                 if (it.isControllable()) {
-                    addToBackStack(fragment.javaClass.simpleName)
+                    tag = it.getBackStackTag()
+                    addToBackStack(tag)
                 }
             }
         }
-        .add(frameId, fragment, fragment.javaClass.simpleName)
+        .add(frameId, fragment, tag)
         .commitAllowingStateLoss()
 }
 
