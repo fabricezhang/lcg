@@ -1,9 +1,13 @@
 package top.easelink.lcg.ui.main.view
 
+import android.app.Notification
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.google.android.material.bottomnavigation.BottomNavigationItemView
+import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import org.greenrobot.eventbus.EventBus
@@ -114,6 +118,12 @@ class MainActivity : TopActivity(), BottomNavigationView.OnNavigationItemSelecte
         val info = event.notificationInfo
         if (info.isNotEmpty()) {
             showMessage(getString(R.string.notification_arrival))
+            // Try show badge on bottom nav bar
+            val menuView= bottom_navigation.getChildAt(0) as? BottomNavigationMenuView
+            val itemView = menuView?.getChildAt(2) as? BottomNavigationItemView
+            itemView?.addView(
+                LayoutInflater.from(this).inflate(R.layout.menu_badge, menuView, false)
+            )
         }
     }
 
