@@ -1,10 +1,13 @@
 # LCG
 第三方自制吾爱破解论坛APP
-UI参照知乎和虎扑App, 架构参考Google官方MVVM代码结构.
 
-论坛讨论贴: https://www.52pojie.cn/thread-1073834-1-1.html
+UI参照知乎和虎扑App, 架构参考Google官方MVVM代码结构.
+目前已基本完成Kotlin改造，舍弃了Dagger2和RxJava。
+
+论坛讨论贴: https://www.52pojie.cn/thread-1095110-1-1.html
 
 APK下载 蓝奏云
+ - [V1.7.1](https://www.lanzous.com/i8vkrsj)
  - [V1.6.4](https://www.lanzous.com/i88wy1i)
  - [V1.6.2](https://www.lanzous.com/i80uh1g)
  - [V1.5.0](https://www.lanzous.com/i6wmceb)
@@ -12,6 +15,16 @@ APK下载 蓝奏云
  - [V1.3.0](https://www.lanzous.com/i57tefa)
  
 ## 功能
+
+### 1.7.1 版本更新
+- 主页面UI修改，增加求助页面
+- 增加了通知和私信页面
+- 支持查看大图功能，支持查看动图
+- 文章内链接跳转到内部浏览器
+- 支持查看附件图片
+- 我的收藏支持同步多页内容
+- 修复部分搜索问题
+- 应用内部优化及问题修复
 
 ### 1.7.0 版本更新
  - 将《我的收藏》放至《我的》页面
@@ -48,7 +61,3 @@ APK下载 蓝奏云
  
 ## 未完工
  - QQ一键登陆功能
- - Jsoup方式部分文章的显示问题（代码展示被屏蔽/图片不能正确显示等问题）
-
-涉及技术：
-MVVM, databinding, livedata, RxJava, eventbus, jsoup, htmltext, lottie等
