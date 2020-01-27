@@ -38,6 +38,7 @@ import top.easelink.lcg.LCGApp;
 import top.easelink.lcg.R;
 import top.easelink.lcg.service.web.HookInterface;
 import top.easelink.lcg.ui.main.view.MainActivity;
+import top.easelink.lcg.utils.ToastUtilsKt;
 
 import static top.easelink.lcg.ui.webview.WebViewConstantsKt.FORCE_ENABLE_JS_KEY;
 import static top.easelink.lcg.ui.webview.WebViewConstantsKt.OPEN_LOGIN_PAGE;
@@ -218,10 +219,12 @@ public class WebViewActivity extends AppCompatActivity {
     }
 
     private class InnerWebViewClient extends WebViewClient {
+
         @Override
-        public void onPageFinished(WebView view, String url) {
-            super.onPageFinished(view, url);
+        public void onPageCommitVisible(WebView view, String url) {
+            super.onPageCommitVisible(view, url);
             setLoading(false);
+            ToastUtilsKt.showMessage(R.string.login_successfully);
             if (isOpenLoginEvent) {
                 view.loadUrl("javascript:" + HOOK_NAME + ".processHtml(document.documentElement.outerHTML);");
             }
