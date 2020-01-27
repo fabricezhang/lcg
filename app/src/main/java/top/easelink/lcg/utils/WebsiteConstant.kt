@@ -11,7 +11,7 @@ object WebsiteConstant {
     const val SERVER_BASE_URL = "https://www.52pojie.cn/"
     const val FORUM_BASE_URL = "forum.php?mod=guide&view="
     const val BAIDU_SEARCH_BASE_URL = "http://zhannei.baidu.com/cse/"
-    const val SEARCH_URL = "http://zhannei.baidu.com/cse/site?q=%s&click=1&cc=52pojie.cn&s=&nsid="
+    const val SEARCH_URL = "http://zhannei.baidu.com/cse/site?q=%s&click=1&cc=52pojie.cn"
     const val FREE_CHAT_URL = "forum-10-1.html"
     const val WELFARE_URL = "forum-66-1.html"
     const val MOB_SECURITY_URL = "forum-65-%d.html"

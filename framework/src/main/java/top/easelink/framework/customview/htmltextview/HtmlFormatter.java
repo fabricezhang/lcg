@@ -14,12 +14,23 @@
 
 package top.easelink.framework.customview.htmltextview;
 
+import android.content.Context;
 import android.text.Html;
 import android.text.Html.ImageGetter;
+import android.text.SpannableStringBuilder;
 import android.text.Spanned;
+import android.text.style.ImageSpan;
+import android.text.style.URLSpan;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import timber.log.Timber;
+
+import static android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE;
 
 public class HtmlFormatter {
 
@@ -27,10 +38,28 @@ public class HtmlFormatter {
     }
 
     public static Spanned formatHtml(@NonNull HtmlFormatterBuilder builder) {
-        return formatHtml(builder.getHtml(), builder.getImageGetter(), builder.getClickableSpecialSpan(), builder.getDrawTableLinkSpan(), builder.getIndent(), builder.isRemoveTrailingWhiteSpace());
+        return formatHtml(
+                builder.getHtml(),
+                builder.getImageGetter(),
+                builder.getClickableSpecialSpan(),
+                builder.getDrawTableLinkSpan(),
+                builder.getIndent(),
+                builder.isRemoveTrailingWhiteSpace(),
+                null,
+                null,
+                null);
     }
 
-    public static Spanned formatHtml(@Nullable String html, ImageGetter imageGetter, ClickableSpecialSpan clickableSpecialSpan, DrawTableLinkSpan drawTableLinkSpan, float indent, boolean removeTrailingWhiteSpace) {
+    public static Spanned formatHtml(
+            @Nullable String html,
+            ImageGetter imageGetter,
+            ClickableSpecialSpan clickableSpecialSpan,
+            DrawTableLinkSpan drawTableLinkSpan,
+            float indent,
+            boolean removeTrailingWhiteSpace,
+            @Nullable Context context,
+            @Nullable OnImgTagClickListener onImgTagClickListener,
+            @Nullable OnLinkTagClickListener onLinkTagClickListener) {
         final HtmlTagHandler htmlTagHandler = new HtmlTagHandler();
         htmlTagHandler.setClickableSpecialSpan(clickableSpecialSpan);
         htmlTagHandler.setDrawTableLinkSpan(drawTableLinkSpan);
@@ -44,7 +73,31 @@ public class HtmlFormatter {
         } else {
             formattedHtml = Html.fromHtml(html, imageGetter, htmlTagHandler);
         }
-
+        if (formattedHtml instanceof SpannableStringBuilder) {
+            if (onImgTagClickListener != null) {
+                ImageSpan[] spans = formattedHtml.getSpans(0, formattedHtml.length(), ImageSpan.class);
+                for (ImageSpan span : spans) {
+                    String url = span.getSource();
+                    int pStart = formattedHtml.getSpanStart(span);
+                    int pEnd = formattedHtml.getSpanEnd(span);
+                    ImageClickSpan imageClickSpan = new ImageClickSpan(context, url, pStart);
+                    imageClickSpan.setListener(onImgTagClickListener);
+                    ((SpannableStringBuilder) formattedHtml).setSpan(imageClickSpan, pStart, pEnd, SPAN_EXCLUSIVE_EXCLUSIVE);
+                }
+            }
+            if (onLinkTagClickListener != null) {
+                URLSpan[] urlSpans = formattedHtml.getSpans(0, formattedHtml.length(), URLSpan.class);
+                for (URLSpan span : urlSpans) {
+                    String url = span.getURL();
+                    int pStart = formattedHtml.getSpanStart(span);
+                    int pEnd = formattedHtml.getSpanEnd(span);
+                    ((SpannableStringBuilder) formattedHtml).removeSpan(span);
+                    LinkClickSpan linkClickSpan = new LinkClickSpan(context, url);
+                    linkClickSpan.setListener(onLinkTagClickListener);
+                    ((SpannableStringBuilder) formattedHtml).setSpan(linkClickSpan, pStart, pEnd, Spanned.SPAN_POINT_POINT);
+                }
+            }
+        }
         return formattedHtml;
     }
 

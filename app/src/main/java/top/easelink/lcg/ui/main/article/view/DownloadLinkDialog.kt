@@ -35,13 +35,13 @@ class DownloadLinkDialog : SafeShowDialogFragment() {
             if (linkList != null && !linkList.isEmpty()) {
                 download_link_list.run {
                     adapter = ArrayAdapter(
-                        baseActivity,
+                        mContext,
                         R.layout.download_link_item_view, linkList
                     )
                     onItemClickListener =
                         AdapterView.OnItemClickListener { _: AdapterView<*>?, itemView: View, position: Int, _: Long ->
                             copy(linkList[position])
-                            itemView.setBackgroundColor(baseActivity.resources.getColor(R.color.colorAccent))
+                            itemView.setBackgroundColor(mContext.resources.getColor(R.color.colorAccent))
                         }
                 }
             }
@@ -56,7 +56,7 @@ class DownloadLinkDialog : SafeShowDialogFragment() {
     }
 
     private fun copy(clipString: String) {
-        val cm = baseActivity.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        val cm = mContext.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         val mClipData = ClipData.newPlainText("DownloadLink", clipString)
         cm.primaryClip = mClipData
         showMessage(R.string.copy_succeed)

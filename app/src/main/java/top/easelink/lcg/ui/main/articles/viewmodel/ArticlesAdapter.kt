@@ -13,7 +13,7 @@ import top.easelink.framework.base.BaseViewHolder
 import top.easelink.framework.utils.dpToPx
 import top.easelink.lcg.R
 import top.easelink.lcg.databinding.ItemArticleEmptyViewBinding
-import top.easelink.lcg.ui.info.UserData
+import top.easelink.lcg.spipedata.UserData
 import top.easelink.lcg.ui.main.article.view.PostPreviewDialog
 import top.easelink.lcg.ui.main.articles.viewmodel.ArticleEmptyItemViewModel.ArticleEmptyItemViewModelListener
 import top.easelink.lcg.ui.main.model.OpenArticleEvent
@@ -136,6 +136,23 @@ class ArticlesAdapter(
                 date_text_view.text = article.date
                 reply_and_view.text = article.let { "${it.reply} / ${it.view}" }
                 origin.text = article.origin
+                when (article.helpCoin) {
+                    0 -> stamp.visibility = View.GONE
+                    -1 -> {
+                        stamp.setDrawSpotEnable(true)
+                        stamp.setStampColor(ContextCompat.getColor(context, R.color.light_gray))
+                        stamp.setText(context.getString(R.string.help_request_solved))
+                        stamp.visibility = View.VISIBLE
+                        stamp.reDraw()
+                    }
+                    else -> {
+                        stamp.setDrawSpotEnable(true)
+                        stamp.setStampColor(ContextCompat.getColor(context, R.color.colorAccent))
+                        stamp.setText(article.helpCoin.toString())
+                        stamp.visibility = View.VISIBLE
+                        stamp.reDraw()
+                    }
+                }
             }
         }
 

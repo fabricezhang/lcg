@@ -26,7 +26,7 @@ class NotificationViewModel: ViewModel(){
         }
         GlobalScope.launch(Dispatchers.IO) {
             try {
-                Client.sendRequestWithQuery(nextPageUrl).let {
+                Client.sendGetRequestWithQuery(nextPageUrl).let {
                     val model = parseResponse(it)
                     notifications.postValue(model)
                 }
@@ -41,7 +41,7 @@ class NotificationViewModel: ViewModel(){
         GlobalScope.launch(Dispatchers.IO) {
             isLoading.postValue(true)
             try {
-                Client.sendRequestWithQuery(NOTIFICATION_HOME_URL).let {
+                Client.sendGetRequestWithQuery(NOTIFICATION_HOME_URL).let {
                     notifications.postValue(parseResponse(it))
                 }
             } catch (e: Exception) {

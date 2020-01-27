@@ -6,12 +6,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import top.easelink.lcg.ui.search.model.SearchResult
-import top.easelink.lcg.ui.search.source.RxSearchService.doSearchRequest
+import top.easelink.lcg.ui.search.source.SearchService.doSearchRequest
 import top.easelink.lcg.ui.search.viewmodel.SearchResultAdapter.SearchAdapterListener
 import top.easelink.lcg.utils.WebsiteConstant
 
 class SearchViewModel : ViewModel(), SearchAdapterListener {
     val searchResults = MutableLiveData<List<SearchResult>>()
+    val mTotalResult = MutableLiveData<String?>()
     val isLoading = MutableLiveData<Boolean>()
     private var mUrl: String? = null
     private var mNextPageUrl: String? = null
@@ -37,6 +38,7 @@ class SearchViewModel : ViewModel(), SearchAdapterListener {
                 if (searchResultList.isNotEmpty()) {
                     val list = searchResults.value
                     mNextPageUrl = nextPageUrl
+                    mTotalResult.postValue(totalResult)
                     if (type == SearchAdapterListener.FETCH_MORE && list != null && list.isNotEmpty()) {
                         searchResults.postValue(list.plus(searchResultList))
                     } else {

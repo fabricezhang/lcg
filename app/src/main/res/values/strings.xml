@@ -7,6 +7,7 @@
     <string name="clear">Clear</string>
     <string name="share">Share</string>
     <string name="search">搜索</string>
+    <string name="search_result_title">搜索结果：</string>
     <string name="open_in_webview">网页打开</string>
     <string name="extract_urls">提取下载链接</string>
     <string name="add_to_my_favorite">添加到收藏</string>
@@ -38,6 +39,8 @@
     <string name="tab_title_tech">技术分享</string>
     <string name="tab_title_new_thread">新鲜出炉</string>
     <string name="tab_title_digest">精华采撷</string>
+    <string name="tab_title_help">求助新帖</string>
+    <string name="help_request_solved">解</string>
     <string name="app_exit_tip">再按一次退出应用</string>
 
     <!--Me Fragment-->
@@ -94,6 +97,7 @@
     <string name="load_more">加载更多</string>
     <string name="no_more_content">没有更多了</string>
     <string name="tap_for_code">『点击显示代码』</string>
+    <string name="tap_for_large_image_failed">查看失败</string>
 
     <!--message fragment-->
     <string name="tab_title_private_message">私信</string>

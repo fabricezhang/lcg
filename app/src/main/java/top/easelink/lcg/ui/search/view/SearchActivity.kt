@@ -38,13 +38,20 @@ class SearchActivity : BaseActivity<ActivitySearchBinding, SearchViewModel>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         EventBus.getDefault().register(this)
-        setupRecyclerView()
+        setUp()
         viewModel.initUrl(intent.getStringExtra(WebsiteConstant.URL_KEY))
     }
 
     override fun onDestroy() {
         super.onDestroy()
         EventBus.getDefault().unregister(this)
+    }
+
+    private fun setUp() {
+        viewModel.mTotalResult.observe(this@SearchActivity, Observer {
+            viewDataBinding.totalInfo.text = it.orEmpty()
+        })
+        setupRecyclerView()
     }
 
     private fun setupRecyclerView() {

@@ -15,8 +15,8 @@ import top.easelink.lcg.ui.main.article.viewmodel.ArticleAdapterListener.Compani
 import top.easelink.lcg.ui.main.model.BlockException
 import top.easelink.lcg.ui.main.model.NetworkException
 import top.easelink.lcg.ui.main.source.local.ArticlesLocalDataSource
-import top.easelink.lcg.ui.main.source.local.SP_KEY_SYNC_FAVORITE
-import top.easelink.lcg.ui.main.source.local.SharedPreferencesHelper
+import top.easelink.lcg.spipedata.SP_KEY_SYNC_FAVORITE
+import top.easelink.lcg.utils.SharedPreferencesHelper
 import top.easelink.lcg.ui.main.source.model.ArticleAbstractResponse
 import top.easelink.lcg.ui.main.source.model.ArticleEntity
 import top.easelink.lcg.ui.main.source.model.Post
@@ -143,7 +143,8 @@ class ArticleViewModel: ViewModel(), ArticleAdapterListener {
                     timestamp = System.currentTimeMillis()
                 )
                 val syncFavoritesEnable =
-                    SharedPreferencesHelper.getUserSp().getBoolean(SP_KEY_SYNC_FAVORITE, false)
+                    SharedPreferencesHelper.getUserSp().getBoolean(
+                        SP_KEY_SYNC_FAVORITE, false)
                 if (syncFavoritesEnable) {
                     if (threadId != null && mFormHash != null) {
                         ArticlesRemoteDataSource.addFavorites(threadId, mFormHash!!).let {

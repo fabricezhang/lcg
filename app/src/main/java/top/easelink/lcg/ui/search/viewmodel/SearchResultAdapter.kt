@@ -15,8 +15,7 @@ import java.util.*
 
 class SearchResultAdapter(private var mListener: SearchAdapterListener) :
     RecyclerView.Adapter<BaseViewHolder>() {
-    private val mSearchResults: MutableList<SearchResult> =
-        ArrayList()
+    private val mSearchResults: MutableList<SearchResult> = ArrayList()
 
     override fun getItemCount(): Int {
         return if (mSearchResults.isEmpty()) {
@@ -56,11 +55,11 @@ class SearchResultAdapter(private var mListener: SearchAdapterListener) :
             )
             VIEW_TYPE_EMPTY -> EmptyViewHolder(
                 LayoutInflater.from(parent.context)
-                    .inflate(R.layout.item_load_more_view, parent, false)
+                    .inflate(R.layout.item_empty_view, parent, false)
             )
             else -> EmptyViewHolder(
                 LayoutInflater.from(parent.context)
-                    .inflate(R.layout.item_load_more_view, parent, false)
+                    .inflate(R.layout.item_empty_view, parent, false)
             )
         }
     }

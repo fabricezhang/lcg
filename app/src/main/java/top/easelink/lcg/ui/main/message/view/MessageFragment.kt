@@ -5,12 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentManager
 import kotlinx.android.synthetic.main.fragment_message.*
 import top.easelink.framework.topbase.ControllableFragment
 import top.easelink.framework.topbase.TopFragment
 import top.easelink.lcg.R
-import top.easelink.lcg.ui.info.UserData
+import top.easelink.lcg.spipedata.UserData
 import top.easelink.lcg.ui.main.login.view.LoginHintDialog
 import top.easelink.lcg.ui.main.message.viewmodel.MessageViewPagerAdapter
 

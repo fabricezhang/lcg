@@ -16,14 +16,16 @@ import top.easelink.lcg.R
 import top.easelink.lcg.mta.EVENT_OPEN_FORUM
 import top.easelink.lcg.mta.PROP_FORUM_NAME
 import top.easelink.lcg.mta.sendKVEvent
-import top.easelink.lcg.ui.main.article.view.ArticleFragment.Companion.newInstance
+import top.easelink.lcg.ui.main.article.view.ArticleFragment
 import top.easelink.lcg.ui.main.articles.view.ForumArticlesFragment.Companion.newInstance
 import top.easelink.lcg.ui.main.forumnav.view.ForumNavigationFragment
+import top.easelink.lcg.ui.main.largeimg.view.LargeImageDialog
 import top.easelink.lcg.ui.main.me.view.MeFragment
 import top.easelink.lcg.ui.main.message.view.MessageFragment
 import top.easelink.lcg.ui.main.model.NewMessageEvent
 import top.easelink.lcg.ui.main.model.OpenArticleEvent
 import top.easelink.lcg.ui.main.model.OpenForumEvent
+import top.easelink.lcg.ui.main.model.OpenLargeImageViewEvent
 import top.easelink.lcg.ui.main.recommand.view.RecommendFragment
 import top.easelink.lcg.utils.showMessage
 import java.util.*
@@ -34,7 +36,7 @@ class MainActivity : TopActivity(), BottomNavigationView.OnNavigationItemSelecte
 
     override fun onBackPressed() {
         if (mFragmentTags.isNotEmpty() && mFragmentTags.size > 1) {
-            if (onFragmentDetached(mFragmentTags.pop())) {
+            while (onFragmentDetached(mFragmentTags.pop())) {
                 syncBottomViewNavItemState()
                 return
             }
@@ -96,7 +98,7 @@ class MainActivity : TopActivity(), BottomNavigationView.OnNavigationItemSelecte
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageEvent(event: OpenArticleEvent) {
-        showFragment(newInstance(event.url))
+        showFragment(ArticleFragment(event.url))
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -112,6 +114,15 @@ class MainActivity : TopActivity(), BottomNavigationView.OnNavigationItemSelecte
         val info = event.notificationInfo
         if (info.isNotEmpty()) {
             showMessage(getString(R.string.notification_arrival))
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onMessageEvent(event: OpenLargeImageViewEvent) {
+        if (event.url.isNotEmpty()) {
+            LargeImageDialog(event.url).show(supportFragmentManager, LargeImageDialog::class.java.simpleName)
+        } else {
+            showMessage(R.string.tap_for_large_image_failed)
         }
     }
 

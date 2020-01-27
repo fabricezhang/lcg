@@ -47,7 +47,7 @@ class ConversationListFragment: TopFragment() {
             itemAnimator = DefaultItemAnimator()
             adapter = ConversationListAdapter(mConversationVM)
             mConversationVM.apply {
-                conversations.observe(this@ConversationListFragment, Observer {
+                conversations.observe(viewLifecycleOwner, Observer {
                     (adapter as ConversationListAdapter).run {
                         if (itemCount > 1) {
                             appendItems(it)

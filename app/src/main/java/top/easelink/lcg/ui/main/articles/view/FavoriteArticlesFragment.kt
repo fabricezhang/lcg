@@ -52,7 +52,7 @@ class FavoriteArticlesFragment : BaseFragment<FragmentFavoriteArticlesBinding, F
             itemAnimator = DefaultItemAnimator()
             adapter = FavoriteArticlesAdapter(viewModel)
         }
-        viewModel.articles.observe(this, Observer {
+        viewModel.articles.observe(viewLifecycleOwner, Observer {
             (viewDataBinding.recyclerView.adapter as? FavoriteArticlesAdapter)?.apply {
                 clearItems()
                 addItems(it)

@@ -28,14 +28,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:visibility="gone"
-                tools:visibility="visible"
-                />
+                android:background="@color/slight_light_light_gray"
+                tools:visibility="visible" />
 
             <com.airbnb.lottie.LottieAnimationView
+                android:elevation="@dimen/dp_4"
                 android:layout_gravity="bottom|end"
                 android:id="@+id/back_to_top"
-                android:layout_width="@dimen/dp_40"
-                android:layout_height="@dimen/dp_40"
+                android:layout_width="@dimen/dp_32"
+                android:layout_height="@dimen/dp_32"
                 android:scaleType="fitCenter"
                 android:layout_marginEnd="@dimen/dp_20"
                 android:layout_marginBottom="@dimen/dp_54"

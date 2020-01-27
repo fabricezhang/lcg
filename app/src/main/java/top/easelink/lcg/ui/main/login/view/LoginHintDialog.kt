@@ -1,5 +1,6 @@
 package top.easelink.lcg.ui.main.login.view
 
+import android.app.Activity
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.*
@@ -50,7 +51,7 @@ class LoginHintDialog : SafeShowDialogFragment() {
 
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
-        baseActivity.onBackPressed()
+        (mContext as? Activity)?.onBackPressed()
     }
 
 }

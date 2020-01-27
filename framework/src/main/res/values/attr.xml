@@ -4,4 +4,9 @@
         <attr name="el_drawable" format="reference"/>
         <attr name="el_text" format="reference"/>
     </declare-styleable>
+
+    <declare-styleable name="ELStampView">
+        <attr name="stampColor" format="color|reference"/>
+        <attr name="stampText" format="string"/>
+    </declare-styleable>
 </resources>

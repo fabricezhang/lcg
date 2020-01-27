@@ -4,21 +4,22 @@ import android.content.DialogInterface
 import android.view.ViewConfiguration
 import androidx.fragment.app.FragmentManager
 import timber.log.Timber
+import top.easelink.framework.topbase.TopDialog
 
 /**
  * 安全显示和隐藏
  * 解决 Unable to add window -- token android.os.BinderProxy@... is not valid
  */
-abstract class SafeShowDialogFragment : BaseDialog() {
+abstract class SafeShowDialogFragment : TopDialog() {
 
     private var lastTryShowTime: Long = 0L
 
     /**
      * 修复原生的bug
-     * @param manager
+     * @param fragmentManager
      * @param tag
      */
-    override fun show(manager: FragmentManager, tag: String?) {
+    override fun show(fragmentManager: FragmentManager, tag: String?) {
         //debounce
         val curTime = System.currentTimeMillis()
         var skip = false
@@ -45,7 +46,7 @@ abstract class SafeShowDialogFragment : BaseDialog() {
             } catch (e: Exception) {
             }
 
-            showCatchException(manager, tag)
+            showCatchException(fragmentManager, tag)
         }
     }
 

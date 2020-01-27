@@ -8,11 +8,11 @@ import android.widget.TextView
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import top.easelink.framework.base.BaseDialog
+import top.easelink.framework.base.SafeShowDialogFragment
 import top.easelink.lcg.R
 import top.easelink.lcg.ui.main.article.viewmodel.ReplyPostViewModel
 
-class ReplyPostDialog : BaseDialog() {
+class ReplyPostDialog : SafeShowDialogFragment() {
 
     private lateinit var replyPostViewModel: ReplyPostViewModel
 
@@ -47,7 +47,7 @@ class ReplyPostDialog : BaseDialog() {
         val button = view.findViewById<Button>(R.id.btn_confirm)
         button.setOnClickListener {
             val content = view.findViewById<EditText>(R.id.reply_content).text.trimEnd()
-            replyPostViewModel.sending.observe(this, object : Observer<Boolean> {
+            replyPostViewModel.sending.observe(viewLifecycleOwner, object : Observer<Boolean> {
                 var lastState: Boolean = false
                 override fun onChanged(newState: Boolean) {
                     if (lastState != newState) {

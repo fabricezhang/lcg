@@ -45,7 +45,7 @@ class NotificationFragment: TopFragment(){
                     notificationViewModel
                 )
             notificationViewModel.apply {
-                isLoading.observe(this@NotificationFragment, Observer {
+                isLoading.observe(viewLifecycleOwner, Observer {
                     if (it) {
                         loading.visibility = View.VISIBLE
                         notification_recycler_view.visibility = View.GONE
@@ -55,7 +55,7 @@ class NotificationFragment: TopFragment(){
                     }
                 })
                 notifications
-                    .observe(this@NotificationFragment, Observer { model ->
+                    .observe(viewLifecycleOwner, Observer { model ->
                         (adapter as NotificationsAdapter).run {
                             if (itemCount > 1) {
                                 appendItems(model.notifications)

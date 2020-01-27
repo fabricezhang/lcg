@@ -59,7 +59,7 @@ class ArticlesFragment : BaseFragment<FragmentArticlesBinding, ArticlesViewModel
     private fun setUpView() {
         setupRecyclerView()
         arguments?.getString(ARG_PARAM)?.let {
-            viewModel.articles.observe(this, Observer {articleList ->
+            viewModel.articles.observe(viewLifecycleOwner, Observer {articleList ->
                 if (articleList.isEmpty() && viewModel.isLoading.value == true) {
                     viewDataBinding.recyclerView.visibility = View.GONE
                 } else {

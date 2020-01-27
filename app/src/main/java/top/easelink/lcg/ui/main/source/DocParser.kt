@@ -8,7 +8,7 @@ import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import org.jsoup.nodes.Document
 import timber.log.Timber
-import top.easelink.lcg.ui.info.UserData
+import top.easelink.lcg.spipedata.UserData
 import top.easelink.lcg.ui.main.me.model.UserInfo
 import top.easelink.lcg.ui.main.model.NewMessageEvent
 import top.easelink.lcg.ui.main.model.NotificationInfo
@@ -33,7 +33,11 @@ fun parseUserInfo(doc: Document): UserInfo {
             val parentCredit = element?.parent()
             element?.remove()
             val credit = parentCredit?.text()
-            val signInState = selectFirst("p > img.qq_bind")?.attr("src")
+            val signInState = select("img.qq_bind")
+                ?.firstOrNull {
+                    !(it.attr("src")?.contains("qq")?:true)
+                }
+                ?.attr("src")
             UserInfo(userName, avatar, groupInfo, coin, credit, signInState)
         } else {
             UserInfo(getElementById("messagetext")?.text())

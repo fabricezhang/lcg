@@ -23,7 +23,6 @@ import top.easelink.framework.topbase.TopActivity;
 public abstract class BaseFragment<T extends ViewDataBinding, V extends ViewModel> extends Fragment implements ControllableFragment {
 
     private AppCompatActivity mActivity;
-    private View mRootView;
     private T mViewDataBinding;
     private V mViewModel;
 
@@ -31,6 +30,12 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends ViewMode
     @Override
     public boolean isControllable() {
         return true;
+    }
+
+    @NotNull
+    @Override
+    public String getBackStackTag() {
+        return this.getClass().getSimpleName();
     }
 
     /**
@@ -61,13 +66,13 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends ViewMode
             BaseActivity activity = (BaseActivity) context;
             this.mActivity = activity;
             if (this.isControllable()) {
-                activity.onFragmentAttached(this.getClass().getSimpleName());
+                activity.onFragmentAttached(getBackStackTag());
             }
         } else if (context instanceof TopActivity) {
             TopActivity topActivity = (TopActivity) context;
             this.mActivity = topActivity;
             if (isControllable()) {
-                topActivity.onFragmentAttached(this.getClass().getSimpleName());
+                topActivity.onFragmentAttached(getBackStackTag());
             }
         }
     }
@@ -82,7 +87,7 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends ViewMode
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mViewDataBinding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false);
-        mRootView = mViewDataBinding.getRoot();
+        View mRootView = mViewDataBinding.getRoot();
         mViewDataBinding.setLifecycleOwner(getActivity());
         return mRootView;
     }

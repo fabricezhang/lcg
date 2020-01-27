@@ -6,6 +6,8 @@ import androidx.annotation.WorkerThread
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import org.jsoup.HttpStatusException
+import org.jsoup.nodes.Attribute
+import org.jsoup.nodes.Attributes
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
@@ -34,7 +36,7 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
     override fun getForumArticles(query: String, processThreadList: Boolean): ForumPage? {
         return try {
             processForumArticlesDocument(
-                Client.sendRequestWithQuery(query),
+                Client.sendGetRequestWithQuery(query),
                 processThreadList
             )
         } catch (e: Exception) {
@@ -55,7 +57,7 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
     @WorkerThread
     override fun getPostPreview(query: String): PreviewPost? {
         return try {
-            getFirstPost(Client.sendRequestWithQuery(query))
+            getFirstPost(Client.sendGetRequestWithQuery(query))
         } catch (e: Exception) {
             when(e) {
                 is BlockException,
@@ -70,7 +72,7 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
     @WorkerThread
     override fun getArticleDetail(query: String): ArticleDetail? {
         try {
-            val doc = Client.sendRequestWithQuery(query)
+            val doc = Client.sendGetRequestWithQuery(query)
             val articleAbstract: ArticleAbstractResponse? =
                 doc.selectFirst("script")?.let {
                     try {
@@ -135,7 +137,7 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
         var list: List<Article> = emptyList()
         try {
             list = Client
-                .sendRequestWithQuery(query)
+                .sendGetRequestWithQuery(query)
                 .select("tbody")
                 .map {
                     try {
@@ -145,13 +147,28 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
                         val view = extractFrom(it, "td.num", "em")
                             .ifBlank { return@map null }
                             .toInt()
-                        val title = extractFrom(it, "th.common", ".xst")
+                        val title = it.selectFirst("th.common > .xst")?.text().orEmpty()
                         val author = extractFrom(it, "td.by", "a[href*=uid]")
                         val date = extractFrom(it, "td.by", "span")
                         val url = extractAttrFrom(it, "href", "th.common", "a.xst")
-                        val origin = extractFrom(it, "td.by", "a[target]")
+                        val origin = it.selectFirst("td.by > a[target]")?.text().orEmpty()
+                        val helpInfo = it.select("th.common > span.xi1 > span.xw1")?.text().orEmpty()
+                        var helpCoin = 0
+                        if (helpInfo.isEmpty()) {
+                            if (it.selectFirst("th.common")
+                                    ?.text()
+                                    ?.contains("- [已解决]") == true) {
+                                helpCoin = -1
+                            }
+                        } else {
+                            helpCoin = try {
+                                helpInfo.toInt()
+                            } catch (e: Exception) {
+                                0
+                            }
+                        }
                         if (title.isNotBlank() && author.isNotEmpty()) {
-                            return@map Article(title, author, date, url, view, reply, origin)
+                            return@map Article(title, author, date, url, view, reply, origin, helpCoin)
                         }
                     } catch (e: Exception) {
                         Timber.e(e)
@@ -327,7 +344,7 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
         return doc.selectFirst("div.pcb")
             .let {
                     element -> element.selectFirst("td.t_f")?.let {
-                    tmp -> processContentElement(tmp)
+                    tmp -> processContentElement(tmp).html()
             }
                 ?: element.selectFirst("div.locked").html()
             }
@@ -339,6 +356,13 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
             .mapTo(ArrayList<String>(), {
                 it.selectFirst("td.t_f")?.let {
                         tmp -> processContentElement(tmp)
+                }?.let {res ->
+                    it.select("div.savephotop > img")?.forEach {imgElement ->
+                        res.appendChild(
+                            imgElement.attr("src", imgElement.attr("file"))
+                        )
+                    }
+                    res.html()
                 } ?: it.selectFirst("div.locked").html()
             })
     }
@@ -349,17 +373,21 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
         }
     }
 
-    private fun processContentElement(element: Element): String { // remove picture tips
+    private fun processContentElement(element: Element): Element { // remove picture tips
         element.select("div.tip").remove()
         // remove user level info etc
         element.select("script").remove()
         // convert all code
         for (e in element.getElementsByTag("pre")) {
             e.siblingElements().remove()
-            val s =
-                e.html().replace("\r\n".toRegex(), "<br/>").replace(" ".toRegex(), "&nbsp;")
+            val s = e.html()
+                .replace("\r\n", "<br/>")
+                .replace("\r", "<br/>")
+                .replace("\n", "<br/>")
+                .replace(" ", "&nbsp;")
             e.html(s)
         }
+        // move gif from file to src
         val imgElements = element.getElementsByTag("img")
         for (i in imgElements.indices) {
             val imgElement = imgElements[i]
@@ -372,13 +400,13 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
                 imgElement.attr("src", attr)
             }
         }
-        return element.html()
+        return element
     }
 
     @WorkerThread
     override fun addFavorites(threadId: String, formHash: String): Boolean {
         return try {
-            Client.sendRequestWithQuery(String.format(
+            Client.sendGetRequestWithQuery(String.format(
                 ADD_TO_FAVORITE_QUERY,
                 threadId,
                 formHash
@@ -398,7 +426,7 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
     @WorkerThread
     fun replyAdd(query: String): String {
         return try {
-            val doc = Client.sendRequestWithQuery(query)
+            val doc = Client.sendGetRequestWithQuery(query)
             val message = doc.getElementsByClass("nfl").first().text()
             message
         } catch (e: Exception) {

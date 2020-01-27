@@ -26,14 +26,18 @@ import top.easelink.framework.customview.htmltextview.HtmlGlideImageGetter;
 import top.easelink.framework.utils.ScreenUtilsKt;
 import top.easelink.lcg.R;
 import top.easelink.lcg.databinding.ItemPostViewBinding;
-import top.easelink.lcg.ui.info.UserData;
+import top.easelink.lcg.spipedata.UserData;
+import top.easelink.lcg.ui.main.model.OpenArticleEvent;
+import top.easelink.lcg.ui.main.model.OpenLargeImageViewEvent;
 import top.easelink.lcg.ui.main.model.ReplyPostEvent;
 import top.easelink.lcg.ui.main.model.ScreenCaptureEvent;
 import top.easelink.lcg.ui.main.source.model.Post;
+import top.easelink.lcg.ui.webview.view.WebViewActivity;
 import top.easelink.lcg.utils.FileUtilsKt;
 
 import static top.easelink.lcg.utils.CopyUtilsKt.copyContent;
 import static top.easelink.lcg.utils.ToastUtilsKt.showMessage;
+import static top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL;
 
 public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
@@ -145,6 +149,15 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                 DrawTableLinkSpan drawTableLinkSpan = new DrawTableLinkSpan();
                 drawTableLinkSpan.setTableLinkText(itemView.getContext().getString(R.string.tap_for_code));
                 mBinding.contentTextView.setDrawTableLinkSpan(drawTableLinkSpan);
+                mBinding.contentTextView.setImageTagClickListener(((c, imageUrl, pos) ->
+                        EventBus.getDefault().post(new OpenLargeImageViewEvent(imageUrl))));
+                mBinding.contentTextView.setOnLinkTagClickListener((c, url) -> {
+                    if (url.startsWith(SERVER_BASE_URL+"thread")) {
+                        EventBus.getDefault().post(new OpenArticleEvent(url.substring(SERVER_BASE_URL.length())));
+                    } else {
+                        WebViewActivity.startWebViewWith(url, c);
+                    }
+                });
                 mBinding.contentTextView.setHtml(post.getContent(), htmlHttpImageGetter);
                 if (position == 0) {
                     mBinding.btnCapture.setVisibility(View.VISIBLE);

@@ -1,13 +1,13 @@
 package top.easelink.lcg.network
 
 import android.annotation.SuppressLint
-import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.jsoup.Connection
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
+import timber.log.Timber
 import top.easelink.lcg.BuildConfig
 import top.easelink.lcg.ui.main.source.checkLoginState
 import top.easelink.lcg.ui.main.source.checkMessages
@@ -19,7 +19,7 @@ import java.security.SecureRandom
 import java.security.cert.X509Certificate
 import javax.net.ssl.*
 
-object Client {
+object Client: ApiRequest {
 
     init {
         if (BuildConfig.DEBUG) {
@@ -33,7 +33,7 @@ object Client {
     private const val BASE_URL = SERVER_BASE_URL
 
     @Throws(SocketTimeoutException::class)
-    fun sendRequestWithQuery(query: String): Document {
+    override fun sendGetRequestWithQuery(query: String): Document {
         return Jsoup
             .connect("$BASE_URL$query")
             .timeout(TIME_OUT_LIMIT)
@@ -49,7 +49,7 @@ object Client {
             }
     }
 
-    fun sendRequestWithUrl(url: String): Document {
+    override fun sendGetRequestWithUrl(url: String): Document {
         return Jsoup
             .connect(url)
             .timeout(TIME_OUT_LIMIT)
@@ -87,15 +87,13 @@ object Client {
                     override fun checkClientTrusted(
                         certs: Array<X509Certificate>,
                         authType: String
-                    ) {
-                    }
+                    ) { }
 
                     @SuppressLint("TrustAllX509TrustManager")
                     override fun checkServerTrusted(
                         certs: Array<X509Certificate>,
                         authType: String
-                    ) {
-                    }
+                    ) { }
                 }
                 )
             // Install the all-trusting trust manager
@@ -107,7 +105,7 @@ object Client {
             // Install the all-trusting host verifier
             HttpsURLConnection.setDefaultHostnameVerifier(allHostsValid)
         } catch (e: Exception) {
-            Log.e("SSL", e.message, e)
+            Timber.e(e)
         }
     }
 }

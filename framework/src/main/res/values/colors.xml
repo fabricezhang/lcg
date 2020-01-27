@@ -6,6 +6,7 @@
     <color name="colorAccent">@color/pojie_logo</color>
     <color name="light_gray">#dbdbdb</color>
     <color name="slight_light_gray">#ECECEC</color>
+    <color name="slight_light_light_gray">#F7F6F6</color>
     <color name="gray">#7e7e7e</color>
     <color name="semi_gray">#979797</color>
     <color name="dark_gray">#696969</color>
@@ -16,6 +17,7 @@
     <color name="shadow">#d0d8dc</color>
     <color name="transparent">#00000000</color>
     <color name="translucent_white">#88ffffff</color>
+    <color name="translucent_gray">#4DECECEC</color>
     <color name="fb">#3b5998</color>
     <color name="google">#d34836</color>
 

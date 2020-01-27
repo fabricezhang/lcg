@@ -9,7 +9,6 @@ import com.tencent.stat.StatService;
 
 import timber.log.Timber;
 import top.easelink.lcg.mta.EventHelperKt;
-import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 import static top.easelink.lcg.mta.MTAConstantKt.EVENT_APP_LAUNCH;
 
@@ -22,7 +21,6 @@ public class LCGApp extends Application {
         super.onCreate();
         INSTANCE = this;
         initBulgy();
-        CalligraphyConfig.initDefault(provideCalligraphyDefaultConfig());
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
         }
@@ -43,12 +41,5 @@ public class LCGApp extends Application {
 
         StatService.registerActivityLifecycleCallbacks(LCGApp.this);
         EventHelperKt.sendEvent(EVENT_APP_LAUNCH);
-    }
-
-    private CalligraphyConfig provideCalligraphyDefaultConfig() {
-        return new CalligraphyConfig.Builder()
-                .setDefaultFontPath("fonts/alibaba/Alibaba_Regular.ttf")
-                .setFontAttrId(R.attr.fontPath)
-                .build();
     }
 }

@@ -2,9 +2,11 @@ package top.easelink.framework.topbase
 
 import android.app.Dialog
 import android.content.Context
+import android.content.DialogInterface
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.RelativeLayout
@@ -28,7 +30,7 @@ abstract class TopDialog : DialogFragment() {
             )
         }
         // creating the fullscreen dialog
-        val dialog = Dialog(mContext).apply {
+        return Dialog(mContext).apply {
             requestWindowFeature(Window.FEATURE_NO_TITLE)
             setContentView(root)
             window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -38,13 +40,16 @@ abstract class TopDialog : DialogFragment() {
             )
             setCanceledOnTouchOutside(false)
         }
-        return dialog
     }
 
     override fun show(
         fragmentManager: FragmentManager,
         tag: String?
     ) {
+        dialog?.setOnKeyListener {
+                _: DialogInterface?, keyCode: Int, event: KeyEvent
+            -> keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_DOWN
+        }
         val transaction = fragmentManager.beginTransaction()
         val prevFragment = fragmentManager.findFragmentByTag(tag)
         if (prevFragment != null) {

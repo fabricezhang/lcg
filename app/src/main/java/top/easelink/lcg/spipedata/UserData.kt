@@ -1,9 +1,10 @@
-package top.easelink.lcg.ui.info
+package top.easelink.lcg.spipedata
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import top.easelink.lcg.ui.main.source.local.*
+import top.easelink.lcg.utils.SharedPreferencesHelper
 
 object UserData {
 

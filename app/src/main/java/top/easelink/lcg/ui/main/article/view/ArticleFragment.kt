@@ -14,8 +14,6 @@ import top.easelink.framework.base.BaseFragment
 import top.easelink.lcg.BR
 import top.easelink.lcg.R
 import top.easelink.lcg.databinding.FragmentArticleBinding
-import top.easelink.lcg.mta.EVENT_OPEN_ARTICLE
-import top.easelink.lcg.mta.sendEvent
 import top.easelink.lcg.ui.main.article.view.DownloadLinkDialog.Companion.newInstance
 import top.easelink.lcg.ui.main.article.view.ReplyPostDialog.Companion.newInstance
 import top.easelink.lcg.ui.main.article.view.ScreenCaptureDialog.Companion.TAG
@@ -29,11 +27,15 @@ import top.easelink.lcg.utils.WebsiteConstant
 import top.easelink.lcg.utils.showMessage
 import java.util.*
 
-class ArticleFragment : BaseFragment<FragmentArticleBinding, ArticleViewModel>() {
-    private var articleUrl: String? = null
+class ArticleFragment(private var articleUrl: String) : BaseFragment<FragmentArticleBinding, ArticleViewModel>() {
+
 
     override fun isControllable(): Boolean {
         return true
+    }
+
+    override fun getBackStackTag(): String {
+        return articleUrl
     }
 
     override fun getBindingVariable(): Int {
@@ -51,16 +53,13 @@ class ArticleFragment : BaseFragment<FragmentArticleBinding, ArticleViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         EventBus.getDefault().register(this)
-        arguments?.run {
-            articleUrl = getString(KEY_URL)
-        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUp()
         setupToolBar()
-        viewModel.setUrl(articleUrl!!)
+        viewModel.setUrl(articleUrl)
         viewModel.fetchArticlePost(FETCH_POST_INIT){}
     }
 
@@ -78,13 +77,15 @@ class ArticleFragment : BaseFragment<FragmentArticleBinding, ArticleViewModel>()
             itemAnimator = DefaultItemAnimator()
             adapter = ArticleAdapter(viewModel)
 
-            viewModel.posts.observe(this@ArticleFragment, androidx.lifecycle.Observer{
+            viewModel.posts.observe(viewLifecycleOwner, androidx.lifecycle.Observer{
                 val url = it[0].replyUrl
                 if (it.size > 0 && url != null) {
                     comment.apply {
                         visibility = View.VISIBLE
                     }.setOnClickListener {
-                        CommentArticleDialog.newInstance(url).show(fragmentManager)
+                        CommentArticleDialog.newInstance(url).show(
+                            if (isAdded) parentFragmentManager else childFragmentManager
+                        )
                     }
                 } else {
                     comment.visibility = View.GONE
@@ -109,7 +110,7 @@ class ArticleFragment : BaseFragment<FragmentArticleBinding, ArticleViewModel>()
                     R.id.action_extract_urls -> {
                         val linkList: ArrayList<String>? = viewModel.extractDownloadUrl()
                         if (linkList != null && linkList.isNotEmpty()) {
-                            newInstance(linkList).show(fragmentManager)
+                            newInstance(linkList).show(if (isAdded) parentFragmentManager else childFragmentManager)
                         } else {
                             showMessage(R.string.download_link_not_found)
                         }
@@ -126,24 +127,16 @@ class ArticleFragment : BaseFragment<FragmentArticleBinding, ArticleViewModel>()
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageEvent(event: ReplyPostEvent) {
-        newInstance(event.replyUrl, event.author).show(fragmentManager)
+        newInstance(event.replyUrl, event.author).show(
+            if (isAdded) parentFragmentManager else childFragmentManager
+        )
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageEvent(event: ScreenCaptureEvent) {
-        ScreenCaptureDialog.newInstance(event.imagePath).show(fragmentManager!!, TAG)
-    }
-
-    companion object {
-        private const val KEY_URL = "KEY_URL"
-        @JvmStatic
-        fun newInstance(url: String): ArticleFragment {
-            sendEvent(EVENT_OPEN_ARTICLE)
-            return ArticleFragment().apply {
-                arguments = Bundle().apply {
-                    putString(KEY_URL, url)
-                }
-            }
-        }
+        ScreenCaptureDialog.newInstance(event.imagePath).show(
+            if (isAdded) parentFragmentManager else childFragmentManager,
+            TAG
+        )
     }
 }

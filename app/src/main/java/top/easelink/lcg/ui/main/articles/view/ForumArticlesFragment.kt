@@ -84,7 +84,7 @@ class ForumArticlesFragment : BaseFragment<FragmentForumArticlesBinding, ForumAr
 
 
     private fun setUp() {
-        viewModel.threadList.observe(this, Observer {
+        viewModel.threadList.observe(viewLifecycleOwner, Observer {
                 threadList -> setUpTabLayout(threadList)
         })
         arguments?.let {
@@ -151,7 +151,7 @@ class ForumArticlesFragment : BaseFragment<FragmentForumArticlesBinding, ForumAr
             }
         }
         // Add articles observer
-        viewModel.articles.observe(this@ForumArticlesFragment, Observer { articleList ->
+        viewModel.articles.observe(viewLifecycleOwner, Observer { articleList ->
             if (articleList.isEmpty() && viewModel.isLoading.value == true) {
                 viewDataBinding.recyclerView.visibility = View.GONE
             } else {

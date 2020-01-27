@@ -44,7 +44,7 @@ class ReplyPostViewModel : ViewModel() {
             }
         try {
             Client
-                .sendRequestWithQuery(query)
+                .sendGetRequestWithQuery(query)
                 .run {
                     val noticeauthormsg = selectFirst("input[name=noticeauthormsg]").attr("value")
                     val noticetrimstr = selectFirst("input[name=noticetrimstr]").attr("value")

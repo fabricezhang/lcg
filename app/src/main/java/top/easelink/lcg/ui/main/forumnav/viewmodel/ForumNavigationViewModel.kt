@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import top.easelink.lcg.R
-import top.easelink.lcg.ui.info.UserData.loggedInState
+import top.easelink.lcg.spipedata.UserData.loggedInState
 import top.easelink.lcg.ui.main.model.ForumNavigationModel
 import top.easelink.lcg.utils.WebsiteConstant
 import java.util.*
