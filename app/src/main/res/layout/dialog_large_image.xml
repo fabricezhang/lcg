@@ -21,7 +21,6 @@
             android:layout_width="@dimen/dp_20"
             android:layout_height="@dimen/dp_20"
             android:layout_gravity="end"
-            android:foregroundTint="@color/semi_gray"
             android:src="@drawable/ic_close_black_24dp"
             android:contentDescription="@null"/>
 </com.google.android.material.card.MaterialCardView>
