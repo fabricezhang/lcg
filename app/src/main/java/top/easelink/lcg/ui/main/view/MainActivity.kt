@@ -1,9 +1,13 @@
 package top.easelink.lcg.ui.main.view
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.google.android.material.bottomnavigation.BottomNavigationItemView
+import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import org.greenrobot.eventbus.EventBus
@@ -33,6 +37,8 @@ import kotlin.system.exitProcess
 
 class MainActivity : TopActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
     private var lastBackPressed = 0L
+
+    private var bubbleView: View? = null
 
     override fun onBackPressed() {
         if (mFragmentTags.isNotEmpty() && mFragmentTags.size > 1) {
@@ -114,6 +120,7 @@ class MainActivity : TopActivity(), BottomNavigationView.OnNavigationItemSelecte
         val info = event.notificationInfo
         if (info.isNotEmpty()) {
             showMessage(getString(R.string.notification_arrival))
+            showBubbleView(2)
         }
     }
 
@@ -123,6 +130,26 @@ class MainActivity : TopActivity(), BottomNavigationView.OnNavigationItemSelecte
             LargeImageDialog(event.url).show(supportFragmentManager, LargeImageDialog::class.java.simpleName)
         } else {
             showMessage(R.string.tap_for_large_image_failed)
+        }
+    }
+
+    @Suppress("SameParameterValue")
+    private fun showBubbleView(pos: Int) {
+        // Try show badge on bottom nav bar
+        val menuView= bottom_navigation.getChildAt(0) as? BottomNavigationMenuView
+        val itemView = menuView?.getChildAt(pos) as? BottomNavigationItemView
+        bubbleView = LayoutInflater.from(this).inflate(R.layout.menu_badge, menuView, false)
+        itemView?.addView(bubbleView)
+    }
+
+    @Suppress("SameParameterValue")
+    private fun removeBubbleView(pos: Int) {
+        bubbleView?.let {
+            // Try show badge on bottom nav bar
+            val menuView= bottom_navigation.getChildAt(0) as? BottomNavigationMenuView
+            val itemView = menuView?.getChildAt(pos) as? BottomNavigationItemView
+            itemView?.removeView(bubbleView)
+            bubbleView = null
         }
     }
 
@@ -164,6 +191,7 @@ class MainActivity : TopActivity(), BottomNavigationView.OnNavigationItemSelecte
         } else {
             when (item.itemId) {
                 R.id.action_message -> {
+                    removeBubbleView(2)
                     showFragment(MessageFragment::class.java)
                 }
                 R.id.action_forum_navigation -> showFragment(ForumNavigationFragment::class.java)
