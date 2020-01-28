@@ -27,6 +27,9 @@ import androidx.annotation.RawRes;
 import java.io.InputStream;
 import java.util.Scanner;
 
+import timber.log.Timber;
+import top.easelink.framework.R;
+
 public class HtmlTextView extends JellyBeanSpanFixTextView {
 
     public static final String TAG = "HtmlTextView";
@@ -87,22 +90,27 @@ public class HtmlTextView extends JellyBeanSpanFixTextView {
      *                    HtmlLocalImageGetter and HtmlRemoteImageGetter
      */
     public void setHtml(@NonNull String html, @Nullable Html.ImageGetter imageGetter) {
+        try {
+            setText(
+                    HtmlFormatter.formatHtml(
+                            html,
+                            imageGetter,
+                            clickableSpecialSpan,
+                            drawTableLinkSpan,
+                            indent,
+                            removeTrailingWhiteSpace,
+                            getContext(),
+                            onImgTagClickListener,
+                            onLinkTagClickListener)
+            );
 
-        setText(
-                HtmlFormatter.formatHtml(
-                        html,
-                        imageGetter,
-                        clickableSpecialSpan,
-                        drawTableLinkSpan,
-                        indent,
-                        removeTrailingWhiteSpace,
-                        getContext(),
-                        onImgTagClickListener,
-                        onLinkTagClickListener)
-        );
-
-        // make links work
-        setMovementMethod(LocalLinkMovementMethod.getInstance());
+            // make links work
+            setMovementMethod(LocalLinkMovementMethod.getInstance());
+        } catch (Exception e) {
+            // log exception and show error message
+            Timber.e(e);
+            setText(R.string.html_general_error);
+        }
     }
 
     /**

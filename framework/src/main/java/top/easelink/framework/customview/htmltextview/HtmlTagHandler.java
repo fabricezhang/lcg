@@ -178,16 +178,18 @@ public class HtmlTagHandler implements Html.TagHandler {
                 start(output, new Center());
             } else if (tag.equalsIgnoreCase("s") || tag.equalsIgnoreCase("strike")) {
                 start(output, new Strike());
-            } else if (tag.equalsIgnoreCase("table")) {
-                start(output, new Table());
-                if (tableTagLevel == 0) {
-                    tableHtmlBuilder = new StringBuilder();
-                    // We need some text for the table to be replaced by the span because
-                    // the other tags will remove their text when their text is extracted
-                    output.append("table placeholder");
-                }
+//          TODO Active Table feature in the future
 
-                tableTagLevel++;
+//            } else if (tag.equalsIgnoreCase("table")) {
+//                start(output, new Table());
+//                if (tableTagLevel == 0) {
+//                    tableHtmlBuilder = new StringBuilder();
+//                    // We need some text for the table to be replaced by the span because
+//                    // the other tags will remove their text when their text is extracted
+//                    output.append("table placeholder");
+//                }
+//
+//                tableTagLevel++;
             } else if (tag.equalsIgnoreCase("tr")) {
                 start(output, new Tr());
             } else if (tag.equalsIgnoreCase("th")) {
@@ -262,28 +264,28 @@ public class HtmlTagHandler implements Html.TagHandler {
                 end(output, Center.class, true, new AlignmentSpan.Standard(Layout.Alignment.ALIGN_CENTER));
             } else if (tag.equalsIgnoreCase("s") || tag.equalsIgnoreCase("strike")) {
                 end(output, Strike.class, false, new StrikethroughSpan());
-            } else if (tag.equalsIgnoreCase("table")) {
-                tableTagLevel--;
-
-                // When we're back at the root-level table
-                if (tableTagLevel == 0) {
-                    final String tableHtml = tableHtmlBuilder.toString();
-
-                    ClickableSpecialSpan myClickableSpecialSpan = null;
-                    if (clickableSpecialSpan != null) {
-                        myClickableSpecialSpan = clickableSpecialSpan.newInstance();
-                        myClickableSpecialSpan.setHtml(tableHtml);
-                    }
-
-                    DrawTableLinkSpan myDrawTableLinkSpan = null;
-                    if (drawTableLinkSpan != null) {
-                        myDrawTableLinkSpan = drawTableLinkSpan.newInstance();
-                    }
-
-                    end(output, Table.class, false, myDrawTableLinkSpan, myClickableSpecialSpan);
-                } else {
-                    end(output, Table.class, false);
-                }
+//            } else if (tag.equalsIgnoreCase("table")) {
+//                tableTagLevel--;
+//
+//                // When we're back at the root-level table
+//                if (tableTagLevel == 0) {
+//                    final String tableHtml = tableHtmlBuilder.toString();
+//
+//                    ClickableSpecialSpan myClickableSpecialSpan = null;
+//                    if (clickableSpecialSpan != null) {
+//                        myClickableSpecialSpan = clickableSpecialSpan.newInstance();
+//                        myClickableSpecialSpan.setHtml(tableHtml);
+//                    }
+//
+//                    DrawTableLinkSpan myDrawTableLinkSpan = null;
+//                    if (drawTableLinkSpan != null) {
+//                        myDrawTableLinkSpan = drawTableLinkSpan.newInstance();
+//                    }
+//
+//                    end(output, Table.class, false, myDrawTableLinkSpan, myClickableSpecialSpan);
+//                } else {
+//                    end(output, Table.class, false);
+//                }
             } else if (tag.equalsIgnoreCase("tr")) {
                 end(output, Tr.class, false);
             } else if (tag.equalsIgnoreCase("th")) {
