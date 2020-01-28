@@ -224,8 +224,8 @@ public class WebViewActivity extends AppCompatActivity {
         public void onPageCommitVisible(WebView view, String url) {
             super.onPageCommitVisible(view, url);
             setLoading(false);
-            ToastUtilsKt.showMessage(R.string.login_successfully);
             if (isOpenLoginEvent) {
+                ToastUtilsKt.showMessage(R.string.login_successfully);
                 view.loadUrl("javascript:" + HOOK_NAME + ".processHtml(document.documentElement.outerHTML);");
             }
             setCookies(CookieManager.getInstance().getCookie(url));
