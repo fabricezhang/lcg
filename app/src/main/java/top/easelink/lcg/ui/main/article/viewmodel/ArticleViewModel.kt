@@ -3,25 +3,25 @@ package top.easelink.lcg.ui.main.article.viewmodel
 import android.text.TextUtils
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import top.easelink.framework.threadpool.ApiPool
 import top.easelink.lcg.R
 import top.easelink.lcg.mta.EVENT_ADD_TO_FAVORITE
 import top.easelink.lcg.mta.sendEvent
+import top.easelink.lcg.spipedata.SP_KEY_SYNC_FAVORITE
 import top.easelink.lcg.ui.main.article.viewmodel.ArticleAdapterListener.Companion.FETCH_POST_INIT
 import top.easelink.lcg.ui.main.article.viewmodel.ArticleAdapterListener.Companion.FETCH_POST_MORE
 import top.easelink.lcg.ui.main.model.BlockException
 import top.easelink.lcg.ui.main.model.NetworkException
 import top.easelink.lcg.ui.main.source.local.ArticlesLocalDataSource
-import top.easelink.lcg.spipedata.SP_KEY_SYNC_FAVORITE
-import top.easelink.lcg.utils.SharedPreferencesHelper
 import top.easelink.lcg.ui.main.source.model.ArticleAbstractResponse
 import top.easelink.lcg.ui.main.source.model.ArticleEntity
 import top.easelink.lcg.ui.main.source.model.Post
 import top.easelink.lcg.ui.main.source.remote.ArticlesRemoteDataSource
 import top.easelink.lcg.utils.RegexUtils
+import top.easelink.lcg.utils.SharedPreferencesHelper
 import top.easelink.lcg.utils.showMessage
 import java.util.*
 
@@ -56,7 +56,7 @@ class ArticleViewModel: ViewModel(), ArticleAdapterListener {
             isLoading.value = false
             return
         }
-        GlobalScope.launch(Dispatchers.IO) {
+        GlobalScope.launch(ApiPool) {
             try {
                 ArticlesRemoteDataSource.getArticleDetail(query)?.let {
                     articleAbstract = it.articleAbstractResponse
@@ -98,7 +98,7 @@ class ArticleViewModel: ViewModel(), ArticleAdapterListener {
             isLoading.value = false
             throw IllegalStateException()
         }
-        GlobalScope.launch(Dispatchers.IO) {
+        GlobalScope.launch(ApiPool) {
             ArticlesRemoteDataSource.replyAdd(url).also {
                 showMessage(it)
             }
@@ -128,7 +128,7 @@ class ArticleViewModel: ViewModel(), ArticleAdapterListener {
         if (posts.isEmpty()) {
             showMessage(R.string.add_to_favorite_failed)
         }
-        GlobalScope.launch(Dispatchers.IO) {
+        GlobalScope.launch(ApiPool) {
             try {
                 // if title is null, use abstract's title, this rarely happens
                 val title = articleTitle.value?:articleAbstract?.title

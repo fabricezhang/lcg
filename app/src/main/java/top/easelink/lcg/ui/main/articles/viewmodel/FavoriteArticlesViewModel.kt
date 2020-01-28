@@ -2,10 +2,11 @@ package top.easelink.lcg.ui.main.articles.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import top.easelink.framework.threadpool.ApiPool
+import top.easelink.framework.threadpool.CommonPool
 import top.easelink.lcg.R
 import top.easelink.lcg.ui.main.articles.source.FavoriteDataSource.getAllRemoteFavorites
 import top.easelink.lcg.ui.main.source.local.ArticlesLocalDataSource
@@ -28,7 +29,7 @@ class FavoriteArticlesViewModel : ViewModel(), ArticleFetcher {
             ArticleFetcher.FetchType.FETCH_INIT -> rewindPageNum()
         }
         isLoading.value = true
-        GlobalScope.launch(Dispatchers.IO) {
+        GlobalScope.launch(CommonPool) {
             try {
                 ArticlesLocalDataSource.getAllFavoriteArticles().let {
                     if(it.isNotEmpty().also(callback))  {
@@ -45,7 +46,7 @@ class FavoriteArticlesViewModel : ViewModel(), ArticleFetcher {
 
     fun removeAllFavorites() {
         isLoading.value = true
-        GlobalScope.launch(Dispatchers.IO) {
+        GlobalScope.launch(CommonPool) {
             try {
                 if(ArticlesLocalDataSource.delAllArticlesFromFavorite()){
                     articles.postValue(emptyList())
@@ -64,7 +65,7 @@ class FavoriteArticlesViewModel : ViewModel(), ArticleFetcher {
 
     fun syncFavorites() {
         isLoading.value = true
-        GlobalScope.launch(Dispatchers.IO) {
+        GlobalScope.launch(ApiPool) {
             try {
                 val articleEntities = getAllRemoteFavorites()
                 if(ArticlesLocalDataSource.addAllArticleToFavorite(articleEntities)) {

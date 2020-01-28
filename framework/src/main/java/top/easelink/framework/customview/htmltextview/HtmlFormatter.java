@@ -25,11 +25,6 @@ import android.text.style.URLSpan;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import timber.log.Timber;
-
 import static android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE;
 
 public class HtmlFormatter {

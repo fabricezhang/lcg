@@ -2,9 +2,9 @@ package top.easelink.lcg.ui.main.articles.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import top.easelink.framework.threadpool.ApiPool
 import top.easelink.lcg.ui.main.source.model.Article
 import top.easelink.lcg.ui.main.source.remote.ArticlesRemoteDataSource
 
@@ -25,7 +25,7 @@ class ArticlesViewModel : ViewModel(), ArticleFetcher {
             ArticleFetcher.FetchType.FETCH_INIT -> 1
         }
         isLoading.value = true
-        GlobalScope.launch(Dispatchers.IO){
+        GlobalScope.launch(ApiPool){
             ArticlesRemoteDataSource.getHomePageArticles(mUrl!!, pageNum).let {
                 if (it.isNotEmpty().also(callback)) {
                     val list = articles.value?.toMutableList()

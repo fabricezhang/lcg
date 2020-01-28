@@ -2,19 +2,20 @@ package top.easelink.lcg.ui.main.source
 
 import android.text.TextUtils
 import androidx.annotation.WorkerThread
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import org.jsoup.nodes.Document
 import timber.log.Timber
+import top.easelink.framework.threadpool.BackGroundPool
+import top.easelink.framework.threadpool.CommonPool
 import top.easelink.lcg.spipedata.UserData
 import top.easelink.lcg.ui.main.me.model.UserInfo
 import top.easelink.lcg.ui.main.model.NewMessageEvent
 import top.easelink.lcg.ui.main.model.NotificationInfo
 
 fun checkLoginState(doc: Document) {
-    GlobalScope.launch(Dispatchers.IO) {
+    GlobalScope.launch(CommonPool) {
         val userInfo = parseUserInfo(doc)
         UserData.loggedInState = userInfo.userName?.isNotEmpty()?:false
     }
@@ -46,7 +47,7 @@ fun parseUserInfo(doc: Document): UserInfo {
 }
 
 fun checkMessages(doc: Document) {
-    GlobalScope.launch(Dispatchers.IO) {
+    GlobalScope.launch(BackGroundPool) {
         val notificationInfo = parseNotificationInfo(doc)
         if (notificationInfo.isNotEmpty()) {
             EventBus.getDefault().post(NewMessageEvent(notificationInfo))

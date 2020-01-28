@@ -2,11 +2,11 @@ package top.easelink.lcg.ui.main.message.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.jsoup.nodes.Document
 import timber.log.Timber
+import top.easelink.framework.threadpool.ApiPool
 import top.easelink.lcg.network.Client
 import top.easelink.lcg.ui.main.model.BaseNotification
 import top.easelink.lcg.ui.main.model.NotificationModel
@@ -24,7 +24,7 @@ class NotificationViewModel: ViewModel(){
             callback.invoke(false)
             return
         }
-        GlobalScope.launch(Dispatchers.IO) {
+        GlobalScope.launch(ApiPool) {
             try {
                 Client.sendGetRequestWithQuery(nextPageUrl).let {
                     val model = parseResponse(it)
@@ -38,7 +38,7 @@ class NotificationViewModel: ViewModel(){
     }
 
     fun fetchNotifications() {
-        GlobalScope.launch(Dispatchers.IO) {
+        GlobalScope.launch(ApiPool) {
             isLoading.postValue(true)
             try {
                 Client.sendGetRequestWithQuery(NOTIFICATION_HOME_URL).let {
