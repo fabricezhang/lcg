@@ -1,9 +1,9 @@
 package top.easelink.lcg.spipedata
 
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import top.easelink.lcg.ui.main.source.local.*
+import top.easelink.framework.threadpool.CommonPool
+import top.easelink.lcg.ui.main.source.local.ArticlesLocalDataSource
 import top.easelink.lcg.utils.SharedPreferencesHelper
 
 object UserData {
@@ -38,7 +38,7 @@ object UserData {
 
     fun clearAll() {
         SharedPreferencesHelper.getUserSp().edit().clear().apply()
-        GlobalScope.launch(Dispatchers.IO) {
+        GlobalScope.launch(CommonPool) {
             ArticlesLocalDataSource.delAllArticlesFromFavorite()
         }
     }

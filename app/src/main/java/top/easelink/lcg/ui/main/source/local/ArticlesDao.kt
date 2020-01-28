@@ -4,7 +4,6 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import org.jsoup.nodes.Entities
 import top.easelink.lcg.ui.main.source.model.ArticleEntity
 
 /**

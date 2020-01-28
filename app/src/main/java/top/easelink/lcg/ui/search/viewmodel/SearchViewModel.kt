@@ -2,9 +2,9 @@ package top.easelink.lcg.ui.search.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import top.easelink.framework.threadpool.ApiPool
 import top.easelink.lcg.ui.search.model.SearchResult
 import top.easelink.lcg.ui.search.source.SearchService.doSearchRequest
 import top.easelink.lcg.ui.search.viewmodel.SearchResultAdapter.SearchAdapterListener
@@ -33,7 +33,7 @@ class SearchViewModel : ViewModel(), SearchAdapterListener {
             }
             else ->  return
         }
-        GlobalScope.launch(Dispatchers.IO){
+        GlobalScope.launch(ApiPool){
             doSearchRequest(requestUrl).apply {
                 if (searchResultList.isNotEmpty()) {
                     val list = searchResults.value

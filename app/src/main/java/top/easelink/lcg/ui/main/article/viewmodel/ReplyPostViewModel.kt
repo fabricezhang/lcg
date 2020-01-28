@@ -2,12 +2,12 @@ package top.easelink.lcg.ui.main.article.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.jsoup.Connection
 import org.jsoup.Jsoup
 import timber.log.Timber
+import top.easelink.framework.threadpool.ApiPool
 import top.easelink.lcg.network.Client
 import top.easelink.lcg.utils.WebsiteConstant.CHECK_RULE_URL
 import top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL
@@ -20,7 +20,7 @@ class ReplyPostViewModel : ViewModel() {
 
     fun sendReply(query: String?, content: String, callback: () -> Unit) {
         sending.value = true
-        GlobalScope.launch(Dispatchers.IO) {
+        GlobalScope.launch(ApiPool) {
             sendReplyAsync(query, content, callback)
         }
     }

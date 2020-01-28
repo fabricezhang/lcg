@@ -1,13 +1,13 @@
 package top.easelink.lcg.network
 
 import android.annotation.SuppressLint
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.jsoup.Connection
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import timber.log.Timber
+import top.easelink.framework.threadpool.BackGroundPool
 import top.easelink.lcg.BuildConfig
 import top.easelink.lcg.ui.main.source.checkLoginState
 import top.easelink.lcg.ui.main.source.checkMessages
@@ -60,18 +60,18 @@ object Client: ApiRequest {
             .let {
                 setCookies(it.cookies())
                 it.parse().also { doc ->
-                    GlobalScope.launch(Dispatchers.IO){
-                        checkResponse(doc)
-                    }
+                    checkResponse(doc)
                 }
             }
     }
 
     private fun checkResponse(doc: Document) {
-        if (System.currentTimeMillis() - lastTime > CHECK_INTERVAL) {
-            lastTime = System.currentTimeMillis()
-            checkLoginState(doc)
-            checkMessages(doc)
+        GlobalScope.launch(BackGroundPool){
+            if (System.currentTimeMillis() - lastTime > CHECK_INTERVAL) {
+                lastTime = System.currentTimeMillis()
+                checkLoginState(doc)
+                checkMessages(doc)
+            }
         }
     }
 

@@ -8,7 +8,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.provider.Settings;
 import android.util.Patterns;
-import top.easelink.framework.R;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,6 +15,8 @@ import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
+import top.easelink.framework.R;
 
 public final class CommonUtils {
 

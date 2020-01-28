@@ -2,11 +2,11 @@ package top.easelink.lcg.ui.main.message.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.jsoup.nodes.Document
 import timber.log.Timber
+import top.easelink.framework.threadpool.ApiPool
 import top.easelink.lcg.network.Client
 import top.easelink.lcg.ui.main.model.Conversation
 import top.easelink.lcg.utils.WebsiteConstant
@@ -20,7 +20,7 @@ class ConversationListViewModel : ViewModel() {
 
     fun fetchConversations() {
         isLoading.value = true
-        GlobalScope.launch(Dispatchers.IO) {
+        GlobalScope.launch(ApiPool) {
             try {
                 parseConversations(Client.sendGetRequestWithQuery(WebsiteConstant.PRIVATE_MESSAGE_URL))
             } catch (e: Exception) {

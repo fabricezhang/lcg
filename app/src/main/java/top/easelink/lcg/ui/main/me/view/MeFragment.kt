@@ -16,12 +16,13 @@ import com.airbnb.lottie.model.KeyPath
 import kotlinx.android.synthetic.main.cardview_me_notifications.*
 import kotlinx.android.synthetic.main.fragment_me.*
 import kotlinx.android.synthetic.main.layout_icon_button.view.*
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import timber.log.Timber
 import top.easelink.framework.base.BaseFragment
+import top.easelink.framework.threadpool.ImmediatePool
+import top.easelink.framework.threadpool.Main
 import top.easelink.framework.utils.addFragmentInActivity
 import top.easelink.framework.utils.bitmapBlur
 import top.easelink.framework.utils.convertViewToBitmap
@@ -35,7 +36,6 @@ import top.easelink.lcg.ui.main.login.view.LoginHintDialog
 import top.easelink.lcg.ui.main.me.viewmodel.MeViewModel
 import top.easelink.lcg.ui.main.model.OpenForumEvent
 import top.easelink.lcg.utils.WebsiteConstant.MY_ARTICLES_URL
-import top.easelink.lcg.utils.showMessage
 
 class MeFragment : BaseFragment<FragmentMeBinding, MeViewModel>() {
 
@@ -82,9 +82,9 @@ class MeFragment : BaseFragment<FragmentMeBinding, MeViewModel>() {
             if (!it) {
                 // add a blur effect
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    GlobalScope.launch(Dispatchers.IO){
+                    GlobalScope.launch(ImmediatePool){
                         val bitmap = bitmapBlur(baseActivity, convertViewToBitmap(view), 20)
-                        GlobalScope.launch(Dispatchers.Main) {
+                        GlobalScope.launch(Main) {
                             try {
                                 bitmap?.let {
                                     view?.apply {

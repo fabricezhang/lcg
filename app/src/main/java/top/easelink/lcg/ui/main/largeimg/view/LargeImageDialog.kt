@@ -5,8 +5,6 @@ import android.view.*
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.dialog_large_image.*
 import top.easelink.framework.topbase.TopDialog
-import top.easelink.framework.utils.dpToPx
-import top.easelink.lcg.LCGApp
 import top.easelink.lcg.R
 
 class LargeImageDialog(private val imageUrl: String) : TopDialog() {

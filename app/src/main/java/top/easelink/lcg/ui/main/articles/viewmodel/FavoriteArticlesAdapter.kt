@@ -7,11 +7,12 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_favorite_article_empty_view.view.*
 import kotlinx.android.synthetic.main.item_favorite_article_view.view.*
 import kotlinx.android.synthetic.main.item_load_more_view.view.*
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import top.easelink.framework.base.BaseViewHolder
+import top.easelink.framework.threadpool.CommonPool
+import top.easelink.framework.threadpool.Main
 import top.easelink.lcg.R
 import top.easelink.lcg.ui.main.model.OpenArticleEvent
 import top.easelink.lcg.ui.main.source.local.ArticlesLocalDataSource.delArticleFromFavorite
@@ -91,14 +92,14 @@ class FavoriteArticlesAdapter(private var favoriteArticlesViewModel: FavoriteArt
         override fun onBind(position: Int) {
             articleEntity = mArticleEntities[position].also {entity ->
                 view.remove_button.setOnClickListener {
-                    GlobalScope.launch(Dispatchers.IO) {
+                    GlobalScope.launch(CommonPool) {
                         //TODO del url has a confirmation button to click, support this in the future
 //                        if (entity.delUrl.isNotEmpty()) {
 //                            val doc = Client.sendGetRequestWithQuery(entity.delUrl)
 //                        }
                         if (delArticleFromFavorite(entity.id)) {
                             mArticleEntities.remove(entity)
-                            GlobalScope.launch(Dispatchers.Main) {
+                            GlobalScope.launch(Main) {
                                 notifyItemRemoved(position)
                                 notifyItemRangeChanged(position, mArticleEntities.size - position)
                             }

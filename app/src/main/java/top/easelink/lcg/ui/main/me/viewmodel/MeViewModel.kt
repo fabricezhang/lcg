@@ -10,24 +10,24 @@ import androidx.work.Constraints
 import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkManager
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.jsoup.Jsoup
 import timber.log.Timber
 import top.easelink.framework.base.BaseFragment
+import top.easelink.framework.threadpool.ApiPool
 import top.easelink.lcg.R
 import top.easelink.lcg.mta.*
 import top.easelink.lcg.service.work.SignInWorker
 import top.easelink.lcg.service.work.SignInWorker.Companion.DEFAULT_TIME_UNIT
 import top.easelink.lcg.service.work.SignInWorker.Companion.WORK_INTERVAL
+import top.easelink.lcg.spipedata.SP_KEY_AUTO_SIGN_IN
+import top.easelink.lcg.spipedata.SP_KEY_SYNC_FAVORITE
 import top.easelink.lcg.spipedata.UserData
 import top.easelink.lcg.ui.main.logout.view.LogoutHintDialog
 import top.easelink.lcg.ui.main.me.model.UserInfo
-import top.easelink.lcg.spipedata.SP_KEY_AUTO_SIGN_IN
-import top.easelink.lcg.spipedata.SP_KEY_SYNC_FAVORITE
-import top.easelink.lcg.utils.SharedPreferencesHelper
 import top.easelink.lcg.ui.main.source.parseUserInfo
+import top.easelink.lcg.utils.SharedPreferencesHelper
 import top.easelink.lcg.utils.WebsiteConstant.HOME_URL
 import top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL
 import top.easelink.lcg.utils.getCookies
@@ -102,7 +102,7 @@ class MeViewModel: ViewModel() {
                     )
             }
         }
-        GlobalScope.launch(Dispatchers.IO) {
+        GlobalScope.launch(ApiPool) {
             try {
                 val doc = Jsoup
                     .connect("$SERVER_BASE_URL$HOME_URL?mod=spacecp&ac=credit&showcredit=1")
