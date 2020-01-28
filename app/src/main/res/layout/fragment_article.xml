@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
     <data>
         <import type="android.view.View" />
         <variable
@@ -44,7 +45,8 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:gravity="center"
-            android:visibility="@{viewModel.isBlocked ? View.VISIBLE : View.GONE, default = gone}">
+            android:visibility="@{viewModel.isBlocked != null ? View.VISIBLE : View.GONE, default = gone}"
+            tools:visibility="visible" >
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/block_view"
                 android:layout_width="@dimen/dp_200"
@@ -55,9 +57,12 @@
                 app:lottie_autoPlay="true" />
             <TextView
                 style="@style/TextStyle.Heading"
+                android:layout_marginStart="@dimen/dp_30"
+                android:layout_marginEnd="@dimen/dp_30"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/block_info"/>
+                android:text="@{viewModel.isBlocked}"
+                tools:text="@string/block_info" />
         </LinearLayout>
 
         <LinearLayout

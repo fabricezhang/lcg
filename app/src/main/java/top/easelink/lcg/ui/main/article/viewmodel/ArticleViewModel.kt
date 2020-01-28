@@ -27,7 +27,7 @@ import java.util.*
 
 class ArticleViewModel: ViewModel(), ArticleAdapterListener {
     val posts = MutableLiveData<MutableList<Post>>()
-    val isBlocked = MutableLiveData<Boolean>()
+    val isBlocked = MutableLiveData<String>()
     val isNotFound = MutableLiveData<Boolean>()
     val shouldDisplayPosts = MutableLiveData<Boolean>()
     val articleTitle = MutableLiveData<String>()
@@ -84,7 +84,7 @@ class ArticleViewModel: ViewModel(), ArticleAdapterListener {
                 }
             } catch (e: Exception) {
                 when(e) {
-                    is BlockException -> setArticleBlocked()
+                    is BlockException -> setArticleBlocked(e.alertMessage)
                     is NetworkException -> setArticleNotFound()
                 }
                 Timber.e(e)
@@ -180,8 +180,8 @@ class ArticleViewModel: ViewModel(), ArticleAdapterListener {
         shouldDisplayPosts.postValue(false)
     }
 
-    private fun setArticleBlocked() {
-        isBlocked.postValue(true)
+    private fun setArticleBlocked(message: String) {
+        isBlocked.postValue(message)
         shouldDisplayPosts.postValue(false)
     }
 

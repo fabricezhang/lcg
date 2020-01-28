@@ -83,7 +83,12 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
                 }
             val title = doc.selectFirst("span#thread_subject")?.text().orEmpty()
             if (title.isEmpty()) {
-                throw BlockException()
+                val message = doc
+                    .getElementById("messagetext")
+                    ?.nextElementSibling()
+                    ?.text()
+                    .orEmpty()
+                throw BlockException(message)
             }
             val nextPageUrl = doc.selectFirst("a.nxt")?.attr("href").orEmpty()
             val replyAddUrls = getReplyAddUrl(doc)
@@ -317,12 +322,20 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
         }
     }
 
+    @Throws(BlockException::class)
     private fun getFirstPost(document: Document): PreviewPost {
         val dateTime = document
             .selectFirst("div.authi")
             ?.select("em")
             ?.text()
-            ?: throw BlockException()
+            ?: run {
+                val message = document
+                    .getElementById("messagetext")
+                    ?.nextElementSibling()
+                    ?.text()
+                    .orEmpty()
+                throw BlockException(message)
+            }
         val content = getFirstContent(document)
         var avatar: String? = null
         var name: String? = null
