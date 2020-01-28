@@ -7,6 +7,7 @@ import android.widget.EditText
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import kotlinx.android.synthetic.main.dialog_comment_article.*
 import top.easelink.framework.base.SafeShowDialogFragment
 import top.easelink.lcg.R
 import top.easelink.lcg.ui.main.article.viewmodel.ReplyPostViewModel
@@ -34,21 +35,21 @@ class CommentArticleDialog : SafeShowDialogFragment() {
             dismissDialog()
         }
         val button = view.findViewById<Button>(R.id.btn_confirm)
-        button.setOnClickListener {
-            val content = view.findViewById<EditText>(R.id.reply_content).text.trimEnd()
-            replyPostViewModel.sending.observe(this, object : Observer<Boolean> {
-                var lastState: Boolean = false
-                override fun onChanged(newState: Boolean) {
-                    if (lastState != newState) {
-                        lastState = newState
-                        if (newState) {
-                            button.setText(R.string.reply_post_btn_sending)
-                        } else {
-                            button.setText(R.string.reply_post_btn_sent)
-                        }
+        replyPostViewModel.sending.observe(viewLifecycleOwner, object : Observer<Boolean> {
+            var lastState: Boolean = false
+            override fun onChanged(newState: Boolean) {
+                if (lastState != newState) {
+                    lastState = newState
+                    if (newState) {
+                        button.setText(R.string.reply_post_btn_sending)
+                    } else {
+                        button.setText(R.string.reply_post_btn_sent)
                     }
                 }
-            })
+            }
+        })
+        button.setOnClickListener {
+            val content = reply_content.text?.trimEnd()
             replyPostViewModel.sendReply(
                 arguments?.getString(REPLY_POST_URL),
                 content.toString()

@@ -2,12 +2,10 @@ package top.easelink.lcg.ui.main.article.view
 
 import android.os.Bundle
 import android.view.*
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import kotlinx.android.synthetic.main.dialog_reply_post.*
 import top.easelink.framework.base.SafeShowDialogFragment
 import top.easelink.lcg.R
 import top.easelink.lcg.ui.main.article.viewmodel.ReplyPostViewModel
@@ -36,30 +34,25 @@ class ReplyPostDialog : SafeShowDialogFragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
         replyPostViewModel = ViewModelProviders.of(this).get(ReplyPostViewModel::class.java)
-        view.findViewById<Button>(R.id.btn_cancel).setOnClickListener {
+        btn_cancel.setOnClickListener {
             dismissDialog()
         }
-        view.findViewById<TextView>(R.id.reply_to).text =
-            String.format(
-                getString(R.string.reply_post_dialog_title),
-                arguments?.getString(REPLY_POST_AUTHOR)
-            )
-        val button = view.findViewById<Button>(R.id.btn_confirm)
-        button.setOnClickListener {
-            val content = view.findViewById<EditText>(R.id.reply_content).text.trimEnd()
-            replyPostViewModel.sending.observe(viewLifecycleOwner, object : Observer<Boolean> {
-                var lastState: Boolean = false
-                override fun onChanged(newState: Boolean) {
-                    if (lastState != newState) {
-                        lastState = newState
-                        if (newState) {
-                            button.setText(R.string.reply_post_btn_sending)
-                        } else {
-                            button.setText(R.string.reply_post_btn_sent)
-                        }
+        reply_to.text = String.format(getString(R.string.reply_post_dialog_title), arguments?.getString(REPLY_POST_AUTHOR))
+        replyPostViewModel.sending.observe(viewLifecycleOwner, object : Observer<Boolean> {
+            var lastState: Boolean = false
+            override fun onChanged(newState: Boolean) {
+                if (lastState != newState) {
+                    lastState = newState
+                    if (newState) {
+                        btn_confirm.setText(R.string.reply_post_btn_sending)
+                    } else {
+                        btn_confirm.setText(R.string.reply_post_btn_sent)
                     }
                 }
-            })
+            }
+        })
+        btn_confirm.setOnClickListener {
+            val content = reply_content.text?.trimEnd()
             replyPostViewModel.sendReply(
                 arguments?.getString(REPLY_POST_URL),
                 content.toString()
