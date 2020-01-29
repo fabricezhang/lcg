@@ -34,7 +34,6 @@ public class CustomGridViewAdapter extends ArrayAdapter<ForumNavigationModel> {
         mLayoutRes = resource;
     }
 
-    @BindingAdapter({"adapter"})
     public static void addForumNavigationList(GridView gridView, List<ForumNavigationModel> navigationModelList) {
         CustomGridViewAdapter adapter = (CustomGridViewAdapter) gridView.getAdapter();
         if (adapter != null) {
