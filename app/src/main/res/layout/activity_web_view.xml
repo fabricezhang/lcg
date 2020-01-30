@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <top.easelink.framework.customview.HorizontalScrollDisableWebView
+        <top.easelink.framework.customview.webview.HorizontalScrollDisableWebView
             android:id="@+id/web_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

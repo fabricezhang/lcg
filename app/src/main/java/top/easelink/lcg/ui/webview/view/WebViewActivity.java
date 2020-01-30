@@ -33,7 +33,7 @@ import org.jsoup.nodes.Element;
 import java.util.Objects;
 
 import timber.log.Timber;
-import top.easelink.framework.customview.HorizontalScrollDisableWebView;
+import top.easelink.framework.customview.webview.HorizontalScrollDisableWebView;
 import top.easelink.lcg.LCGApp;
 import top.easelink.lcg.R;
 import top.easelink.lcg.service.web.HookInterface;
