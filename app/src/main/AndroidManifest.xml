@@ -26,7 +26,9 @@
         android:name=".LCGApp"
         android:roundIcon="@drawable/ic_noavatar_middle"
         android:supportsRtl="true"
+        android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme">
+        <uses-library android:name="org.apache.http.legacy" android:required="false" />
         <activity
             android:launchMode="singleTask"
             android:name=".ui.main.view.MainActivity"
