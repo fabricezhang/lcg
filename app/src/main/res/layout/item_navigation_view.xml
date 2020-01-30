@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/card_view_item_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_4"
+        android:layout_marginTop="@dimen/dp_4"
+        android:layout_marginEnd="@dimen/dp_4"
+        android:layout_marginBottom="@dimen/dp_4"
+        android:foreground="?attr/selectableItemBackground">
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/dp_4">
+
+        <ImageView
+                android:id="@+id/forum_icon"
+                android:layout_width="@dimen/dp_40"
+                android:layout_height="@dimen/dp_40"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/dp_10"
+                android:background="@drawable/bg_oval"
+                android:backgroundTint="@color/gray"
+                android:transitionName="shareView"
+                android:contentDescription="@null" />
+
+        <TextView
+                android:id="@+id/forum_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/forum_icon"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
+
+        <TextView
+                android:id="@+id/forum_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/forum_title"
+                android:layout_marginTop="@dimen/dp_2"
+                android:layout_toEndOf="@id/forum_icon" />
+
+    </RelativeLayout>
+</com.google.android.material.card.MaterialCardView>

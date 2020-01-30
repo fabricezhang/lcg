@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
-import androidx.databinding.BindingAdapter;
 
 import java.util.List;
 
@@ -59,7 +58,11 @@ public class CustomGridViewAdapter extends ArrayAdapter<ForumNavigationModel> {
         ForumNavigationModel item = getItem(position);
         if (item == null) {
             // suppress the npe warning
-            item = new ForumNavigationModel("PlaceHolder", R.drawable.launch_icon, "");
+            item = new ForumNavigationModel(
+                    "PlaceHolder",
+                    R.drawable.launch_icon,
+                    "",
+                    null);
         }
         holder.textView.setText(item.getTitle());
         holder.imageView.setImageResource(item.getDrawableRes());
