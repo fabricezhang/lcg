@@ -26,9 +26,9 @@ fun saveImageToGallery(bmp: Bitmap, bitName: String): String {
         fos.flush()
         fos.close()
     } catch (e: FileNotFoundException) {
-        e.printStackTrace()
+        Timber.e(e)
     } catch (e: IOException) {
-        e.printStackTrace()
+        Timber.e(e)
     } finally {
         return file.path
     }

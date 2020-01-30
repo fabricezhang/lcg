@@ -1,9 +1,14 @@
 package top.easelink.lcg.ui.main.article.view
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.*
-import androidx.fragment.app.DialogFragment
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
+import kotlinx.android.synthetic.main.dialog_screen_capture.*
 import timber.log.Timber
 import top.easelink.framework.base.SafeShowDialogFragment
 import top.easelink.lcg.R
@@ -25,7 +30,7 @@ class ScreenCaptureDialog : SafeShowDialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setStyle(DialogFragment.STYLE_NORMAL, R.style.AppTheme_Dialog_FullScreen_BottomInOut)
+        setStyle(STYLE_NORMAL, R.style.AppTheme_Dialog_FullScreen_BottomInOut)
     }
 
     override fun onCreateView(inflater: LayoutInflater,
@@ -41,7 +46,33 @@ class ScreenCaptureDialog : SafeShowDialogFragment() {
             Glide
                 .with(view)
                 .load(path)
-                .into(view.findViewById(R.id.img_screen_capture))
+                .skipMemoryCache(true)
+                .listener(object : RequestListener<Drawable>{
+                    override fun onLoadFailed(
+                        e: GlideException?,
+                        model: Any?,
+                        target: Target<Drawable>?,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        return false
+                    }
+
+                    override fun onResourceReady(
+                        resource: Drawable?,
+                        model: Any?,
+                        target: Target<Drawable>?,
+                        dataSource: DataSource?,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        img_screen_capture.post {
+                            img_screen_capture.setImageDrawable(resource)
+                        }
+                        return true
+                    }
+
+                })
+                .submit()
+
         } catch (e: Exception) {
             Timber.e(e)
         }

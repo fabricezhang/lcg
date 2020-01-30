@@ -33,12 +33,14 @@ fun convertViewToBitmap(view: View?): Bitmap? {
             val bitmap = Bitmap.createBitmap(
                 measuredWidth,
                 measuredHeight,
-                Bitmap.Config.ARGB_8888
+                Bitmap.Config.RGB_565
             )
             val canvas = Canvas(bitmap)
             layout(left, top, right, bottom)
             draw(canvas)
             return bitmap
+        } catch (re: RuntimeException) {
+            Timber.e(re)
         } catch (e: Exception) {
             Timber.e(e)
         }
