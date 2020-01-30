@@ -3,23 +3,18 @@ package top.easelink.lcg.ui.main.articles.viewmodel
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_favorite_article_empty_view.view.*
-import kotlinx.android.synthetic.main.item_favorite_article_view.view.*
+import kotlinx.android.synthetic.main.item_favorite_article_view_v2.view.*
 import kotlinx.android.synthetic.main.item_load_more_view.view.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import top.easelink.framework.base.BaseViewHolder
-import top.easelink.framework.threadpool.CommonPool
-import top.easelink.framework.threadpool.Main
 import top.easelink.lcg.R
 import top.easelink.lcg.ui.main.model.OpenArticleEvent
-import top.easelink.lcg.ui.main.source.local.ArticlesLocalDataSource.delArticleFromFavorite
 import top.easelink.lcg.ui.main.source.model.ArticleEntity
 
-@Deprecated("use FavoriteArticlesAdapter instead")
-class FavoriteArticlesAdapter(private var favoriteArticlesViewModel: FavoriteArticlesViewModel) :
+class FavoriteArticlesAdapterV2(private var favoriteArticlesViewModel: FavoriteArticlesViewModel) :
     RecyclerView.Adapter<BaseViewHolder>() {
     private val mArticleEntities: MutableList<ArticleEntity> = mutableListOf()
 
@@ -51,7 +46,7 @@ class FavoriteArticlesAdapter(private var favoriteArticlesViewModel: FavoriteArt
         return when (viewType) {
             VIEW_TYPE_NORMAL -> ArticleViewHolder(
                 LayoutInflater.from(parent.context).inflate(
-                    R.layout.item_favorite_article_view, parent, false)
+                    R.layout.item_favorite_article_view_v2, parent, false)
             )
             VIEW_TYPE_LOAD_MORE -> LoadMoreViewHolder(
                 LayoutInflater.from(parent.context).inflate(
@@ -63,11 +58,7 @@ class FavoriteArticlesAdapter(private var favoriteArticlesViewModel: FavoriteArt
                     R.layout.item_favorite_article_empty_view, parent, false
                 )
             )
-            else -> EmptyViewHolder(
-                LayoutInflater.from(parent.context).inflate(
-                    R.layout.item_favorite_article_empty_view, parent, false
-                )
-            )
+            else -> throw IllegalStateException()
         }
     }
 
@@ -80,7 +71,7 @@ class FavoriteArticlesAdapter(private var favoriteArticlesViewModel: FavoriteArt
         mArticleEntities.clear()
     }
 
-    inner class ArticleViewHolder internal constructor(private val view: View) : BaseViewHolder(view) {
+    inner class ArticleViewHolder internal constructor(view: View) : BaseViewHolder(view) {
 
         // will be assigned in onBind(), should not be called before onBind()
         private lateinit var articleEntity: ArticleEntity
@@ -91,36 +82,13 @@ class FavoriteArticlesAdapter(private var favoriteArticlesViewModel: FavoriteArt
         }
 
         override fun onBind(position: Int) {
-            articleEntity = mArticleEntities[position].also {entity ->
-                view.remove_button.setOnClickListener {
-                    GlobalScope.launch(CommonPool) {
-                        //TODO del url has a confirmation button to click, support this in the future
-//                        if (entity.delUrl.isNotEmpty()) {
-//                            val doc = Client.sendGetRequestWithQuery(entity.delUrl)
-//                        }
-                        if (delArticleFromFavorite(entity.id)) {
-                            mArticleEntities.remove(entity)
-                            GlobalScope.launch(Main) {
-                                notifyItemRemoved(position)
-                                notifyItemRangeChanged(position, mArticleEntities.size - position)
-                            }
-                        }
-                    }
-                }
-            }
-            view.run {
-                favorite_container.apply {
-                    when {
-                        // odd
-                        position % 2 == 0 -> {
-                            setBackgroundResource(R.drawable.rectangle_bg_slightly_light_gray_4dp)
-                        }
-                        // even
-                        else -> {
-                            setBackgroundResource(R.drawable.rectangle_bg_white_4dp)
-                        }
-                    }
-                }.setOnClickListener {
+            articleEntity = mArticleEntities[position]
+            itemView.run {
+                startAnimation(AnimationUtils.loadAnimation(
+                    context,
+                    R.anim.recycler_item_show
+                ))
+                favorite_container.setOnClickListener {
                     onItemClick()
                 }
                 title_text_view.text = articleEntity.title

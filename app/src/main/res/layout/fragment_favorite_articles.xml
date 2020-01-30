@@ -16,6 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipChildren="false"
+        android:backgroundTint="@color/slight_light_gray"
         android:focusable="true"
         android:clickable="true">
 

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/card_view_item_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_4"
+        android:layout_marginTop="@dimen/dp_4"
+        android:layout_marginEnd="@dimen/dp_4"
+        android:layout_marginBottom="@dimen/dp_4"
+        android:elevation="@dimen/dp_4">
+    <RelativeLayout
+            android:id="@+id/favorite_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_5"
+            android:paddingEnd="@dimen/dp_5"
+            android:paddingStart="@dimen/dp_3"
+            android:paddingBottom="@dimen/dp_5">
+
+        <TextView
+                android:transitionName="title"
+                android:id="@+id/title_text_view"
+                style="@style/TextStyle.Heading"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_10"
+                android:layout_marginEnd="@dimen/dp_10"
+                android:maxLines="2"
+                android:ellipsize="middle"
+                android:textSize="@dimen/sp_14"
+                android:layout_marginTop="@dimen/dp_3"
+                android:layout_marginBottom="@dimen/dp_3"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                tools:text="This repository contains a detailed sample app that implements MVVM architecture using Android Room, RxJava2 ,etc"/>
+
+        <TextView
+                android:transitionName="author"
+                android:id="@+id/author_text_view"
+                style="@style/TextStyle.Title.Sub"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dp_6"
+                android:layout_below="@id/title_text_view"
+                android:layout_alignStart="@id/title_text_view"
+                android:layout_alignEnd="@id/title_text_view"
+                tools:text="Author"/>
+    </RelativeLayout>
+</com.google.android.material.card.MaterialCardView>
