@@ -20,12 +20,12 @@
         android:focusable="true"
         android:clickable="true">
 
-        <androidx.appcompat.widget.Toolbar
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+        <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/article_toolbar"
             style="@style/Toolbar"
             app:title="@string/ic_favorite"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:subtitleTextColor="@color/white"
             app:titleTextAppearance="@style/Toolbar.TitleText"
             app:titleTextColor="@color/white"
@@ -39,15 +39,8 @@
             android:visibility="visible"
             android:padding="@dimen/dp_5"
             app:layout_constraintTop_toBottomOf="@id/article_toolbar"
-            app:layout_constraintBottom_toBottomOf="@id/bottom_line"
+            app:layout_constraintBottom_toBottomOf="parent"
             />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/bottom_line"
-            android:layout_width="@dimen/dp_0"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.92" />
 
         <FrameLayout
             android:visibility="@{viewModel.isLoading? View.VISIBLE:View.GONE, default = gone}"
