@@ -13,6 +13,8 @@ import top.easelink.framework.base.BaseViewHolder
 import top.easelink.lcg.R
 import top.easelink.lcg.ui.main.model.OpenArticleEvent
 import top.easelink.lcg.ui.main.source.model.ArticleEntity
+import top.easelink.lcg.utils.getDateFrom
+
 
 class FavoriteArticlesAdapterV2(private var favoriteArticlesViewModel: FavoriteArticlesViewModel) :
     RecyclerView.Adapter<BaseViewHolder>() {
@@ -92,6 +94,9 @@ class FavoriteArticlesAdapterV2(private var favoriteArticlesViewModel: FavoriteA
                     onItemClick()
                 }
                 title_text_view.text = articleEntity.title
+
+                date_time.text = getDateFrom(articleEntity.timestamp)
+
                 if (articleEntity.author.isNotBlank()) {
                     author_text_view.apply {
                         text = articleEntity.author
