@@ -56,6 +56,7 @@ dependencies {
 
     // view
     api 'com.drakeet.multitype:multitype:4.2.0'
+    api 'com.kunminx.linkage:linkage-recyclerview:1.9.2'
 //    api "androidx.viewpager2:viewpager2:$rootProject.viewpager2"
 //    api 'com.ethanhua:skeleton:1.1.2'
     api 'io.supercharge:shimmerlayout:2.1.0'

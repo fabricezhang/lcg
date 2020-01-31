@@ -8,10 +8,8 @@ import android.os.Environment
 import android.provider.MediaStore
 import timber.log.Timber
 import top.easelink.lcg.LCGApp
-import java.io.File
-import java.io.FileNotFoundException
-import java.io.FileOutputStream
-import java.io.IOException
+import java.io.*
+
 
 fun saveImageToGallery(bmp: Bitmap, bitName: String): String {
     val appDir = File(LCGApp.getContext().externalCacheDir, "lcg")
@@ -59,4 +57,24 @@ fun saveBmp2Gallery(context: Context, bmp: Bitmap, picName: String) {
     intent.data = uri
     context.sendBroadcast(intent)
     showMessage(context, "图片保存成功")
+}
+
+/**
+ * 读取assets本地json
+ * @param fileName
+ * @param context
+ * @return json String
+ */
+fun getJsonStringFromAssets(fileName: String, context: Context): String {
+    val stringBuilder = StringBuilder()
+    try {
+        val bf = BufferedReader(InputStreamReader(context.assets.open(fileName)))
+        var line: String?
+        while (bf.readLine().also { line = it } != null) {
+            stringBuilder.append(line)
+        }
+    } catch (e: IOException) {
+        e.printStackTrace()
+    }
+    return stringBuilder.toString()
 }
