@@ -16,6 +16,7 @@ import top.easelink.lcg.R
 import top.easelink.lcg.ui.main.forumnav3.model.ChildForumItemInfo
 import top.easelink.lcg.ui.main.forumnav3.model.ForumGroupedItem
 import top.easelink.lcg.ui.main.model.OpenForumEvent
+import top.easelink.lcg.ui.webview.view.WebViewActivity
 
 internal class ForumsSecondaryAdapterConfig :
     ILinkageSecondaryAdapterConfig<ForumGroupedItem.ItemInfo> {
@@ -54,7 +55,11 @@ internal class ForumsSecondaryAdapterConfig :
     ) {
         holder.itemView.apply {
             setOnClickListener {
-                EventBus.getDefault().post(OpenForumEvent(item.info.title, item.info.pageUrl, true))
+                if (item.info.pageUrl.startsWith("forum")) {
+                    EventBus.getDefault().post(OpenForumEvent(item.info.title, item.info.pageUrl, true))
+                } else {
+                    WebViewActivity.startWebViewWith(item.info.pageUrl, context)
+                }
             }
             title.text = item.info.title
             desc.text = item.info.desc
@@ -80,15 +85,16 @@ internal class ForumsSecondaryAdapterConfig :
                 it.notifyDataSetChanged()
             }
             children_grid_container.onItemClickListener =
-                AdapterView.OnItemClickListener { parent: AdapterView<*>, _: View?, position: Int, _: Long ->
+                AdapterView.OnItemClickListener { parent: AdapterView<*>,
+                                                  v: View,
+                                                  position: Int,
+                                                  _: Long ->
                     (parent.adapter as ChildGridViewAdapter).getItem(position)?.let {
-                        EventBus.getDefault().post(
-                            OpenForumEvent(
-                                it.title.orEmpty(),
-                                it.pageUrl,
-                                true
-                            )
-                        )
+                        if (it.pageUrl.startsWith("forum")) {
+                            EventBus.getDefault().post(OpenForumEvent(it.title.orEmpty(), it.pageUrl, true))
+                        } else {
+                            WebViewActivity.startWebViewWith(it.pageUrl, v.context)
+                        }
                     }
                 }
         }

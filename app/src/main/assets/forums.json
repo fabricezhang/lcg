@@ -1,5 +1,27 @@
 [
   {
+    "header": "疫情报道",
+    "isHeader": true
+  },
+  {
+    "isHeader": false,
+    "info": {
+      "page_url": "https://ncov.dxy.cn/ncovh5/view/pneumonia?from=singlemessage&isappinstalled=0",
+      "group": "疫情报道",
+      "title": "丁香医生",
+      "desc": "来自丁香园-丁香医生的疫情实时统计报告"
+    }
+  },
+  {
+    "isHeader": false,
+    "info": {
+      "page_url": "http://news.163.com/special/epidemic/",
+      "group": "疫情报道",
+      "title": "网易新闻",
+      "desc": "来自网易新闻的疫情实时统计报告"
+    }
+  },
+  {
     "header": "热门板块",
     "isHeader": true
   },
@@ -162,10 +184,11 @@
       "title": "『安全工具区』",
       "desc": "工欲善其事 必先利其器，从这里能找到你想要的利器"
     }
-  },{
-  "header": "娱乐",
-  "isHeader": true
-},
+  },
+  {
+    "header": "娱乐",
+    "isHeader": true
+  },
   {
     "isHeader": false,
     "info": {
