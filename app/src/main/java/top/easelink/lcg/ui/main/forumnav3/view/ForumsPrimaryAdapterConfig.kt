@@ -1,11 +1,11 @@
-package top.easelink.lcg.ui.main.forumnav.view
+package top.easelink.lcg.ui.main.forumnav3.view
 
 import android.content.Context
 import android.view.View
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import com.kunminx.linkage.adapter.viewholder.LinkagePrimaryViewHolder
-import com.kunminx.linkage.contract.ILinkagePrimaryAdapterConfig
+import top.easelink.framework.customview.linkagerv.adapter.viewholder.LinkagePrimaryViewHolder
+import top.easelink.framework.customview.linkagerv.contract.ILinkagePrimaryAdapterConfig
 import top.easelink.lcg.R
 
 internal class ForumsPrimaryAdapterConfig : ILinkagePrimaryAdapterConfig {
@@ -16,15 +16,15 @@ internal class ForumsPrimaryAdapterConfig : ILinkagePrimaryAdapterConfig {
     }
 
     override fun getLayoutId(): Int {
-        return com.kunminx.linkage.R.layout.default_adapter_linkage_primary
+        return R.layout.item_forum_primary_linear
     }
 
     override fun getGroupTitleViewId(): Int {
-        return com.kunminx.linkage.R.id.tv_group
+        return R.id.primary_title
     }
 
     override fun getRootViewId(): Int {
-        return com.kunminx.linkage.R.id.layout_group
+        return R.id.primary_container
     }
 
     override fun onBindViewHolder(
@@ -34,15 +34,14 @@ internal class ForumsPrimaryAdapterConfig : ILinkagePrimaryAdapterConfig {
     ) {
         val tvTitle = holder.mGroupTitle as TextView
         tvTitle.text = title
-        tvTitle.setBackgroundColor(
-            mContext.resources.getColor(
-                if (selected) R.color.colorPurple else R.color.colorWhite
-            )
+        tvTitle.setBackgroundColor(ContextCompat.getColor(
+            mContext,
+            if (selected) R.color.white else R.color.slight_light_gray)
         )
         tvTitle.setTextColor(
             ContextCompat.getColor(
                 mContext,
-                if (selected) R.color.colorWhite else R.color.colorGray
+                if (selected) R.color.colorAccent else R.color.dark_gray
             )
         )
     }
@@ -52,6 +51,5 @@ internal class ForumsPrimaryAdapterConfig : ILinkagePrimaryAdapterConfig {
         view: View,
         title: String
     ) {
-
     }
 }

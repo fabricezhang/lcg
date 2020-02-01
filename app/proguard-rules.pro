@@ -66,6 +66,9 @@
 -dontwarn okhttp3.**
 -dontwarn okio.**
 
+# LinkageRecyclerView
+-keep class top.easelink.framework.customview.linkagerv.bean.** {*;}
+
 # PersistentCookieJar
 -dontwarn com.franmontiel.persistentcookiejar.**
 -keep class com.franmontiel.persistentcookiejar.**

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:focusable="true"
+        android:clickable="true"
+        android:gravity="center"
+        android:background="@color/white">
+    <com.google.android.material.appbar.MaterialToolbar
+            style="@style/Toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_40"/>
+    <top.easelink.framework.customview.linkagerv.LinkageRecyclerView
+            android:id="@+id/linkageRV"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+</LinearLayout>

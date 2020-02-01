@@ -1,27 +1,25 @@
-package top.easelink.lcg.ui.main.forumnav.view
+package top.easelink.lcg.ui.main.forumnav3.view
 
-import android.content.res.AssetManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.kunminx.linkage.LinkageRecyclerView
-import com.kunminx.linkage.bean.DefaultGroupedItem
-import kotlinx.android.synthetic.main.fragment_forums_navigation_v2.view.*
+import top.easelink.framework.customview.linkagerv.LinkageRecyclerView
 import top.easelink.framework.topbase.ControllableFragment
 import top.easelink.framework.topbase.TopFragment
 import top.easelink.lcg.R
+import top.easelink.lcg.ui.main.forumnav3.model.ForumGroupedItem
 import top.easelink.lcg.utils.getJsonStringFromAssets
 
-class ForumNavigationV2Fragment: TopFragment(), ControllableFragment {
+class ForumNavigationV3Fragment: TopFragment(), ControllableFragment {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_forums_navigation_v2, container, false)
+        return inflater.inflate(R.layout.fragment_forums_navigation_v3, container, false)
     }
 
     override fun isControllable(): Boolean {
@@ -37,12 +35,16 @@ class ForumNavigationV2Fragment: TopFragment(), ControllableFragment {
         view?.let {
             val json = getJsonStringFromAssets("forums.json", it.context)
             val items =
-                Gson().fromJson<List<DefaultGroupedItem>>(
+                Gson().fromJson<List<ForumGroupedItem>>(
                     json,
-                    genericType<List<DefaultGroupedItem>>()
+                    genericType<List<ForumGroupedItem>>()
                 )
-            it.findViewById<LinkageRecyclerView<DefaultGroupedItem.ItemInfo>>(R.id.linkageRV)
-                ?.init(items, ForumsPrimaryAdapterConfig(), ForumsSecondaryAdapterConfig())
+            if (items != null) {
+                it.findViewById<LinkageRecyclerView<ForumGroupedItem.ItemInfo>>(R.id.linkageRV).let {
+                    it.init(items, ForumsPrimaryAdapterConfig(), ForumsSecondaryAdapterConfig())
+                }
+
+            }
         }
     }
 

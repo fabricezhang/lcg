@@ -22,7 +22,7 @@ import top.easelink.lcg.mta.PROP_FORUM_NAME
 import top.easelink.lcg.mta.sendKVEvent
 import top.easelink.lcg.ui.main.article.view.ArticleFragment
 import top.easelink.lcg.ui.main.articles.view.ForumArticlesFragment.Companion.newInstance
-import top.easelink.lcg.ui.main.forumnav.view.ForumNavigationFragment
+import top.easelink.lcg.ui.main.forumnav3.view.ForumNavigationV3Fragment
 import top.easelink.lcg.ui.main.largeimg.view.LargeImageDialog
 import top.easelink.lcg.ui.main.me.view.MeFragment
 import top.easelink.lcg.ui.main.message.view.MessageFragment
@@ -88,7 +88,7 @@ class MainActivity : TopActivity(), BottomNavigationView.OnNavigationItemSelecte
                 MessageFragment::class.java.simpleName -> {
                     view.selectedItemId = R.id.action_message
                 }
-                ForumNavigationFragment::class.java.simpleName -> {
+                ForumNavigationV3Fragment::class.java.simpleName -> {
                     view.selectedItemId = R.id.action_forum_navigation
                 }
                 MeFragment::class.java.simpleName -> {
@@ -194,7 +194,7 @@ class MainActivity : TopActivity(), BottomNavigationView.OnNavigationItemSelecte
                     removeBubbleView(2)
                     showFragment(MessageFragment::class.java)
                 }
-                R.id.action_forum_navigation -> showFragment(ForumNavigationFragment::class.java)
+                R.id.action_forum_navigation -> showFragment(ForumNavigationV3Fragment::class.java)
                 R.id.action_about_me -> showFragment(MeFragment::class.java)
                 R.id.action_home -> showFragment(RecommendFragment::class.java)
                 else -> { }

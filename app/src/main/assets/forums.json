@@ -1,0 +1,125 @@
+[
+  {
+    "header": "热门板块",
+    "isHeader": true
+  },
+  {
+    "isHeader": false,
+    "info": {
+      "group": "软件安全",
+      "title": "『原创发布区』",
+      "page_url": "forum-2-%d.html",
+      "desc": "吾爱破解坛友原创作品展示，包含Windows原创工具，也有Android、iOS和Mac OS程序相应的原创程序!"
+    }
+  },
+  {
+    "isHeader": false,
+    "info": {
+      "page_url": "forum-16-%d.html",
+      "group": "软件安全",
+      "title": "『精品软件区』",
+      "desc": "精品软件推荐，软件交流天地，汇集众多精彩评论，热心会员每日更新。找你所需要的，给你我分享的！"
+    }
+  },
+  {
+    "header": "软件安全",
+    "isHeader": true
+  },
+  {
+    "isHeader": false,
+    "info": {
+      "group": "软件安全",
+      "title": "『移动安全区』",
+      "page_url": "forum-65-%d.html",
+      "desc": "讨论Android软件脱壳分析、Android软件逆向分析、Android系统安全分析、Android软件加密分析，iOS等移动程序逆向分析一切尽在此",
+      "children": [{
+        "title": "『移动安全讨论求助区』",
+        "page_url": "forum-73-%d.html",
+        "desc": ""
+      }]
+    }
+  },
+  {
+    "isHeader": false,
+    "info": {
+      "page_url": "forum-8-%d.html",
+      "title": "『悬赏问答区』",
+      "group": "软件安全",
+      "desc": "富于智慧和温馨的互助乐园，帮助需要帮助的人!"
+    }
+  },
+  {
+    "isHeader": false,
+    "info": {
+      "page_url": "forum-5-%d.html",
+      "title": "『脱壳破解区』",
+      "group": "软件安全",
+      "desc": "讨论Windows软件脱壳分析、软件逆向分析、代码逆向改造、虚拟机加密分析，也包括Mac OS等其他平台程序逆向分析一切尽在此！",
+      "children": [{
+        "title": "『脱壳破解讨论求助区』",
+        "page_url": "forum-75-%d.html"
+      }, {
+        "title": "『教学求助区』",
+        "page_url": "forum-68-%d.html"
+      }]
+    }
+  },
+  {
+    "isHeader": false,
+    "info": {
+      "group": "软件安全",
+      "title": "『软件调试区』",
+      "page_url": "forum-59-%d.html",
+      "desc": "讨论操作系统底层或系统软件的漏洞分析、也包含游戏安全等相关话题！"
+    }
+  },
+  {
+    "isHeader": false,
+    "info": {
+      "group": "软件安全",
+      "title": "『编程语言区』",
+      "page_url": "forum-24-%d.html",
+      "desc": "学习编程探讨编程技巧，共同分享程序源代码 "
+    }
+  },
+  {
+    "isHeader": false,
+    "info": {
+      "page_url": "forum-6-%d.html",
+      "title": "『动画发布区』",
+      "group": "软件安全",
+      "desc": "软件脱壳、软件汉化、软件逆向相关动画教程，学习心得分享。在这里我们可以携手并进，是我们汲取知识的伟大航路!"
+    }
+  },
+  {
+    "isHeader": false,
+    "info": {
+      "page_url": "forum-4-%d.html",
+      "title": "『逆向资源区』",
+      "group": "软件安全",
+      "desc": "[加密解密]相关软件发布区，包含最新最全的软件加密解密相关工具，工欲善其事必先利其器！"
+    }
+  },
+  {
+    "header": "娱乐",
+    "isHeader": true
+  },
+  {
+    "isHeader": false,
+    "info": {
+      "page_url": "forum-10-%d.html",
+      "group": "娱乐",
+      "title": "『水漫金山』",
+      "desc": "吾爱破解坛友原创作品展示，包含Windows原创工具，也有Android、iOS和Mac OS程序相应的原创程序!"
+    }
+  },
+  {
+    "isHeader": false,
+    "info": {
+      "page_url": "forum-66-%d.html",
+      "group": "娱乐",
+      "title": "『福利经验』",
+      "desc": "吾爱破解坛友原创作品展示，包含Windows原创工具，也有Android、iOS和Mac OS程序相应的原创程序!"
+    }
+  }
+]

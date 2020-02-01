@@ -133,6 +133,7 @@
     <string name="share_title">快来看这篇</string>
 
     <!--forum grid-->
+    <string name="forum_secondary_footer">没有更多了</string>
     <string name="forum_mobile_security">『移动安全区』</string>
     <string name="forum_software">『精品软件区』</string>
     <string name="forum_original_release">『原创发布区』</string>

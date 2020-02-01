@@ -1,23 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<com.google.android.material.card.MaterialCardView
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/level_2_item"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_view_item_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/selectableItemBackground"
-        android:orientation="vertical">
-
-    <TextView
-            android:id="@+id/secondary_title"
+        android:paddingTop="@dimen/dp_2"
+        android:layout_marginBottom="@dimen/dp_1"
+        app:cardCornerRadius="@dimen/dp_0"
+        app:cardElevation="@dimen/dp_0"
+        android:foreground="?attr/selectableItemBackground">
+    <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="@dimen/dp_12"
-            android:paddingTop="@dimen/dp_12"
-            android:paddingEnd="@dimen/dp_12"
-            android:paddingBottom="@dimen/dp_6"
-            android:textSize="@dimen/sp_14"
-            android:textStyle="bold"
-            tools:text="test_title" />
+            android:orientation="vertical" >
+        <TextView
+                android:id="@+id/title"
+                style="@style/TextStyle.Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/dp_8"
+                android:paddingTop="@dimen/dp_4"
+                android:paddingEnd="@dimen/dp_8"
+                android:paddingBottom="@dimen/dp_2"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:textSize="@dimen/sp_14"
+                android:textStyle="bold"
+                tools:text="『原创发布区』 " />
 
-</LinearLayout>
+        <TextView
+                android:id="@+id/desc"
+                style="@style/TextStyle.Title.Sub"
+                android:paddingStart="@dimen/dp_8"
+                android:paddingEnd="@dimen/dp_8"
+                android:paddingBottom="@dimen/dp_4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@id/title"
+                android:layout_below="@id/title"
+                android:textSize="@dimen/sp_12"
+                tools:text="吾爱破解坛友原创作品展示，包含Windows原创工具，也有Android、iOS和Mac OS程序相应的原创程序！" />
+
+        <GridView
+                android:id="@+id/children_grid_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dp_2"
+                android:numColumns="auto_fit"
+                android:alwaysDrawnWithCache="true"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:verticalSpacing="@dimen/dp_10"
+                android:horizontalSpacing="@dimen/dp_5"
+                android:stretchMode="columnWidth"
+                android:layout_below="@id/desc"/>
+
+    </RelativeLayout>
+</com.google.android.material.card.MaterialCardView>

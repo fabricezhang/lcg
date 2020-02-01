@@ -31,15 +31,12 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
     private val gson: Gson = GsonBuilder().excludeFieldsWithoutExposeAnnotation().create()
 
     @WorkerThread
+    @Throws(LoginRequiredException::class)
     override fun getForumArticles(query: String, processThreadList: Boolean): ForumPage? {
-        return try {
-            processForumArticlesDocument(
-                Client.sendGetRequestWithQuery(query),
-                processThreadList
-            )
-        } catch (e: Exception) {
-            null
-        }
+        return processForumArticlesDocument(
+            Client.sendGetRequestWithQuery(query),
+            processThreadList
+        )
     }
 
     @WorkerThread
@@ -186,6 +183,7 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
         }
     }
 
+    @Throws(LoginRequiredException::class)
     private fun processForumArticlesDocument(doc: Document, processThreadList: Boolean): ForumPage? {
         try {
             var elements = doc.select("tbody[id^=normal]")
@@ -255,6 +253,8 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
                 }
             }
             return ForumPage(articleList, threadList?: emptyList())
+        } catch (e: LoginRequiredException) {
+            throw e
         } catch (e: Exception) {
             Timber.e(e)
             return null
