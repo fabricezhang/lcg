@@ -1,9 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:orientation="vertical">
+
+
+    <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/doctors"
+            android:layout_centerInParent="true"
+            android:layout_width="@dimen/dp_200"
+            android:layout_height="@dimen/dp_200"
+            android:scaleType="fitCenter"
+            app:lottie_rawRes="@raw/doctors"
+            app:lottie_loop="true"
+            app:lottie_autoPlay="true"/>
 
     <TextView
             android:paddingStart="@dimen/dp_8"
@@ -14,8 +26,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/white"
-            android:gravity="center|bottom"
-            android:textSize="@dimen/sp_12"
-            android:text="@string/forum_secondary_footer"
+            android:gravity="center_horizontal"
+            android:layout_below="@id/doctors"
+            android:textSize="@dimen/sp_14"
+            android:textStyle="bold"
+            android:text="@string/forum_doctors"
             android:singleLine="true" />
-</LinearLayout>
+</RelativeLayout>

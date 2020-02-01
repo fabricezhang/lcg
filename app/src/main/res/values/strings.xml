@@ -134,6 +134,7 @@
 
     <!--forum grid-->
     <string name="forum_title">论坛板块导航</string>
+    <string name="forum_doctors">向逆行的白衣天使们致敬！</string>
     <string name="forum_secondary_footer">没有更多了</string>
     <string name="forum_mobile_security">『移动安全区』</string>
     <string name="forum_software">『精品软件区』</string>

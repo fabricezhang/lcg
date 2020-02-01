@@ -1,27 +1,5 @@
 [
   {
-    "header": "疫情报道",
-    "isHeader": true
-  },
-  {
-    "isHeader": false,
-    "info": {
-      "page_url": "https://ncov.dxy.cn/ncovh5/view/pneumonia?from=singlemessage&isappinstalled=0",
-      "group": "疫情报道",
-      "title": "丁香医生",
-      "desc": "来自丁香园-丁香医生的疫情实时统计报告"
-    }
-  },
-  {
-    "isHeader": false,
-    "info": {
-      "page_url": "http://news.163.com/special/epidemic/",
-      "group": "疫情报道",
-      "title": "网易新闻",
-      "desc": "来自网易新闻的疫情实时统计报告"
-    }
-  },
-  {
     "header": "热门板块",
     "isHeader": true
   },
@@ -205,6 +183,79 @@
       "group": "娱乐",
       "title": "『福利经验』",
       "desc": "吾爱破解坛友原创作品展示，包含Windows原创工具，也有Android、iOS和Mac OS程序相应的原创程序!"
+    }
+  },
+  {
+    "header": "活动策划",
+    "isHeader": true
+  },
+  {
+    "isHeader": false,
+    "info": {
+      "page_url": "forum-62-%d.html",
+      "group": "活动策划",
+      "title": "『周边活动作品区』"
+    }
+  },
+  {
+    "isHeader": false,
+    "info": {
+      "page_url": "forum-36-%d.html",
+      "group": "活动策划",
+      "title": "『周年庆典活动专区』"
+    }
+  },
+  {
+    "header": "管理",
+    "isHeader": true
+  },
+  {
+    "isHeader": false,
+    "info": {
+      "page_url": "forum-13-%d.html",
+      "group": "管理",
+      "title": "『站点公告』",
+      "desc": "开放注册信息，版块调整公告，站点信息发布，会员违规处理等"
+    }
+  },
+  {
+    "isHeader": false,
+    "info": {
+      "page_url": "forum-39-%d.html",
+      "group": "管理",
+      "title": "『招聘求职』",
+      "desc": "此版块只允许发布招聘和求职相关信息！\n本区支持游客发帖，欢迎正规公司前来发布招聘信息！"
+    }
+  },
+  {
+    "isHeader": false,
+    "info": {
+      "page_url": "forum-48-%d.html",
+      "group": "管理",
+      "title": "『高级会员区』 ",
+      "desc": "限定注册满两年、无违规、热心超过100的会员组：\n初级以上级别的会员、荣誉会员、原创精英、LCG成员、LSG成员、巡查、版主、超级版主和管理员访问【严禁在论坛或外部讨论、泄漏本区内容违者封号处理】"
+    }
+  },
+  {
+    "header": "疫情报道",
+    "isHeader": true
+  },
+  {
+    "isHeader": false,
+    "info": {
+      "page_url": "https://ncov.dxy.cn/ncovh5/view/pneumonia?from=singlemessage&isappinstalled=0",
+      "group": "疫情报道",
+      "title": "丁香医生",
+      "desc": "来自丁香园-丁香医生的疫情实时统计报告"
+    }
+  },
+  {
+    "isHeader": false,
+    "info": {
+      "page_url": "http://news.163.com/special/epidemic/",
+      "group": "疫情报道",
+      "title": "网易新闻",
+      "desc": "来自网易新闻的疫情实时统计报告"
     }
   }
 ]

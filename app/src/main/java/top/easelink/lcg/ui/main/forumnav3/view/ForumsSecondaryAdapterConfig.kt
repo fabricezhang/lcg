@@ -61,8 +61,15 @@ internal class ForumsSecondaryAdapterConfig :
                     WebViewActivity.startWebViewWith(item.info.pageUrl, context)
                 }
             }
-            title.text = item.info.title
-            desc.text = item.info.desc
+            item.info.let {
+                title.text = it.title
+                if (it.desc.isNullOrBlank()) {
+                    desc.visibility = View.GONE
+                } else {
+                    desc.visibility = View.VISIBLE
+                    desc.text = it.desc
+                }
+            }
 
             // bind children items
             bindChildren(children_grid_container, item.info.children)
