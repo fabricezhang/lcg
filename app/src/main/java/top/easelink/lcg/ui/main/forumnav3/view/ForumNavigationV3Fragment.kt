@@ -34,15 +34,17 @@ class ForumNavigationV3Fragment: TopFragment(), ControllableFragment {
     private fun setUp() {
         view?.let {
             val json = getJsonStringFromAssets("forums.json", it.context)
-            val items =
+            val items = try {
                 Gson().fromJson<List<ForumGroupedItem>>(
                     json,
                     genericType<List<ForumGroupedItem>>()
                 )
+            } catch (e: Exception) {
+                null
+            }
             if (items != null) {
-                it.findViewById<LinkageRecyclerView<ForumGroupedItem.ItemInfo>>(R.id.linkageRV).let {
-                    it.init(items, ForumsPrimaryAdapterConfig(), ForumsSecondaryAdapterConfig())
-                }
+                it.findViewById<LinkageRecyclerView<ForumGroupedItem.ItemInfo>>(R.id.linkageRV)
+                    .init(items, ForumsPrimaryAdapterConfig(), ForumsSecondaryAdapterConfig())
 
             }
         }

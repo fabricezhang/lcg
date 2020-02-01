@@ -34,8 +34,10 @@
       "desc": "讨论Android软件脱壳分析、Android软件逆向分析、Android系统安全分析、Android软件加密分析，iOS等移动程序逆向分析一切尽在此",
       "children": [{
         "title": "『移动安全讨论求助区』",
-        "page_url": "forum-73-%d.html",
-        "desc": ""
+        "page_url": "forum-73-%d.html"
+      }, {
+        "title": "『CrackMe』",
+        "page_url": "forum-22-%d.html"
       }]
     }
   },
@@ -61,6 +63,9 @@
       }, {
         "title": "『教学求助区』",
         "page_url": "forum-68-%d.html"
+      }, {
+        "title": "『CrackMe』",
+        "page_url": "forum-22-%d.html"
       }]
     }
   },

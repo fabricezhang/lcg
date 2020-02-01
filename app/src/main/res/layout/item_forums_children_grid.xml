@@ -17,6 +17,7 @@
             android:layout_gravity="center"
             android:textSize="@dimen/sp_12"
             android:textStyle="bold"
+            android:background="@drawable/rectangle_bg_slightly_light_gray_4dp"
             android:textColor="@color/blue_black_light"
             tools:text="@string/forum_mobile_security" />
 

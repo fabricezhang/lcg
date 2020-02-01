@@ -44,19 +44,21 @@
                 android:textSize="@dimen/sp_12"
                 tools:text="吾爱破解坛友原创作品展示，包含Windows原创工具，也有Android、iOS和Mac OS程序相应的原创程序！" />
 
-        <GridView
+        <top.easelink.lcg.ui.main.forumnav3.view.WrapFixGridView
                 android:id="@+id/children_grid_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dp_2"
+                android:layout_marginStart="@dimen/dp_10"
+                android:layout_marginTop="@dimen/dp_2"
+                android:layout_marginBottom="@dimen/dp_2"
                 android:numColumns="auto_fit"
                 android:alwaysDrawnWithCache="true"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:verticalSpacing="@dimen/dp_10"
-                android:horizontalSpacing="@dimen/dp_5"
+                android:gravity="start"
+                android:verticalSpacing="@dimen/dp_4"
+                android:horizontalSpacing="@dimen/dp_2"
                 android:stretchMode="columnWidth"
-                android:layout_below="@id/desc"/>
+                android:layout_alignStart="@id/desc"
+                android:layout_below="@id/desc" />
 
     </RelativeLayout>
 </com.google.android.material.card.MaterialCardView>
