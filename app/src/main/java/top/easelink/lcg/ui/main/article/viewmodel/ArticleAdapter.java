@@ -210,7 +210,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                     }
                     break;
                 case R.id.btn_capture:
-                    Bitmap bmp = ScreenUtilsKt.convertViewToBitmap(itemView);
+                    Bitmap bmp = ScreenUtilsKt.convertViewToBitmap(itemView, Bitmap.Config.ARGB_8888);
                     if (bmp != null) {
                         String path = FileUtilsKt.saveImageToGallery(bmp, String.valueOf(System.currentTimeMillis()));
                         EventBus.getDefault().post(new ScreenCaptureEvent(path));
