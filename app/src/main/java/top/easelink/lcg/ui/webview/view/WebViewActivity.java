@@ -229,11 +229,13 @@ public class WebViewActivity extends AppCompatActivity {
                 view.loadUrl("javascript:" + HOOK_NAME + ".processHtml(document.documentElement.outerHTML);");
             }
             setCookies(CookieManager.getInstance().getCookie(url));
+            view.getSettings().setBlockNetworkImage(false);
         }
 
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
+            view.getSettings().setBlockNetworkImage(true);
             setLoading(true);
         }
 
@@ -294,5 +296,6 @@ public class WebViewActivity extends AppCompatActivity {
         settings.setAppCacheEnabled(true);
         settings.setSupportZoom(false);
         settings.setCacheMode(WebSettings.LOAD_DEFAULT);
+        settings.setBlockNetworkImage(true);
     }
 }
