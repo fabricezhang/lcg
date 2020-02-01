@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/dp_2"
-        android:layout_marginBottom="@dimen/dp_1"
+        android:paddingBottom="@dimen/dp_2"
         app:cardCornerRadius="@dimen/dp_0"
         app:cardElevation="@dimen/dp_0"
         android:foreground="?attr/selectableItemBackground">
@@ -59,6 +59,17 @@
                 android:stretchMode="columnWidth"
                 android:layout_alignStart="@id/desc"
                 android:layout_below="@id/desc" />
+
+        <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_1"
+                android:background="@color/light_gray"
+                android:layout_marginStart="@dimen/dp_8"
+                android:layout_marginEnd="@dimen/dp_8"
+                android:layout_marginTop="@dimen/dp_4"
+                android:layout_marginBottom="@dimen/dp_4"
+                android:layout_below="@id/children_grid_container"
+                android:layout_alignWithParentIfMissing="true"/>
 
     </RelativeLayout>
 </com.google.android.material.card.MaterialCardView>

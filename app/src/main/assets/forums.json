@@ -84,7 +84,14 @@
       "group": "软件安全",
       "title": "『编程语言区』",
       "page_url": "forum-24-%d.html",
-      "desc": "学习编程探讨编程技巧，共同分享程序源代码 "
+      "desc": "学习编程探讨编程技巧，共同分享程序源代码 ",
+      "children": [{
+        "title": "『编程语言讨论求助区』",
+        "page_url": "forum-74-%d.html"
+      }, {
+        "title": "『电子书屋』",
+        "page_url": "forum-37-%d.html"
+      }]
     }
   },
   {
@@ -93,7 +100,14 @@
       "page_url": "forum-6-%d.html",
       "title": "『动画发布区』",
       "group": "软件安全",
-      "desc": "软件脱壳、软件汉化、软件逆向相关动画教程，学习心得分享。在这里我们可以携手并进，是我们汲取知识的伟大航路!"
+      "desc": "软件脱壳、软件汉化、软件逆向相关动画教程，学习心得分享。在这里我们可以携手并进，是我们汲取知识的伟大航路!",
+      "children": [{
+        "title": "『动画精品转载区』",
+        "page_url": "forum-21-%d.html"
+      }, {
+        "title": "『往届动画大赛』",
+        "page_url": "forum-76-%d.html"
+      }]
     }
   },
   {
@@ -106,9 +120,52 @@
     }
   },
   {
-    "header": "娱乐",
+    "header": "病毒分析",
     "isHeader": true
   },
+  {
+    "isHeader": false,
+    "info": {
+      "page_url": "forum-32-%d.html",
+      "group": "病毒分析",
+      "title": "『病毒分析区』 ",
+      "desc": "分析研究病毒木马技术，预防病毒木马，查杀病毒木马"
+    }
+  },
+  {
+    "isHeader": false,
+    "info": {
+      "page_url": "forum-40-%d.html",
+      "group": "病毒分析",
+      "title": "『病毒样本区』",
+      "desc": "计算机病毒样本的测试、上报与交流，请勿实机运行所下载的样本",
+      "children": [{
+        "title": "『恶意网址区』",
+        "page_url": "forum-51-%d.html"
+      }]
+    }
+  },
+  {
+    "isHeader": false,
+    "info": {
+      "page_url": "forum-50-%d.html",
+      "group": "病毒分析",
+      "title": "『病毒救援区』 ",
+      "desc": "你的计算机又受到病毒的侵扰使你不知所措了？不要着急，让我们一起帮助你解决问题！"
+    }
+  },
+  {
+    "isHeader": false,
+    "info": {
+      "page_url": "forum-41-%d.html",
+      "group": "病毒分析",
+      "title": "『安全工具区』",
+      "desc": "工欲善其事 必先利其器，从这里能找到你想要的利器"
+    }
+  },{
+  "header": "娱乐",
+  "isHeader": true
+},
   {
     "isHeader": false,
     "info": {
