@@ -131,7 +131,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                     mBinding.postCard.setStrokeColor(
                             ContextCompat.getColor(
                                     mBinding.postCard.getContext(),
-                                    R.color.pojie_logo
+                                    R.color.orange
                             ));
                     mBinding.postCard.setStrokeWidth(
                             (int)ScreenUtilsKt.dp2px(mBinding.postCard.getContext(), 1f));
