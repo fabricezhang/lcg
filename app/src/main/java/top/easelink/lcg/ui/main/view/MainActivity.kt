@@ -21,9 +21,7 @@ import top.easelink.framework.topbase.TopActivity
 import top.easelink.framework.utils.addFragmentInActivity
 import top.easelink.framework.utils.popBackFragmentUntil
 import top.easelink.lcg.R
-import top.easelink.lcg.mta.EVENT_OPEN_FORUM
-import top.easelink.lcg.mta.PROP_FORUM_NAME
-import top.easelink.lcg.mta.sendKVEvent
+import top.easelink.lcg.mta.*
 import top.easelink.lcg.ui.main.article.view.ArticleFragment
 import top.easelink.lcg.ui.main.articles.view.ForumArticlesFragment.Companion.newInstance
 import top.easelink.lcg.ui.main.forumnav3.view.ForumNavigationV3Fragment
@@ -109,6 +107,7 @@ class MainActivity : TopActivity(), BottomNavigationView.OnNavigationItemSelecte
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageEvent(event: OpenArticleEvent) {
+        sendEvent(EVENT_OPEN_ARTICLE)
         showFragment(ArticleFragment(event.url))
     }
 
