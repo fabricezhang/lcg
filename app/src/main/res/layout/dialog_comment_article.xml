@@ -1,83 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_gravity="bottom"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:contentPadding="@dimen/dp_10"
-    app:cardBackgroundColor="@color/white"
-    app:cardCornerRadius="@dimen/dp_5"
-    app:cardUseCompatPadding="true">
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_gravity="bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:contentPadding="@dimen/dp_6"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="@dimen/dp_4"
+        app:cardUseCompatPadding="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_marginTop="@dimen/dp_10"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:id="@+id/comment_title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/dp_5"
-            android:maxLines="1"
-            android:ellipsize="end"
-            android:text="@string/comment_article_dialog_title"
-            app:layout_goneMarginEnd="@dimen/dp_30"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0"
-            />
-
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/reply_content"
-            android:layout_marginTop="@dimen/dp_5"
+            android:layout_marginTop="@dimen/dp_8"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textMultiLine"
-            android:minHeight="@dimen/dp_80"
-            android:minLines="2"
-            android:maxLines="6"
-            android:gravity="top|start"
-            android:hint="@string/comment_article_input_hint"
-            android:theme="@style/ReplyEditText"
-            android:paddingStart="@dimen/dp_8"
-            android:paddingEnd="@dimen/dp_8"
-            android:paddingTop="@dimen/dp_8"
-            android:background="@drawable/rectangle_bg"
-            android:backgroundTint="@color/slight_light_gray"
-            app:layout_constraintTop_toBottomOf="@id/comment_title" />
+            android:layout_height="match_parent">
+        <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/comment_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dp_5"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:text="@string/comment_article_dialog_title"
+                app:layout_goneMarginEnd="@dimen/dp_30"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0" />
+        <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/reply_content_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/comment_title"
+                android:layout_marginTop="@dimen/dp_10">
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_cancel"
-            android:layout_width="@dimen/dp_40"
-            android:layout_height="@dimen/dp_25"
-            android:layout_marginTop="@dimen/dp_10"
-            android:background="@drawable/button_bg"
-            android:text="@string/reply_post_btn_cancel"
-            android:backgroundTint="@color/semi_gray"
-            android:textColor="@color/white"
-            android:textSize="@dimen/sp_12"
-            android:layout_marginEnd="@dimen/dp_22"
-            app:layout_constraintHorizontal_bias="1"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintEnd_toStartOf="@id/btn_confirm"
-            app:layout_constraintTop_toBottomOf="@id/reply_content"
-            app:layout_constraintStart_toStartOf="parent" />
+            <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/reply_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
+                    android:hint="@string/comment_article_input_hint"
+                    android:gravity="top|start"
+                    android:paddingStart="@dimen/dp_8"
+                    android:paddingEnd="@dimen/dp_8"
+                    android:paddingTop="@dimen/dp_8"
+                    android:minHeight="@dimen/dp_80"
+                    android:maxHeight="@dimen/dp_300"
+                    android:maxLines="6" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_confirm"
-            android:layout_width="@dimen/dp_40"
-            android:layout_height="0dp"
-            android:background="@drawable/button_bg"
-            android:text="@string/reply_post_btn_confirm"
-            android:backgroundTint="@color/pojie_logo"
-            android:textColor="@color/white"
-            android:textSize="@dimen/sp_12"
-            app:layout_constraintTop_toTopOf="@id/btn_cancel"
-            app:layout_constraintStart_toEndOf="@id/btn_cancel"
-            app:layout_constraintBottom_toBottomOf="@id/btn_cancel"
-            app:layout_constraintEnd_toEndOf="parent" />
+        <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_cancel"
+                android:layout_width="@dimen/dp_40"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_10"
+                android:background="@drawable/button_bg"
+                android:text="@string/reply_post_btn_cancel"
+                android:backgroundTint="@color/semi_gray"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_12"
+                android:layout_marginEnd="@dimen/dp_22"
+                android:padding="@dimen/dp_4"
+                android:minHeight="@dimen/dp_0"
+                android:minWidth="@dimen/dp_0"
+                app:layout_constraintHorizontal_bias="1"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintEnd_toStartOf="@id/btn_confirm"
+                app:layout_constraintTop_toBottomOf="@id/reply_content_layout"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_confirm"
+                android:layout_width="@dimen/dp_40"
+                android:layout_height="0dp"
+                android:background="@drawable/button_bg"
+                android:text="@string/reply_post_btn_confirm"
+                android:backgroundTint="@color/pojie_logo"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_12"
+                android:padding="@dimen/dp_4"
+                android:minHeight="@dimen/dp_0"
+                android:minWidth="@dimen/dp_0"
+                app:layout_constraintTop_toTopOf="@id/btn_cancel"
+                app:layout_constraintStart_toEndOf="@id/btn_cancel"
+                app:layout_constraintBottom_toBottomOf="@id/btn_cancel"
+                app:layout_constraintEnd_toEndOf="parent" />
 
 
 

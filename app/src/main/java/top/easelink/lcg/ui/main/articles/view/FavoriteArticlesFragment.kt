@@ -13,7 +13,7 @@ import top.easelink.lcg.BR
 import top.easelink.lcg.R
 import top.easelink.lcg.databinding.FragmentFavoriteArticlesBinding
 import top.easelink.lcg.ui.main.articles.viewmodel.ArticleFetcher
-import top.easelink.lcg.ui.main.articles.viewmodel.FavoriteArticlesAdapter
+import top.easelink.lcg.ui.main.articles.viewmodel.FavoriteArticlesAdapterV2
 import top.easelink.lcg.ui.main.articles.viewmodel.FavoriteArticlesViewModel
 
 class FavoriteArticlesFragment : BaseFragment<FragmentFavoriteArticlesBinding, FavoriteArticlesViewModel>() {
@@ -50,10 +50,10 @@ class FavoriteArticlesFragment : BaseFragment<FragmentFavoriteArticlesBinding, F
                 orientation = RecyclerView.VERTICAL
             }
             itemAnimator = DefaultItemAnimator()
-            adapter = FavoriteArticlesAdapter(viewModel)
+            adapter = FavoriteArticlesAdapterV2(viewModel)
         }
         viewModel.articles.observe(viewLifecycleOwner, Observer {
-            (viewDataBinding.recyclerView.adapter as? FavoriteArticlesAdapter)?.apply {
+            (viewDataBinding.recyclerView.adapter as? FavoriteArticlesAdapterV2)?.apply {
                 clearItems()
                 addItems(it)
             }

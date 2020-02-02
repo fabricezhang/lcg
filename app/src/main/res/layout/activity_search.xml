@@ -28,8 +28,7 @@
                 android:id="@+id/refresh_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/slight_light_light_gray"
-                app:refreshing="@{viewModel.isLoading}">
+                android:background="@color/slight_light_light_gray" >
             <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_view"
                     android:layout_width="match_parent"

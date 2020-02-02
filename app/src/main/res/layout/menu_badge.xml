@@ -15,7 +15,6 @@
             android:backgroundTint="@color/colorAccent"
             android:background="@drawable/bg_oval"
             android:gravity="center"
-            android:text="5"
             android:includeFontPadding="false"
             android:textColor="@color/white"
             android:textSize="@dimen/dp_6"

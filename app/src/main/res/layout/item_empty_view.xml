@@ -17,7 +17,7 @@
         android:scaleType="fitCenter"
         android:visibility="visible"
         app:lottie_rawRes="@raw/item_not_found"
-        app:lottie_loop="true"
+        app:lottie_loop="false"
         app:lottie_autoPlay="true"/>
 
     <TextView

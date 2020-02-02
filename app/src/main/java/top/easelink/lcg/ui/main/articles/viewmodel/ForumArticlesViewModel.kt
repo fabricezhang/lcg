@@ -8,6 +8,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import top.easelink.framework.threadpool.ApiPool
 import top.easelink.lcg.R
+import top.easelink.lcg.ui.main.model.LoginRequiredException
 import top.easelink.lcg.ui.main.source.model.Article
 import top.easelink.lcg.ui.main.source.model.ForumThread
 import top.easelink.lcg.ui.main.source.remote.ArticlesRemoteDataSource.getForumArticles
@@ -64,39 +65,46 @@ class ForumArticlesViewModel : ViewModel(), ArticleFetcher {
     override fun fetchArticles(fetchType: ArticleFetcher.FetchType, callback: (Boolean) -> Unit) {
         isLoading.value = true
         GlobalScope.launch(ApiPool) {
-            val query = composeUrlByRequestType(fetchType)
-            val forumPage = getForumArticles(query,
-                fetchType == ArticleFetcher.FetchType.FETCH_INIT )
-            if (forumPage != null) {
-                val articleList = forumPage.articleList
-                if (articleList.isNotEmpty().also(callback)) {
-                    val list = articles.value
-                    if ((fetchType == ArticleFetcher.FetchType.FETCH_MORE) && !list.isNullOrEmpty()) {
-                        val articleA = articleList[articleList.size - 1]
-                        val articleB = list[list.size - 1]
-                        if (articleA.title == articleB.title) {
-                            showMessage(R.string.no_more_content)
+            try {
+                val query = composeUrlByRequestType(fetchType)
+                val forumPage = getForumArticles(
+                    query,
+                    fetchType == ArticleFetcher.FetchType.FETCH_INIT
+                )
+                if (forumPage != null) {
+                    val articleList = forumPage.articleList
+                    if (articleList.isNotEmpty().also(callback)) {
+                        val list = articles.value
+                        if ((fetchType == ArticleFetcher.FetchType.FETCH_MORE) && !list.isNullOrEmpty()) {
+                            val articleA = articleList[articleList.size - 1]
+                            val articleB = list[list.size - 1]
+                            if (articleA.title == articleB.title) {
+                                showMessage(R.string.no_more_content)
+                            } else {
+                                articles.postValue(list.plus(articleList))
+                            }
                         } else {
-                            articles.postValue(list.plus(articleList))
+                            articles.postValue(articleList)
                         }
-                    } else {
-                        articles.postValue(articleList)
                     }
-                }
-                if (!isTabSet) {
-                    forumPage.threadList.let {
-                        threadList.postValue(
-                            if (it.isNotEmpty())
-                                it
-                            else
-                                emptyList()
-                        )
+                    if (!isTabSet) {
+                        forumPage.threadList.let {
+                            threadList.postValue(
+                                if (it.isNotEmpty())
+                                    it
+                                else
+                                    emptyList()
+                            )
+                        }
+                        isTabSet = true
                     }
-                    isTabSet = true
-                }
 
+                }
+            } catch (e: LoginRequiredException) {
+                showMessage(R.string.login_required_error)
+            } finally {
+                isLoading.postValue(false)
             }
-            isLoading.postValue(false)
         }
     }
 

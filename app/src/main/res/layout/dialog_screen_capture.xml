@@ -1,18 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.constraintlayout.widget.ConstraintLayout
+<FrameLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clickable="true"
         android:focusable="true">
 
-    <ImageView
+    <com.github.chrisbanes.photoview.PhotoView
             android:layout_margin="@dimen/dp_10"
             android:id="@+id/img_screen_capture"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="fitCenter" />
 
+    <ImageButton
+            android:id="@+id/share"
+            android:src="@drawable/ic_wechat"
+            android:layout_width="@dimen/dp_40"
+            android:layout_height="@dimen/dp_40"
+            android:scaleType="fitXY"
+            android:layout_marginTop="@dimen/dp_4"
+            android:layout_marginEnd="@dimen/dp_4"
+            android:background="@color/transparent"
+            android:layout_gravity="end"
+            android:contentDescription="@null" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>

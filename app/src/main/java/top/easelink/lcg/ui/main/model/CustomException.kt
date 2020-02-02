@@ -1,6 +1,6 @@
 package top.easelink.lcg.ui.main.model
 
-class BlockException : Exception()
+class BlockException(val alertMessage: String) : Exception()
 
 class NetworkException : Exception()
 

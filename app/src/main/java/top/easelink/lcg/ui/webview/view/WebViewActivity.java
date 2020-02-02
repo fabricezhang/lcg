@@ -33,7 +33,7 @@ import org.jsoup.nodes.Element;
 import java.util.Objects;
 
 import timber.log.Timber;
-import top.easelink.framework.customview.HorizontalScrollDisableWebView;
+import top.easelink.framework.customview.webview.HorizontalScrollDisableWebView;
 import top.easelink.lcg.LCGApp;
 import top.easelink.lcg.R;
 import top.easelink.lcg.service.web.HookInterface;
@@ -229,11 +229,13 @@ public class WebViewActivity extends AppCompatActivity {
                 view.loadUrl("javascript:" + HOOK_NAME + ".processHtml(document.documentElement.outerHTML);");
             }
             setCookies(CookieManager.getInstance().getCookie(url));
+            view.getSettings().setBlockNetworkImage(false);
         }
 
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
+            view.getSettings().setBlockNetworkImage(true);
             setLoading(true);
         }
 
@@ -245,8 +247,10 @@ public class WebViewActivity extends AppCompatActivity {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
             String url = request.getUrl().toString();
-            if (TextUtils.isEmpty(url)) return false;
-            if (url.startsWith("wtloginmqq://ptlogin/qlogin")) {
+            if (TextUtils.isEmpty(url)) {
+                return false;
+
+            } else if (url.startsWith("wtloginmqq://ptlogin/qlogin")) {
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
                 Timber.e(url);
                 return true;
@@ -285,7 +289,7 @@ public class WebViewActivity extends AppCompatActivity {
         } else {
             settings.setJavaScriptEnabled(false);
         }
-        settings.setBlockNetworkImage(false);
+        settings.setDomStorageEnabled(true);
         settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         settings.setUseWideViewPort(true);
         settings.setLoadWithOverviewMode(true);
@@ -294,5 +298,6 @@ public class WebViewActivity extends AppCompatActivity {
         settings.setAppCacheEnabled(true);
         settings.setSupportZoom(false);
         settings.setCacheMode(WebSettings.LOAD_DEFAULT);
+        settings.setBlockNetworkImage(true);
     }
 }

@@ -45,8 +45,8 @@ class SearchViewModel : ViewModel(), SearchAdapterListener {
                         searchResults.postValue(searchResultList)
                     }
                 }
+                isLoading.postValue(false)
             }
-            isLoading.postValue(false)
         }
 
     }

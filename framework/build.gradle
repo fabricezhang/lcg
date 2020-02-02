@@ -55,7 +55,7 @@ dependencies {
 //    api 'com.implimentz:unsafe:0.0.6'
 
     // view
-    api "com.mindorks:placeholderview:$rootProject.placeholderviewVersion"
+    api 'com.drakeet.multitype:multitype:4.2.0'
 //    api "androidx.viewpager2:viewpager2:$rootProject.viewpager2"
 //    api 'com.ethanhua:skeleton:1.1.2'
     api 'io.supercharge:shimmerlayout:2.1.0'

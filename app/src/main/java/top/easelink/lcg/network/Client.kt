@@ -69,8 +69,12 @@ object Client: ApiRequest {
         GlobalScope.launch(BackGroundPool){
             if (System.currentTimeMillis() - lastTime > CHECK_INTERVAL) {
                 lastTime = System.currentTimeMillis()
-                checkLoginState(doc)
-                checkMessages(doc)
+                try {
+                    checkLoginState(doc)
+                    checkMessages(doc)
+                } catch (e: Exception) {
+                    Timber.e(e)
+                }
             }
         }
     }

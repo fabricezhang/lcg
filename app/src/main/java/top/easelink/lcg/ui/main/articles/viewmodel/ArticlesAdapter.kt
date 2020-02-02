@@ -10,7 +10,6 @@ import kotlinx.android.synthetic.main.item_article_view.view.*
 import kotlinx.android.synthetic.main.item_load_more_view.view.*
 import org.greenrobot.eventbus.EventBus
 import top.easelink.framework.base.BaseViewHolder
-import top.easelink.framework.utils.dpToPx
 import top.easelink.lcg.R
 import top.easelink.lcg.databinding.ItemArticleEmptyViewBinding
 import top.easelink.lcg.spipedata.UserData
@@ -123,12 +122,12 @@ class ArticlesAdapter(
                 setOnClickListener {
                     EventBus.getDefault().post(OpenArticleEvent(article.url))
                 }
-                if (article.author == UserData.username) {
-                    layout.strokeColor = ContextCompat.getColor(context, R.color.google)
-                    layout.strokeWidth = 1.dpToPx(context).toInt()
-                } else {
-                    layout.strokeWidth = 0
-                }
+//                if (article.author == UserData.username) {
+//                    layout.strokeColor = ContextCompat.getColor(context, R.color.google)
+//                    layout.strokeWidth = 1.dpToPx(context).toInt()
+//                } else {
+//                    layout.strokeWidth = 0
+//                }
             }
             view.apply {
                 title_text_view.text = article.title
@@ -136,26 +135,39 @@ class ArticlesAdapter(
                 date_text_view.text = article.date
                 reply_and_view.text = article.let { "${it.reply} / ${it.view}" }
                 origin.text = article.origin
-                when (article.helpCoin) {
-                    0 -> stamp.visibility = View.GONE
-                    -1 -> {
-                        stamp.setDrawSpotEnable(true)
-                        stamp.setStampColor(ContextCompat.getColor(context, R.color.light_gray))
-                        stamp.setText(context.getString(R.string.help_request_solved))
-                        stamp.visibility = View.VISIBLE
-                        stamp.reDraw()
+                if (article.author == UserData.username) {
+                    stamp.apply {
+                        visibility = View.VISIBLE
+                        setStampColor(ContextCompat.getColor(context, R.color.orange))
+                        setText(context.getString(R.string.my_post))
+                        reDraw()
                     }
-                    else -> {
-                        stamp.setDrawSpotEnable(true)
-                        stamp.setStampColor(ContextCompat.getColor(context, R.color.colorAccent))
-                        stamp.setText(article.helpCoin.toString())
-                        stamp.visibility = View.VISIBLE
-                        stamp.reDraw()
+                } else {
+                    when (article.helpCoin) {
+                        0 -> stamp.visibility = View.GONE
+                        -1 -> stamp.apply {
+                            setDrawSpotEnable(true)
+                            setStampColor(ContextCompat.getColor(context, R.color.light_gray))
+                            setText(context.getString(R.string.help_request_solved))
+                            visibility = View.VISIBLE
+                            reDraw()
+                        }
+                        else -> stamp.apply {
+                            stamp.setDrawSpotEnable(true)
+                            stamp.setStampColor(
+                                ContextCompat.getColor(
+                                    context,
+                                    R.color.colorAccent
+                                )
+                            )
+                            stamp.setText(article.helpCoin.toString())
+                            stamp.visibility = View.VISIBLE
+                            stamp.reDraw()
+                        }
                     }
                 }
             }
         }
-
     }
 
     inner class EmptyViewHolder internal constructor(private val mBinding: ItemArticleEmptyViewBinding) :

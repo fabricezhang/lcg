@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical"
+        android:focusable="true"
+        android:clickable="true"
+        android:gravity="center"
+        android:background="@color/white">
+    <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/forum_nav_toolbar"
+            android:textSize="@dimen/sp_12"
+            style="@style/Toolbar"
+            app:title="@string/forum_title"
+            app:subtitleTextColor="@color/white"
+            app:titleTextAppearance="@style/Toolbar.TitleText"
+            app:titleTextColor="@color/white"/>
+    <top.easelink.framework.customview.linkagerv.LinkageRecyclerView
+            android:id="@+id/linkageRV"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+</LinearLayout>

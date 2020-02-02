@@ -25,36 +25,44 @@
         android:textSize="@dimen/sp_16"
         tools:text="是否退出登陆" />
 
-
-    <androidx.appcompat.widget.AppCompatButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/logout_confirm_btn"
         android:layout_width="@dimen/dp_50"
-        android:layout_height="@dimen/dp_25"
+        android:layout_height="wrap_content"
         android:textColor="@color/white"
         android:layout_marginTop="@dimen/dp_20"
         android:textSize="@dimen/sp_14"
         android:text="@string/logout_confirm_btn"
+        android:padding="@dimen/dp_4"
+        android:minHeight="@dimen/dp_0"
+        android:minWidth="@dimen/dp_0"
         android:layout_marginBottom="@dimen/dp_5"
-        android:background="@drawable/button_bg"
         android:backgroundTint="@color/pojie_logo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/logout_message"
         app:layout_constraintStart_toEndOf="@id/cancel_btn"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:cornerRadius="@dimen/dp_6"
+        app:rippleColor="@color/colorPrimary" />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/cancel_btn"
         android:layout_width="@dimen/dp_50"
-        android:layout_height="@dimen/dp_25"
+        android:layout_height="wrap_content"
         android:textColor="@color/white"
         android:textSize="@dimen/sp_14"
         android:text="@string/cancel_btn"
         android:background="@drawable/button_bg"
-        android:backgroundTint="@color/light_gray"
+        android:backgroundTint="@color/semi_gray"
+        android:padding="@dimen/dp_4"
+        android:minHeight="@dimen/dp_0"
+        android:minWidth="@dimen/dp_0"
         app:layout_constraintBottom_toBottomOf="@id/logout_confirm_btn"
         app:layout_constraintTop_toTopOf="@id/logout_confirm_btn"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/logout_confirm_btn" />
+        app:layout_constraintEnd_toStartOf="@id/logout_confirm_btn"
+        app:cornerRadius="@dimen/dp_6"
+        app:rippleColor="@color/light_gray" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

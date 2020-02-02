@@ -29,6 +29,8 @@ import java.util.*
 
 class ArticleFragment(private var articleUrl: String) : BaseFragment<FragmentArticleBinding, ArticleViewModel>() {
 
+    // try fix no empty constructor issue
+    constructor() : this(WebsiteConstant.APP_RELEASE_PAGE)
 
     override fun isControllable(): Boolean {
         return true

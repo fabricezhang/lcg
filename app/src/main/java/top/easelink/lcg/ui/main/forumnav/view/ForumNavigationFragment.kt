@@ -1,34 +1,39 @@
 package top.easelink.lcg.ui.main.forumnav.view
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.AdapterView
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import kotlinx.android.synthetic.main.fragment_forums_navigation.*
 import org.greenrobot.eventbus.EventBus
-import top.easelink.framework.base.BaseFragment
-import top.easelink.lcg.BR
+import top.easelink.framework.topbase.ControllableFragment
+import top.easelink.framework.topbase.TopFragment
 import top.easelink.lcg.R
-import top.easelink.lcg.databinding.FragmentForumsNavigationBinding
 import top.easelink.lcg.ui.main.forumnav.viewmodel.ForumNavigationViewModel
 import top.easelink.lcg.ui.main.model.OpenForumEvent
 
-class ForumNavigationFragment :
-    BaseFragment<FragmentForumsNavigationBinding, ForumNavigationViewModel>() {
+class ForumNavigationFragment : TopFragment(), ControllableFragment{
+
+    private lateinit var mViewModel: ForumNavigationViewModel
 
     override fun isControllable(): Boolean {
         return true
     }
 
-    override fun getBindingVariable(): Int {
-        return BR.viewModel
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mViewModel = ViewModelProvider(this)[ForumNavigationViewModel::class.java]
     }
 
-    override fun getLayoutId(): Int {
-        return R.layout.fragment_forums_navigation
-    }
-
-    override fun getViewModel(): ForumNavigationViewModel {
-        return ViewModelProviders.of(this).get(ForumNavigationViewModel::class.java)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        return inflater.inflate(R.layout.fragment_forums_navigation, container, false)
     }
 
     override fun onViewCreated(
@@ -40,9 +45,9 @@ class ForumNavigationFragment :
     }
 
     private fun setUp() {
-        viewDataBinding.navigationGrid.apply {
+        navigation_grid.apply {
             adapter = CustomGridViewAdapter(
-                baseActivity,
+                mContext,
                 R.layout.item_forums_grid
             )
             onItemClickListener =
@@ -53,6 +58,9 @@ class ForumNavigationFragment :
                     }
                 }
         }
-        viewModel.initOptions(baseActivity)
+        mViewModel.navigation.observe(viewLifecycleOwner, Observer {
+            CustomGridViewAdapter.addForumNavigationList(navigation_grid, it)
+        })
+        mViewModel.initOptions(mContext)
     }
 }

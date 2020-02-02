@@ -41,6 +41,7 @@
     <string name="tab_title_digest">精华采撷</string>
     <string name="tab_title_help">求助新帖</string>
     <string name="help_request_solved">解</string>
+    <string name="my_post">我</string>
     <string name="app_exit_tip">再按一次退出应用</string>
 
     <!--Me Fragment-->
@@ -83,7 +84,7 @@
     <string name="github_title">Github源码地址</string>
     <string name="github_url">https://github.com/fabricezhang/lcg/</string>
     <string name="author_title">问题反馈邮箱</string>
-    <string name="author_email">fabircez@163.com</string>
+    <string name="author_email">fabirce@163.com</string>
 
     <!--favorite fragment-->
     <string name="empty_favorite">收藏夹目前是空的。</string>
@@ -132,6 +133,9 @@
     <string name="share_title">快来看这篇</string>
 
     <!--forum grid-->
+    <string name="forum_title">论坛板块导航</string>
+    <string name="forum_doctors">向逆行的白衣天使们致敬！</string>
+    <string name="forum_secondary_footer">没有更多了</string>
     <string name="forum_mobile_security">『移动安全区』</string>
     <string name="forum_software">『精品软件区』</string>
     <string name="forum_original_release">『原创发布区』</string>
@@ -154,5 +158,5 @@
     <!--permissions-->
     <string name="permission_request">请授予读写磁盘权限</string>
     <string name="permission_grant">已授权</string>
-    <string name="permission_denied">未授权，部分空能可能无法使用</string>
+    <string name="permission_denied">未授权，部分功能可能无法使用</string>
 </resources>

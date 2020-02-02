@@ -31,15 +31,12 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
     private val gson: Gson = GsonBuilder().excludeFieldsWithoutExposeAnnotation().create()
 
     @WorkerThread
+    @Throws(LoginRequiredException::class)
     override fun getForumArticles(query: String, processThreadList: Boolean): ForumPage? {
-        return try {
-            processForumArticlesDocument(
-                Client.sendGetRequestWithQuery(query),
-                processThreadList
-            )
-        } catch (e: Exception) {
-            null
-        }
+        return processForumArticlesDocument(
+            Client.sendGetRequestWithQuery(query),
+            processThreadList
+        )
     }
 
     @WorkerThread
@@ -83,7 +80,12 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
                 }
             val title = doc.selectFirst("span#thread_subject")?.text().orEmpty()
             if (title.isEmpty()) {
-                throw BlockException()
+                val message = doc
+                    .getElementById("messagetext")
+                    ?.nextElementSibling()
+                    ?.text()
+                    .orEmpty()
+                throw BlockException(message)
             }
             val nextPageUrl = doc.selectFirst("a.nxt")?.attr("href").orEmpty()
             val replyAddUrls = getReplyAddUrl(doc)
@@ -181,6 +183,7 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
         }
     }
 
+    @Throws(LoginRequiredException::class)
     private fun processForumArticlesDocument(doc: Document, processThreadList: Boolean): ForumPage? {
         try {
             var elements = doc.select("tbody[id^=normal]")
@@ -250,6 +253,8 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
                 }
             }
             return ForumPage(articleList, threadList?: emptyList())
+        } catch (e: LoginRequiredException) {
+            throw e
         } catch (e: Exception) {
             Timber.e(e)
             return null
@@ -317,12 +322,20 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
         }
     }
 
+    @Throws(BlockException::class)
     private fun getFirstPost(document: Document): PreviewPost {
         val dateTime = document
             .selectFirst("div.authi")
             ?.select("em")
             ?.text()
-            ?: throw BlockException()
+            ?: run {
+                val message = document
+                    .getElementById("messagetext")
+                    ?.nextElementSibling()
+                    ?.text()
+                    .orEmpty()
+                throw BlockException(message)
+            }
         val content = getFirstContent(document)
         var avatar: String? = null
         var name: String? = null

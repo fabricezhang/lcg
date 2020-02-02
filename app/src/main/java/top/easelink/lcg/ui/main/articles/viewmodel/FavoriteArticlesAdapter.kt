@@ -18,6 +18,7 @@ import top.easelink.lcg.ui.main.model.OpenArticleEvent
 import top.easelink.lcg.ui.main.source.local.ArticlesLocalDataSource.delArticleFromFavorite
 import top.easelink.lcg.ui.main.source.model.ArticleEntity
 
+@Deprecated("use FavoriteArticlesAdapter instead")
 class FavoriteArticlesAdapter(private var favoriteArticlesViewModel: FavoriteArticlesViewModel) :
     RecyclerView.Adapter<BaseViewHolder>() {
     private val mArticleEntities: MutableList<ArticleEntity> = mutableListOf()

@@ -1,10 +1,14 @@
 package top.easelink.lcg.ui.main.view
 
+import android.Manifest
+import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
@@ -22,7 +26,7 @@ import top.easelink.lcg.mta.PROP_FORUM_NAME
 import top.easelink.lcg.mta.sendKVEvent
 import top.easelink.lcg.ui.main.article.view.ArticleFragment
 import top.easelink.lcg.ui.main.articles.view.ForumArticlesFragment.Companion.newInstance
-import top.easelink.lcg.ui.main.forumnav.view.ForumNavigationFragment
+import top.easelink.lcg.ui.main.forumnav3.view.ForumNavigationV3Fragment
 import top.easelink.lcg.ui.main.largeimg.view.LargeImageDialog
 import top.easelink.lcg.ui.main.me.view.MeFragment
 import top.easelink.lcg.ui.main.message.view.MessageFragment
@@ -62,6 +66,7 @@ class MainActivity : TopActivity(), BottomNavigationView.OnNavigationItemSelecte
         EventBus.getDefault().register(this)
         setupBottomNavMenu()
         showFragment(RecommendFragment::class.java)
+        checkPermission()
     }
 
     override fun onDestroy() {
@@ -88,7 +93,7 @@ class MainActivity : TopActivity(), BottomNavigationView.OnNavigationItemSelecte
                 MessageFragment::class.java.simpleName -> {
                     view.selectedItemId = R.id.action_message
                 }
-                ForumNavigationFragment::class.java.simpleName -> {
+                ForumNavigationV3Fragment::class.java.simpleName -> {
                     view.selectedItemId = R.id.action_forum_navigation
                 }
                 MeFragment::class.java.simpleName -> {
@@ -194,12 +199,41 @@ class MainActivity : TopActivity(), BottomNavigationView.OnNavigationItemSelecte
                     removeBubbleView(2)
                     showFragment(MessageFragment::class.java)
                 }
-                R.id.action_forum_navigation -> showFragment(ForumNavigationFragment::class.java)
+                R.id.action_forum_navigation -> showFragment(ForumNavigationV3Fragment::class.java)
                 R.id.action_about_me -> showFragment(MeFragment::class.java)
                 R.id.action_home -> showFragment(RecommendFragment::class.java)
                 else -> { }
             }
             true
         }
+    }
+
+
+    private fun checkPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            != PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                WRITE_EXTERNAL_CODE
+            )
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == WRITE_EXTERNAL_CODE) {
+            if (grantResults[0] != PERMISSION_GRANTED) {
+                showMessage(R.string.permission_denied)
+            }
+        }
+    }
+
+    companion object {
+        const val WRITE_EXTERNAL_CODE = 1
     }
 }
