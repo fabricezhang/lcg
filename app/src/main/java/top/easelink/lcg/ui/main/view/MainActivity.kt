@@ -227,7 +227,7 @@ class MainActivity : TopActivity(), BottomNavigationView.OnNavigationItemSelecte
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == WRITE_EXTERNAL_CODE) {
-            if (grantResults[0] != PERMISSION_GRANTED) {
+            if (grantResults.isNotEmpty() && grantResults[0] != PERMISSION_GRANTED) {
                 showMessage(R.string.permission_denied)
             }
         }
