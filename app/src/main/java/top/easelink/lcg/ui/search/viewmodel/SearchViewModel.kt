@@ -4,9 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import top.easelink.framework.threadpool.ApiPool
-import top.easelink.framework.threadpool.Main
 import top.easelink.lcg.ui.search.model.SearchResult
 import top.easelink.lcg.ui.search.source.SearchService.doSearchRequest
 import top.easelink.lcg.ui.search.viewmodel.SearchResultAdapter.SearchAdapterListener

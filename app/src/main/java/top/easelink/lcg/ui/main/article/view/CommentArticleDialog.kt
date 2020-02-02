@@ -3,7 +3,6 @@ package top.easelink.lcg.ui.main.article.view
 import android.os.Bundle
 import android.view.*
 import android.widget.Button
-import android.widget.EditText
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
