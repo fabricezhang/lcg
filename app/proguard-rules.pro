@@ -68,6 +68,7 @@
 
 # LinkageRecyclerView
 -keep class top.easelink.framework.customview.linkagerv.bean.** {*;}
+-keep class top.easelink.lcg.ui.main.forumnav3.model.** {*;}
 
 # PersistentCookieJar
 -dontwarn com.franmontiel.persistentcookiejar.**
