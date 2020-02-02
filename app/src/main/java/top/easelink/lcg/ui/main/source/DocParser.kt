@@ -31,7 +31,7 @@ fun parseUserInfo(doc: Document): UserInfo {
             val groupInfo = getElementById("g_upmine")?.text()
             getElementsByClass("xi2")?.remove()
             val coin = getElementsByClass("xi1 cl")?.first()?.text()
-            val element = selectFirst("span.xg1")
+            val element: Element? = selectFirst("span.xg1")
             val parentCredit = element?.parent()
             element?.remove()
             val credit = parentCredit?.text()
