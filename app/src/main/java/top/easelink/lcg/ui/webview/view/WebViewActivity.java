@@ -247,8 +247,10 @@ public class WebViewActivity extends AppCompatActivity {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
             String url = request.getUrl().toString();
-            if (TextUtils.isEmpty(url)) return false;
-            if (url.startsWith("wtloginmqq://ptlogin/qlogin")) {
+            if (TextUtils.isEmpty(url)) {
+                return false;
+
+            } else if (url.startsWith("wtloginmqq://ptlogin/qlogin")) {
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
                 Timber.e(url);
                 return true;
@@ -287,7 +289,7 @@ public class WebViewActivity extends AppCompatActivity {
         } else {
             settings.setJavaScriptEnabled(false);
         }
-        settings.setBlockNetworkImage(false);
+        settings.setDomStorageEnabled(true);
         settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         settings.setUseWideViewPort(true);
         settings.setLoadWithOverviewMode(true);
