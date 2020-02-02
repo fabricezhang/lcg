@@ -18,20 +18,20 @@ android {
         versionCode versionMajor * 10000 + versionMinor * 100 + versionPatch
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
         buildConfigField("String", "DB_NAME", "\"articles.db\"")
-        buildConfigField("String", "BUGLY_APP_ID", "\"b9441ed548\"")
+        buildConfigField("String", "BUGLY_APP_ID", rootProject.ext.BUGLY_APP_ID)
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         manifestPlaceholders = [
-                MTA_APPKEY:"A6SZ9KQ7VX9T",
-                MTA_CHANNEL:"52POJIE"
+                MTA_APPKEY : rootProject.ext.MTA_APP_KEY,
+                MTA_CHANNEL: rootProject.ext.MTA_CHANNEL
         ]
     }
     signingConfigs {
         releaseConfig {
-            keyAlias 'lcg'
-            keyPassword '52pojie'
+            keyAlias rootProject.ext.RELEASE_KEY_ALIAS
+            keyPassword rootProject.ext.RELEASE_KEY_PWD
             storeFile file('../keystore.jks')
-            storePassword 'easelink'
+            storePassword rootProject.ext.RELEASE_KEY_STORE_PWD
         }
     }
     buildTypes {
