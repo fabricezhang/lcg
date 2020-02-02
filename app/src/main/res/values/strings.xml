@@ -158,5 +158,5 @@
     <!--permissions-->
     <string name="permission_request">请授予读写磁盘权限</string>
     <string name="permission_grant">已授权</string>
-    <string name="permission_denied">未授权，部分空能可能无法使用</string>
+    <string name="permission_denied">未授权，部分功能可能无法使用</string>
 </resources>

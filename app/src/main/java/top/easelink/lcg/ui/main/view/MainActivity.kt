@@ -1,10 +1,14 @@
 package top.easelink.lcg.ui.main.view
 
+import android.Manifest
+import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
@@ -62,6 +66,7 @@ class MainActivity : TopActivity(), BottomNavigationView.OnNavigationItemSelecte
         EventBus.getDefault().register(this)
         setupBottomNavMenu()
         showFragment(RecommendFragment::class.java)
+        checkPermission()
     }
 
     override fun onDestroy() {
@@ -201,5 +206,34 @@ class MainActivity : TopActivity(), BottomNavigationView.OnNavigationItemSelecte
             }
             true
         }
+    }
+
+
+    private fun checkPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            != PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                WRITE_EXTERNAL_CODE
+            )
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == WRITE_EXTERNAL_CODE) {
+            if (grantResults[0] != PERMISSION_GRANTED) {
+                showMessage(R.string.permission_denied)
+            }
+        }
+    }
+
+    companion object {
+        const val WRITE_EXTERNAL_CODE = 1
     }
 }

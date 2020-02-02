@@ -3,7 +3,9 @@ package top.easelink.lcg.utils
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import android.media.MediaScannerConnection
 import android.net.Uri
+import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
 import timber.log.Timber
@@ -58,6 +60,42 @@ fun saveBmp2Gallery(context: Context, bmp: Bitmap, picName: String) {
     context.sendBroadcast(intent)
     showMessage(context, "图片保存成功")
 }
+
+
+fun syncSystemGallery(context: Context, path: String, fileName: String) {
+    val file = File(path)
+    if (!file.exists()) {
+        Timber.e("File not exists!")
+        return
+    }
+    try {
+        MediaStore.Images.Media.insertImage(
+            context.contentResolver,
+            file.absolutePath, fileName, null
+        )
+    } catch (e: FileNotFoundException) {
+        Timber.e(e)
+    }
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+        val paths = arrayOf<String>(file.absolutePath)
+        MediaScannerConnection.scanFile(context, paths, null, null)
+    } else {
+        val intent: Intent
+        if (file.isDirectory) {
+            intent = Intent(Intent.ACTION_MEDIA_MOUNTED)
+            intent.setClassName(
+                "com.android.providers.media",
+                "com.android.providers.media.MediaScannerReceiver"
+            )
+            intent.data = Uri.fromFile(Environment.getExternalStorageDirectory())
+        } else {
+            intent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
+            intent.data = Uri.fromFile(file)
+        }
+        context.sendBroadcast(intent)
+    }
+}
+
 
 /**
  * 读取assets本地json
