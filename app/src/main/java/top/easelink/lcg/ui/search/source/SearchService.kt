@@ -39,7 +39,7 @@ object SearchService {
                 ?.filterNotNull()
                 .orEmpty()
             if (list.isNullOrEmpty()) {
-                throw Exception("Empty Result")
+                return SearchResults(emptyList())
             }
             return SearchResults(list).also {
                 try {
@@ -56,7 +56,7 @@ object SearchService {
             }
 
         } catch (e: Exception) {
-            Timber.e(e)
+            Timber.w(e)
             showMessage(R.string.error)
         }
         return SearchResults(emptyList())

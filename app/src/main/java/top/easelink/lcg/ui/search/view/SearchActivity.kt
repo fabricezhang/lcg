@@ -68,6 +68,9 @@ class SearchActivity : BaseActivity<ActivitySearchBinding, SearchViewModel>() {
                 }
             })
         }
+        viewModel.isLoading.observe(this, Observer {
+            viewDataBinding.refreshLayout.isRefreshing = it
+        })
         viewDataBinding.refreshLayout.apply {
             setColorSchemeColors(
                 ContextCompat.getColor(this@SearchActivity, R.color.colorPrimary),
