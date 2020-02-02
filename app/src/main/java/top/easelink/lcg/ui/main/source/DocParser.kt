@@ -6,6 +6,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import org.jsoup.nodes.Document
+import org.jsoup.nodes.Element
 import timber.log.Timber
 import top.easelink.framework.threadpool.BackGroundPool
 import top.easelink.framework.threadpool.CommonPool
@@ -58,7 +59,7 @@ fun checkMessages(doc: Document) {
 @WorkerThread
 fun parseNotificationInfo(doc: Document): NotificationInfo {
     with(doc) {
-        val menu = getElementById("myprompt_menu")
+        val menu: Element? = getElementById("myprompt_menu")
         val requestList = mutableListOf<String>()
         var message = 0
         var follower = 0
