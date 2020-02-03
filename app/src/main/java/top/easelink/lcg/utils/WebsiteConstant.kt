@@ -47,5 +47,4 @@ object WebsiteConstant {
 
     const val HOME_URL = "home.php"
     const val LOGIN_URL = "member.php?mod=logging&action=login"
-    const val APP_RELEASE_PAGE = "thread-1073834-1-1.html"
 }
