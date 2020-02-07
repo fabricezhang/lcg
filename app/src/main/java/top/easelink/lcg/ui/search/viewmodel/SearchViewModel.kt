@@ -34,7 +34,7 @@ class SearchViewModel : ViewModel(), SearchAdapterListener {
             else ->  return
         }
         GlobalScope.launch(ApiPool){
-            doSearchRequest(requestUrl).apply {
+            doSearchRequest(requestUrl, 0).apply {
                 if (searchResultList.isNotEmpty()) {
                     val list = searchResults.value
                     mNextPageUrl = nextPageUrl

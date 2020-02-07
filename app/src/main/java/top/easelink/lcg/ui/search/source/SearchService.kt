@@ -1,11 +1,13 @@
 package top.easelink.lcg.ui.search.source
 
 import androidx.annotation.WorkerThread
+import kotlinx.coroutines.delay
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
 import timber.log.Timber
 import top.easelink.lcg.R
 import top.easelink.lcg.network.ApiClient
+import top.easelink.lcg.ui.search.model.RequestTooOftenException
 import top.easelink.lcg.ui.search.model.SearchResult
 import top.easelink.lcg.ui.search.model.SearchResults
 import top.easelink.lcg.utils.showMessage
@@ -18,7 +20,22 @@ import top.easelink.lcg.utils.showMessage
 
 object SearchService {
 
+    suspend fun doSearchRequest(requestUrl: String, retryTime: Int): SearchResults {
+        return try {
+            if (retryTime <= 3) {
+                doSearchRequest(requestUrl)
+            } else {
+                SearchResults(emptyList())
+            }
+        } catch (e: RequestTooOftenException) {
+            delay(1000)
+            doSearchRequest(requestUrl, retryTime+1)
+        }
+    }
+
+
     @WorkerThread
+    @Throws(RequestTooOftenException::class)
     fun doSearchRequest(requestUrl: String): SearchResults {
         try {
             val doc = ApiClient.sendGetRequestWithUrl(requestUrl)
@@ -39,12 +56,12 @@ object SearchService {
                 ?.filterNotNull()
                 .orEmpty()
             if (list.isNullOrEmpty()) {
+
                 return SearchResults(emptyList())
             }
             return SearchResults(list).also {
                 try {
-                    it.nextPageUrl = doc?.
-                        selectFirst("a.pager-next-foot")
+                    it.nextPageUrl = doc?.selectFirst("a.pager-next-foot")
                         ?.attr("href")
                     it.totalResult = doc
                         ?.getElementsByClass("support-text-top")
@@ -54,7 +71,8 @@ object SearchService {
                     it.nextPageUrl = null
                 }
             }
-
+        } catch (e: RequestTooOftenException) {
+            throw e
         } catch (e: Exception) {
             Timber.w(e)
             showMessage(R.string.error)
