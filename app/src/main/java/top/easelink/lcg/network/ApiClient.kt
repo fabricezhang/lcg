@@ -39,7 +39,7 @@ object ApiClient: ApiRequest {
 
 
     override fun sendGetRequestWithUrl(url: String): Document? {
-        val request = Request.Builder().method("GET", null).url(url).build()
+        val request = Request.Builder().get().url(url).build()
         val response = mClient.newCall(request).execute()
         return if (response.isSuccessful) {
             Jsoup.parse(response.body?.string())
