@@ -3,12 +3,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group>
         <item
-                android:id="@+id/navItemAbout"
-                android:icon="@drawable/ic_info_24px"
-                android:title="@string/about" />
+            android:id="@+id/nav_item_about"
+            android:icon="@drawable/ic_info_24px"
+            android:title="@string/about" />
         <item
-                android:id="@+id/navItemRelease"
-                android:icon="@drawable/ic_get_app_black_24dp"
-                android:title="@string/thread_about_app" />
+            android:id="@+id/nav_item_release"
+            android:icon="@drawable/ic_get_app_black_24dp"
+            android:title="@string/thread_about_app" />
+        <item
+            android:id="@+id/nav_item_portal"
+            android:icon="@drawable/ic_chrome"
+            android:title="@string/open_portal_page" />
     </group>
 </menu>

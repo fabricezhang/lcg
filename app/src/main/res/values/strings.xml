@@ -31,8 +31,7 @@
     <!--Drawer Menus-->
     <string name="about">『关于应用』</string>
     <string name="thread_about_app">『App发布页』</string>
-    <string name="free_chat_title">『水漫金山』</string>
-    <string name="welfare_title">『福利经验』</string>
+    <string name="open_portal_page">『吾爱网页版』</string>
 
     <!--home fragment-->
     <string name="tab_title_hot">人气热门</string>
@@ -146,6 +145,8 @@
     <string name="forum_virus_analysis">『病毒分析区』</string>
     <string name="forum_virus_sample">『病毒样本区』</string>
     <string name="forum_virus_rescue">『病毒救援区』</string>
+    <string name="free_chat_title">『水漫金山』</string>
+    <string name="welfare_title">『福利经验』</string>
 
     <!--block-->
     <string name="not_found_info">抱歉，文章可能已经被删除了</string>

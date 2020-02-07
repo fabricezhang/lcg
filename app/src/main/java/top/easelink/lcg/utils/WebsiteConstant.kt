@@ -8,6 +8,8 @@ package top.easelink.lcg.utils
 object WebsiteConstant {
     const val URL_KEY = "URL_KEY"
     const val EXTRA_TABLE_HTML = "EXTRA_TABLE_HTML"
+
+
     const val SERVER_BASE_URL = "https://www.52pojie.cn/"
     const val FORUM_BASE_URL = "forum.php?mod=guide&view="
     const val BAIDU_SEARCH_BASE_URL = "http://zhannei.baidu.com/cse/"

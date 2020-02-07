@@ -2,7 +2,6 @@ package top.easelink.lcg.ui.main.view
 
 import android.Manifest
 import android.content.pm.PackageManager.PERMISSION_GRANTED
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -40,6 +39,8 @@ import top.easelink.lcg.ui.main.model.OpenArticleEvent
 import top.easelink.lcg.ui.main.model.OpenForumEvent
 import top.easelink.lcg.ui.main.model.OpenLargeImageViewEvent
 import top.easelink.lcg.ui.main.recommand.view.RecommendFragment
+import top.easelink.lcg.ui.webview.view.WebViewActivity
+import top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL
 import top.easelink.lcg.utils.showMessage
 import java.util.*
 import kotlin.system.exitProcess
@@ -90,12 +91,16 @@ class MainActivity : TopActivity(), BottomNavigationView.OnNavigationItemSelecte
         navigation_view.setNavigationItemSelectedListener{ item: MenuItem ->
             drawer_view.closeDrawer(GravityCompat.START)
             when(item.itemId) {
-                R.id.navItemAbout -> {
+                R.id.nav_item_about -> {
                     showFragment(AboutFragment())
                     true
                 }
-                R.id.navItemRelease -> {
+                R.id.nav_item_release -> {
                     onMessageEvent(OpenArticleEvent(AppConfig.getAppReleaseUrl()))
+                    true
+                }
+                R.id.nav_item_portal -> {
+                    WebViewActivity.startWebViewWith(SERVER_BASE_URL, this)
                     true
                 }
                 else -> false
