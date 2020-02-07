@@ -31,7 +31,7 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
     private val gson: Gson = GsonBuilder().excludeFieldsWithoutExposeAnnotation().create()
 
     @WorkerThread
-    @Throws(LoginRequiredException::class)
+    @Throws(LoginRequiredException::class, SocketTimeoutException::class)
     override fun getForumArticles(query: String, processThreadList: Boolean): ForumPage? {
         return processForumArticlesDocument(
             Client.sendGetRequestWithQuery(query),

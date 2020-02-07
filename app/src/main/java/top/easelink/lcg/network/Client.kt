@@ -9,6 +9,7 @@ import org.jsoup.nodes.Document
 import timber.log.Timber
 import top.easelink.framework.threadpool.BackGroundPool
 import top.easelink.lcg.BuildConfig
+import top.easelink.lcg.config.AppConfig.followRedirectsEnable
 import top.easelink.lcg.ui.main.source.checkLoginState
 import top.easelink.lcg.ui.main.source.checkMessages
 import top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL
@@ -40,6 +41,7 @@ object Client: ApiRequest {
             .ignoreHttpErrors(true)
             .cookies(getCookies())
             .method(Connection.Method.GET)
+            .followRedirects(followRedirectsEnable())
             .execute()
             .let {
                 setCookies(it.cookies())
@@ -56,6 +58,7 @@ object Client: ApiRequest {
             .ignoreHttpErrors(true)
             .cookies(getCookies())
             .method(Connection.Method.GET)
+            .followRedirects(followRedirectsEnable())
             .execute()
             .let {
                 setCookies(it.cookies())
