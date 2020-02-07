@@ -102,6 +102,8 @@ class ForumArticlesViewModel : ViewModel(), ArticleFetcher {
                 }
             } catch (e: LoginRequiredException) {
                 showMessage(R.string.login_required_error)
+            } catch (e: Exception) {
+                showMessage(R.string.error)
             } finally {
                 isLoading.postValue(false)
             }

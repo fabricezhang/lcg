@@ -1,3 +1,9 @@
+# config gradle scripts
+config.gradle
+
+# keystore
+keystore.jks
+
 # Generated files
 **/bin/
 **/gen/

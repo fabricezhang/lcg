@@ -95,12 +95,16 @@ class MeFragment : BaseFragment<FragmentMeBinding, MeViewModel>() {
                             } catch (e: Exception) {
                                 Timber.e(e)
                             } finally {
-                                LoginHintDialog().show(baseActivity.supportFragmentManager, null)
+                                if (isAdded && isVisible && baseActivity != null) {
+                                    LoginHintDialog().show(baseActivity.supportFragmentManager, null)
+                                }
                             }
                         }
                     }
                 } else {
-                    LoginHintDialog().show(baseActivity.supportFragmentManager, null)
+                    if (isAdded && isVisible && baseActivity != null) {
+                        LoginHintDialog().show(baseActivity.supportFragmentManager, null)
+                    }
                 }
             }
         })

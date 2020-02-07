@@ -13,6 +13,7 @@ import org.greenrobot.eventbus.ThreadMode
 import top.easelink.framework.base.BaseFragment
 import top.easelink.lcg.BR
 import top.easelink.lcg.R
+import top.easelink.lcg.config.AppConfig
 import top.easelink.lcg.databinding.FragmentArticleBinding
 import top.easelink.lcg.ui.main.article.view.DownloadLinkDialog.Companion.newInstance
 import top.easelink.lcg.ui.main.article.view.ReplyPostDialog.Companion.newInstance
@@ -30,7 +31,7 @@ import java.util.*
 class ArticleFragment(private var articleUrl: String) : BaseFragment<FragmentArticleBinding, ArticleViewModel>() {
 
     // try fix no empty constructor issue
-    constructor() : this(WebsiteConstant.APP_RELEASE_PAGE)
+    constructor() : this(AppConfig.getAppReleaseUrl())
 
     override fun isControllable(): Boolean {
         return true

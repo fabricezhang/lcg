@@ -24,7 +24,7 @@
     </style>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="android:windowContentOverlay">@null</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -35,12 +35,17 @@
         <item name="android:textAllCaps">false</item>
         <item name="android:textSize">@dimen/sp_16</item>
         <item name="android:typeface">sans</item>
+        <item name="drawerArrowStyle">@style/MaterialDrawer.DrawerArrowStyle</item>
         <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24px</item>
         <item name="actionOverflowButtonStyle">@style/LCGOverflowButtonStyle</item>
         <item name="searchViewStyle">@style/LCGSearchView</item>
     </style>
     <style name="LCGOverflowButtonStyle" parent="Widget.AppCompat.ActionButton.Overflow">
         <item name="android:tint">@color/white</item>
+    </style>
+    <style name="MaterialDrawer.DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="spinBars">false</item>
+        <item name="color">@color/white</item>
     </style>
 
     <!--  SearchView  -->

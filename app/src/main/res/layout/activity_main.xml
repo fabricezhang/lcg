@@ -1,23 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/clRootView"
+<androidx.drawerlayout.widget.DrawerLayout
+    android:id="@+id/drawer_view"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigation"
-        android:layout_gravity="bottom"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/clRootView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent">
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_navigation"
+            android:layout_gravity="bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            app:itemIconSize="@dimen/dp_20"
+            app:itemRippleColor="@color/translucent_gray"
+            app:itemIconTint="@color/bottom_nav_state"
+            app:itemTextColor="@color/bottom_nav_state"
+            app:labelVisibilityMode="labeled"
+            app:itemTextAppearanceActive="@style/BottomNavigationView.Active"
+            app:itemTextAppearanceInactive="@style/BottomNavigationView"
+            app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"
+            app:menu="@menu/nav_bottom"/>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navigation_view"
+        style="@style/Widget.Design.NavigationView"
+        android:layout_width="@dimen/dp_200"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
         android:background="@color/white"
-        app:itemIconSize="@dimen/dp_20"
-        app:itemRippleColor="@color/translucent_gray"
-        app:itemIconTint="@color/bottom_nav_state"
-        app:itemTextColor="@color/bottom_nav_state"
-        app:labelVisibilityMode="labeled"
-        app:itemTextAppearanceActive="@style/BottomNavigationView.Active"
-        app:itemTextAppearanceInactive="@style/BottomNavigationView"
-        app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"
-        app:menu="@menu/nav_bottom"/>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+        app:itemBackground="@color/white"
+        app:itemIconTint="@color/black_effective"
+        app:itemTextColor="@color/black_effective"
+        app:itemIconPadding="@dimen/dp_5"
+        app:menu="@menu/drawer">
+
+        <TextView
+            android:id="@+id/app_version"
+            style="@style/TextStyle.Title.Sub"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:padding="5dp"/>
+    </com.google.android.material.navigation.NavigationView>
+
+</androidx.drawerlayout.widget.DrawerLayout>

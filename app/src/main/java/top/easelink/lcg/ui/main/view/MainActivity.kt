@@ -2,13 +2,17 @@ package top.easelink.lcg.ui.main.view
 
 import android.Manifest
 import android.content.pm.PackageManager.PERMISSION_GRANTED
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
@@ -20,10 +24,11 @@ import org.greenrobot.eventbus.ThreadMode
 import top.easelink.framework.topbase.TopActivity
 import top.easelink.framework.utils.addFragmentInActivity
 import top.easelink.framework.utils.popBackFragmentUntil
+import top.easelink.lcg.BuildConfig
 import top.easelink.lcg.R
-import top.easelink.lcg.mta.EVENT_OPEN_FORUM
-import top.easelink.lcg.mta.PROP_FORUM_NAME
-import top.easelink.lcg.mta.sendKVEvent
+import top.easelink.lcg.config.AppConfig
+import top.easelink.lcg.mta.*
+import top.easelink.lcg.ui.main.about.view.AboutFragment
 import top.easelink.lcg.ui.main.article.view.ArticleFragment
 import top.easelink.lcg.ui.main.articles.view.ForumArticlesFragment.Companion.newInstance
 import top.easelink.lcg.ui.main.forumnav3.view.ForumNavigationV3Fragment
@@ -74,6 +79,30 @@ class MainActivity : TopActivity(), BottomNavigationView.OnNavigationItemSelecte
         EventBus.getDefault().unregister(this)
     }
 
+    fun setupDrawer(toolbar: Toolbar) {
+        val header = layoutInflater.inflate(R.layout.nav_header, navigation_view, false)
+        navigation_view.addHeaderView(header)
+        app_version.text = BuildConfig.VERSION_NAME
+        setSupportActionBar(toolbar)
+        val toggle = ActionBarDrawerToggle(this, drawer_view, toolbar, R.string.open_drawer, R.string.close_drawer)
+        drawer_view.addDrawerListener(toggle)
+        toggle.syncState()
+        navigation_view.setNavigationItemSelectedListener{ item: MenuItem ->
+            drawer_view.closeDrawer(GravityCompat.START)
+            when(item.itemId) {
+                R.id.navItemAbout -> {
+                    showFragment(AboutFragment())
+                    true
+                }
+                R.id.navItemRelease -> {
+                    onMessageEvent(OpenArticleEvent(AppConfig.getAppReleaseUrl()))
+                    true
+                }
+                else -> false
+            }
+        }
+    }
+
     private fun setupBottomNavMenu() {
         bottom_navigation.setOnNavigationItemSelectedListener(this)
     }
@@ -109,6 +138,7 @@ class MainActivity : TopActivity(), BottomNavigationView.OnNavigationItemSelecte
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageEvent(event: OpenArticleEvent) {
+        sendEvent(EVENT_OPEN_ARTICLE)
         showFragment(ArticleFragment(event.url))
     }
 
@@ -227,7 +257,7 @@ class MainActivity : TopActivity(), BottomNavigationView.OnNavigationItemSelecte
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == WRITE_EXTERNAL_CODE) {
-            if (grantResults[0] != PERMISSION_GRANTED) {
+            if (grantResults.isNotEmpty() && grantResults[0] != PERMISSION_GRANTED) {
                 showMessage(R.string.permission_denied)
             }
         }
