@@ -49,7 +49,7 @@ class SearchResultAdapter(private var mListener: SearchAdapterListener) :
             VIEW_TYPE_LOAD_MORE -> LoadMoreViewHolder(
                 LayoutInflater.from(parent.context)
                     .inflate(
-                        R.layout.item_load_more_view
+                        R.layout.item_search_load_more_view
                         , parent, false
                     )
             )
