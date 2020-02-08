@@ -2,6 +2,7 @@ package top.easelink.lcg.ui.search.view
 
 import android.os.Bundle
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -12,7 +13,12 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import top.easelink.framework.topbase.TopActivity
+import top.easelink.framework.utils.addFragmentInActivity
 import top.easelink.lcg.R
+import top.easelink.lcg.config.AppConfig.searchResultShowInWebView
+import top.easelink.lcg.mta.EVENT_OPEN_ARTICLE
+import top.easelink.lcg.mta.sendEvent
+import top.easelink.lcg.ui.main.article.view.ArticleFragment
 import top.easelink.lcg.ui.search.model.OpenSearchResultEvent
 import top.easelink.lcg.ui.search.viewmodel.SearchResultAdapter
 import top.easelink.lcg.ui.search.viewmodel.SearchResultAdapter.SearchAdapterListener
@@ -20,9 +26,11 @@ import top.easelink.lcg.ui.search.viewmodel.SearchViewModel
 import top.easelink.lcg.ui.webview.view.WebViewActivity
 import top.easelink.lcg.utils.WebsiteConstant.URL_KEY
 
+
 class SearchActivity : TopActivity() {
 
     private lateinit var mViewModel: SearchViewModel
+    private val threadRegex by lazy { Regex("thread-[0-9]+-[0-9]+-[0-9]+.html$", RegexOption.IGNORE_CASE) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,6 +86,28 @@ class SearchActivity : TopActivity() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageEvent(event: OpenSearchResultEvent) {
-        WebViewActivity.startWebViewWith(event.searchResult.url, this)
+        event.searchResult.url.let {url ->
+            if (!searchResultShowInWebView && threadRegex.containsMatchIn(url)) {
+                //FIXME not work for the moment, fixed in the future
+                throw IllegalStateException("feature not finished")
+//                openAsArticle(url)
+            } else {
+                WebViewActivity.startWebViewWith(url, this)
+            }
+        }
+    }
+
+    private fun openAsArticle(url: String) {
+        sendEvent(EVENT_OPEN_ARTICLE)
+        showFragment(ArticleFragment(url))
+    }
+
+    private fun showFragment(fragment: Fragment) {
+        addFragmentInActivity(
+            supportFragmentManager,
+            fragment,
+            R.id.view_root,
+            addToBack = false
+        )
     }
 }

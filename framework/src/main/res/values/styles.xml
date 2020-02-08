@@ -81,6 +81,7 @@
     </style>
     <style name="TextStyle.SearchResult.Title" parent="TextAppearance.MaterialComponents.Subtitle1">
         <item name="android:textSize">@dimen/sp_14</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="Toolbar" parent="Widget.MaterialComponents.Toolbar">
