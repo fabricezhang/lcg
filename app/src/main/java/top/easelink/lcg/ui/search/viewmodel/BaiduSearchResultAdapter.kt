@@ -8,28 +8,28 @@ import androidx.recyclerview.widget.RecyclerView
 import org.greenrobot.eventbus.EventBus
 import top.easelink.framework.base.BaseViewHolder
 import top.easelink.lcg.R
-import top.easelink.lcg.ui.search.model.OpenSearchResultEvent
-import top.easelink.lcg.ui.search.model.SearchResult
-import top.easelink.lcg.ui.search.viewmodel.SearchResultAdapter.SearchAdapterListener.Companion.FETCH_MORE
+import top.easelink.lcg.ui.search.model.BaiduSearchResult
+import top.easelink.lcg.ui.search.model.OpenBaiduSearchResultEvent
+import top.easelink.lcg.ui.search.viewmodel.BaiduSearchResultAdapter.SearchAdapterListener.Companion.FETCH_MORE
 import java.util.*
 
-class SearchResultAdapter(private var mListener: SearchAdapterListener) :
+class BaiduSearchResultAdapter(private var mListener: SearchAdapterListener) :
     RecyclerView.Adapter<BaseViewHolder>() {
-    private val mSearchResults: MutableList<SearchResult> = ArrayList()
+    private val mBaiduSearchResults: MutableList<BaiduSearchResult> = ArrayList()
 
     override fun getItemCount(): Int {
-        return if (mSearchResults.isEmpty()) {
+        return if (mBaiduSearchResults.isEmpty()) {
             1
         } else {
-            mSearchResults.size + 1
+            mBaiduSearchResults.size + 1
         }
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (mSearchResults.isEmpty()) {
+        return if (mBaiduSearchResults.isEmpty()) {
             VIEW_TYPE_EMPTY
         } else {
-            if (position == mSearchResults.size) {
+            if (position == mBaiduSearchResults.size) {
                 VIEW_TYPE_LOAD_MORE
             } else VIEW_TYPE_NORMAL
         }
@@ -64,13 +64,13 @@ class SearchResultAdapter(private var mListener: SearchAdapterListener) :
         }
     }
 
-    fun addItems(searchResults: List<SearchResult>) {
-        mSearchResults.addAll(searchResults)
+    fun addItems(baiduSearchResults: List<BaiduSearchResult>) {
+        mBaiduSearchResults.addAll(baiduSearchResults)
         notifyDataSetChanged()
     }
 
     fun clearItems() {
-        mSearchResults.clear()
+        mBaiduSearchResults.clear()
     }
 
     interface SearchAdapterListener {
@@ -85,10 +85,10 @@ class SearchResultAdapter(private var mListener: SearchAdapterListener) :
     inner class SearchResultViewHolder internal constructor(val view: View) :
         BaseViewHolder(view) {
         override fun onBind(position: Int) {
-            val searchResult = mSearchResults[position]
+            val searchResult = mBaiduSearchResults[position]
             view.apply {
                 findViewById<View>(R.id.item_search_result).setOnClickListener {
-                    EventBus.getDefault().post(OpenSearchResultEvent(searchResult))
+                    EventBus.getDefault().post(OpenBaiduSearchResultEvent(searchResult))
                 }
                 findViewById<TextView>(R.id.content_text_view).text = searchResult.contentAbstract
                 findViewById<TextView>(R.id.title_text_view).text = searchResult.title

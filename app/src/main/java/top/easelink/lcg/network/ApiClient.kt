@@ -7,6 +7,7 @@ import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersisto
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import org.jsoup.Connection
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import top.easelink.lcg.LCGApp
@@ -52,7 +53,12 @@ object ApiClient: ApiRequest {
 
     }
 
-
+    override fun sendPostRequestWithUrl(
+        url: String,
+        form: MutableMap<String, String>?
+    ): Connection.Response {
+        TODO("not implemented")
+    }
 
 
 }

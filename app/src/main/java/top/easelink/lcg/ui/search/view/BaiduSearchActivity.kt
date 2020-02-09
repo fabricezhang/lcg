@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.activity_search.*
+import kotlinx.android.synthetic.main.activity_baidu_search.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -19,26 +19,26 @@ import top.easelink.lcg.config.AppConfig.searchResultShowInWebView
 import top.easelink.lcg.mta.EVENT_OPEN_ARTICLE
 import top.easelink.lcg.mta.sendEvent
 import top.easelink.lcg.ui.main.article.view.ArticleFragment
-import top.easelink.lcg.ui.search.model.OpenSearchResultEvent
-import top.easelink.lcg.ui.search.viewmodel.SearchResultAdapter
-import top.easelink.lcg.ui.search.viewmodel.SearchResultAdapter.SearchAdapterListener
-import top.easelink.lcg.ui.search.viewmodel.SearchViewModel
+import top.easelink.lcg.ui.search.model.OpenBaiduSearchResultEvent
+import top.easelink.lcg.ui.search.viewmodel.BaiduSearchResultAdapter
+import top.easelink.lcg.ui.search.viewmodel.BaiduSearchResultAdapter.SearchAdapterListener
+import top.easelink.lcg.ui.search.viewmodel.BaiduSearchViewModel
 import top.easelink.lcg.ui.webview.view.WebViewActivity
 import top.easelink.lcg.utils.WebsiteConstant.URL_KEY
 
 
-class SearchActivity : TopActivity() {
+class BaiduSearchActivity : TopActivity() {
 
-    private lateinit var mViewModel: SearchViewModel
+    private lateinit var mViewModelBaidu: BaiduSearchViewModel
     private val threadRegex by lazy { Regex("thread-[0-9]+-[0-9]+-[0-9]+.html$", RegexOption.IGNORE_CASE) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search)
+        setContentView(R.layout.activity_baidu_search)
         EventBus.getDefault().register(this)
-        mViewModel = ViewModelProvider(this).get(SearchViewModel::class.java)
+        mViewModelBaidu = ViewModelProvider(this)[BaiduSearchViewModel::class.java]
         setUp()
-        mViewModel.initUrl(intent.getStringExtra(URL_KEY))
+        mViewModelBaidu.initUrl(intent.getStringExtra(URL_KEY))
     }
 
     override fun onDestroy() {
@@ -47,7 +47,7 @@ class SearchActivity : TopActivity() {
     }
 
     private fun setUp() {
-        mViewModel.mTotalResult.observe(this, Observer {
+        mViewModelBaidu.mTotalResult.observe(this, Observer {
             total_info.text = it.orEmpty()
         })
         setupRecyclerView()
@@ -55,42 +55,42 @@ class SearchActivity : TopActivity() {
 
     private fun setupRecyclerView() {
         recycler_view.apply {
-            layoutManager = LinearLayoutManager(this@SearchActivity).also {
+            layoutManager = LinearLayoutManager(this@BaiduSearchActivity).also {
                 it.orientation = RecyclerView.VERTICAL
             }
             itemAnimator = DefaultItemAnimator()
-            adapter =  SearchResultAdapter(mViewModel)
-            mViewModel.searchResults.observe(this@SearchActivity, Observer {
-                (adapter as? SearchResultAdapter)?.apply {
+            adapter =  BaiduSearchResultAdapter(mViewModelBaidu)
+            mViewModelBaidu.searchResults.observe(this@BaiduSearchActivity, Observer {
+                (adapter as? BaiduSearchResultAdapter)?.apply {
                     clearItems()
                     addItems(it)
                 }
             })
         }
-        mViewModel.isLoading.observe(this, Observer {
+        mViewModelBaidu.isLoading.observe(this, Observer {
             refresh_layout.isRefreshing = it
         })
         refresh_layout.apply {
             setColorSchemeColors(
-                ContextCompat.getColor(this@SearchActivity, R.color.colorPrimary),
-                ContextCompat.getColor(this@SearchActivity, R.color.colorAccent),
-                ContextCompat.getColor(this@SearchActivity, R.color.colorPrimaryDark)
+                ContextCompat.getColor(this@BaiduSearchActivity, R.color.colorPrimary),
+                ContextCompat.getColor(this@BaiduSearchActivity, R.color.colorAccent),
+                ContextCompat.getColor(this@BaiduSearchActivity, R.color.colorPrimaryDark)
             )
             setScrollUpChild(recycler_view)
             // Set the scrolling view in the custom SwipeRefreshLayout.
             setOnRefreshListener {
-                mViewModel.doSearchQuery(SearchAdapterListener.FETCH_INIT)
+                mViewModelBaidu.doSearchQuery(SearchAdapterListener.FETCH_INIT)
             }
         }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onMessageEvent(event: OpenSearchResultEvent) {
-        event.searchResult.url.let {url ->
+    fun onMessageEvent(event: OpenBaiduSearchResultEvent) {
+        event.baiduSearchResult.url.let { url ->
             if (!searchResultShowInWebView && threadRegex.containsMatchIn(url)) {
                 //FIXME not work for the moment, fixed in the future
                 throw IllegalStateException("feature not finished")
-//                openAsArticle(url)
+                openAsArticle(url)
             } else {
                 WebViewActivity.startWebViewWith(url, this)
             }

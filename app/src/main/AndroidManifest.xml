@@ -53,7 +53,10 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".ui.search.view.SearchActivity"
+        <activity android:name=".ui.search.view.BaiduSearchActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".ui.search.view.LCGSearchActivity"
             android:screenOrientation="portrait">
         </activity>
         <activity

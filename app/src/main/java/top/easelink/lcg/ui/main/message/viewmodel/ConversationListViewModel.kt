@@ -32,7 +32,7 @@ class ConversationListViewModel : ViewModel() {
 
     private fun parseConversations(doc: Document) {
         doc.apply {
-            formHash = selectFirst("inpout[name=formhash]")?.attr("value")
+            formHash = selectFirst("input[name=formhash]")?.attr("value")
             val conversationList = select("dl[id^=pmlist]").map {
                 val avatarUrl = it.selectFirst("img[onerror]")?.attr("src")
                 val username = it.selectFirst("dd.ptm > a[target]")?.text().orEmpty()

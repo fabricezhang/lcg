@@ -5,13 +5,13 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import top.easelink.framework.threadpool.ApiPool
-import top.easelink.lcg.ui.search.model.SearchResult
-import top.easelink.lcg.ui.search.source.SearchService.doSearchRequest
-import top.easelink.lcg.ui.search.viewmodel.SearchResultAdapter.SearchAdapterListener
+import top.easelink.lcg.ui.search.model.BaiduSearchResult
+import top.easelink.lcg.ui.search.source.BaiduSearchService.doSearchRequest
+import top.easelink.lcg.ui.search.viewmodel.BaiduSearchResultAdapter.SearchAdapterListener
 import top.easelink.lcg.utils.WebsiteConstant
 
-class SearchViewModel : ViewModel(), SearchAdapterListener {
-    val searchResults = MutableLiveData<List<SearchResult>>()
+class BaiduSearchViewModel : ViewModel(), SearchAdapterListener {
+    val searchResults = MutableLiveData<List<BaiduSearchResult>>()
     val mTotalResult = MutableLiveData<String?>()
     val isLoading = MutableLiveData<Boolean>()
     private var mUrl: String? = null
@@ -35,14 +35,14 @@ class SearchViewModel : ViewModel(), SearchAdapterListener {
         }
         GlobalScope.launch(ApiPool){
             doSearchRequest(requestUrl, 0).apply {
-                if (searchResultList.isNotEmpty()) {
+                if (baiduSearchResultList.isNotEmpty()) {
                     val list = searchResults.value
                     mNextPageUrl = nextPageUrl
                     mTotalResult.postValue(totalResult)
                     if (type == SearchAdapterListener.FETCH_MORE && list != null && list.isNotEmpty()) {
-                        searchResults.postValue(list.plus(searchResultList))
+                        searchResults.postValue(list.plus(baiduSearchResultList))
                     } else {
-                        searchResults.postValue(searchResultList)
+                        searchResults.postValue(baiduSearchResultList)
                     }
                 }
                 isLoading.postValue(false)

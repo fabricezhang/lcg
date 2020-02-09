@@ -12,6 +12,7 @@ import top.easelink.lcg.BuildConfig
 import top.easelink.lcg.config.AppConfig.followRedirectsEnable
 import top.easelink.lcg.ui.main.source.checkLoginState
 import top.easelink.lcg.ui.main.source.checkMessages
+import top.easelink.lcg.ui.main.source.extractFormHash
 import top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL
 import top.easelink.lcg.utils.getCookies
 import top.easelink.lcg.utils.setCookies
@@ -21,6 +22,12 @@ import java.security.cert.X509Certificate
 import javax.net.ssl.*
 
 object Client: ApiRequest {
+
+    var formHash: String? = null
+        set(value) {
+            Timber.d("formhash = $value")
+            field = value
+        }
 
     init {
         if (BuildConfig.DEBUG) {
@@ -51,6 +58,8 @@ object Client: ApiRequest {
             }
     }
 
+
+
     override fun sendGetRequestWithUrl(url: String): Document {
         return Jsoup
             .connect(url)
@@ -68,6 +77,23 @@ object Client: ApiRequest {
             }
     }
 
+    override fun sendPostRequestWithUrl(url: String, form: MutableMap<String, String>?): Connection.Response {
+        return Jsoup
+            .connect(url)
+            .cookies(getCookies())
+            .apply {
+                if (form != null) {
+                    data(form)
+                }
+            }
+            .postDataCharset("gbk")
+            .method(Connection.Method.POST)
+            .execute()
+            .also {
+                setCookies(it.cookies())
+            }
+    }
+
     private fun checkResponse(doc: Document) {
         GlobalScope.launch(BackGroundPool){
             if (System.currentTimeMillis() - lastTime > CHECK_INTERVAL) {
@@ -75,6 +101,7 @@ object Client: ApiRequest {
                 try {
                     checkLoginState(doc)
                     checkMessages(doc)
+                    formHash = extractFormHash(doc)
                 } catch (e: Exception) {
                     Timber.e(e)
                 }

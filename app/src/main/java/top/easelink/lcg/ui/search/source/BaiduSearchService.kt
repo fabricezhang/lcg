@@ -7,25 +7,20 @@ import org.jsoup.select.Elements
 import timber.log.Timber
 import top.easelink.lcg.R
 import top.easelink.lcg.network.ApiClient
+import top.easelink.lcg.ui.search.model.BaiduSearchResult
+import top.easelink.lcg.ui.search.model.BaiduSearchResults
 import top.easelink.lcg.ui.search.model.RequestTooOftenException
-import top.easelink.lcg.ui.search.model.SearchResult
-import top.easelink.lcg.ui.search.model.SearchResults
 import top.easelink.lcg.utils.showMessage
 
-/**
- * author : junzhang
- * date   : 2019-07-04 16:22
- * desc   :
- */
 
-object SearchService {
+object BaiduSearchService {
 
-    suspend fun doSearchRequest(requestUrl: String, retryTime: Int): SearchResults {
+    suspend fun doSearchRequest(requestUrl: String, retryTime: Int): BaiduSearchResults {
         return try {
             if (retryTime <= 3) {
                 doSearchRequest(requestUrl)
             } else {
-                SearchResults(emptyList())
+                BaiduSearchResults(emptyList())
             }
         } catch (e: RequestTooOftenException) {
             delay(1000)
@@ -33,19 +28,18 @@ object SearchService {
         }
     }
 
-
     @WorkerThread
     @Throws(RequestTooOftenException::class)
-    fun doSearchRequest(requestUrl: String): SearchResults {
+    fun doSearchRequest(requestUrl: String): BaiduSearchResults {
         try {
             val doc = ApiClient.sendGetRequestWithUrl(requestUrl)
-            val list: List<SearchResult> = doc?.select("div.result")
+            val list: List<BaiduSearchResult> = doc?.select("div.result")
                 ?.map {
                     try {
                         val title = extractFrom(it, "h3.c-title", "a")
                         val url = extractAttrFrom(it, "href", "h3.c-title", "a")
                         val content = extractFrom(it, "div.c-abstract")
-                        return@map SearchResult(title, content, url)
+                        return@map BaiduSearchResult(title, content, url)
                     } catch (nbe: NumberFormatException) {
                         Timber.v(nbe)
                     } catch (e: Exception) {
@@ -57,9 +51,9 @@ object SearchService {
                 .orEmpty()
             if (list.isNullOrEmpty()) {
 
-                return SearchResults(emptyList())
+                return BaiduSearchResults(emptyList())
             }
-            return SearchResults(list).also {
+            return BaiduSearchResults(list).also {
                 try {
                     it.nextPageUrl = doc?.selectFirst("a.pager-next-foot")
                         ?.attr("href")
@@ -77,7 +71,7 @@ object SearchService {
             Timber.w(e)
             showMessage(R.string.error)
         }
-        return SearchResults(emptyList())
+        return BaiduSearchResults(emptyList())
     }
 
     private fun extractFrom(element: Element, vararg tags: String): String {
