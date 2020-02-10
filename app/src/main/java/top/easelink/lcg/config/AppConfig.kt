@@ -7,12 +7,14 @@ import top.easelink.lcg.LCGApp
 
 object AppConfig {
 
+    private const val CONFIG_SP = "config_sp"
+
     private const val CONFIG_APP_RELEASE_URL = "app_release_page"
     private const val CONFIG_ENABLE_FOLLOW_REDIRECTS = "follow_redirects"
-
     private const val CONFIG_SEARCH_OPEN_RESULT_IN_WEBVIEW = "open_result_in_webview"
-
-    private const val CONFIG_SP = "config_sp"
+    private const val CONFIG_DEFAULT_SEARCH_ENGINE = "default_search_engine"
+    private const val CONFIG_AUTO_SIGN_IN = "auto_sign_in"
+    private const val CONFIG_SYNC_FAVORITES = "sync_favorites"
 
     fun getAppReleaseUrl(): String {
         return StatConfig.getCustomProperty(CONFIG_APP_RELEASE_URL, "thread-1073834-1-1.html")
@@ -24,8 +26,20 @@ object AppConfig {
 
     // open search result method, true -> WebView false -> try parse to native
     var searchResultShowInWebView: Boolean
-        get() = get(CONFIG_SEARCH_OPEN_RESULT_IN_WEBVIEW, true)
+        get() = get(CONFIG_SEARCH_OPEN_RESULT_IN_WEBVIEW, false)
         set(value) = put(CONFIG_SEARCH_OPEN_RESULT_IN_WEBVIEW, value)
+
+    var defaultSearchEngine: Int
+        get() = get(CONFIG_DEFAULT_SEARCH_ENGINE, 0)
+        set(value) = put(CONFIG_DEFAULT_SEARCH_ENGINE, value)
+
+    var autoSignEnable: Boolean
+        get() = get(CONFIG_AUTO_SIGN_IN, true)
+        set(value) = put(CONFIG_AUTO_SIGN_IN, value)
+
+    var syncFavorites: Boolean
+        get() = get(CONFIG_SYNC_FAVORITES, true)
+        set(value) = put(CONFIG_SYNC_FAVORITES, value)
 
 
     private fun getConfigSp(): SharedPreferences {

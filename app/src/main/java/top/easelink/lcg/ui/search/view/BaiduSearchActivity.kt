@@ -88,9 +88,11 @@ class BaiduSearchActivity : TopActivity() {
     fun onMessageEvent(event: OpenBaiduSearchResultEvent) {
         event.baiduSearchResult.url.let { url ->
             if (!searchResultShowInWebView && threadRegex.containsMatchIn(url)) {
-                //FIXME not work for the moment, fixed in the future
-                throw IllegalStateException("feature not finished")
-                openAsArticle(url)
+                if (url.startsWith("http") || url.startsWith("www")) {
+                    openAsArticle(url.substringAfterLast("/"))
+                } else {
+                    openAsArticle(url)
+                }
             } else {
                 WebViewActivity.startWebViewWith(url, this)
             }

@@ -15,6 +15,7 @@ import org.greenrobot.eventbus.ThreadMode
 import top.easelink.framework.topbase.TopActivity
 import top.easelink.framework.utils.addFragmentInActivity
 import top.easelink.lcg.R
+import top.easelink.lcg.config.AppConfig
 import top.easelink.lcg.mta.EVENT_OPEN_ARTICLE
 import top.easelink.lcg.mta.sendEvent
 import top.easelink.lcg.ui.main.article.view.ArticleFragment
@@ -107,7 +108,11 @@ class LCGSearchActivity : TopActivity() {
     fun onMessageEvent(event: OpenSearchResultEvent) {
         sendEvent(EVENT_OPEN_ARTICLE)
         if (threadRegex.containsMatchIn(event.url)) {
-            showFragment(ArticleFragment(event.url))
+            if (AppConfig.searchResultShowInWebView) {
+                WebViewActivity.startWebViewWith(SERVER_BASE_URL + event.url, this)
+            } else {
+                showFragment(ArticleFragment(event.url))
+            }
         } else if (event.url.startsWith("http") || event.url.startsWith(SERVER_BASE_URL)){
             WebViewActivity.startWebViewWith(event.url, this)
         } else {

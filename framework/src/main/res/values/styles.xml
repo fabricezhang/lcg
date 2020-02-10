@@ -92,8 +92,13 @@
     </style>
 
     <style name="Toolbar.TitleText" parent="TextStyle.Heading">
-        <item name="android:textColor">@color/dark_gray</item>
+        <item name="android:textColor">@color/white</item>
         <item name="android:textSize">@dimen/sp_14</item>
+    </style>
+
+    <style name="CollapsingToolbar.TitleText" parent="TextAppearance.Design.CollapsingToolbar.Expanded">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/sp_16</item>
     </style>
 
     <style name="Button" parent="Widget.AppCompat.Button">

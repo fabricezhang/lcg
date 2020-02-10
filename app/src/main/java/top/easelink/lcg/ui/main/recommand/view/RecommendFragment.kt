@@ -10,6 +10,7 @@ import top.easelink.framework.topbase.TopActivity
 import top.easelink.framework.topbase.TopFragment
 import top.easelink.lcg.BuildConfig
 import top.easelink.lcg.R
+import top.easelink.lcg.config.AppConfig
 import top.easelink.lcg.ui.main.recommand.viewmodel.RecommendViewPagerAdapter
 import top.easelink.lcg.ui.main.view.MainActivity
 import top.easelink.lcg.ui.search.view.BaiduSearchActivity
@@ -58,14 +59,22 @@ class RecommendFragment: TopFragment(), ControllableFragment {
         searchView.setOnQueryTextListener(object :
             SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
-                if (BuildConfig.DEBUG) {
-                    val intent = Intent(context, LCGSearchActivity::class.java)
-                    intent.putExtra(KEY_WORD, query)
-                    context?.startActivity(intent)
-                } else {
-                    val intent = Intent(context, BaiduSearchActivity::class.java)
-                    intent.putExtra(URL_KEY, java.lang.String.format(SEARCH_URL, query))
-                    context?.startActivity(intent)
+                when(AppConfig.defaultSearchEngine) {
+                    0 -> {
+                        val intent = Intent(context, LCGSearchActivity::class.java)
+                        intent.putExtra(KEY_WORD, query)
+                        context?.startActivity(intent)
+                    }
+                    1 -> {
+                        val intent = Intent(context, BaiduSearchActivity::class.java)
+                        intent.putExtra(URL_KEY, java.lang.String.format(SEARCH_URL, query))
+                        context?.startActivity(intent)
+                    }
+                    else -> {
+                        if(BuildConfig.DEBUG) {
+                            throw IllegalStateException()
+                        }
+                    }
                 }
                 return true
             }

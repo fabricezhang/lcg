@@ -31,6 +31,7 @@
     <string name="close_drawer">Drawer Close</string>
 
     <!--Drawer Menus-->
+    <string name="setting">『应用设置』</string>
     <string name="about">『关于应用』</string>
     <string name="thread_about_app">『App发布页』</string>
     <string name="open_portal_page">『吾爱网页版』</string>
@@ -45,12 +46,15 @@
     <string name="my_post">我</string>
     <string name="app_exit_tip">再按一次退出应用</string>
 
+    <!--Setting Activity-->
+    <string name="start_auto_sign_in">开启自动签到</string>
+    <string name="search_engine_setting">默认搜索引擎</string>
+    <string name="open_search_result_in_webview">网页形式打开搜索结果</string>
+    <string name="sync_favorites">同步收藏文章到网站</string>
+    <string name="sync_favorites_instruction">（默认仅收藏到本地）</string>
+
     <!--Me Fragment-->
     <string name="me_tab_title">个人页</string>
-    <string name="me_setting_title">设置选项</string>
-    <string name="start_auto_sign_in">开启自动签到</string>
-    <string name="sync_favorites">同步收藏文章</string>
-    <string name="sync_favorites_instruction">（默认仅收藏到本地）</string>
     <string name="me_tab_level_placeholder">个人信息</string>
     <string name="me_tab_username_placeholder">用户名</string>
     <string name="me_tab_group_placeholder">用户群组</string>
@@ -149,6 +153,9 @@
     <string name="forum_virus_rescue">『病毒救援区』</string>
     <string name="free_chat_title">『水漫金山』</string>
     <string name="welfare_title">『福利经验』</string>
+
+    <!-- setting -->
+    <string name="setting_title">设置</string>
 
     <!--block-->
     <string name="not_found_info">抱歉，文章可能已经被删除了</string>
