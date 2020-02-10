@@ -1,5 +1,6 @@
 package top.easelink.lcg.ui.main.me.view
 
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.os.Build
@@ -30,6 +31,7 @@ import top.easelink.lcg.ui.main.articles.view.FavoriteArticlesFragment
 import top.easelink.lcg.ui.main.login.view.LoginHintDialog
 import top.easelink.lcg.ui.main.me.viewmodel.MeViewModel
 import top.easelink.lcg.ui.main.model.OpenForumEvent
+import top.easelink.lcg.ui.setting.view.SettingActivity
 import top.easelink.lcg.utils.WebsiteConstant.MY_ARTICLES_URL
 
 class MeFragment : BaseFragment<FragmentMeBinding, MeViewModel>() {
@@ -53,6 +55,9 @@ class MeFragment : BaseFragment<FragmentMeBinding, MeViewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.setFragment(this)
+        setting_btn.setOnClickListener {
+            startActivity(Intent(context, SettingActivity::class.java))
+        }
         updateIconButtons()
         registerObservers()
     }

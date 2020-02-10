@@ -46,6 +46,7 @@
                 />
 
             <ImageView
+                android:id="@+id/logout_btn"
                 android:layout_margin="@dimen/dp_5"
                 android:layout_width="@dimen/dp_20"
                 android:layout_height="@dimen/dp_20"
@@ -53,6 +54,20 @@
                 android:src="@drawable/ic_power_settings_new_24px"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                android:contentDescription="@null" />
+
+            <ImageView
+                android:id="@+id/setting_btn"
+                android:layout_marginTop="@dimen/dp_5"
+                android:layout_marginStart="@dimen/dp_5"
+                android:layout_marginBottom="@dimen/dp_5"
+                android:layout_marginEnd="@dimen/dp_14"
+                android:layout_width="@dimen/dp_20"
+                android:layout_height="@dimen/dp_20"
+                android:src="@drawable/ic_setting_light"
+                android:tint="@color/gray"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/logout_btn"
                 android:contentDescription="@null" />
             <TextView
                 style="@style/TextStyle.Heading"

@@ -2,6 +2,7 @@ package top.easelink.lcg.ui.setting.view
 
 import android.content.res.Configuration
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
 import android.widget.AdapterView
@@ -11,6 +12,7 @@ import kotlinx.android.synthetic.main.activity_settings.*
 import top.easelink.framework.topbase.TopActivity
 import top.easelink.lcg.R
 import top.easelink.lcg.config.AppConfig
+import top.easelink.lcg.spipedata.UserData
 import top.easelink.lcg.ui.setting.viewmodel.SettingViewModel
 
 
@@ -37,6 +39,12 @@ class SettingActivity : TopActivity() {
     }
 
     private fun setUp() {
+        if (!UserData.loggedInState) {
+            sync_favorites_switch.isEnabled = false
+            auto_sign_switch.isEnabled = false
+            AppConfig.autoSignEnable = false
+            AppConfig.syncFavorites = false
+        }
         setupToolBar()
         setupListeners()
         setupObserver()
@@ -46,6 +54,17 @@ class SettingActivity : TopActivity() {
     private fun setupToolBar() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeButtonEnabled(true)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when(item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     private fun setupListeners() {
