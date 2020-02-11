@@ -10,6 +10,7 @@ object AppConfig {
     private const val CONFIG_SP = "config_sp"
 
     private const val CONFIG_APP_RELEASE_URL = "app_release_page"
+    private const val CONFIG_JRS_URL = "jrs_page"
     private const val CONFIG_ENABLE_FOLLOW_REDIRECTS = "follow_redirects"
     private const val CONFIG_SEARCH_OPEN_RESULT_IN_WEBVIEW = "open_result_in_webview"
     private const val CONFIG_DEFAULT_SEARCH_ENGINE = "default_search_engine"
@@ -22,6 +23,10 @@ object AppConfig {
 
     fun followRedirectsEnable(): Boolean {
         return "enable" == StatConfig.getCustomProperty(CONFIG_ENABLE_FOLLOW_REDIRECTS, "enable")
+    }
+
+    fun getJrsUrl(): String {
+        return StatConfig.getCustomProperty(CONFIG_JRS_URL, "http://www.jrskq.com/")
     }
 
     // open search result method, true -> WebView false -> try parse to native
