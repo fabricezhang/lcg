@@ -1,6 +1,5 @@
 package top.easelink.lcg.ui.main.me.viewmodel
 
-import android.webkit.CookieManager
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.GlobalScope
@@ -8,15 +7,12 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import top.easelink.framework.base.BaseFragment
 import top.easelink.framework.threadpool.ApiPool
-import top.easelink.lcg.R
 import top.easelink.lcg.network.Client
 import top.easelink.lcg.spipedata.UserData
-import top.easelink.lcg.ui.main.logout.view.LogoutHintDialog
 import top.easelink.lcg.ui.main.me.model.UserInfo
 import top.easelink.lcg.ui.main.source.parseUserInfo
-import top.easelink.lcg.utils.SharedPreferencesHelper
-import top.easelink.lcg.utils.WebsiteConstant.HOME_URL
-import top.easelink.lcg.utils.showMessage
+import top.easelink.lcg.utils.WebsiteConstant.HOME_QUERY
+import top.easelink.lcg.utils.clearCookies
 import java.lang.ref.WeakReference
 
 class MeViewModel: ViewModel() {
@@ -31,6 +27,7 @@ class MeViewModel: ViewModel() {
         mFragment = WeakReference(fragment)
     }
 
+    @Suppress("BlockingMethodInNonBlockingContext")
     fun fetchUserInfoDirect() {
         if(UserData.loggedInState) {
             mLoginState.postValue(true)
@@ -48,9 +45,10 @@ class MeViewModel: ViewModel() {
         }
         GlobalScope.launch(ApiPool) {
             try {
-                val doc =
-                    Client.sendGetRequestWithQuery("$HOME_URL?mod=spacecp&ac=credit&showcredit=1")
-                val userInfo = parseUserInfo(doc)
+                val userInfo = Client
+                    .sendGetRequestWithQuery(HOME_QUERY).let {
+                        parseUserInfo(it)
+                    }
                 // login failed
                 if (userInfo.userName.isNullOrEmpty()) {
                     clearCookies()
@@ -78,25 +76,4 @@ class MeViewModel: ViewModel() {
         }
     }
 
-    fun tryLogout() {
-        mFragment?.get()?.apply {
-            LogoutHintDialog(
-                positive = {
-                    UserData.clearAll()
-                    clearCookies()
-                    showMessage(R.string.me_tab_clear_cookie)
-                    activity?.onBackPressed()
-                },
-                negative = { }
-            ).show(
-                fragmentManager?:activity!!.supportFragmentManager,
-                LogoutHintDialog::class.java.simpleName
-            )
-        }
-    }
-
-    private fun clearCookies() {
-        SharedPreferencesHelper.getCookieSp().edit().clear().apply()
-        CookieManager.getInstance().removeAllCookies(null)
-    }
 }

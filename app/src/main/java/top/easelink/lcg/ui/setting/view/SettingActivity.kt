@@ -13,7 +13,11 @@ import top.easelink.framework.topbase.TopActivity
 import top.easelink.lcg.R
 import top.easelink.lcg.config.AppConfig
 import top.easelink.lcg.spipedata.UserData
+import top.easelink.lcg.ui.main.login.view.LoginHintDialog
+import top.easelink.lcg.ui.main.logout.view.LogoutHintDialog
 import top.easelink.lcg.ui.setting.viewmodel.SettingViewModel
+import top.easelink.lcg.utils.clearCookies
+import top.easelink.lcg.utils.showMessage
 
 
 class SettingActivity : TopActivity() {
@@ -39,14 +43,8 @@ class SettingActivity : TopActivity() {
     }
 
     private fun setUp() {
-        if (!UserData.loggedInState) {
-            sync_favorites_switch.isEnabled = false
-            auto_sign_switch.isEnabled = false
-            AppConfig.autoSignEnable = false
-            AppConfig.syncFavorites = false
-        }
         setupToolBar()
-        setupListeners()
+        setupComponents()
         setupObserver()
         mViewModel.init()
     }
@@ -67,7 +65,22 @@ class SettingActivity : TopActivity() {
         }
     }
 
-    private fun setupListeners() {
+    private fun setupComponents() {
+        if (!UserData.loggedInState) {
+            sync_favorites_switch.isEnabled = false
+            auto_sign_switch.isEnabled = false
+            AppConfig.autoSignEnable = false
+            AppConfig.syncFavorites = false
+            account_btn.text = getString(R.string.login_btn)
+            account_btn.setOnClickListener {
+                LoginHintDialog().show(supportFragmentManager, null)
+            }
+        } else {
+            account_btn.text = getString(R.string.logout_confirm_message, UserData.username)
+            account_btn.setOnClickListener {
+                tryLogout()
+            }
+        }
         sync_favorites_switch.setOnCheckedChangeListener { _, isChecked ->
             mViewModel.scheduleJob(isChecked)
         }
@@ -107,5 +120,17 @@ class SettingActivity : TopActivity() {
         mViewModel.openSearchResultInWebView.observe(this, Observer {
             show_search_result_in_webview.isChecked = it
         })
+    }
+
+    private fun tryLogout() {
+        LogoutHintDialog(
+            positive = {
+                UserData.clearAll()
+                clearCookies()
+                showMessage(R.string.clear_cookie)
+                finish()
+            },
+            negative = { }
+        ).show(supportFragmentManager, LogoutHintDialog::class.java.simpleName)
     }
 }

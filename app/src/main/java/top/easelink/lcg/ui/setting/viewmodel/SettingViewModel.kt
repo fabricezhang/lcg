@@ -1,14 +1,20 @@
 package top.easelink.lcg.ui.setting.viewmodel
 
+import android.webkit.CookieManager
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.work.Constraints
 import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkManager
+import top.easelink.lcg.R
 import top.easelink.lcg.config.AppConfig
 import top.easelink.lcg.mta.*
 import top.easelink.lcg.service.work.SignInWorker
+import top.easelink.lcg.spipedata.UserData
+import top.easelink.lcg.ui.main.logout.view.LogoutHintDialog
+import top.easelink.lcg.utils.SharedPreferencesHelper
+import top.easelink.lcg.utils.showMessage
 import java.util.*
 
 class SettingViewModel : ViewModel() {

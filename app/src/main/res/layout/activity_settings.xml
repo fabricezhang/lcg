@@ -66,5 +66,20 @@
         android:layout_height="wrap_content"
         android:text="@string/open_search_result_in_webview" />
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/account_btn"
+        android:layout_marginTop="@dimen/dp_8"
+        android:padding="@dimen/dp_12"
+        android:elevation="@dimen/dp_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:text="@string/logout_confirm_message"
+        android:gravity="center"
+        android:focusable="true"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        app:backgroundTint="@color/white" />
+
 
 </LinearLayout>

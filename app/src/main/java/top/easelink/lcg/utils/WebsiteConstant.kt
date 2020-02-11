@@ -44,9 +44,7 @@ object WebsiteConstant {
 
     // private message
     const val PRIVATE_MESSAGE_URL = "home.php?mod=space&do=pm"
-    // im
-    const val IM_HOME_URL = "home.php?mod=space&do=pm"
-
-    const val HOME_URL = "home.php"
+    // home
+    const val HOME_QUERY = "home.php?mod=spacecp&ac=credit&showcredit=1"
     const val LOGIN_URL = "member.php?mod=logging&action=login"
 }
