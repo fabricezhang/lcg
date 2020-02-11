@@ -19,33 +19,6 @@
         android:clickable="true"
         android:focusable="true"
         android:background="@color/white">
-        <LinearLayout
-            android:id="@+id/toolbar"
-            android:gravity="end|bottom"
-            android:paddingTop="@dimen/dp_2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <ImageView
-                android:id="@+id/setting_btn"
-                android:layout_margin="@dimen/dp_5"
-                android:layout_width="@dimen/dp_20"
-                android:layout_height="@dimen/dp_20"
-                android:src="@drawable/ic_setting_light"
-                android:tint="@color/gray"
-                android:contentDescription="@null" />
-
-            <ImageView
-                android:id="@+id/logout_btn"
-                android:layout_margin="@dimen/dp_5"
-                android:layout_width="@dimen/dp_20"
-                android:layout_height="@dimen/dp_20"
-                android:gravity="center"
-                android:src="@drawable/ic_power_settings_new_24px"
-                android:onClick="@{() -> viewModel.tryLogout()}"
-                android:contentDescription="@null" />
-
-        </LinearLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/me_user_info_card"
@@ -57,7 +30,7 @@
             android:paddingStart="@dimen/dp_16"
             android:paddingEnd="@dimen/dp_16"
             android:paddingBottom="@dimen/dp_16"
-            android:layout_below="@id/toolbar">
+            android:layout_alignParentTop="true">
 
             <ImageView
                 android:id="@+id/me_user_avatar"
@@ -88,6 +61,20 @@
                 tools:text="Fabrice"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toEndOf="@id/me_user_avatar" />
+
+            <TextView
+                android:id="@+id/setting_btn"
+                android:layout_margin="@dimen/dp_2"
+                android:layout_width="@dimen/dp_20"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:drawableTop="@drawable/ic_setting_light"
+                android:text="@string/setting_title"
+                android:textSize="@dimen/sp_8"
+                android:textColor="@color/gray"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
 
             <ImageView
                 android:id="@+id/me_sign_in_state"

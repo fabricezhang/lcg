@@ -20,16 +20,14 @@ fun checkLoginState(doc: Document) {
 @WorkerThread
 fun parseUserInfo(doc: Document): UserInfo {
     with(doc) {
-        val userName = getElementsByClass("vwmy")?.first()?.firstElementSibling()?.text()
+        val userName = doc.selectFirst("div.jzyhm").text()
         return if (!TextUtils.isEmpty(userName)) {
             val avatar = selectFirst("div.avt > a > img")?.attr("src")
             val groupInfo = getElementById("g_upmine")?.text()
-            getElementsByClass("xi2")?.remove()
-            val coin = getElementsByClass("xi1 cl")?.first()?.text()
-            val element: Element? = selectFirst("span.xg1")
-            val parentCredit = element?.parent()
-            element?.remove()
-            val credit = parentCredit?.text()
+            val coin = selectFirst("ul.creditl").apply {
+                getElementsByClass("xi2")?.remove()
+            }?.getElementsByClass("xi1 cl")?.first()?.text()
+            val credit = getElementById("extcreditmenu").text()
             val signInState = select("img.qq_bind")
                 ?.firstOrNull {
                     !(it.attr("src")?.contains("qq")?:true)

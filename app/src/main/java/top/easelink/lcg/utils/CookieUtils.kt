@@ -1,5 +1,6 @@
 package top.easelink.lcg.utils
 
+import android.webkit.CookieManager
 import java.util.*
 
 fun getCookies() = SharedPreferencesHelper
@@ -35,4 +36,9 @@ fun setCookies(cookies: Map<String, String>) {
         SharedPreferencesHelper.getCookieSp(),
         itemList
     )
+}
+
+fun clearCookies() {
+    SharedPreferencesHelper.getCookieSp().edit().clear().apply()
+    CookieManager.getInstance().removeAllCookies(null)
 }

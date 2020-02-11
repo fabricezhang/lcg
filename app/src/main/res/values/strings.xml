@@ -58,7 +58,6 @@
     <string name="me_tab_level_placeholder">个人信息</string>
     <string name="me_tab_username_placeholder">用户名</string>
     <string name="me_tab_group_placeholder">用户群组</string>
-    <string name="me_tab_clear_cookie">本地信息已清除</string>
     <string name="me_tab_credit_placeholder">0</string>
     <string name="me_notification_title">我的信息</string>
 
@@ -79,6 +78,7 @@
     <!--Logout Dialog-->
     <string name="logout_confirm_message">退出账号@%s？</string>
     <string name="logout_confirm_btn">是的</string>
+    <string name="clear_cookie">本地信息已清除</string>
 
     <!--Notification-->
     <string name="notification_arrival">有新的消息</string>
