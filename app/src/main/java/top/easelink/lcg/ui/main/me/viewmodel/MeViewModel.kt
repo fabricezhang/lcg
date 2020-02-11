@@ -5,19 +5,17 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import org.jsoup.Jsoup
 import timber.log.Timber
 import top.easelink.framework.base.BaseFragment
 import top.easelink.framework.threadpool.ApiPool
 import top.easelink.lcg.R
+import top.easelink.lcg.network.Client
 import top.easelink.lcg.spipedata.UserData
 import top.easelink.lcg.ui.main.logout.view.LogoutHintDialog
 import top.easelink.lcg.ui.main.me.model.UserInfo
 import top.easelink.lcg.ui.main.source.parseUserInfo
 import top.easelink.lcg.utils.SharedPreferencesHelper
 import top.easelink.lcg.utils.WebsiteConstant.HOME_URL
-import top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL
-import top.easelink.lcg.utils.getCookies
 import top.easelink.lcg.utils.showMessage
 import java.lang.ref.WeakReference
 
@@ -50,11 +48,8 @@ class MeViewModel: ViewModel() {
         }
         GlobalScope.launch(ApiPool) {
             try {
-                val doc = Jsoup
-                    .connect("$SERVER_BASE_URL$HOME_URL?mod=spacecp&ac=credit&showcredit=1")
-                    .cookies(getCookies())
-                    .ignoreHttpErrors(true)
-                    .get()
+                val doc =
+                    Client.sendGetRequestWithQuery("$HOME_URL?mod=spacecp&ac=credit&showcredit=1")
                 val userInfo = parseUserInfo(doc)
                 // login failed
                 if (userInfo.userName.isNullOrEmpty()) {

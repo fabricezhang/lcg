@@ -96,12 +96,14 @@ object Client: ApiRequest {
 
     private fun checkResponse(doc: Document) {
         GlobalScope.launch(BackGroundPool){
+            if (formHash.isNullOrEmpty()) {
+                formHash = extractFormHash(doc)
+            }
             if (System.currentTimeMillis() - lastTime > CHECK_INTERVAL) {
                 lastTime = System.currentTimeMillis()
                 try {
                     checkLoginState(doc)
                     checkMessages(doc)
-                    formHash = extractFormHash(doc)
                 } catch (e: Exception) {
                     Timber.e(e)
                 }

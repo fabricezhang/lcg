@@ -47,13 +47,6 @@ class LCGSearchActivity : TopActivity() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        if (toolbar.visibility != View.VISIBLE) {
-            toolbar.visibility = View.VISIBLE
-        }
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         EventBus.getDefault().unregister(this)
@@ -126,6 +119,5 @@ class LCGSearchActivity : TopActivity() {
             fragment,
             R.id.view_root
         )
-        toolbar.visibility = View.GONE
     }
 }
