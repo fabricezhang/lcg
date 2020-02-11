@@ -101,7 +101,7 @@ public class WebViewActivity extends AppCompatActivity {
         animationView = findViewById(R.id.searching_file);
     }
 
-    private void downloadByBrowser(String url) {
+    private void openInSystemBrowser(String url) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.addCategory(Intent.CATEGORY_BROWSABLE);
         intent.setData(Uri.parse(url));
@@ -110,15 +110,8 @@ public class WebViewActivity extends AppCompatActivity {
 
     protected void initWebView() {
         mWebView.setWebViewClient(getWebViewClient());
-        mWebView.setDownloadListener(new DownloadListener() {
-            @Override
-            public void onDownloadStart(String url, String userAgent,
-                                        String contentDisposition,
-                                        String mimetype,
-                                        long contentLength) {
-                downloadByBrowser(url);
-            }
-        });
+        mWebView.setDownloadListener((url, userAgent, contentDisposition, mimetype, contentLength)
+                -> openInSystemBrowser(url));
         Intent intent = getIntent();
         // load url from intent data
         isOpenLoginEvent = getIntent().getBooleanExtra(OPEN_LOGIN_PAGE, false);
@@ -186,6 +179,9 @@ public class WebViewActivity extends AppCompatActivity {
             case R.id.action_share:
                 Intent shareIntent = getShareIntent();
                 startActivity(shareIntent);
+                return true;
+            case R.id.action_open_in_webview:
+                openInSystemBrowser(mWebView.getUrl());
                 return true;
             case android.R.id.home:
                 finish();
