@@ -1,0 +1,10 @@
+ext {
+    BUGLY_APP_ID = "\"12345678\""
+
+    MTA_APP_KEY = "AXXXXXXXXXXX"
+    MTA_CHANNEL = "GITHUB"
+
+    RELEASE_KEY_ALIAS = "placeholder"
+    RELEASE_KEY_PWD = "placeholder"
+    RELEASE_KEY_STORE_PWD = "placeholder"
+}

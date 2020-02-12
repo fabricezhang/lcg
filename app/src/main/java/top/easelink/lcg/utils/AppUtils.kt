@@ -27,3 +27,8 @@ fun startWeChat(context: Context) {
         showMessage("您没有安装微信，请先安装")
     }
 }
+
+fun getScreenWidthDp(context: Context): Int {
+    val displayMetrics = context.resources.displayMetrics
+    return (displayMetrics.widthPixels / displayMetrics.density).toInt()
+}

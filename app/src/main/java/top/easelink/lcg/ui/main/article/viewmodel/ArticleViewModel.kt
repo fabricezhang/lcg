@@ -8,9 +8,9 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import top.easelink.framework.threadpool.ApiPool
 import top.easelink.lcg.R
+import top.easelink.lcg.config.AppConfig
 import top.easelink.lcg.mta.EVENT_ADD_TO_FAVORITE
 import top.easelink.lcg.mta.sendEvent
-import top.easelink.lcg.spipedata.SP_KEY_SYNC_FAVORITE
 import top.easelink.lcg.ui.main.article.viewmodel.ArticleAdapterListener.Companion.FETCH_POST_INIT
 import top.easelink.lcg.ui.main.article.viewmodel.ArticleAdapterListener.Companion.FETCH_POST_MORE
 import top.easelink.lcg.ui.main.model.BlockException
@@ -21,7 +21,6 @@ import top.easelink.lcg.ui.main.source.model.ArticleEntity
 import top.easelink.lcg.ui.main.source.model.Post
 import top.easelink.lcg.ui.main.source.remote.ArticlesRemoteDataSource
 import top.easelink.lcg.utils.RegexUtils
-import top.easelink.lcg.utils.SharedPreferencesHelper
 import top.easelink.lcg.utils.showMessage
 import java.util.*
 
@@ -142,10 +141,7 @@ class ArticleViewModel: ViewModel(), ArticleAdapterListener {
                     content = content,
                     timestamp = System.currentTimeMillis()
                 )
-                val syncFavoritesEnable =
-                    SharedPreferencesHelper.getUserSp().getBoolean(
-                        SP_KEY_SYNC_FAVORITE, false)
-                if (syncFavoritesEnable) {
+                if (AppConfig.syncFavorites) {
                     if (threadId != null && mFormHash != null) {
                         ArticlesRemoteDataSource.addFavorites(threadId, mFormHash!!).let {
                             if (it)
@@ -158,7 +154,7 @@ class ArticleViewModel: ViewModel(), ArticleAdapterListener {
                 try {
                     val res = ArticlesLocalDataSource.addArticleToFavorite(articleEntity)
                     // don't show local message while sync to network
-                    if (!syncFavoritesEnable) {
+                    if (!AppConfig.syncFavorites) {
                         if (res) {
                             showMessage(R.string.add_to_favorite_successfully)
                         } else {

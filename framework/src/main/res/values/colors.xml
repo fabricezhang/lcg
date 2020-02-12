@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <resources>
-    <color name="colorPrimary">@color/blue_black_light</color>
+    <color name="colorPrimary">@color/black_effective</color>
     <color name="colorPrimaryDark">@color/black</color>
     <color name="colorAccent">@color/pojie_logo</color>
     <color name="light_gray">#dbdbdb</color>

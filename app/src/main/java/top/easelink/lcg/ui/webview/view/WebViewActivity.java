@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.CookieManager;
+import android.webkit.DownloadListener;
 import android.webkit.JavascriptInterface;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebResourceRequest;
@@ -100,8 +101,17 @@ public class WebViewActivity extends AppCompatActivity {
         animationView = findViewById(R.id.searching_file);
     }
 
+    private void openInSystemBrowser(String url) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.addCategory(Intent.CATEGORY_BROWSABLE);
+        intent.setData(Uri.parse(url));
+        startActivity(intent);
+    }
+
     protected void initWebView() {
         mWebView.setWebViewClient(getWebViewClient());
+        mWebView.setDownloadListener((url, userAgent, contentDisposition, mimetype, contentLength)
+                -> openInSystemBrowser(url));
         Intent intent = getIntent();
         // load url from intent data
         isOpenLoginEvent = getIntent().getBooleanExtra(OPEN_LOGIN_PAGE, false);
@@ -169,6 +179,9 @@ public class WebViewActivity extends AppCompatActivity {
             case R.id.action_share:
                 Intent shareIntent = getShareIntent();
                 startActivity(shareIntent);
+                return true;
+            case R.id.action_open_in_webview:
+                openInSystemBrowser(mWebView.getUrl());
                 return true;
             case android.R.id.home:
                 finish();

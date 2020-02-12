@@ -13,15 +13,18 @@ import top.easelink.framework.topbase.ControllableFragment
  */
 fun addFragmentInActivity(fragmentManager: FragmentManager,
                           fragment: Fragment,
-                          frameId: Int) {
+                          frameId: Int,
+                          addToBack: Boolean = true) {
     var tag = fragment.javaClass.simpleName
     fragmentManager
         .beginTransaction()
         .apply {
             (fragment as? ControllableFragment)?.also {
-                if (it.isControllable()) {
+                if (it.isControllable() && addToBack) {
                     tag = it.getBackStackTag()
                     addToBackStack(tag)
+                } else {
+                    disallowAddToBackStack()
                 }
             }
         }

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_search_result"
+    android:layout_marginTop="@dimen/dp_2"
+    android:layout_marginBottom="@dimen/dp_6"
+    android:padding="@dimen/dp_4"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:clickable="true"
+    app:cardElevation="@dimen/dp_2"
+    android:focusable="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:focusable="false"
+        android:clickable="false"
+        android:padding="@dimen/dp_10">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/title_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:textSize="@dimen/sp_14"
+            android:textStyle="bold"
+            android:clickable="false"
+            android:focusable="false"
+            tools:text="Title"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:textSize="@dimen/sp_12"
+            android:textColor="@color/light_gray"
+            tools:text="1"
+
+            />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/content_tv"
+            android:textColor="@color/semi_gray"
+            android:textSize="@dimen/sp_12"
+            android:layout_marginTop="@dimen/dp_4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:clickable="false"
+            android:focusable="false"
+            android:layout_below="@id/title_tv"
+            tools:text="This repository contains a detailed sample app that implements MVP architecture using Dagger2, GreenDao, RxJava2, FastAndroidNetworking and PlaceholderView" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/author_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/semi_gray"
+            android:textSize="@dimen/sp_12"
+            android:layout_alignTop="@id/reply_and_view_tv"
+            android:layout_alignEnd="@id/content_tv"
+            tools:text="author"
+            />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/date_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/semi_gray"
+            android:textSize="@dimen/sp_12"
+            android:layout_below="@id/author_tv"
+            android:layout_alignEnd="@id/content_tv"
+            tools:text="2020-02-02"
+            />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_marginStart="@dimen/dp_4"
+            android:id="@+id/reply_and_view_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/semi_gray"
+            android:textSize="@dimen/sp_12"
+            android:layout_below="@id/content_tv"
+            android:layout_alignStart="@id/content_tv"
+            android:layout_marginTop="@dimen/dp_4"
+            tools:text="reply and view"
+            />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/forum_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/semi_gray"
+            android:textSize="@dimen/sp_12"
+            android:layout_below="@id/reply_and_view_tv"
+            android:layout_alignStart="@id/reply_and_view_tv"
+            tools:text="[Forum]"
+            />
+    </RelativeLayout>
+</com.google.android.material.card.MaterialCardView>

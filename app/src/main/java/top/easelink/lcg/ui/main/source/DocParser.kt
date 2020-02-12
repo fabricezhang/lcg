@@ -2,39 +2,38 @@ package top.easelink.lcg.ui.main.source
 
 import android.text.TextUtils
 import androidx.annotation.WorkerThread
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 import timber.log.Timber
-import top.easelink.framework.threadpool.BackGroundPool
-import top.easelink.framework.threadpool.CommonPool
 import top.easelink.lcg.spipedata.UserData
 import top.easelink.lcg.ui.main.me.model.UserInfo
 import top.easelink.lcg.ui.main.model.NewMessageEvent
 import top.easelink.lcg.ui.main.model.NotificationInfo
 
+@WorkerThread
 fun checkLoginState(doc: Document) {
-    GlobalScope.launch(CommonPool) {
+    try {
         val userInfo = parseUserInfo(doc)
         UserData.loggedInState = userInfo.userName?.isNotEmpty()?:false
+    } catch (e: NullPointerException) {
+        // for some page, can't extract user info
+        Timber.w(e)
     }
 }
 
 @WorkerThread
+@Throws(NullPointerException::class)
 fun parseUserInfo(doc: Document): UserInfo {
     with(doc) {
-        val userName = getElementsByClass("vwmy")?.first()?.firstElementSibling()?.text()
+        val userName = doc.selectFirst("div.jzyhm")?.text()
         return if (!TextUtils.isEmpty(userName)) {
             val avatar = selectFirst("div.avt > a > img")?.attr("src")
             val groupInfo = getElementById("g_upmine")?.text()
-            getElementsByClass("xi2")?.remove()
-            val coin = getElementsByClass("xi1 cl")?.first()?.text()
-            val element: Element? = selectFirst("span.xg1")
-            val parentCredit = element?.parent()
-            element?.remove()
-            val credit = parentCredit?.text()
+            val coin = selectFirst("ul.creditl")?.apply {
+                getElementsByClass("xi2")?.remove()
+            }?.getElementsByClass("xi1 cl")?.first()?.text()
+            val credit = getElementById("extcreditmenu").text()
             val signInState = select("img.qq_bind")
                 ?.firstOrNull {
                     !(it.attr("src")?.contains("qq")?:true)
@@ -47,13 +46,17 @@ fun parseUserInfo(doc: Document): UserInfo {
     }
 }
 
+@WorkerThread
 fun checkMessages(doc: Document) {
-    GlobalScope.launch(BackGroundPool) {
-        val notificationInfo = parseNotificationInfo(doc)
-        if (notificationInfo.isNotEmpty()) {
-            EventBus.getDefault().post(NewMessageEvent(notificationInfo))
-        }
+    val notificationInfo = parseNotificationInfo(doc)
+    if (notificationInfo.isNotEmpty()) {
+        EventBus.getDefault().post(NewMessageEvent(notificationInfo))
     }
+}
+
+@WorkerThread
+fun extractFormHash(doc: Document): String? {
+    return doc.selectFirst("input[name=formhash]")?.attr("value")
 }
 
 @WorkerThread

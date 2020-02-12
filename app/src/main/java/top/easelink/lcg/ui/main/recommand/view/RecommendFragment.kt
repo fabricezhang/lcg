@@ -8,10 +8,14 @@ import kotlinx.android.synthetic.main.fragment_recommand.*
 import top.easelink.framework.topbase.ControllableFragment
 import top.easelink.framework.topbase.TopActivity
 import top.easelink.framework.topbase.TopFragment
+import top.easelink.lcg.BuildConfig
 import top.easelink.lcg.R
+import top.easelink.lcg.config.AppConfig
 import top.easelink.lcg.ui.main.recommand.viewmodel.RecommendViewPagerAdapter
 import top.easelink.lcg.ui.main.view.MainActivity
-import top.easelink.lcg.ui.search.view.SearchActivity
+import top.easelink.lcg.ui.search.view.BaiduSearchActivity
+import top.easelink.lcg.ui.search.view.LCGSearchActivity
+import top.easelink.lcg.ui.search.view.LCGSearchActivity.Companion.KEY_WORD
 import top.easelink.lcg.utils.WebsiteConstant.SEARCH_URL
 import top.easelink.lcg.utils.WebsiteConstant.URL_KEY
 
@@ -55,9 +59,23 @@ class RecommendFragment: TopFragment(), ControllableFragment {
         searchView.setOnQueryTextListener(object :
             SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
-                val intent = Intent(context, SearchActivity::class.java)
-                intent.putExtra(URL_KEY, java.lang.String.format(SEARCH_URL, query))
-                context?.startActivity(intent)
+                when(AppConfig.defaultSearchEngine) {
+                    0 -> {
+                        val intent = Intent(context, LCGSearchActivity::class.java)
+                        intent.putExtra(KEY_WORD, query)
+                        context?.startActivity(intent)
+                    }
+                    1 -> {
+                        val intent = Intent(context, BaiduSearchActivity::class.java)
+                        intent.putExtra(URL_KEY, java.lang.String.format(SEARCH_URL, query))
+                        context?.startActivity(intent)
+                    }
+                    else -> {
+                        if(BuildConfig.DEBUG) {
+                            throw IllegalStateException()
+                        }
+                    }
+                }
                 return true
             }
 

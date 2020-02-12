@@ -30,9 +30,9 @@
                 android:textSize="@dimen/sp_12"
                 style="@style/Toolbar"
                 app:title="@{viewModel.articleTitle}"
-                app:subtitleTextColor="@color/white"
-                app:titleTextAppearance="@style/Toolbar.TitleText"
-                app:titleTextColor="@color/white" />
+                app:titleTextColor="@color/white"
+                tools:title="Article title"
+                app:titleTextAppearance="@style/Toolbar.TitleText" />
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/post_recycler_view"
                 android:layout_width="match_parent"
