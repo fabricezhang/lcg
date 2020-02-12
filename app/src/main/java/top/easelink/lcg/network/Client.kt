@@ -16,6 +16,7 @@ import top.easelink.lcg.ui.main.source.extractFormHash
 import top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL
 import top.easelink.lcg.utils.getCookies
 import top.easelink.lcg.utils.setCookies
+import java.io.IOException
 import java.net.SocketTimeoutException
 import java.security.SecureRandom
 import java.security.cert.X509Certificate
@@ -40,7 +41,7 @@ object Client: ApiRequest {
     private const val TIME_OUT_LIMIT = 15 * 1000
     private const val BASE_URL = SERVER_BASE_URL
 
-    @Throws(SocketTimeoutException::class)
+    @Throws(SocketTimeoutException::class, IOException::class)
     override fun sendGetRequestWithQuery(query: String): Document {
         return Jsoup
             .connect("$BASE_URL$query")

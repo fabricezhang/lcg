@@ -66,10 +66,25 @@
         android:layout_height="wrap_content"
         android:text="@string/open_search_result_in_webview" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/account_btn"
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/check_update_btn"
         android:layout_marginTop="@dimen/dp_8"
         android:padding="@dimen/dp_12"
+        android:elevation="@dimen/dp_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:text="@string/check_app_update"
+        android:focusable="true"
+        android:textColor="@color/black"
+        android:background="@color/white" />
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/account_btn"
+        android:padding="@dimen/dp_12"
+        android:layout_marginTop="@dimen/dp_8"
+        android:background="@color/white"
         android:elevation="@dimen/dp_2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -13,18 +13,24 @@ import top.easelink.lcg.ui.main.model.NotificationInfo
 
 @WorkerThread
 fun checkLoginState(doc: Document) {
-    val userInfo = parseUserInfo(doc)
-    UserData.loggedInState = userInfo.userName?.isNotEmpty()?:false
+    try {
+        val userInfo = parseUserInfo(doc)
+        UserData.loggedInState = userInfo.userName?.isNotEmpty()?:false
+    } catch (e: NullPointerException) {
+        // for some page, can't extract user info
+        Timber.w(e)
+    }
 }
 
 @WorkerThread
+@Throws(NullPointerException::class)
 fun parseUserInfo(doc: Document): UserInfo {
     with(doc) {
-        val userName = doc.selectFirst("div.jzyhm").text()
+        val userName = doc.selectFirst("div.jzyhm")?.text()
         return if (!TextUtils.isEmpty(userName)) {
             val avatar = selectFirst("div.avt > a > img")?.attr("src")
             val groupInfo = getElementById("g_upmine")?.text()
-            val coin = selectFirst("ul.creditl").apply {
+            val coin = selectFirst("ul.creditl")?.apply {
                 getElementsByClass("xi2")?.remove()
             }?.getElementsByClass("xi1 cl")?.first()?.text()
             val credit = getElementById("extcreditmenu").text()

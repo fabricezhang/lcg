@@ -8,6 +8,7 @@ import android.view.WindowManager
 import android.widget.AdapterView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.tencent.bugly.beta.Beta
 import kotlinx.android.synthetic.main.activity_settings.*
 import top.easelink.framework.topbase.TopActivity
 import top.easelink.lcg.R
@@ -80,6 +81,9 @@ class SettingActivity : TopActivity() {
             account_btn.setOnClickListener {
                 tryLogout()
             }
+        }
+        check_update_btn.setOnClickListener {
+            Beta.checkUpgrade()
         }
         sync_favorites_switch.setOnCheckedChangeListener { _, isChecked ->
             mViewModel.scheduleJob(isChecked)
