@@ -7,6 +7,7 @@ UI参照知乎和虎扑App, 架构参考Google官方MVVM代码结构.
 论坛讨论贴: https://www.52pojie.cn/thread-1095110-1-1.html
 
 APK下载 蓝奏云
+ - [v1.7.5](https://www.lanzous.com/i9czbpc) 
  - [V1.7.1](https://www.lanzous.com/i8vkrsj)
  - [V1.6.4](https://www.lanzous.com/i88wy1i)
  - [V1.6.2](https://www.lanzous.com/i80uh1g)
@@ -15,6 +16,13 @@ APK下载 蓝奏云
  - [V1.3.0](https://www.lanzous.com/i57tefa)
  
 ## 功能
+
+### 1.7.5 版本更新
+- 搜索页升级（现支持吾爱搜索及百度站内，吾爱的搜索做了频次限制）
+- 增加了一键在系统浏览器打开的功能（方便下载或其他操作，App内也可以点击lanzous的下载了）
+- 增加了设置页面，方便进行配置
+- 修复Android 10深色模式看不到文字的问题
+- 头部Crash修复，提升应用稳定性
 
 ### 1.7.4 版本更新
 - 专区板块改版，增加了各个子版块及武汉肺炎专版
