@@ -7,7 +7,7 @@ import top.easelink.lcg.LCGApp
 
 
 fun copyContent(content: String, label: String): Boolean {
-    val cm = LCGApp.getInstance().getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager
+    val cm = LCGApp.instance.getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager
     val mClipData = ClipData.newPlainText(label, content)
     return if (cm != null) {
         cm.primaryClip = mClipData

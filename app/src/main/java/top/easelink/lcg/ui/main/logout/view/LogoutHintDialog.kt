@@ -46,7 +46,7 @@ class LogoutHintDialog(
         val window = dialog?.window
         if (window != null) {
             val windowParam = window.attributes
-            windowParam.width = 300.dpToPx(LCGApp.getContext()).toInt()
+            windowParam.width = 300.dpToPx(LCGApp.context).toInt()
             windowParam.height = WindowManager.LayoutParams.WRAP_CONTENT
             windowParam.gravity = Gravity.CENTER
             window.attributes = windowParam

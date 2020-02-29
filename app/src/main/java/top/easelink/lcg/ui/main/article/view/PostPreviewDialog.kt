@@ -90,7 +90,7 @@ class PostPreviewDialog : SafeShowDialogFragment() {
         super.onActivityCreated(savedInstanceState)
         dialog?.window?.attributes?.apply {
             width = WindowManager.LayoutParams.MATCH_PARENT
-            height = 400.dpToPx(LCGApp.getContext()).toInt()
+            height = 400.dpToPx(LCGApp.context).toInt()
             gravity = Gravity.CENTER
         }
         AnimatorSet().apply {

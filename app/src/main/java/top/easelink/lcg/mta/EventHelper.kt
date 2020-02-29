@@ -5,9 +5,9 @@ import top.easelink.lcg.LCGApp
 import java.util.*
 
 fun sendEvent(key: String) {
-    StatService.trackCustomEvent(LCGApp.getContext(), key)
+    StatService.trackCustomEvent(LCGApp.context, key)
 }
 
 fun sendKVEvent(key: String, prop: Properties) {
-    StatService.trackCustomKVEvent(LCGApp.getContext(), key, prop)
+    StatService.trackCustomKVEvent(LCGApp.context, key, prop)
 }
