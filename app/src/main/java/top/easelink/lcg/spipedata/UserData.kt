@@ -32,9 +32,11 @@ object UserData {
         get() = get(SP_KEY_SIGN_IN_STATE, "")
         set(value) = put(SP_KEY_SIGN_IN_STATE, value)
 
-    var loggedInState: Boolean
+    var isLoggedIn: Boolean
         get() = get(SP_KEY_LOGGED_IN, false)
-        set(value) = put(SP_KEY_LOGGED_IN, value)
+        set(value) {
+            put(SP_KEY_LOGGED_IN, value)
+        }
 
     fun clearAll() {
         SharedPreferencesHelper.getUserSp().edit().clear().apply()

@@ -29,7 +29,7 @@ class MeViewModel: ViewModel() {
 
     @Suppress("BlockingMethodInNonBlockingContext")
     fun fetchUserInfoDirect() {
-        if(UserData.loggedInState) {
+        if(UserData.isLoggedIn) {
             mLoginState.postValue(true)
             UserData.apply {
                 mUserInfo.value =
@@ -58,9 +58,9 @@ class MeViewModel: ViewModel() {
                     // login successfully but userInfo not changed
                     mLoginState.postValue(true)
                     mUserInfo.postValue(userInfo)
-                    UserData.loggedInState = true
+                    UserData.isLoggedIn = true
                     UserData.apply {
-                        loggedInState = true
+                        isLoggedIn = true
                         username = userInfo.userName.toString()
                         avatar = userInfo.avatarUrl.orEmpty()
                         coin = userInfo.wuaiCoin.orEmpty()

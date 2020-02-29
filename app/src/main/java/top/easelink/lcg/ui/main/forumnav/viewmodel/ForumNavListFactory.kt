@@ -58,7 +58,7 @@ fun generateAllForums(context: Context): List<ForumNavigationModel> {
             WebsiteConstant.QA_URL
         )
     )
-    if (UserData.loggedInState) {
+    if (UserData.isLoggedIn) {
         list.add(
             ForumNavigationModel(
                 context.getString(R.string.forum_virus_analysis),

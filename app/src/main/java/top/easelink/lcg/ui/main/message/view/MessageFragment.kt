@@ -29,7 +29,7 @@ class MessageFragment: TopFragment(), ControllableFragment{
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (!UserData.loggedInState) {
+        if (!UserData.isLoggedIn) {
             (mContext as? AppCompatActivity)?.let {
                 LoginHintDialog().show(it.supportFragmentManager, null)
             }

@@ -165,7 +165,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                 } else {
                     mBinding.btnCapture.setVisibility(View.GONE);
                 }
-                if (UserData.INSTANCE.getLoggedInState()) {
+                if (UserData.INSTANCE.isLoggedIn()) {
                     mBinding.btnGroup.setVisibility(View.VISIBLE);
                     if (TextUtils.isEmpty(post.getReplyUrl())) {
                         mBinding.btnReply.setVisibility(View.GONE);

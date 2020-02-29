@@ -6,6 +6,7 @@
     <string name="network_error">当前网络质量差，请稍后再试</string>
     <string name="request_too_often_warning">访问接口过于频繁，请稍后重试</string>
     <string name="qq_not_support">暂不支持QQ登陆</string>
+    <string name="login_or_register">登录或注册</string>
     <!--Toolbar menus-->
     <string name="clear">Clear</string>
     <string name="share">Share</string>
