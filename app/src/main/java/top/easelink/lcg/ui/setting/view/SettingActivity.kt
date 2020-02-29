@@ -67,7 +67,7 @@ class SettingActivity : TopActivity() {
     }
 
     private fun setupComponents() {
-        if (!UserData.loggedInState) {
+        if (!UserData.isLoggedIn) {
             sync_favorites_switch.isEnabled = false
             auto_sign_switch.isEnabled = false
             AppConfig.autoSignEnable = false

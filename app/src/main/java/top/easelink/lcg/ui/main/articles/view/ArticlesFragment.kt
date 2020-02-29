@@ -76,7 +76,7 @@ class ArticlesFragment : BaseFragment<FragmentArticlesBinding, ArticlesViewModel
             scrollToTop()
         }
         viewDataBinding.refreshLayout.run {
-            val context = context?:LCGApp.getContext()
+            val context = context?:LCGApp.context
             setColorSchemeColors(
                 ContextCompat.getColor(context, R.color.colorPrimary),
                 ContextCompat.getColor(context, R.color.colorAccent),

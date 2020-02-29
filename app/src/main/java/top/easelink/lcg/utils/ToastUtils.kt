@@ -12,10 +12,10 @@ import top.easelink.lcg.LCGApp
 
 fun showMessage(msg: String) {
     if (isOnMainThread()) {
-        Toast.makeText(LCGApp.getContext(), msg, Toast.LENGTH_SHORT).show()
+        Toast.makeText(LCGApp.context, msg, Toast.LENGTH_SHORT).show()
     } else {
         GlobalScope.launch(Main) {
-            Toast.makeText(LCGApp.getContext(), msg, Toast.LENGTH_SHORT).show()
+            Toast.makeText(LCGApp.context, msg, Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -23,10 +23,10 @@ fun showMessage(msg: String) {
 
 fun showMessage(@StringRes resource: Int) {
     if (isOnMainThread()) {
-        Toast.makeText(LCGApp.getContext(), resource, Toast.LENGTH_SHORT).show()
+        Toast.makeText(LCGApp.context, resource, Toast.LENGTH_SHORT).show()
     } else {
         GlobalScope.launch(Main) {
-            Toast.makeText(LCGApp.getContext(), resource, Toast.LENGTH_SHORT).show()
+            Toast.makeText(LCGApp.context, resource, Toast.LENGTH_SHORT).show()
         }
     }
 }

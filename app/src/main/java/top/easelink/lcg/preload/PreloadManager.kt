@@ -9,7 +9,7 @@ import java.io.File
 @Suppress("unused")
 object PreloadManager {
 
-    private val PRELOAD_FOLDER = "${LCGApp.getContext().externalCacheDir}/articles"
+    private val PRELOAD_FOLDER = "${LCGApp.context.externalCacheDir}/articles"
 
     fun saveToDisk(content: String) {
 

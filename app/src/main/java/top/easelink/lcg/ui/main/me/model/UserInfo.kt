@@ -13,7 +13,7 @@ class UserInfo {
         private set
     var signInStateUrl: String? = null
         private set
-    var messageText: String? = null
+    var errorMessage: String? = null
         private set
 
     constructor(
@@ -32,8 +32,8 @@ class UserInfo {
         this.signInStateUrl = signInStateUrl
     }
 
-    constructor(messageText: String?) {
-        this.messageText = messageText
+    constructor(errorMessage: String?) {
+        this.errorMessage = errorMessage
     }
 
     override fun equals(other: Any?): Boolean {
@@ -53,7 +53,7 @@ class UserInfo {
         result = 31 * result + (wuaiCoin?.hashCode() ?: 0)
         result = 31 * result + (credit?.hashCode() ?: 0)
         result = 31 * result + (signInStateUrl?.hashCode() ?: 0)
-        result = 31 * result + (messageText?.hashCode() ?: 0)
+        result = 31 * result + (errorMessage?.hashCode() ?: 0)
         return result
     }
 

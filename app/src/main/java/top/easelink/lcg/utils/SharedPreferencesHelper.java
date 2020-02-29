@@ -16,15 +16,15 @@ import static top.easelink.lcg.spipedata.UserSPConstantsKt.SP_USER;
 public class SharedPreferencesHelper {
 
     public static SharedPreferences getUserSp() {
-        return LCGApp.getInstance().getSharedPreferences(SP_USER, Context.MODE_PRIVATE);
+        return LCGApp.getContext().getSharedPreferences(SP_USER, Context.MODE_PRIVATE);
     }
 
     public static SharedPreferences getCookieSp() {
-        return LCGApp.getInstance().getSharedPreferences(SP_COOKIE, Context.MODE_PRIVATE);
+        return LCGApp.getContext().getSharedPreferences(SP_COOKIE, Context.MODE_PRIVATE);
     }
 
     public static SharedPreferences getDefaultSp() {
-        return PreferenceManager.getDefaultSharedPreferences(LCGApp.getInstance());
+        return PreferenceManager.getDefaultSharedPreferences(LCGApp.getContext());
     }
 
     public static boolean isEmpty(SharedPreferences sp) {

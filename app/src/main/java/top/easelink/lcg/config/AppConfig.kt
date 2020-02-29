@@ -48,7 +48,7 @@ object AppConfig {
 
 
     private fun getConfigSp(): SharedPreferences {
-        return LCGApp.getInstance().getSharedPreferences(CONFIG_SP, Context.MODE_PRIVATE)
+        return LCGApp.instance.getSharedPreferences(CONFIG_SP, Context.MODE_PRIVATE)
     }
 
     @Suppress("UNCHECKED_CAST", "IMPLICIT_CAST_TO_ANY")

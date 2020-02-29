@@ -127,7 +127,7 @@ class ForumArticlesFragment : BaseFragment<FragmentForumArticlesBinding, ForumAr
 
     private fun setUpRecyclerView() {
         viewDataBinding.refreshLayout.apply {
-            LCGApp.getContext().let {
+            LCGApp.context.let {
                 setColorSchemeColors(
                     ContextCompat.getColor(it, R.color.colorPrimary),
                     ContextCompat.getColor(it, R.color.colorAccent),

@@ -20,9 +20,9 @@ object ApiClient: ApiRequest {
 
     private var mClient: OkHttpClient
     init {
-        val cacheDirectory = File(LCGApp.getContext().cacheDir, "okhttp_cache")
+        val cacheDirectory = File(LCGApp.context.cacheDir, "okhttp_cache")
         val cookieJar: ClearableCookieJar =
-            PersistentCookieJar(SetCookieCache(), SharedPrefsCookiePersistor(LCGApp.getContext()))
+            PersistentCookieJar(SetCookieCache(), SharedPrefsCookiePersistor(LCGApp.context))
         mClient = OkHttpClient
             .Builder()
             .callTimeout(10, TimeUnit.SECONDS)

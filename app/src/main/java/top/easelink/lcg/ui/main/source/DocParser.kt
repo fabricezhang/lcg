@@ -1,11 +1,12 @@
 package top.easelink.lcg.ui.main.source
 
-import android.text.TextUtils
 import androidx.annotation.WorkerThread
 import org.greenrobot.eventbus.EventBus
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 import timber.log.Timber
+import top.easelink.lcg.LCGApp
+import top.easelink.lcg.R
 import top.easelink.lcg.spipedata.UserData
 import top.easelink.lcg.ui.main.me.model.UserInfo
 import top.easelink.lcg.ui.main.model.NewMessageEvent
@@ -15,7 +16,12 @@ import top.easelink.lcg.ui.main.model.NotificationInfo
 fun checkLoginState(doc: Document) {
     try {
         val userInfo = parseUserInfo(doc)
-        UserData.loggedInState = userInfo.userName?.isNotEmpty()?:false
+        if (userInfo.errorMessage?.isNotEmpty() == true) {
+            Timber.e(userInfo.errorMessage)
+        }
+        if (userInfo.errorMessage != null) {
+            UserData.isLoggedIn = false
+        }
     } catch (e: NullPointerException) {
         // for some page, can't extract user info
         Timber.w(e)
@@ -27,21 +33,28 @@ fun checkLoginState(doc: Document) {
 fun parseUserInfo(doc: Document): UserInfo {
     with(doc) {
         val userName = doc.selectFirst("div.jzyhm")?.text()
-        return if (!TextUtils.isEmpty(userName)) {
-            val avatar = selectFirst("div.avt > a > img")?.attr("src")
-            val groupInfo = getElementById("g_upmine")?.text()
-            val coin = selectFirst("ul.creditl")?.apply {
-                getElementsByClass("xi2")?.remove()
-            }?.getElementsByClass("xi1 cl")?.first()?.text()
-            val credit = getElementById("extcreditmenu").text()
-            val signInState = select("img.qq_bind")
-                ?.firstOrNull {
-                    !(it.attr("src")?.contains("qq")?:true)
-                }
-                ?.attr("src")
-            UserInfo(userName, avatar, groupInfo, coin, credit, signInState)
-        } else {
-            UserInfo(getElementById("messagetext")?.text())
+        val notif = LCGApp.context.getString(R.string.login_or_register)
+        when {
+            userName.isNullOrEmpty() -> {
+                return UserInfo(getElementById("messagetext")?.text())
+            }
+            userName == notif -> {
+                return UserInfo(notif)
+            }
+            else -> {
+                val avatar = selectFirst("div.avt > a > img")?.attr("src")
+                val groupInfo = getElementById("g_upmine")?.text()
+                val coin = selectFirst("ul.creditl")?.apply {
+                    getElementsByClass("xi2")?.remove()
+                }?.getElementsByClass("xi1 cl")?.first()?.text()
+                val credit = getElementById("extcreditmenu").text()
+                val signInState = select("img.qq_bind")
+                    ?.firstOrNull {
+                        !(it.attr("src")?.contains("qq")?:true)
+                    }
+                    ?.attr("src")
+                return UserInfo(userName, avatar, groupInfo, coin, credit, signInState)
+            }
         }
     }
 }

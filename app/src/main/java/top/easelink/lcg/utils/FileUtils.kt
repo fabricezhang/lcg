@@ -14,7 +14,7 @@ import java.io.*
 
 
 fun saveImageToGallery(bmp: Bitmap, bitName: String): String {
-    val appDir = File(LCGApp.getContext().externalCacheDir, "lcg")
+    val appDir = File(LCGApp.context.externalCacheDir, "lcg")
     if (!appDir.exists()) {
         appDir.mkdir()
     }

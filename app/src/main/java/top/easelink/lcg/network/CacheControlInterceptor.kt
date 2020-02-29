@@ -9,11 +9,11 @@ import top.easelink.lcg.LCGApp
 object CacheControlInterceptor: Interceptor {
         override fun intercept(chain: Interceptor.Chain): Response {
             var request = chain.request()
-            if (!NetworkUtils.isNetworkConnected(LCGApp.getContext())) {
+            if (!NetworkUtils.isNetworkConnected(LCGApp.context)) {
                 request = request.newBuilder().cacheControl(CacheControl.FORCE_CACHE).build()
             }
             val originalResponse = chain.proceed(request)
-            return if (NetworkUtils.isNetworkConnected(LCGApp.getContext())) {
+            return if (NetworkUtils.isNetworkConnected(LCGApp.context)) {
                 originalResponse.newBuilder()
                     .header("Cache-Control", request.cacheControl.toString())
                     .removeHeader("Pragma")

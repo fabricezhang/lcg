@@ -26,6 +26,16 @@
         android:theme="@style/AppTheme">
         <uses-library android:name="org.apache.http.legacy" android:required="false" />
         <activity
+            android:name=".ui.splash.view.SplashActivity"
+            android:theme="@style/SplashTheme"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity
             android:launchMode="singleTask"
             android:name=".ui.main.view.MainActivity"
             android:screenOrientation="portrait">
@@ -64,16 +74,6 @@
         <activity android:name=".ui.setting.view.SettingActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
-        </activity>
-        <activity
-            android:name=".ui.splash.view.SplashActivity"
-            android:theme="@style/SplashTheme"
-            android:launchMode="singleInstance"
-            android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
         </activity>
         <activity
             android:name="com.tencent.bugly.beta.ui.BetaActivity"

@@ -14,7 +14,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.CookieManager;
-import android.webkit.DownloadListener;
 import android.webkit.JavascriptInterface;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebResourceRequest;
@@ -263,13 +262,15 @@ public class WebViewActivity extends AppCompatActivity {
             if (TextUtils.isEmpty(url)) {
                 return false;
 
+            } else if (url.startsWith("https://www.52pojie.cn/connect.php?mod=login&op=init&referer=https%3A%2F%2Fwww.52pojie.cn%2F&statfrom=login")){
+                ToastUtilsKt.showMessage(R.string.qq_not_support);
+                return true;
             } else if (url.startsWith("wtloginmqq://ptlogin/qlogin")) {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
-                Timber.e(url);
+                ToastUtilsKt.showMessage(R.string.qq_not_support);
+//                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
                 return true;
             }
             return false;
-//            return super.shouldOverrideUrlLoading(view, request);
         }
     }
 
