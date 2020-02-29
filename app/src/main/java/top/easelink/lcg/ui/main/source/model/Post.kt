@@ -1,10 +1,14 @@
 package top.easelink.lcg.ui.main.source.model
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
 /**
  * author : junzhang
  * date   : 2019-07-04 11:38
  * desc   :
  */
+@Parcelize
 class Post
 /**
  *
@@ -19,4 +23,4 @@ class Post
     val content: String,
     val replyUrl: String?,
     val replyAddUrl: String?
-)
+) : Parcelable

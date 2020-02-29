@@ -126,6 +126,7 @@
     <string name="reply_post_btn_sending">发送中</string>
     <string name="reply_post_btn_sent">完成</string>
     <string name="reply_post_input_hint">请输入回复内容…</string>
+    <string name="reply_post_failed">回复失败</string>
 
     <!--comment article dialog  -->
     <string name="comment_article_dialog_title">跟帖评论：</string>

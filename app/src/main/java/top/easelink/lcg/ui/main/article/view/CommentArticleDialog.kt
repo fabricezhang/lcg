@@ -1,5 +1,6 @@
 package top.easelink.lcg.ui.main.article.view
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.Button
@@ -9,7 +10,9 @@ import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.dialog_comment_article.*
 import top.easelink.framework.base.SafeShowDialogFragment
 import top.easelink.lcg.R
+import top.easelink.lcg.spipedata.UserData
 import top.easelink.lcg.ui.main.article.viewmodel.ReplyPostViewModel
+import top.easelink.lcg.ui.main.source.model.Post
 
 class CommentArticleDialog : SafeShowDialogFragment() {
 
@@ -52,10 +55,29 @@ class CommentArticleDialog : SafeShowDialogFragment() {
             replyPostViewModel.sendReply(
                 arguments?.getString(REPLY_POST_URL),
                 content.toString()
-            ) {view.postDelayed({
+            ) {success -> view.postDelayed({
+                setResult(content = content.toString(), success = success)
                 dismissDialog()
             }, 1000L)}
+        }
+    }
 
+    private fun setResult(content: String, success: Boolean) {
+        if (targetFragment != null) {
+            val bundle = Bundle().apply {
+                putParcelable("post", Post(
+                    UserData.username,
+                    UserData.avatar,
+                    "",
+                    content, null, null
+                )
+                )
+            }
+            targetFragment?.onActivityResult(
+                ArticleFragment.REPLY_POST_RESULT,
+                if (success) 1 else 0,
+                Intent().putExtra("post", bundle)
+            )
         }
     }
 

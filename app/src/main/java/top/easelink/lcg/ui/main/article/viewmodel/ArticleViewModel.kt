@@ -171,6 +171,13 @@ class ArticleViewModel: ViewModel(), ArticleAdapterListener {
         }
     }
 
+    fun addPostToTop(post: Post) {
+        posts.value?.let {
+            it.add(1, post)
+            posts.postValue(it)
+        }
+    }
+
     private fun setArticleNotFound() {
         isNotFound.postValue(true)
         shouldDisplayPosts.postValue(false)
