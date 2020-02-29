@@ -7,18 +7,22 @@ import com.tencent.bugly.beta.Beta
 import com.tencent.stat.StatService
 import timber.log.Timber
 import timber.log.Timber.DebugTree
+import top.easelink.framework.guard.AppGuardStarter
 import top.easelink.lcg.mta.EVENT_APP_LAUNCH
 import top.easelink.lcg.mta.sendEvent
+
 
 class LCGApp : Application() {
     override fun onCreate() {
         super.onCreate()
         instance = this
-        initBulgy()
-        initMTA()
         if (BuildConfig.DEBUG) {
             Timber.plant(DebugTree())
         }
+
+        initBulgy()
+        initMTA()
+        AppGuardStarter.init(this)
     }
 
     private fun initBulgy() {
@@ -31,10 +35,13 @@ class LCGApp : Application() {
     private fun initMTA() {
         StatService.setContext(context)
         StatService.registerActivityLifecycleCallbacks(instance)
+        // fixme incompatible with Bulgy, need more investigation
+//        StatCrashReporter.getStatCrashReporter(this).apply {
+//            isEnableInstantReporting = true
+//            javaCrashHandlerStatus = true
+//        }
         sendEvent(EVENT_APP_LAUNCH)
     }
-
-
 
     companion object {
         lateinit var instance: LCGApp
