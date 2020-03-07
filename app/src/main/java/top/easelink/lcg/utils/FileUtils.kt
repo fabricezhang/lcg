@@ -9,7 +9,7 @@ import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
 import timber.log.Timber
-import top.easelink.lcg.LCGApp
+import top.easelink.lcg.appinit.LCGApp
 import java.io.*
 
 

@@ -7,7 +7,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import top.easelink.framework.threadpool.Main
 import top.easelink.framework.utils.isOnMainThread
-import top.easelink.lcg.LCGApp
+import top.easelink.lcg.appinit.LCGApp
 
 
 fun showMessage(msg: String) {

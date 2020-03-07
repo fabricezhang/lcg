@@ -5,8 +5,8 @@ import org.greenrobot.eventbus.EventBus
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 import timber.log.Timber
-import top.easelink.lcg.LCGApp
 import top.easelink.lcg.R
+import top.easelink.lcg.appinit.LCGApp
 import top.easelink.lcg.spipedata.UserData
 import top.easelink.lcg.ui.main.me.model.UserInfo
 import top.easelink.lcg.ui.main.model.NewMessageEvent

@@ -12,7 +12,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import timber.log.Timber;
-import top.easelink.lcg.LCGApp;
+import top.easelink.lcg.appinit.LCGApp;
 
 import static top.easelink.lcg.utils.CookieUtilsKt.setCookies;
 

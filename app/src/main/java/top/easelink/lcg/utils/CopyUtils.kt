@@ -3,7 +3,7 @@ package top.easelink.lcg.utils
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
-import top.easelink.lcg.LCGApp
+import top.easelink.lcg.appinit.LCGApp
 
 
 fun copyContent(content: String, label: String): Boolean {

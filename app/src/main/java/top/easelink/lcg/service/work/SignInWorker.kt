@@ -12,14 +12,10 @@ class SignInWorker(context: Context, workerParams: WorkerParameters) :
 
     override fun doWork(): Result {
         try {
-            Timber.d("Sign In Start")
-            val alertInfo = Client.sendGetRequestWithUrl(SIGN_IN_URL)
-                .getElementsByClass("alert_info")
-                ?.first()
-                ?.selectFirst("p")
-                ?.text()
-            Timber.d(alertInfo)
+            Timber.d("Sign In Job Start")
+            sendSignInRequest()
         } catch (e: Exception) {
+            Timber.e(e, "Sign In Job Failed")
             return Result.retry()
         }
         return Result.success()
@@ -28,10 +24,19 @@ class SignInWorker(context: Context, workerParams: WorkerParameters) :
     companion object {
 
         private val WORK_INTERVAL: Long = if (BuildConfig.DEBUG) 15L else 8L
-        private val DEFAULT_TIME_UNIT = if (BuildConfig.DEBUG) TimeUnit.MINUTES else TimeUnit.HOURS
+        private val DEFAULT_TIME_UNIT = if (BuildConfig.DEBUG) TimeUnit.SECONDS else TimeUnit.HOURS
 
         private const val SIGN_IN_URL = "https://www.52pojie.cn/home.php?mod=task&do=apply&id=2"
         const val TAG = "SignInWorker"
+
+        fun sendSignInRequest() {
+            val alertInfo = Client.sendGetRequestWithUrl(SIGN_IN_URL)
+                .getElementsByClass("alert_info")
+                ?.first()
+                ?.selectFirst("p")
+                ?.text()
+            Timber.d(alertInfo)
+        }
 
         fun startSignInWork(): Operation {
             val constraints = Constraints.Builder()

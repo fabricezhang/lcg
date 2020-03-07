@@ -10,7 +10,7 @@ import okhttp3.Request
 import org.jsoup.Connection
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import top.easelink.lcg.LCGApp
+import top.easelink.lcg.appinit.LCGApp
 import top.easelink.lcg.config.AppConfig.followRedirectsEnable
 import top.easelink.lcg.ui.search.model.RequestTooOftenException
 import java.io.File

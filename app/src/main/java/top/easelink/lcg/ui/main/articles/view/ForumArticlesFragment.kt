@@ -15,8 +15,8 @@ import kotlinx.android.synthetic.main.fragment_forum_articles.*
 import timber.log.Timber
 import top.easelink.framework.base.BaseFragment
 import top.easelink.lcg.BR
-import top.easelink.lcg.LCGApp
 import top.easelink.lcg.R
+import top.easelink.lcg.appinit.LCGApp
 import top.easelink.lcg.databinding.FragmentForumArticlesBinding
 import top.easelink.lcg.mta.CHANGE_THREAD
 import top.easelink.lcg.ui.main.articles.viewmodel.*
