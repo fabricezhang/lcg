@@ -183,6 +183,13 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                 } else {
                     mBinding.btnGroup.setVisibility(View.GONE);
                 }
+                mBinding.contentTextView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        // fix crashes on xiaomi devices
+                        return true;
+                    }
+                });
             } catch (Exception e) {
                 Timber.e(e);
             }
