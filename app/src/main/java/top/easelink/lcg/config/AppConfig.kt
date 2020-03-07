@@ -3,7 +3,7 @@ package top.easelink.lcg.config
 import android.content.Context
 import android.content.SharedPreferences
 import com.tencent.stat.StatConfig
-import top.easelink.lcg.LCGApp
+import top.easelink.lcg.appinit.LCGApp
 
 object AppConfig {
 

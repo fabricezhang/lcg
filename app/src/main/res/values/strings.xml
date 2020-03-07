@@ -92,7 +92,7 @@
     <string name="github_title">Github源码地址</string>
     <string name="github_url">https://github.com/fabricezhang/lcg/</string>
     <string name="author_title">问题反馈邮箱</string>
-    <string name="author_email">fabirce@163.com</string>
+    <string name="author_email">fabrice@163.com</string>
 
     <!--favorite fragment-->
     <string name="empty_favorite">收藏夹目前是空的。</string>
@@ -126,6 +126,7 @@
     <string name="reply_post_btn_sending">发送中</string>
     <string name="reply_post_btn_sent">完成</string>
     <string name="reply_post_input_hint">请输入回复内容…</string>
+    <string name="reply_post_failed">回复失败</string>
 
     <!--comment article dialog  -->
     <string name="comment_article_dialog_title">跟帖评论：</string>

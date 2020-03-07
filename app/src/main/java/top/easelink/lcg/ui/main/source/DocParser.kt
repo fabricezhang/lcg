@@ -5,8 +5,8 @@ import org.greenrobot.eventbus.EventBus
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 import timber.log.Timber
-import top.easelink.lcg.LCGApp
 import top.easelink.lcg.R
+import top.easelink.lcg.appinit.LCGApp
 import top.easelink.lcg.spipedata.UserData
 import top.easelink.lcg.ui.main.me.model.UserInfo
 import top.easelink.lcg.ui.main.model.NewMessageEvent
@@ -32,7 +32,7 @@ fun checkLoginState(doc: Document) {
 @Throws(NullPointerException::class)
 fun parseUserInfo(doc: Document): UserInfo {
     with(doc) {
-        val userName = doc.selectFirst("div.jzyhm")?.text()
+        val userName = doc.selectFirst("h2.mt")?.text()
         val notif = LCGApp.context.getString(R.string.login_or_register)
         when {
             userName.isNullOrEmpty() -> {
@@ -44,16 +44,25 @@ fun parseUserInfo(doc: Document): UserInfo {
             else -> {
                 val avatar = selectFirst("div.avt > a > img")?.attr("src")
                 val groupInfo = getElementById("g_upmine")?.text()
-                val coin = selectFirst("ul.creditl")?.apply {
-                    getElementsByClass("xi2")?.remove()
-                }?.getElementsByClass("xi1 cl")?.first()?.text()
-                val credit = getElementById("extcreditmenu").text()
+                val infoList = getElementById("psts").selectFirst("ul.pf_l").getElementsByTag("li").also {
+                    it.forEach { il ->
+                        il.selectFirst("em").appendText(" : ")
+                    }
+                }
                 val signInState = select("img.qq_bind")
                     ?.firstOrNull {
                         !(it.attr("src")?.contains("qq")?:true)
                     }
                     ?.attr("src")
-                return UserInfo(userName, avatar, groupInfo, coin, credit, signInState)
+                return UserInfo(
+                    userName = userName,
+                    avatarUrl = avatar,
+                    groupInfo = groupInfo,
+                    wuaiCoin = infoList[3].text(),
+                    credit = infoList[1].text(),
+                    answerRate = infoList[6].text(),
+                    enthusiasticValue = infoList[7].text(),
+                    signInStateUrl = signInState)
             }
         }
     }

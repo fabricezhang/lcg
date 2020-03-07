@@ -2,9 +2,6 @@ package top.easelink.lcg.ui.setting.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.work.Constraints
-import androidx.work.NetworkType
-import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkManager
 import top.easelink.lcg.config.AppConfig
 import top.easelink.lcg.mta.*
@@ -27,22 +24,9 @@ class SettingViewModel : ViewModel() {
     fun scheduleJob(enable: Boolean) {
         AppConfig.autoSignEnable = enable
         if (enable) {
-            val constraints = Constraints.Builder()
-                .setRequiresDeviceIdle(false)
-                .setRequiresCharging(false)
-                .setRequiredNetworkType(NetworkType.CONNECTED)
-                .setRequiresBatteryNotLow(false)
-                .build()
-            val request = PeriodicWorkRequest.Builder(
-                SignInWorker::class.java,
-                SignInWorker.WORK_INTERVAL,
-                SignInWorker.DEFAULT_TIME_UNIT)
-                .setConstraints(constraints)
-                .addTag(SignInWorker::class.java.simpleName)
-                .build()
-            WorkManager.getInstance().enqueue(request)
+            SignInWorker.startSignInWork()
         } else {
-            WorkManager.getInstance().cancelAllWorkByTag(SignInWorker::class.java.simpleName)
+            WorkManager.getInstance().cancelAllWorkByTag(SignInWorker.TAG)
         }
         sendKVEvent(EVENT_AUTO_SIGN, Properties().apply {
             setProperty(PROP_IS_AUTO_SIGN_ENABLE, enable.toString())

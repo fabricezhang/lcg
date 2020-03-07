@@ -5,7 +5,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 import top.easelink.lcg.BuildConfig;
-import top.easelink.lcg.LCGApp;
+import top.easelink.lcg.appinit.LCGApp;
 import top.easelink.lcg.ui.main.source.model.ArticleEntity;
 
 /**

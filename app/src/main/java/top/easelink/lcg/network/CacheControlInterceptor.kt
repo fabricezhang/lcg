@@ -4,7 +4,7 @@ import okhttp3.CacheControl
 import okhttp3.Interceptor
 import okhttp3.Response
 import top.easelink.framework.utils.NetworkUtils
-import top.easelink.lcg.LCGApp
+import top.easelink.lcg.appinit.LCGApp
 
 object CacheControlInterceptor: Interceptor {
         override fun intercept(chain: Interceptor.Chain): Response {

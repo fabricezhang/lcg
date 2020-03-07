@@ -34,8 +34,8 @@ import java.util.Objects;
 
 import timber.log.Timber;
 import top.easelink.framework.customview.webview.HorizontalScrollDisableWebView;
-import top.easelink.lcg.LCGApp;
 import top.easelink.lcg.R;
+import top.easelink.lcg.appinit.LCGApp;
 import top.easelink.lcg.service.web.HookInterface;
 import top.easelink.lcg.ui.main.view.MainActivity;
 import top.easelink.lcg.utils.ToastUtilsKt;

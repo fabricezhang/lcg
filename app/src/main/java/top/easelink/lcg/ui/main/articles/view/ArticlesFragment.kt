@@ -11,8 +11,8 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_articles.*
 import top.easelink.framework.base.BaseFragment
 import top.easelink.lcg.BR
-import top.easelink.lcg.LCGApp
 import top.easelink.lcg.R
+import top.easelink.lcg.appinit.LCGApp
 import top.easelink.lcg.databinding.FragmentArticlesBinding
 import top.easelink.lcg.ui.main.articles.viewmodel.ArticleFetcher
 import top.easelink.lcg.ui.main.articles.viewmodel.ArticlesAdapter
@@ -76,7 +76,7 @@ class ArticlesFragment : BaseFragment<FragmentArticlesBinding, ArticlesViewModel
             scrollToTop()
         }
         viewDataBinding.refreshLayout.run {
-            val context = context?:LCGApp.context
+            val context = context?: LCGApp.context
             setColorSchemeColors(
                 ContextCompat.getColor(context, R.color.colorPrimary),
                 ContextCompat.getColor(context, R.color.colorAccent),

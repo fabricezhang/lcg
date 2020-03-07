@@ -85,6 +85,7 @@ class ArticleViewModel: ViewModel(), ArticleAdapterListener {
                 when(e) {
                     is BlockException -> setArticleBlocked(e.alertMessage)
                     is NetworkException -> setArticleNotFound()
+                    else -> showMessage(R.string.error)
                 }
                 Timber.e(e)
             }
@@ -168,6 +169,13 @@ class ArticleViewModel: ViewModel(), ArticleAdapterListener {
             } catch (e: Exception) {
                 Timber.e(e)
             }
+        }
+    }
+
+    fun addPostToTop(post: Post) {
+        posts.value?.let {
+            it.add(1, post)
+            posts.postValue(it)
         }
     }
 

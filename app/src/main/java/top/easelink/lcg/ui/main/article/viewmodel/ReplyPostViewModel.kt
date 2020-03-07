@@ -18,14 +18,14 @@ class ReplyPostViewModel : ViewModel() {
 
     val sending = MutableLiveData<Boolean>()
 
-    fun sendReply(query: String?, content: String, callback: () -> Unit) {
+    fun sendReply(query: String?, content: String, callback: (Boolean) -> Unit) {
         sending.value = true
         GlobalScope.launch(ApiPool) {
             sendReplyAsync(query, content, callback)
         }
     }
 
-    private fun sendReplyAsync(query: String?, content: String, callback: () -> Unit) {
+    private fun sendReplyAsync(query: String?, content: String, callback: (Boolean) -> Unit) {
         Timber.d(content)
         if (query.isNullOrEmpty() || content.isBlank()) {
             return
@@ -61,7 +61,6 @@ class ReplyPostViewModel : ViewModel() {
                         .method(Connection.Method.GET)
                         .execute()
                     if (response.statusCode() in 200 until 300) {
-                        Timber.d(response.body())
                         setCookies(response.cookies())
                         val url = "${SERVER_BASE_URL}forum.php?mod=post&infloat=yes&action=reply" +
                                 "&fid=${queryMap["fid"]}&extra=${queryMap["extra"]}&tid=${queryMap["tid"]}&replysubmit=yes&inajax=1"
@@ -84,17 +83,17 @@ class ReplyPostViewModel : ViewModel() {
                             .method(Connection.Method.POST)
                             .execute()
                         setCookies(response.cookies())
+                        callback.invoke(response.statusCode() in 200 until 300)
                     } else {
                         Timber.e(response.body())
                     }
                 }
         } catch (e: Exception) {
             Timber.e(e)
+            callback.invoke(false)
         } finally {
             sending.postValue(false)
-            callback.invoke()
         }
-
     }
 }
 

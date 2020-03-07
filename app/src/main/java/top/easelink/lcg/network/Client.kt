@@ -51,6 +51,7 @@ object Client: ApiRequest {
             .method(Connection.Method.GET)
             .followRedirects(followRedirectsEnable())
             .execute()
+            .bufferUp()
             .let {
                 setCookies(it.cookies())
                 it.parse().also { doc ->
@@ -70,6 +71,7 @@ object Client: ApiRequest {
             .method(Connection.Method.GET)
             .followRedirects(followRedirectsEnable())
             .execute()
+            .bufferUp()
             .let {
                 setCookies(it.cookies())
                 it.parse().also { doc ->
@@ -90,6 +92,7 @@ object Client: ApiRequest {
             .postDataCharset("gbk")
             .method(Connection.Method.POST)
             .execute()
+            .bufferUp()
             .also {
                 setCookies(it.cookies())
             }

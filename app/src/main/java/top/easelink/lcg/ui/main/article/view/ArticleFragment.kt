@@ -1,8 +1,9 @@
 package top.easelink.lcg.ui.main.article.view
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -33,6 +34,10 @@ class ArticleFragment(private var articleUrl: String) : BaseFragment<FragmentArt
     // try fix no empty constructor issue
     constructor() : this(AppConfig.getAppReleaseUrl())
 
+    companion object {
+        const val REPLY_POST_RESULT = 1000
+    }
+
     override fun isControllable(): Boolean {
         return true
     }
@@ -50,7 +55,7 @@ class ArticleFragment(private var articleUrl: String) : BaseFragment<FragmentArt
     }
 
     override fun getViewModel(): ArticleViewModel {
-        return ViewModelProviders.of(this).get(ArticleViewModel::class.java)
+        return ViewModelProvider(this)[ArticleViewModel::class.java]
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -86,9 +91,9 @@ class ArticleFragment(private var articleUrl: String) : BaseFragment<FragmentArt
                     comment.apply {
                         visibility = View.VISIBLE
                     }.setOnClickListener {
-                        CommentArticleDialog.newInstance(url).show(
-                            if (isAdded) parentFragmentManager else childFragmentManager
-                        )
+                        val dialog = CommentArticleDialog.newInstance(url)
+                        dialog.setTargetFragment(this@ArticleFragment, REPLY_POST_RESULT)
+                        dialog.show(if (isAdded) parentFragmentManager else childFragmentManager)
                     }
                 } else {
                     comment.visibility = View.GONE
@@ -126,6 +131,26 @@ class ArticleFragment(private var articleUrl: String) : BaseFragment<FragmentArt
             }
         }
 
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        when(requestCode) {
+            REPLY_POST_RESULT -> {
+                if (resultCode == 1) {
+                    data?.getBundleExtra("post")
+                        ?.getParcelable<top.easelink.lcg.ui.main.source.model.Post>("post")
+                        ?.let {
+                            viewModel.addPostToTop(it)
+                            viewDataBinding.postRecyclerView.scrollToPosition(1)
+                        }
+                } else {
+                    showMessage(R.string.reply_post_failed)
+                }
+            }
+            else -> {
+                super.onActivityResult(requestCode, resultCode, data)
+            }
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

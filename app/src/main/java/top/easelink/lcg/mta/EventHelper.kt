@@ -1,7 +1,7 @@
 package top.easelink.lcg.mta
 
 import com.tencent.stat.StatService
-import top.easelink.lcg.LCGApp
+import top.easelink.lcg.appinit.LCGApp
 import java.util.*
 
 fun sendEvent(key: String) {
