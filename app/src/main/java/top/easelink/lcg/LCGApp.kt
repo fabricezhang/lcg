@@ -8,6 +8,7 @@ import com.tencent.stat.StatService
 import timber.log.Timber
 import timber.log.Timber.DebugTree
 import top.easelink.framework.guard.AppGuardStarter
+import top.easelink.framework.log.ErrorReportTree
 import top.easelink.lcg.mta.EVENT_APP_LAUNCH
 import top.easelink.lcg.mta.sendEvent
 
@@ -18,6 +19,8 @@ class LCGApp : Application() {
         instance = this
         if (BuildConfig.DEBUG) {
             Timber.plant(DebugTree())
+        } else {
+            Timber.plant(ErrorReportTree())
         }
 
         initBulgy()
