@@ -85,6 +85,7 @@ class ArticleViewModel: ViewModel(), ArticleAdapterListener {
                 when(e) {
                     is BlockException -> setArticleBlocked(e.alertMessage)
                     is NetworkException -> setArticleNotFound()
+                    else -> showMessage(R.string.error)
                 }
                 Timber.e(e)
             }
