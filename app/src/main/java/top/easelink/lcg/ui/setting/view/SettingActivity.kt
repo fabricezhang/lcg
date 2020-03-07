@@ -8,15 +8,11 @@ import android.view.WindowManager
 import android.widget.AdapterView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.work.WorkInfo
-import androidx.work.WorkManager
 import com.tencent.bugly.beta.Beta
 import kotlinx.android.synthetic.main.activity_settings.*
-import timber.log.Timber
 import top.easelink.framework.topbase.TopActivity
 import top.easelink.lcg.R
 import top.easelink.lcg.config.AppConfig
-import top.easelink.lcg.service.work.SignInWorker
 import top.easelink.lcg.spipedata.UserData
 import top.easelink.lcg.ui.main.login.view.LoginHintDialog
 import top.easelink.lcg.ui.main.logout.view.LogoutHintDialog
@@ -81,7 +77,7 @@ class SettingActivity : TopActivity() {
                 LoginHintDialog().show(supportFragmentManager, null)
             }
         } else {
-            account_btn.text = getString(R.string.logout_confirm_message, UserData.username)
+            account_btn.text = String.format(getString(R.string.logout_confirm_message), UserData.username)
             account_btn.setOnClickListener {
                 tryLogout()
             }
@@ -127,18 +123,6 @@ class SettingActivity : TopActivity() {
         })
         mViewModel.openSearchResultInWebView.observe(this, Observer {
             show_search_result_in_webview.isChecked = it
-        })
-        WorkManager.getInstance().getWorkInfosForUniqueWorkLiveData(SignInWorker.TAG).observe(this, Observer { list ->
-            list.first().let { 
-                when(it.state) {
-                    WorkInfo.State.ENQUEUED -> Timber.d("ENQUEUED")
-                    WorkInfo.State.RUNNING -> Timber.d("RUNNING")
-                    WorkInfo.State.SUCCEEDED -> Timber.d("SUCCEEDED")
-                    WorkInfo.State.FAILED -> Timber.d("FAILED")
-                    WorkInfo.State.BLOCKED -> Timber.d("BLOCKED")
-                    WorkInfo.State.CANCELLED -> Timber.d("CANCELLED")
-                }
-            }
         })
     }
 

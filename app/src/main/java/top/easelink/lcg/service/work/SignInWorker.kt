@@ -27,10 +27,11 @@ class SignInWorker(context: Context, workerParams: WorkerParameters) :
         private val DEFAULT_TIME_UNIT = if (BuildConfig.DEBUG) TimeUnit.SECONDS else TimeUnit.HOURS
 
         private const val SIGN_IN_URL = "https://www.52pojie.cn/home.php?mod=task&do=apply&id=2"
+        private const val SIGN_IN_URL_V2 = "https://www.52pojie.cn/home.php?mod=task&do=draw&id=2"
         const val TAG = "SignInWorker"
 
         fun sendSignInRequest() {
-            val alertInfo = Client.sendGetRequestWithUrl(SIGN_IN_URL)
+            val alertInfo = Client.sendGetRequestWithUrl(SIGN_IN_URL_V2)
                 .getElementsByClass("alert_info")
                 ?.first()
                 ?.selectFirst("p")
