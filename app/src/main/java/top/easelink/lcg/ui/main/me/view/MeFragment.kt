@@ -63,7 +63,7 @@ class MeFragment : BaseFragment<FragmentMeBinding, MeViewModel>() {
     }
 
     private fun registerObservers() {
-        viewModel.mLoginState.observe(viewLifecycleOwner, Observer<Boolean> {
+        viewModel.mLoginState.observe(viewLifecycleOwner, Observer {
             updateViewVisibility(it)
             if (!it) {
                 // add a blur effect
@@ -129,9 +129,13 @@ class MeFragment : BaseFragment<FragmentMeBinding, MeViewModel>() {
         if (loggedIn) {
             me_coin_icon.setColorFilter(ContextCompat.getColor(this@MeFragment.baseActivity, R.color.pojie_logo))
             me_credit_icon.setColorFilter(ContextCompat.getColor(this@MeFragment.baseActivity, R.color.pojie_logo))
+            me_anwser_rate_icon.setColorFilter(ContextCompat.getColor(this@MeFragment.baseActivity, R.color.pojie_logo))
+            me_enthusiastic_icon.setColorFilter(ContextCompat.getColor(this@MeFragment.baseActivity, R.color.pojie_logo))
         } else {
             me_coin_icon.setColorFilter(ContextCompat.getColor(this@MeFragment.baseActivity, R.color.semi_gray))
             me_credit_icon.setColorFilter(ContextCompat.getColor(this@MeFragment.baseActivity, R.color.semi_gray))
+            me_anwser_rate_icon.setColorFilter(ContextCompat.getColor(this@MeFragment.baseActivity, R.color.semi_gray ))
+            me_enthusiastic_icon.setColorFilter(ContextCompat.getColor(this@MeFragment.baseActivity, R.color.semi_gray))
         }
     }
 

@@ -24,6 +24,14 @@ object UserData {
         get() = get(SP_KEY_USER_CREDIT, "")
         set(value) = put(SP_KEY_USER_CREDIT, value)
 
+    var enthusiasticValue: String
+        get() = get(SP_KEY_USER_ENTHUSIASTIC, "")
+        set(value) = put(SP_KEY_USER_ENTHUSIASTIC, value)
+
+    var answerRate: String
+        get() = get(SP_KEY_USER_ANSWER_RATE, "")
+        set(value) = put(SP_KEY_USER_ANSWER_RATE, value)
+
     var username: String
         get() = get(SP_KEY_USER_NAME, "")
         set(value) = put(SP_KEY_USER_NAME, value)

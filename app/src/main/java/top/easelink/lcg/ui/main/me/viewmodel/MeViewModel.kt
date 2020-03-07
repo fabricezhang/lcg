@@ -11,7 +11,7 @@ import top.easelink.lcg.network.Client
 import top.easelink.lcg.spipedata.UserData
 import top.easelink.lcg.ui.main.me.model.UserInfo
 import top.easelink.lcg.ui.main.source.parseUserInfo
-import top.easelink.lcg.utils.WebsiteConstant.HOME_QUERY
+import top.easelink.lcg.utils.WebsiteConstant.PROFILE_URL
 import top.easelink.lcg.utils.clearCookies
 import java.lang.ref.WeakReference
 
@@ -46,7 +46,7 @@ class MeViewModel: ViewModel() {
         GlobalScope.launch(ApiPool) {
             try {
                 val userInfo = Client
-                    .sendGetRequestWithQuery(HOME_QUERY).let {
+                    .sendGetRequestWithQuery(PROFILE_URL).let {
                         parseUserInfo(it)
                     }
                 // login failed
@@ -66,6 +66,8 @@ class MeViewModel: ViewModel() {
                         coin = userInfo.wuaiCoin.orEmpty()
                         credit = userInfo.credit.orEmpty()
                         group = userInfo.groupInfo.orEmpty()
+                        enthusiasticValue = userInfo.enthusiasticValue.orEmpty()
+                        answerRate = userInfo.answerRate.orEmpty()
                         signInState = userInfo.signInStateUrl.orEmpty()
                     }
                 }

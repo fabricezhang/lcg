@@ -11,6 +11,10 @@ class UserInfo {
         private set
     var credit: String? = null
         private set
+    var answerRate: String? = null
+        private set
+    var enthusiasticValue: String? = null
+        private set
     var signInStateUrl: String? = null
         private set
     var errorMessage: String? = null
@@ -22,6 +26,8 @@ class UserInfo {
         groupInfo: String?,
         wuaiCoin: String?,
         credit: String?,
+        answerRate: String? = null,
+        enthusiasticValue: String? = null,
         signInStateUrl: String?
     ) {
         this.avatarUrl = avatarUrl
@@ -30,6 +36,8 @@ class UserInfo {
         this.wuaiCoin = wuaiCoin
         this.credit = credit
         this.signInStateUrl = signInStateUrl
+        this.enthusiasticValue = enthusiasticValue
+        this.answerRate = answerRate
     }
 
     constructor(errorMessage: String?) {
