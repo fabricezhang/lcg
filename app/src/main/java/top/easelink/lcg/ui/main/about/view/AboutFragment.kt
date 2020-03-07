@@ -2,7 +2,7 @@ package top.easelink.lcg.ui.main.about.view
 
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import top.easelink.framework.base.BaseFragment
 import top.easelink.lcg.BR
 import top.easelink.lcg.R
@@ -21,7 +21,7 @@ class AboutFragment : BaseFragment<FragmentAboutBinding, AboutViewModel?>() {
     }
 
     override fun getViewModel(): AboutViewModel {
-        return ViewModelProviders.of(this).get(AboutViewModel::class.java)
+        return ViewModelProvider(this)[AboutViewModel::class.java]
     }
 
     override fun onViewCreated(
