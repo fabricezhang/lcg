@@ -18,7 +18,10 @@ package top.easelink.framework.customview.htmltextview;
 
 import android.content.Context;
 import android.text.Html;
+import android.text.Selection;
+import android.text.Spannable;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -173,5 +176,22 @@ public class HtmlTextView extends JellyBeanSpanFixTextView {
     private static String convertStreamToString(@NonNull InputStream is) {
         Scanner s = new Scanner(is).useDelimiter("\\A");
         return s.hasNext() ? s.next() : "";
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(final MotionEvent event) {
+        // FIXME simple workaround to https://code.google.com/p/android/issues/detail?id=191430
+        int startSelection = getSelectionStart();
+        int endSelection = getSelectionEnd();
+        if (startSelection < 0 || endSelection < 0){
+            Selection.setSelection((Spannable) getText(), getText().length());
+        } else if (startSelection != endSelection) {
+            if (event.getActionMasked() == MotionEvent.ACTION_DOWN) {
+                final CharSequence text = getText();
+                setText(null);
+                setText(text);
+            }
+        }
+        return super.dispatchTouchEvent(event);
     }
 }
