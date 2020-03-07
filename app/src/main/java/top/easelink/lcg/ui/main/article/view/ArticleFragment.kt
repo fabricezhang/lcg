@@ -141,6 +141,7 @@ class ArticleFragment(private var articleUrl: String) : BaseFragment<FragmentArt
                         ?.getParcelable<top.easelink.lcg.ui.main.source.model.Post>("post")
                         ?.let {
                             viewModel.addPostToTop(it)
+                            viewDataBinding.postRecyclerView.scrollToPosition(1)
                         }
                 } else {
                     showMessage(R.string.reply_post_failed)
