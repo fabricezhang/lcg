@@ -127,9 +127,8 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
                 // map to NetWorkException
                 is SocketTimeoutException -> throw NetworkException()
                 is BlockException -> throw e
+                else -> throw e
             }
-            Timber.e(e)
-            return null
         }
     }
 
