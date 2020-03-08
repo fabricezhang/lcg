@@ -10,6 +10,7 @@ import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.item_load_more_view.view.*
 import kotlinx.android.synthetic.main.item_notification_view.view.*
 import top.easelink.framework.base.BaseViewHolder
+import top.easelink.framework.customview.htmltextview.HtmlGlideImageGetter
 import top.easelink.framework.utils.dpToPx
 import top.easelink.lcg.R
 import top.easelink.lcg.ui.main.model.BaseNotification
@@ -84,7 +85,10 @@ class NotificationsAdapter(
             view.apply {
                 line.visibility = if(position == 0) View.GONE else View.VISIBLE
                 notification_title.apply {
-                    setHtml(notification.content)
+                    setHtml(notification.content, HtmlGlideImageGetter(
+                        context,
+                        this
+                    ))
                     linksClickable = false
                 }
                 date_time.text = notification.dateTime
