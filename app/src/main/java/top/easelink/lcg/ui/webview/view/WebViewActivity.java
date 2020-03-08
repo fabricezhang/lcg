@@ -144,7 +144,13 @@ public class WebViewActivity extends AppCompatActivity {
                             if (element != null) {
                                 mWebView.post(() -> {
                                     mWebView.stopLoading();
+                                    try {
+                                        // hold on 1.5 seconds to wait for saving user info
+                                        Thread.sleep(1500);
+                                    } catch (Exception ignored) {
+                                    }
                                     startActivity(new Intent(mWebView.getContext(), MainActivity.class));
+                                    finish();
                                 });
                             }
                         } catch (Exception e) {
