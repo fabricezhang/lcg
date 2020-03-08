@@ -105,6 +105,10 @@ class MainActivity : TopActivity(), BottomNavigationView.OnNavigationItemSelecte
                     WebViewActivity.startWebViewWith(SERVER_BASE_URL, this)
                     true
                 }
+                R.id.nav_item_jrs -> {
+                    WebViewActivity.startWebViewWith(AppConfig.getJrsUrl(), this)
+                    true
+                }
                 R.id.nav_item_setting -> {
                     startActivity(Intent(this, SettingActivity::class.java))
                     true

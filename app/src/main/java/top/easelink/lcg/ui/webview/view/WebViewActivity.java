@@ -3,6 +3,8 @@ package top.easelink.lcg.ui.webview.view;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
@@ -13,13 +15,16 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.webkit.CookieManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.SslErrorHandler;
+import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.FrameLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -27,6 +32,7 @@ import androidx.core.app.ShareCompat;
 
 import com.airbnb.lottie.LottieAnimationView;
 
+import org.jetbrains.annotations.NotNull;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 
@@ -60,6 +66,7 @@ public class WebViewActivity extends AppCompatActivity {
 
     private WebView mWebView;
     private LottieAnimationView animationView;
+    private FrameLayout videoLayout;
 
     public static void startWebViewWith(String url, Context context) {
         Intent intent = new Intent(context, WebViewActivity.class);
@@ -94,10 +101,18 @@ public class WebViewActivity extends AppCompatActivity {
         initWebView();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mWebView.destroy();
+        mWebView = null;
+    }
+
     protected void initContentView() {
         setContentView(R.layout.activity_web_view);
         mWebView = findViewById(R.id.web_view);
         animationView = findViewById(R.id.searching_file);
+        videoLayout = findViewById(R.id.container);
     }
 
     private void openInSystemBrowser(String url) {
@@ -109,6 +124,7 @@ public class WebViewActivity extends AppCompatActivity {
 
     protected void initWebView() {
         mWebView.setWebViewClient(getWebViewClient());
+        mWebView.setWebChromeClient(new InnerChromeClient());
         mWebView.setDownloadListener((url, userAgent, contentDisposition, mimetype, contentLength)
                 -> openInSystemBrowser(url));
         Intent intent = getIntent();
@@ -221,6 +237,21 @@ public class WebViewActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onConfigurationChanged(@NotNull Configuration config) {
+        super.onConfigurationChanged(config);
+        switch (config.orientation) {
+            case Configuration.ORIENTATION_LANDSCAPE:
+                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+                getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                break;
+            case Configuration.ORIENTATION_PORTRAIT:
+                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                getWindow().addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+                break;
+        }
+    }
+
     protected WebViewClient getWebViewClient() {
         return new InnerWebViewClient();
     }
@@ -228,6 +259,47 @@ public class WebViewActivity extends AppCompatActivity {
     protected void setLoading(boolean isLoading) {
         animationView.setVisibility(isLoading ? View.VISIBLE : View.GONE);
         mWebView.setVisibility(isLoading ? View.INVISIBLE : View.VISIBLE);
+    }
+
+    @SuppressLint("SourceLockedOrientationActivity")
+    private class InnerChromeClient extends WebChromeClient {
+        private CustomViewCallback mCustomViewCallback;
+        //  横屏时，显示视频的view
+        private View mCustomView;
+
+        @Override
+        public void onShowCustomView(View view, CustomViewCallback callback) {
+            super.onShowCustomView(view, callback);
+            //如果view 已经存在，则隐藏
+            if (mCustomView != null) {
+                callback.onCustomViewHidden();
+                return;
+            }
+            mCustomView = view;
+            mCustomView.setVisibility(View.VISIBLE);
+            mCustomViewCallback = callback;
+            videoLayout.addView(mCustomView);
+            videoLayout.bringToFront();
+
+            //设置横屏
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
+
+        @Override
+        public void onHideCustomView() {
+            super.onHideCustomView();
+            if (mCustomView == null) {
+                return;
+            }
+            mCustomView.setVisibility(View.GONE);
+            videoLayout.removeView(mCustomView);
+            mCustomView = null;
+            try {
+                mCustomViewCallback.onCustomViewHidden();
+            } catch (Exception ignored) {
+            }
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//竖屏
+        }
     }
 
     private class InnerWebViewClient extends WebViewClient {
@@ -261,7 +333,6 @@ public class WebViewActivity extends AppCompatActivity {
             String url = request.getUrl().toString();
             if (TextUtils.isEmpty(url)) {
                 return false;
-
             } else if (url.startsWith("https://www.52pojie.cn/connect.php?mod=login&op=init&referer=https%3A%2F%2Fwww.52pojie.cn%2F&statfrom=login")){
                 ToastUtilsKt.showMessage(R.string.qq_not_support);
                 return true;

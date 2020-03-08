@@ -37,6 +37,7 @@
     <string name="about">『关于应用』</string>
     <string name="thread_about_app">『App发布页』</string>
     <string name="open_portal_page">『吾爱网页版』</string>
+    <string name="open_jrs_page">『JRS看球』</string>
 
     <!--home fragment-->
     <string name="tab_title_hot">人气热门</string>
