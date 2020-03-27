@@ -90,7 +90,7 @@ class ConversationListAdapter(
                     Glide
                         .with(this)
                         .load(it)
-                        .transform(RoundedCorners(6.dpToPx(context).toInt()))
+                        .transform(RoundedCorners(2.dpToPx(context).toInt()))
                         .error(R.drawable.ic_noavatar_middle_gray)
                         .into(conversation_user_avatar)
                 }

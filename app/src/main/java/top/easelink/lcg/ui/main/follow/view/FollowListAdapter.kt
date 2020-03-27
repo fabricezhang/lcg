@@ -5,9 +5,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import kotlinx.android.synthetic.main.item_follow_view.view.*
 import kotlinx.android.synthetic.main.item_load_more_view.view.*
 import top.easelink.framework.base.BaseViewHolder
+import top.easelink.framework.utils.dpToPx
 import top.easelink.lcg.R
 import top.easelink.lcg.ui.main.follow.model.FollowInfo
 
@@ -81,6 +84,8 @@ class FollowListAdapter : RecyclerView.Adapter<BaseViewHolder>() {
                     Glide
                         .with(this)
                         .load(it)
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .transform(RoundedCorners(2.dpToPx(context).toInt()))
                         .error(R.drawable.ic_noavatar_middle_gray)
                         .into(avatar)
                 }

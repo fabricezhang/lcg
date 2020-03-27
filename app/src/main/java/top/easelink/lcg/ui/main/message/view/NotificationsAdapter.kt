@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.item_load_more_view.view.*
 import kotlinx.android.synthetic.main.item_notification_view.view.*
 import top.easelink.framework.base.BaseViewHolder
@@ -95,9 +94,7 @@ class NotificationsAdapter(
                 date_time.text = notification.dateTime
                 Glide.with(notification_avatar)
                     .load(notification.avatar)
-                    .apply(RequestOptions.bitmapTransform(
-                        RoundedCorners(8.dpToPx(view.context).toInt())
-                    ))
+                    .transform(RoundedCorners(2.dpToPx(view.context).toInt()))
                     .placeholder(R.drawable.ic_noavatar_middle_gray)
                     .into(notification_avatar)
             }
