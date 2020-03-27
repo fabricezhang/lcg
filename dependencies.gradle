@@ -35,7 +35,7 @@ ext {
     coroutineVersion = '1.3.2'
     // network
     okHttpVersion = '4.4.0'
-    jsoupVersion = '1.12.2'
+    jsoupVersion = '1.12.1' // 1.12.2 出现rewind错误暂时不升级
 
     // Statistics
     mtaVersion = '3.4.2'
