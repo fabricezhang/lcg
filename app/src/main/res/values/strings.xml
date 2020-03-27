@@ -87,6 +87,9 @@
     <string name="logout_confirm_btn">是的</string>
     <string name="clear_cookie">本地信息已清除</string>
 
+    <!-- Profile Dialog   -->
+    <string name="subscribe_btn">收听</string>
+
     <!--Notification-->
     <string name="notification_arrival">有新的消息</string>
     <string name="notification_read">知道了</string>

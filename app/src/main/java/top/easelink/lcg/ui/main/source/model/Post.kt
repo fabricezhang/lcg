@@ -23,5 +23,6 @@ class Post
     val content: String,
     val replyUrl: String?,
     val replyAddUrl: String?,
-    val profileUrl: String? = null
+    val profileUrl: String? = null,
+    val extraInfo: String? = null
 ) : Parcelable

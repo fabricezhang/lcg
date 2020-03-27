@@ -2,6 +2,7 @@ package top.easelink.lcg.ui.main.source
 
 import androidx.annotation.WorkerThread
 import org.greenrobot.eventbus.EventBus
+import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 import timber.log.Timber
@@ -11,6 +12,7 @@ import top.easelink.lcg.spipedata.UserData
 import top.easelink.lcg.ui.main.me.model.UserInfo
 import top.easelink.lcg.ui.main.model.NewMessageEvent
 import top.easelink.lcg.ui.main.model.NotificationInfo
+import top.easelink.lcg.ui.profile.model.ExtraUserInfo
 
 @WorkerThread
 fun checkLoginState(doc: Document) {
@@ -25,6 +27,15 @@ fun checkLoginState(doc: Document) {
     } catch (e: NullPointerException) {
         // for some page, can't extract user info
         Timber.w(e)
+    }
+}
+
+@WorkerThread
+fun parseExtraUserInfoProfilePage(content: String): List<ExtraUserInfo> {
+    return Jsoup.parse(content).let {
+        it.getElementsByTag("dt").zip(it.getElementsByTag("dd")).map {pairs ->
+            ExtraUserInfo(pairs.first.text(), pairs.second.text())
+        }
     }
 }
 

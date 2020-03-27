@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -17,6 +18,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +36,8 @@ import top.easelink.lcg.ui.main.model.OpenLargeImageViewEvent;
 import top.easelink.lcg.ui.main.model.ReplyPostEvent;
 import top.easelink.lcg.ui.main.model.ScreenCaptureEvent;
 import top.easelink.lcg.ui.main.source.model.Post;
+import top.easelink.lcg.ui.profile.model.PopUpProfileInfo;
+import top.easelink.lcg.ui.profile.view.PopUpProfileDialog;
 import top.easelink.lcg.ui.profile.view.ProfileActivity;
 import top.easelink.lcg.ui.webview.view.WebViewActivity;
 import top.easelink.lcg.utils.FileUtilsKt;
@@ -50,7 +54,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     private static final int VIEW_TYPE_LOAD_MORE = 2;
     private ArticleAdapterListener mListener;
     private List<Post> mPostList = new ArrayList<>();
-
+    private WeakReference<FragmentManager> fragmentManager = null;
     public ArticleAdapter(ArticleAdapterListener listener) {
         mListener = listener;
     }
@@ -114,6 +118,10 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         mPostList.clear();
     }
 
+    public void setFragmentManager(FragmentManager fragmentManager) {
+        this.fragmentManager = new WeakReference<>(fragmentManager);
+    }
+
     public class PostViewHolder extends BaseViewHolder implements View.OnClickListener {
 
         private Post post;
@@ -145,9 +153,24 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                 mBinding.authorTextView.setText(post.getAuthor());
                 mBinding.dateTextView.setText(post.getDate());
                 mBinding.postAvatar.setOnClickListener(v -> {
-                    Intent intent = new Intent(v.getContext(), ProfileActivity.class);
-                    intent.putExtra(KEY_PROFILE_URL, post.getProfileUrl());
-                    v.getContext().startActivity(intent);
+                    FragmentManager fm = fragmentManager.get();
+                    if (fm != null) {
+                        int[] location = new int[2];
+                        mBinding.postAvatar.getLocationInWindow(location);
+                        PopUpProfileInfo popUpInfo = new PopUpProfileInfo(
+                                location[0],
+                                location[1],
+                                post.getAvatar(),
+                                post.getAuthor(),
+                                post.getExtraInfo()
+                        );
+                        new PopUpProfileDialog(popUpInfo)
+                                .show(fm, PopUpProfileDialog.class.getSimpleName());
+                    } else {
+                        Intent intent = new Intent(v.getContext(), ProfileActivity.class);
+                        intent.putExtra(KEY_PROFILE_URL, post.getProfileUrl());
+                        v.getContext().startActivity(intent);
+                    }
                 });
                 Glide.with(mBinding.postAvatar)
                         .load(post.getAvatar())

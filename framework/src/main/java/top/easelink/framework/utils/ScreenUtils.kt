@@ -47,3 +47,11 @@ fun convertViewToBitmap(view: View?, config: Bitmap.Config = Bitmap.Config.ARGB_
     }
     return null
 }
+
+fun getStatusBarHeight(context: Context): Int {
+    return context.resources.getIdentifier("status_bar_height", "dimen", "android").takeIf {
+        it > 0
+    }?.let {
+        context.resources.getDimensionPixelSize(it)
+    }?:0
+}

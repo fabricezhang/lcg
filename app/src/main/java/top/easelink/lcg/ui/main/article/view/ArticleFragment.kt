@@ -83,7 +83,9 @@ class ArticleFragment(private var articleUrl: String) : BaseFragment<FragmentArt
             }
             layoutManager = mLayoutManager
             itemAnimator = DefaultItemAnimator()
-            adapter = ArticleAdapter(viewModel)
+            adapter = ArticleAdapter(viewModel).also {
+                it.setFragmentManager(childFragmentManager)
+            }
 
             viewModel.posts.observe(viewLifecycleOwner, androidx.lifecycle.Observer{
                 val url = it[0].replyUrl

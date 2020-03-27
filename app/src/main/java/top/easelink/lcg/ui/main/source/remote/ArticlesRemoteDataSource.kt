@@ -31,6 +31,7 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
     private const val USER_NAME = "name"
     private const val USER_AVATAR = "avatar"
     private const val USER_PROFILE_URL = "profile_url"
+    private const val USER_EXTRA_INFO = "extra_info"
 
     private val gson: Gson = GsonBuilder().excludeFieldsWithoutExposeAnnotation().create()
 
@@ -117,7 +118,8 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
                         content = contents[i],
                         replyUrl = replyUrl,
                         replyAddUrl = replyAddUrl,
-                        profileUrl = userInfos[i][USER_PROFILE_URL].toString()
+                        profileUrl = userInfos[i][USER_PROFILE_URL].toString(),
+                        extraInfo = userInfos[i][USER_EXTRA_INFO]
                     )
                     postList.add(post)
                 } catch (npe: NullPointerException) {
@@ -315,11 +317,12 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
         val list: MutableList<Map<String, String>> = ArrayList(12)
         val elements = document.select("td[rowspan]")
         for (element in elements) {
-            val userInfoMap: MutableMap<String, String> = ArrayMap(3)
+            val userInfoMap: MutableMap<String, String> = ArrayMap(4)
             element.select("div.avatar").apply {
                 userInfoMap[USER_AVATAR] = select("img").attr("src")
                 userInfoMap[USER_PROFILE_URL] = select("a").attr("href")
             }
+            userInfoMap[USER_EXTRA_INFO] = element.getElementsByTag("dl").outerHtml()
             userInfoMap[USER_NAME] = element.select("a.xw1").text()
             list.add(userInfoMap)
         }
