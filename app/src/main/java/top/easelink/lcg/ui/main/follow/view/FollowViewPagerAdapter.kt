@@ -1,4 +1,4 @@
-package top.easelink.lcg.ui.main.message.viewmodel
+package top.easelink.lcg.ui.main.follow.view
 
 import android.content.Context
 import androidx.fragment.app.Fragment
@@ -6,25 +6,20 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import top.easelink.lcg.R
 import top.easelink.lcg.ui.main.message.model.MessageTabModel
-import top.easelink.lcg.ui.main.message.view.ConversationListFragment
-import top.easelink.lcg.ui.main.message.view.NotificationFragment
+import top.easelink.lcg.utils.WebsiteConstant
 
-class MessageViewPagerAdapter internal constructor(
+class FollowViewPagerAdapter internal constructor(
     fm: FragmentManager,
     context: Context
 ) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     private val tabModels: List<MessageTabModel> = listOf(
-        MessageTabModel(context.getString(R.string.tab_title_notification), ""),
-        MessageTabModel(context.getString(R.string.tab_title_private_message), "")
+        MessageTabModel(context.getString(R.string.tab_title_following), WebsiteConstant.FOLLOWING_USERS_URL),
+        MessageTabModel(context.getString(R.string.tab_title_subscriber), WebsiteConstant.FOLLOWER_USERS_URL)
     )
 
     override fun getItem(position: Int): Fragment {
-        return when (position) {
-            0 -> NotificationFragment()
-            1 -> ConversationListFragment()
-            else -> throw IllegalStateException("can't reach here")
-        }
+        return FollowDetailFragment(tabModels[position].url)
     }
 
     override fun getCount(): Int {

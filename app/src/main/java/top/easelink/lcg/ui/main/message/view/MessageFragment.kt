@@ -11,7 +11,6 @@ import top.easelink.framework.topbase.TopFragment
 import top.easelink.lcg.R
 import top.easelink.lcg.spipedata.UserData
 import top.easelink.lcg.ui.main.login.view.LoginHintDialog
-import top.easelink.lcg.ui.main.message.viewmodel.MessageViewPagerAdapter
 
 class MessageFragment: TopFragment(), ControllableFragment{
 
@@ -34,7 +33,11 @@ class MessageFragment: TopFragment(), ControllableFragment{
                 LoginHintDialog().show(it.supportFragmentManager, null)
             }
         } else {
-            message_view_pager.adapter = MessageViewPagerAdapter(childFragmentManager, mContext)
+            message_view_pager.adapter =
+                MessageViewPagerAdapter(
+                    childFragmentManager,
+                    mContext
+                )
             message_tab.setupWithViewPager(message_view_pager)
         }
     }

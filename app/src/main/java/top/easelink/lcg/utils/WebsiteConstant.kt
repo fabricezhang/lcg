@@ -49,5 +49,9 @@ object WebsiteConstant {
     const val PROFILE_URL = "home.php?mod=space&do=profile&from=space"
     const val LOGIN_URL = "member.php?mod=logging&action=login"
 
+    // follow
     const val UNFOLLOW_URL = "home.php?mod=spacecp&ac=follow&op=del&fuid=123456"
+    const val FOLLOWING_USERS_URL = "home.php?mod=follow&do=following"
+    const val FOLLOWER_USERS_URL = "home.php?mod=follow&do=follower"
+
 }

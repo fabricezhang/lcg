@@ -1,4 +1,4 @@
-package top.easelink.lcg.ui.main.message.view
+package top.easelink.lcg.ui.main.follow.view
 
 import android.content.Context
 import android.os.Bundle
@@ -10,18 +10,18 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.fragment_conversation_list.*
+import kotlinx.android.synthetic.main.fragment_following.*
 import top.easelink.framework.topbase.TopFragment
 import top.easelink.lcg.R
-import top.easelink.lcg.ui.main.message.viewmodel.ConversationListViewModel
+import top.easelink.lcg.ui.main.follow.viewmodel.FollowListViewModel
 
-class ConversationListFragment: TopFragment() {
+class FollowDetailFragment(private val url: String): TopFragment() {
 
-    private lateinit var mConversationVM: ConversationListViewModel
+    private lateinit var mFollowVM: FollowListViewModel
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        mConversationVM = ViewModelProvider(this)[ConversationListViewModel::class.java]
+        mFollowVM = ViewModelProvider(this)[FollowListViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -29,28 +29,34 @@ class ConversationListFragment: TopFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_conversation_list, container, false)
+        return inflater.inflate(R.layout.fragment_following, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpRV()
-        mConversationVM.fetchConversations()
+        mFollowVM.fetchData(url)
     }
 
     private fun setUpRV(){
-        conversation_list.apply {
+        follow_list.apply {
             layoutManager = LinearLayoutManager(context).also {
                 it.orientation = RecyclerView.VERTICAL
             }
             itemAnimator = DefaultItemAnimator()
-            adapter =
-                ConversationListAdapter(
-                    mConversationVM
-                )
-            mConversationVM.apply {
-                conversations.observe(viewLifecycleOwner, Observer {
-                    (adapter as ConversationListAdapter).run {
+            adapter = FollowListAdapter()
+            mFollowVM.apply {
+                isLoading.observe(viewLifecycleOwner, Observer {
+                    if (it) {
+                        loading.visibility = View.VISIBLE
+                        follow_list.visibility = View.GONE
+                    } else {
+                        loading.visibility = View.GONE
+                        follow_list.visibility = View.VISIBLE
+                    }
+                })
+                follows.observe(viewLifecycleOwner, Observer {
+                    (adapter as FollowListAdapter).run {
                         if (itemCount > 1) {
                             appendItems(it)
                         } else {

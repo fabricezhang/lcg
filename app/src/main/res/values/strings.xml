@@ -70,6 +70,7 @@
 
     <string name="ic_notifications">消息提醒</string>
     <string name="ic_feedback">问题反馈</string>
+    <string name="ic_follow">我的收听</string>
     <string name="ic_favorite">我的收藏</string>
     <string name="ic_my_articles">我的帖子</string>
 
@@ -120,6 +121,12 @@
     <!--message fragment-->
     <string name="tab_title_private_message">私信</string>
     <string name="tab_title_notification">通知</string>
+
+    <!--follow fragment-->
+    <string name="tab_title_following">收听</string>
+    <string name="tab_title_subscriber">听众</string>
+    <string name="follower_num_template">听众 %d 人</string>
+    <string name="following_num_template">收听 %d 人</string>
 
     <!--download link dialog-->
     <string name="download_title">下载链接</string>

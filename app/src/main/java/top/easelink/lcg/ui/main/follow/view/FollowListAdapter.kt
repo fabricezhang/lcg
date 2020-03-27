@@ -1,41 +1,34 @@
-package top.easelink.lcg.ui.main.message.viewmodel
+package top.easelink.lcg.ui.main.follow.view
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import kotlinx.android.synthetic.main.item_conversation_view.view.*
+import kotlinx.android.synthetic.main.item_follow_view.view.*
 import kotlinx.android.synthetic.main.item_load_more_view.view.*
 import top.easelink.framework.base.BaseViewHolder
-import top.easelink.framework.utils.dpToPx
 import top.easelink.lcg.R
-import top.easelink.lcg.ui.main.model.Conversation
-import top.easelink.lcg.ui.webview.view.WebViewActivity
-import top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL
+import top.easelink.lcg.ui.main.follow.model.FollowInfo
 
 
-class ConversationListAdapter(
-    val mConversationVM: ConversationListViewModel
-) : RecyclerView.Adapter<BaseViewHolder>() {
+class FollowListAdapter : RecyclerView.Adapter<BaseViewHolder>() {
 
-    private val mConversations: MutableList<Conversation> = mutableListOf()
+    private val mFollowing: MutableList<FollowInfo> = mutableListOf()
 
     override fun getItemCount(): Int {
-        return if (mConversations.isEmpty()) {
+        return if (mFollowing.isEmpty()) {
             1
         } else {
-            // todo add load more in the future
-            mConversations.size
+            mFollowing.size
         }
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (mConversations.isEmpty()) {
+        return if (mFollowing.isEmpty()) {
             VIEW_TYPE_EMPTY
         } else {
-            if (position == mConversations.size) {
+            if (position == mFollowing.size) {
                 VIEW_TYPE_LOAD_MORE
             } else VIEW_TYPE_NORMAL
         }
@@ -50,7 +43,7 @@ class ConversationListAdapter(
             VIEW_TYPE_NORMAL -> { ArticleViewHolder(
                 LayoutInflater
                     .from(parent.context)
-                    .inflate(R.layout.item_conversation_view, parent, false))
+                    .inflate(R.layout.item_follow_view, parent, false))
             }
             VIEW_TYPE_LOAD_MORE -> LoadMoreViewHolder(
                 LayoutInflater
@@ -64,40 +57,39 @@ class ConversationListAdapter(
         }
     }
 
-    fun addItems(conversations: List<Conversation>) {
-        mConversations.addAll(conversations)
+    fun addItems(follows: List<FollowInfo>) {
+        mFollowing.addAll(follows)
         notifyDataSetChanged()
     }
 
-    fun appendItems(conversations: List<Conversation>) {
+    fun appendItems(follows: List<FollowInfo>) {
         val count = itemCount
-        mConversations.addAll(conversations)
-        notifyItemRangeInserted(count - 1, conversations.size)
+        mFollowing.addAll(follows)
+        notifyItemRangeInserted(count - 1, follows.size)
     }
 
     fun clearItems() {
-        mConversations.clear()
+        mFollowing.clear()
     }
 
     inner class ArticleViewHolder internal constructor(private val view: View) :
         BaseViewHolder(view) {
         override fun onBind(position: Int) {
-            val conversation = mConversations[position]
+            val follow = mFollowing[position]
             view.apply {
-                date_time.text = conversation.lastMessageDateTime
-                conversation.avatar?.let {
+                follow.avatar.let {
                     Glide
                         .with(this)
                         .load(it)
-                        .transform(RoundedCorners(6.dpToPx(context).toInt()))
                         .error(R.drawable.ic_noavatar_middle_gray)
-                        .into(conversation_user_avatar)
+                        .into(avatar)
                 }
-                last_message.text = conversation.lastMessage
-                username.text = conversation.username
-                conversation_list_container.setOnClickListener {
-                    WebViewActivity.startWebViewWith(SERVER_BASE_URL + conversation.replyUrl, context)
-//                    context.startActivity(Intent(context, ConversationDetailActivity::class.java))
+                last_action.text = follow.lastAction
+                username.text = follow.username
+                follower_num.text = context.getString(R.string.follower_num_template, follow.followerNum)
+                following_num.text = context.getString(R.string.following_num_template, follow.followingNum)
+                follow_list_container.setOnClickListener {
+                    //open article
                 }
             }
         }
@@ -111,7 +103,6 @@ class ConversationListAdapter(
     inner class LoadMoreViewHolder internal constructor(val view: View) :
         BaseViewHolder(view) {
         override fun onBind(position: Int) {
-            //TODO add fetch more in the future
             view.loading.visibility = View.GONE
         }
     }
