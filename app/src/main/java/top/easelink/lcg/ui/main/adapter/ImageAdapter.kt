@@ -23,7 +23,6 @@ fun loadAvatar(imageView: ImageView, url: String?) {
 fun loadImageNoHolder(imageView: ImageView, url: String?) {
     Glide.with(imageView.context)
         .load(url)
-        .transform(RoundedCorners(2.dpToPx(imageView.context).toInt()))
         .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
         .into(imageView)
 }

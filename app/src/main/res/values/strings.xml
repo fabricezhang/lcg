@@ -89,6 +89,7 @@
 
     <!-- Profile Dialog   -->
     <string name="subscribe_btn">收听</string>
+    <string name="subscribe_failed">收听失败，请尝试从网站操作</string>
 
     <!--Notification-->
     <string name="notification_arrival">有新的消息</string>

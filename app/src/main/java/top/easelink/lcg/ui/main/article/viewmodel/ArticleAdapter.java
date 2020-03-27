@@ -162,7 +162,8 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                                 location[1],
                                 post.getAvatar(),
                                 post.getAuthor(),
-                                post.getExtraInfo()
+                                post.getExtraInfo(),
+                                post.getFollowInfo()
                         );
                         new PopUpProfileDialog(popUpInfo)
                                 .show(fm, PopUpProfileDialog.class.getSimpleName());

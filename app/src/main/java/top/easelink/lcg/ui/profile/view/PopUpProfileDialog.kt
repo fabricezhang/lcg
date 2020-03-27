@@ -12,11 +12,17 @@ import androidx.fragment.app.DialogFragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import kotlinx.android.synthetic.main.dialog_profile.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import timber.log.Timber
+import top.easelink.framework.threadpool.ApiPool
 import top.easelink.framework.utils.dpToPx
 import top.easelink.framework.utils.getStatusBarHeight
 import top.easelink.lcg.R
+import top.easelink.lcg.network.Client
 import top.easelink.lcg.ui.main.source.parseExtraUserInfoProfilePage
 import top.easelink.lcg.ui.profile.model.PopUpProfileInfo
+import top.easelink.lcg.utils.showMessage
 
 class PopUpProfileDialog(
     private val popUpInfo: PopUpProfileInfo
@@ -45,6 +51,16 @@ class PopUpProfileDialog(
             }
         }
         username.text = popUpInfo.userName
+        popUpInfo.followInfo?.let { info ->
+            subscribe_btn.visibility = View.VISIBLE
+            subscribe_btn.text = info.first
+            subscribe_btn.setOnClickListener{
+                onSubscribeClicked(info.second)
+            }
+        }?:run {
+            subscribe_btn.visibility = View.GONE
+        }
+
         Glide.with(mContext)
             .load(popUpInfo.imageUrl)
             .transform(RoundedCorners(4.dpToPx(mContext).toInt()))
@@ -67,5 +83,20 @@ class PopUpProfileDialog(
             }
         }
         dialog?.setCanceledOnTouchOutside(true)
+    }
+
+    private fun onSubscribeClicked(url: String) {
+        GlobalScope.launch(ApiPool){
+            try {
+                Client.sendGetRequestWithQuery(url).let {
+                    it.getElementById("messagetext")?.text()?.let {msg ->
+                        showMessage(msg)
+                    }
+                }
+            } catch (e: Exception) {
+                Timber.e(e)
+                showMessage(R.string.subscribe_failed)
+            }
+        }
     }
 }

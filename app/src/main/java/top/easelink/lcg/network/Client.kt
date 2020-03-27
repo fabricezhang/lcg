@@ -59,7 +59,6 @@ object Client: ApiRequest {
     }
 
 
-
     override fun sendGetRequestWithUrl(url: String): Document {
         return Jsoup
             .connect(url)

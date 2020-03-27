@@ -5,5 +5,6 @@ data class PopUpProfileInfo(
     val imageY: Int,
     val imageUrl: String,
     val userName: String,
-    val extraUserInfo: String?
+    val extraUserInfo: String?,
+    val followInfo: Pair<String, String>? // title -> url
 )
