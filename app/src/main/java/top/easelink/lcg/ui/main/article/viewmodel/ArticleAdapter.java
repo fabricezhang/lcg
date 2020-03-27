@@ -1,5 +1,6 @@
 package top.easelink.lcg.ui.main.article.viewmodel;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.text.Html;
 import android.text.TextUtils;
@@ -12,6 +13,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -32,9 +34,11 @@ import top.easelink.lcg.ui.main.model.OpenLargeImageViewEvent;
 import top.easelink.lcg.ui.main.model.ReplyPostEvent;
 import top.easelink.lcg.ui.main.model.ScreenCaptureEvent;
 import top.easelink.lcg.ui.main.source.model.Post;
+import top.easelink.lcg.ui.profile.view.ProfileActivity;
 import top.easelink.lcg.ui.webview.view.WebViewActivity;
 import top.easelink.lcg.utils.FileUtilsKt;
 
+import static top.easelink.lcg.ui.profile.view.ProfileActivityKt.KEY_PROFILE_URL;
 import static top.easelink.lcg.utils.CopyUtilsKt.copyContent;
 import static top.easelink.lcg.utils.ToastUtilsKt.showMessage;
 import static top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL;
@@ -140,8 +144,16 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                 }
                 mBinding.authorTextView.setText(post.getAuthor());
                 mBinding.dateTextView.setText(post.getDate());
+                mBinding.postAvatar.setOnClickListener(v -> {
+                    Intent intent = new Intent(v.getContext(), ProfileActivity.class);
+                    intent.putExtra(KEY_PROFILE_URL, post.getProfileUrl());
+                    v.getContext().startActivity(intent);
+                });
                 Glide.with(mBinding.postAvatar)
                         .load(post.getAvatar())
+                        .transform(new RoundedCorners(
+                                (int)ScreenUtilsKt.dp2px(mBinding.contentTextView.getContext(), 4f)
+                        ))
                         .placeholder(R.drawable.ic_noavatar_middle)
                         .error(R.drawable.ic_noavatar_middle_gray)
                         .into(mBinding.postAvatar);
@@ -229,7 +241,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         }
     }
 
-    public class PostEmptyViewHolder extends BaseViewHolder{
+    public static class PostEmptyViewHolder extends BaseViewHolder{
 
         PostEmptyViewHolder(View view) {
             super(view);

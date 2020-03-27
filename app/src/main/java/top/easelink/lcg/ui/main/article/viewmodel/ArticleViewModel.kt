@@ -22,6 +22,7 @@ import top.easelink.lcg.ui.main.source.model.Post
 import top.easelink.lcg.ui.main.source.remote.ArticlesRemoteDataSource
 import top.easelink.lcg.utils.RegexUtils
 import top.easelink.lcg.utils.showMessage
+import java.io.IOException
 import java.util.*
 
 class ArticleViewModel: ViewModel(), ArticleAdapterListener {
@@ -85,6 +86,7 @@ class ArticleViewModel: ViewModel(), ArticleAdapterListener {
                 when(e) {
                     is BlockException -> setArticleBlocked(e.alertMessage)
                     is NetworkException -> setArticleNotFound()
+                    is IOException -> showMessage(R.string.io_error_mark_invalid)
                     else -> showMessage(R.string.error)
                 }
                 Timber.e(e)

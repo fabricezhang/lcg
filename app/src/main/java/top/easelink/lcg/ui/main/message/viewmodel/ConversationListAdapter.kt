@@ -5,9 +5,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import kotlinx.android.synthetic.main.item_conversation_view.view.*
 import kotlinx.android.synthetic.main.item_load_more_view.view.*
 import top.easelink.framework.base.BaseViewHolder
+import top.easelink.framework.utils.dpToPx
 import top.easelink.lcg.R
 import top.easelink.lcg.ui.main.model.Conversation
 import top.easelink.lcg.ui.webview.view.WebViewActivity
@@ -87,6 +89,7 @@ class ConversationListAdapter(
                     Glide
                         .with(this)
                         .load(it)
+                        .transform(RoundedCorners(6.dpToPx(context).toInt()))
                         .error(R.drawable.ic_noavatar_middle_gray)
                         .into(conversation_user_avatar)
                 }

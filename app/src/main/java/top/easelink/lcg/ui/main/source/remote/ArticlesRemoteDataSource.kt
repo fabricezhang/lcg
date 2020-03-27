@@ -28,6 +28,10 @@ import java.util.*
  * desc   :
  */
 object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
+    private const val USER_NAME = "name"
+    private const val USER_AVATAR = "avatar"
+    private const val USER_PROFILE_URL = "profile_url"
+
     private val gson: Gson = GsonBuilder().excludeFieldsWithoutExposeAnnotation().create()
 
     @WorkerThread
@@ -89,12 +93,12 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
             }
             val nextPageUrl = doc.selectFirst("a.nxt")?.attr("href").orEmpty()
             val replyAddUrls = getReplyAddUrl(doc)
-            val avatarsAndNames = getAvatarAndName(doc)
+            val userInfos = getUserInfo(doc)
             val contents = getContents(doc)
             val dateTimes = getDateTime(doc)
             val replyUrls = getReplyUrls(doc)
-            val postList: MutableList<Post> = ArrayList(avatarsAndNames.size)
-            for (i in avatarsAndNames.indices) {
+            val postList: MutableList<Post> = ArrayList(userInfos.size)
+            for (i in userInfos.indices) {
                 try {
                     val replyAddUrl: String? = if (i >= replyAddUrls.size) {
                         null
@@ -107,12 +111,13 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
                         replyUrls[i]
                     }
                     val post = Post(
-                        avatarsAndNames[i]["name"].toString(),
-                        avatarsAndNames[i]["avatar"].toString(),
-                        dateTimes[i],
-                        contents[i],
-                        replyUrl,
-                        replyAddUrl
+                        author = userInfos[i][USER_NAME].toString(),
+                        avatar = userInfos[i][USER_AVATAR].toString(),
+                        date = dateTimes[i],
+                        content = contents[i],
+                        replyUrl = replyUrl,
+                        replyAddUrl = replyAddUrl,
+                        profileUrl = userInfos[i][USER_PROFILE_URL].toString()
                     )
                     postList.add(post)
                 } catch (npe: NullPointerException) {
@@ -303,14 +308,20 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
         return list
     }
 
-    private fun getAvatarAndName(document: Document): List<Map<String, String>> {
+    /**
+     * get uid/avatar/name
+     */
+    private fun getUserInfo(document: Document): List<Map<String, String>> {
         val list: MutableList<Map<String, String>> = ArrayList(12)
         val elements = document.select("td[rowspan]")
         for (element in elements) {
-            val avatarAndName: MutableMap<String, String> = ArrayMap(2)
-            avatarAndName["avatar"] = element.select("div.avatar").select("img").attr("src")
-            avatarAndName["name"] = element.select("a.xw1").text()
-            list.add(avatarAndName)
+            val userInfoMap: MutableMap<String, String> = ArrayMap(3)
+            element.select("div.avatar").apply {
+                userInfoMap[USER_AVATAR] = select("img").attr("src")
+                userInfoMap[USER_PROFILE_URL] = select("a").attr("href")
+            }
+            userInfoMap[USER_NAME] = element.select("a.xw1").text()
+            list.add(userInfoMap)
         }
         return list
     }
