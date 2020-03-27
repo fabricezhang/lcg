@@ -325,7 +325,7 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
                 userInfoMap[USER_AVATAR] = select("img").attr("src")
                 userInfoMap[USER_PROFILE_URL] = select("a").attr("href")
             }
-            element.selectFirst("a[id^=follow]").let {
+            element.selectFirst("a[id^=follow]")?.let {
                 userInfoMap[FOLLOW_URL] = it.attr("href")
                 userInfoMap[FOLLOW_TITLE] = it.attr("title")
             }
