@@ -9,21 +9,31 @@ import timber.log.Timber
 import top.easelink.framework.threadpool.ApiPool
 import top.easelink.lcg.network.Client
 import top.easelink.lcg.ui.main.follow.model.FollowInfo
+import top.easelink.lcg.ui.main.follow.model.FollowResult
 
 class FollowListViewModel : ViewModel() {
 
-    val follows = MutableLiveData<List<FollowInfo>>()
+    val follows = MutableLiveData<FollowResult>()
     val isLoading = MutableLiveData<Boolean>()
+    val isLoadingForLoadMore = MutableLiveData<Boolean>()
 
-    fun fetchData(url: String) {
-        isLoading.value = true
+    fun fetchData(url: String, isLoadMore: Boolean = false) {
+        if (isLoadMore) {
+            isLoadingForLoadMore.value = true
+        } else  {
+            isLoading.value = true
+        }
         GlobalScope.launch(ApiPool) {
             try {
                 parseFollows(Client.sendGetRequestWithQuery(url))
             } catch (e: Exception) {
                 Timber.e(e)
             }
-            isLoading.postValue(false)
+            if (isLoadMore) {
+                isLoadingForLoadMore.postValue(false)
+            } else  {
+                isLoading.postValue(false)
+            }
         }
     }
 
@@ -51,7 +61,8 @@ class FollowListViewModel : ViewModel() {
                     followOrUnFollowUrl = url
                 )
             }
-            follows.postValue(followInfos)
+            val nextPageUrl = selectFirst("a.nxt")?.attr("href")
+            follows.postValue(FollowResult(followInfos, nextPageUrl))
         }
 
     }

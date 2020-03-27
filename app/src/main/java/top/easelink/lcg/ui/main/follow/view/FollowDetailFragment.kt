@@ -44,7 +44,7 @@ class FollowDetailFragment(private val url: String): TopFragment() {
                 it.orientation = RecyclerView.VERTICAL
             }
             itemAnimator = DefaultItemAnimator()
-            adapter = FollowListAdapter()
+            adapter = FollowListAdapter(mFollowVM, viewLifecycleOwner)
             mFollowVM.apply {
                 isLoading.observe(viewLifecycleOwner, Observer {
                     if (it) {
@@ -57,11 +57,12 @@ class FollowDetailFragment(private val url: String): TopFragment() {
                 })
                 follows.observe(viewLifecycleOwner, Observer {
                     (adapter as FollowListAdapter).run {
+                        nextPageUrl = it.nextPageUrl
                         if (itemCount > 1) {
-                            appendItems(it)
+                            appendItems(it.followInfos)
                         } else {
                             clearItems()
-                            addItems(it)
+                            addItems(it.followInfos)
                         }
                     }
                 })

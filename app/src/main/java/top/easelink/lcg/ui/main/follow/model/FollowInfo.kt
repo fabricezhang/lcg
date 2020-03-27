@@ -8,3 +8,8 @@ data class FollowInfo(
     val followerNum: Int = 0,
     val lastAction: String = ""
 )
+
+data class FollowResult(
+    val followInfos: List<FollowInfo>,
+    val nextPageUrl: String? = null
+)

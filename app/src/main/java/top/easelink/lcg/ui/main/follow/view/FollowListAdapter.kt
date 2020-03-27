@@ -3,6 +3,8 @@ package top.easelink.lcg.ui.main.follow.view
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -13,17 +15,22 @@ import top.easelink.framework.base.BaseViewHolder
 import top.easelink.framework.utils.dpToPx
 import top.easelink.lcg.R
 import top.easelink.lcg.ui.main.follow.model.FollowInfo
+import top.easelink.lcg.ui.main.follow.viewmodel.FollowListViewModel
 
 
-class FollowListAdapter : RecyclerView.Adapter<BaseViewHolder>() {
+class FollowListAdapter(
+    private val followListViewModel: FollowListViewModel,
+    private val lifecycleOwner: LifecycleOwner
+) : RecyclerView.Adapter<BaseViewHolder>() {
 
     private val mFollowing: MutableList<FollowInfo> = mutableListOf()
+    var nextPageUrl: String? = null
 
     override fun getItemCount(): Int {
         return if (mFollowing.isEmpty()) {
             1
         } else {
-            mFollowing.size
+            mFollowing.size + 1
         }
     }
 
@@ -75,6 +82,13 @@ class FollowListAdapter : RecyclerView.Adapter<BaseViewHolder>() {
         mFollowing.clear()
     }
 
+    override fun onViewRecycled(holder: BaseViewHolder) {
+        if (holder is LoadMoreViewHolder) {
+            holder.removeObserver()
+        }
+        super.onViewRecycled(holder)
+    }
+
     inner class ArticleViewHolder internal constructor(private val view: View) :
         BaseViewHolder(view) {
         override fun onBind(position: Int) {
@@ -105,10 +119,34 @@ class FollowListAdapter : RecyclerView.Adapter<BaseViewHolder>() {
         override fun onBind(position: Int) { }
     }
 
-    inner class LoadMoreViewHolder internal constructor(val view: View) :
-        BaseViewHolder(view) {
+    inner class LoadMoreViewHolder internal constructor(val view: View) : BaseViewHolder(view) {
+
+        val observer: Observer<Boolean> = Observer {
+            view.loading.apply {
+                if (it) {
+                    visibility = View.VISIBLE
+                    playAnimation()
+                } else {
+                    cancelAnimation()
+                    visibility = View.GONE
+                }
+            }
+        }
+
         override fun onBind(position: Int) {
-            view.loading.visibility = View.GONE
+            nextPageUrl?.let {
+                followListViewModel.isLoadingForLoadMore.observe(lifecycleOwner, observer)
+                followListViewModel.fetchData(it, true)
+            }?: run {
+                view.loading.apply {
+                    cancelAnimation()
+                    visibility = View.GONE
+                }
+            }
+        }
+
+        fun removeObserver() {
+            followListViewModel.isLoadingForLoadMore.removeObserver(observer)
         }
     }
 
