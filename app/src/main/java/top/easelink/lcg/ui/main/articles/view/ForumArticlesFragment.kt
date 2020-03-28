@@ -141,7 +141,9 @@ class ForumArticlesFragment : BaseFragment<FragmentForumArticlesBinding, ForumAr
                         orientation = RecyclerView.VERTICAL
                     }
                     itemAnimator = DefaultItemAnimator()
-                    adapter = ArticlesAdapter(viewModel).also {
+                    adapter = ArticlesAdapter(
+                        viewModel
+                    ).also {
                         it.setFragmentManager(fragmentManager?:baseActivity.supportFragmentManager)
                     }
                 }

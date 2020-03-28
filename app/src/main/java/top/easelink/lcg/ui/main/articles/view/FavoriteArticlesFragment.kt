@@ -13,8 +13,10 @@ import top.easelink.lcg.BR
 import top.easelink.lcg.R
 import top.easelink.lcg.databinding.FragmentFavoriteArticlesBinding
 import top.easelink.lcg.ui.main.articles.viewmodel.ArticleFetcher
-import top.easelink.lcg.ui.main.articles.viewmodel.FavoriteArticlesAdapterV2
 import top.easelink.lcg.ui.main.articles.viewmodel.FavoriteArticlesViewModel
+import top.easelink.lcg.ui.webview.view.WebViewActivity
+import top.easelink.lcg.utils.WebsiteConstant.GET_FAVORITE_QUERY
+import top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL
 
 class FavoriteArticlesFragment : BaseFragment<FragmentFavoriteArticlesBinding, FavoriteArticlesViewModel>() {
 
@@ -50,10 +52,13 @@ class FavoriteArticlesFragment : BaseFragment<FragmentFavoriteArticlesBinding, F
                 orientation = RecyclerView.VERTICAL
             }
             itemAnimator = DefaultItemAnimator()
-            adapter = FavoriteArticlesAdapterV2(viewModel)
+            adapter =
+                FavoriteArticlesAdapter(
+                    viewModel
+                )
         }
         viewModel.articles.observe(viewLifecycleOwner, Observer {
-            (viewDataBinding.recyclerView.adapter as? FavoriteArticlesAdapterV2)?.apply {
+            (viewDataBinding.recyclerView.adapter as? FavoriteArticlesAdapter)?.apply {
                 clearItems()
                 addItems(it)
             }
@@ -68,6 +73,7 @@ class FavoriteArticlesFragment : BaseFragment<FragmentFavoriteArticlesBinding, F
                 when (it.itemId) {
                     R.id.action_remove_all -> viewModel.removeAllFavorites()
                     R.id.action_sync_my_favorites -> viewModel.syncFavorites()
+                    R.id.action_manage_favorites -> WebViewActivity.startWebViewWith(SERVER_BASE_URL + GET_FAVORITE_QUERY, context)
                     else -> {
                         // to add mores
                     }

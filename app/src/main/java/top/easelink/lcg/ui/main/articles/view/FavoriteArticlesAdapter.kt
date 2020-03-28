@@ -1,4 +1,4 @@
-package top.easelink.lcg.ui.main.articles.viewmodel
+package top.easelink.lcg.ui.main.articles.view
 
 import android.view.LayoutInflater
 import android.view.View
@@ -11,12 +11,14 @@ import kotlinx.android.synthetic.main.item_load_more_view.view.*
 import org.greenrobot.eventbus.EventBus
 import top.easelink.framework.base.BaseViewHolder
 import top.easelink.lcg.R
+import top.easelink.lcg.ui.main.articles.viewmodel.ArticleFetcher
+import top.easelink.lcg.ui.main.articles.viewmodel.FavoriteArticlesViewModel
 import top.easelink.lcg.ui.main.model.OpenArticleEvent
 import top.easelink.lcg.ui.main.source.model.ArticleEntity
 import top.easelink.lcg.utils.getDateFrom
 
 
-class FavoriteArticlesAdapterV2(private var favoriteArticlesViewModel: FavoriteArticlesViewModel) :
+class FavoriteArticlesAdapter(private var favoriteArticlesViewModel: FavoriteArticlesViewModel) :
     RecyclerView.Adapter<BaseViewHolder>() {
     private val mArticleEntities: MutableList<ArticleEntity> = mutableListOf()
 
@@ -75,23 +77,20 @@ class FavoriteArticlesAdapterV2(private var favoriteArticlesViewModel: FavoriteA
 
     inner class ArticleViewHolder internal constructor(view: View) : BaseViewHolder(view) {
 
-        // will be assigned in onBind(), should not be called before onBind()
-        private lateinit var articleEntity: ArticleEntity
-
-        private fun onItemClick() {
-            val event = OpenArticleEvent(articleEntity.url)
+        private fun onItemClick(url: String) {
+            val event = OpenArticleEvent(url)
             EventBus.getDefault().post(event)
         }
 
         override fun onBind(position: Int) {
-            articleEntity = mArticleEntities[position]
+            val articleEntity = mArticleEntities[position]
             itemView.run {
                 startAnimation(AnimationUtils.loadAnimation(
                     context,
                     R.anim.recycler_item_show
                 ))
                 favorite_container.setOnClickListener {
-                    onItemClick()
+                    onItemClick(articleEntity.url)
                 }
                 title_text_view.text = articleEntity.title
 
