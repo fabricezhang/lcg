@@ -31,14 +31,21 @@ class LCGApp : Application() {
         } else {
             Timber.plant(ErrorReportTree())
         }
-
         initBulgy()
         initMTA()
         AppGuardStarter.init(this)
+        trySignIn()
+    }
+
+    private fun trySignIn() {
         GlobalScope.launch(BackGroundPool) {
             delay(2000)
             if (AppConfig.autoSignEnable) {
-                SignInWorker.sendSignInRequest()
+                try {
+                    SignInWorker.sendSignInRequest()
+                } catch (e: Exception) {
+                    Timber.e(e)
+                }
             }
         }
     }

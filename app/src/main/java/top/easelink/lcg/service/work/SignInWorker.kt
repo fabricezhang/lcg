@@ -5,6 +5,7 @@ import androidx.work.*
 import timber.log.Timber
 import top.easelink.lcg.BuildConfig
 import top.easelink.lcg.network.Client
+import java.net.SocketTimeoutException
 import java.util.concurrent.TimeUnit
 
 class SignInWorker(context: Context, workerParams: WorkerParameters) :
@@ -31,6 +32,7 @@ class SignInWorker(context: Context, workerParams: WorkerParameters) :
         private const val TASK_APPLIED = "已申请"
         const val TAG = "SignInWorker"
 
+        @Throws(SocketTimeoutException::class)
         fun sendSignInRequest() {
             Client.sendGetRequestWithUrl(APPLY_TASK_URL)
                 .getElementsByClass("alert_info")
