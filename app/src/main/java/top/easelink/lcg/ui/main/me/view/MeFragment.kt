@@ -21,6 +21,7 @@ import top.easelink.framework.base.BaseFragment
 import top.easelink.framework.threadpool.ImmediatePool
 import top.easelink.framework.threadpool.Main
 import top.easelink.framework.utils.addFragmentInActivity
+import top.easelink.framework.utils.addFragmentInFragment
 import top.easelink.framework.utils.bitmapBlur
 import top.easelink.framework.utils.convertViewToBitmap
 import top.easelink.lcg.BR
@@ -155,6 +156,10 @@ class MeFragment : BaseFragment<FragmentMeBinding, MeViewModel>() {
                 R.id.clRootView
             )
         }
+    }
+
+    private fun showChildFragment(fragment: Fragment) {
+        addFragmentInFragment(childFragmentManager, fragment, R.id.child_root)
     }
 
     override fun onResume() {
