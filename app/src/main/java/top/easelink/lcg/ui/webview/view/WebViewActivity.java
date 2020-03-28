@@ -15,6 +15,7 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.webkit.CookieManager;
 import android.webkit.JavascriptInterface;
@@ -104,8 +105,13 @@ public class WebViewActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mWebView.destroy();
-        mWebView = null;
+
+        // safe remove webview refers : https://stackoverflow.com/questions/5267639/how-to-safely-turn-webview-zooming-on-and-off-as-needed
+        if (mWebView != null && mWebView.getParent() != null){
+            ((ViewGroup)mWebView.getParent()).removeView(mWebView);
+            mWebView.destroy();
+            mWebView=null;
+        }
     }
 
     protected void initContentView() {
@@ -362,6 +368,11 @@ public class WebViewActivity extends AppCompatActivity {
         } else {
             settings.setJavaScriptEnabled(false);
         }
+        // Zoom Setting
+        settings.setSupportZoom(true);
+        settings.setBuiltInZoomControls(true);
+        settings.setDisplayZoomControls(false);
+
         settings.setBlockNetworkImage(false);
         settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
