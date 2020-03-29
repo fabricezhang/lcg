@@ -59,7 +59,10 @@ class LCGSearchActivity : TopActivity() {
 
     override fun onBackPressed() {
         if (mFragmentTags.isNotEmpty() && mFragmentTags.size >= 1) {
-            while (onFragmentDetached(mFragmentTags.pop())) {
+            while (onFragmentDetached(mFragmentTags.pop()).also {
+                    mFragmentTags.clear()
+                }
+            ) {
                 if (mFragmentTags.isEmpty()) {
                     toolbar.visibility = View.VISIBLE
                 }
