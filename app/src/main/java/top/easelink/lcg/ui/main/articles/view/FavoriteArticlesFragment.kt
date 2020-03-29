@@ -3,7 +3,7 @@ package top.easelink.lcg.ui.main.articles.view
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -33,7 +33,7 @@ class FavoriteArticlesFragment : BaseFragment<FragmentFavoriteArticlesBinding, F
     }
 
     override fun getViewModel(): FavoriteArticlesViewModel {
-        return ViewModelProviders.of(this).get(FavoriteArticlesViewModel::class.java)
+        return ViewModelProvider(this)[FavoriteArticlesViewModel::class.java]
     }
 
     override fun onViewCreated(
