@@ -72,6 +72,7 @@ class MainActivity : TopActivity(), BottomNavigationView.OnNavigationItemSelecte
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         EventBus.getDefault().register(this)
+        setupDrawer(toolbar)
         setupBottomNavMenu()
         showFragment(RecommendFragment::class.java)
         checkPermission()

@@ -6,13 +6,11 @@ import android.view.*
 import androidx.appcompat.widget.SearchView
 import kotlinx.android.synthetic.main.fragment_recommand.*
 import top.easelink.framework.topbase.ControllableFragment
-import top.easelink.framework.topbase.TopActivity
 import top.easelink.framework.topbase.TopFragment
 import top.easelink.lcg.BuildConfig
 import top.easelink.lcg.R
 import top.easelink.lcg.config.AppConfig
 import top.easelink.lcg.ui.main.recommand.viewmodel.RecommendViewPagerAdapter
-import top.easelink.lcg.ui.main.view.MainActivity
 import top.easelink.lcg.ui.search.view.BaiduSearchActivity
 import top.easelink.lcg.ui.search.view.LCGSearchActivity
 import top.easelink.lcg.ui.search.view.LCGSearchActivity.Companion.KEY_WORD
@@ -47,8 +45,6 @@ class RecommendFragment: TopFragment(), ControllableFragment {
     private fun setUp(){
         view_pager.adapter = RecommendViewPagerAdapter(childFragmentManager, activity)
         main_tab.setupWithViewPager(view_pager)
-        (activity as? MainActivity)?.setupDrawer(toolbar)
-            ?: (activity as TopActivity).setSupportActionBar(toolbar)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

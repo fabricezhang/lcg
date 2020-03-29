@@ -15,7 +15,9 @@ abstract class TopActivity : AppCompatActivity(), TopFragment.Callback {
 
     override fun onFragmentDetached(tag: String): Boolean {
         supportFragmentManager.findFragmentByTag(tag)?.let {
-            return popBackFragmentInclusive(supportFragmentManager, tag)
+            return popBackFragmentInclusive(supportFragmentManager, tag).also {
+                if (it) mFragmentTags.clear()
+            }
         }
         return false
     }

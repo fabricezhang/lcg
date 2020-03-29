@@ -52,9 +52,17 @@ class LCGSearchActivity : TopActivity() {
         EventBus.getDefault().unregister(this)
     }
 
+    override fun onFragmentAttached(tag: String) {
+        super.onFragmentAttached(tag)
+        toolbar.visibility = View.GONE
+    }
+
     override fun onBackPressed() {
-        if (mFragmentTags.isNotEmpty() && mFragmentTags.size > 1) {
+        if (mFragmentTags.isNotEmpty() && mFragmentTags.size >= 1) {
             while (onFragmentDetached(mFragmentTags.pop())) {
+                if (mFragmentTags.isEmpty()) {
+                    toolbar.visibility = View.VISIBLE
+                }
                 return
             }
         }

@@ -18,7 +18,8 @@
         android:clipChildren="false"
         android:background="@color/white"
         android:focusable="true"
-        android:clickable="true">
+        android:clickable="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/article_toolbar"
             app:layout_constraintTop_toTopOf="parent"
@@ -44,7 +45,6 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:refreshing="@{viewModel.isLoading}"
             app:layout_constraintTop_toBottomOf="@id/forum_tab">
             <androidx.recyclerview.widget.RecyclerView
