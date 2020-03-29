@@ -5,6 +5,7 @@ import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_favorite_articles.*
@@ -52,10 +53,9 @@ class FavoriteArticlesFragment : BaseFragment<FragmentFavoriteArticlesBinding, F
                 orientation = RecyclerView.VERTICAL
             }
             itemAnimator = DefaultItemAnimator()
-            adapter =
-                FavoriteArticlesAdapter(
-                    viewModel
-                )
+            val adapter = FavoriteArticlesAdapter(viewModel)
+            this.adapter = adapter
+            ItemTouchHelper(ItemTouchHelperCallback(adapter)).attachToRecyclerView(this)
         }
         viewModel.articles.observe(viewLifecycleOwner, Observer {
             (viewDataBinding.recyclerView.adapter as? FavoriteArticlesAdapter)?.apply {

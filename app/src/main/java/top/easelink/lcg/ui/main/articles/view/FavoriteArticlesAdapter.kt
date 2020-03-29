@@ -19,7 +19,7 @@ import top.easelink.lcg.utils.getDateFrom
 
 
 class FavoriteArticlesAdapter(private var favoriteArticlesViewModel: FavoriteArticlesViewModel) :
-    RecyclerView.Adapter<BaseViewHolder>() {
+    RecyclerView.Adapter<BaseViewHolder>(), onMoveAndSwipedListener {
     private val mArticleEntities: MutableList<ArticleEntity> = mutableListOf()
 
     override fun getItemCount(): Int {
@@ -130,8 +130,16 @@ class FavoriteArticlesAdapter(private var favoriteArticlesViewModel: FavoriteArt
     }
 
     companion object {
-        private const val VIEW_TYPE_EMPTY = 0
-        private const val VIEW_TYPE_NORMAL = 1
-        private const val VIEW_TYPE_LOAD_MORE = 2
+        const val VIEW_TYPE_EMPTY = 0
+        const val VIEW_TYPE_NORMAL = 1
+        const val VIEW_TYPE_LOAD_MORE = 2
+    }
+
+    override fun onItemRemove(position: Int) {
+
+    }
+
+    override fun onItemMove(fromPosition: Int, toPosition: Int): Boolean {
+        return false
     }
 }
