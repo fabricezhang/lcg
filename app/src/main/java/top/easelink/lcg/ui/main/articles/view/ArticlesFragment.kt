@@ -99,7 +99,7 @@ class ArticlesFragment : BaseFragment<FragmentArticlesBinding, ArticlesViewModel
             adapter = ArticlesAdapter(
                 viewModel
             ).also {
-                it.setFragmentManager(fragmentManager?:baseActivity.supportFragmentManager)
+                it.setFragmentManager(childFragmentManager)
             }
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrollStateChanged(
