@@ -7,13 +7,16 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import top.easelink.framework.base.BaseFragment
 import top.easelink.framework.threadpool.ApiPool
+import top.easelink.lcg.R
 import top.easelink.lcg.network.Client
 import top.easelink.lcg.spipedata.UserData
 import top.easelink.lcg.ui.main.me.model.UserInfo
 import top.easelink.lcg.ui.main.source.parseUserInfo
 import top.easelink.lcg.utils.WebsiteConstant.PROFILE_URL
 import top.easelink.lcg.utils.clearCookies
+import top.easelink.lcg.utils.showMessage
 import java.lang.ref.WeakReference
+import java.net.SocketTimeoutException
 
 class MeViewModel: ViewModel() {
 
@@ -71,6 +74,8 @@ class MeViewModel: ViewModel() {
                         signInState = userInfo.signInStateUrl.orEmpty()
                     }
                 }
+            } catch (e: SocketTimeoutException) {
+                showMessage(R.string.network_error) // 网络错误，不认为是登陆异常
             } catch (e: Exception) {
                 Timber.e(e)
                 mLoginState.postValue(false)
