@@ -42,6 +42,8 @@ class MeViewModel: ViewModel() {
                         wuaiCoin = coin,
                         credit = credit,
                         groupInfo = group,
+                        enthusiasticValue = enthusiasticValue,
+                        answerRate = answerRate,
                         signInStateUrl = null
                     )
             }
@@ -58,7 +60,7 @@ class MeViewModel: ViewModel() {
                     UserData.clearAll()
                     mLoginState.postValue(false)
                 } else if (mUserInfo.value != userInfo) {
-                    // login successfully but userInfo not changed
+                    // login successfully but userInfo changed
                     mLoginState.postValue(true)
                     mUserInfo.postValue(userInfo)
                     UserData.isLoggedIn = true
