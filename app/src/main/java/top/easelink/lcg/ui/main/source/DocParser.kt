@@ -10,6 +10,7 @@ import top.easelink.lcg.R
 import top.easelink.lcg.appinit.LCGApp
 import top.easelink.lcg.spipedata.UserData
 import top.easelink.lcg.ui.main.me.model.UserInfo
+import top.easelink.lcg.ui.main.model.AntiScrapingException
 import top.easelink.lcg.ui.main.model.NewMessageEvent
 import top.easelink.lcg.ui.main.model.NotificationInfo
 import top.easelink.lcg.ui.profile.model.ExtraUserInfo
@@ -40,14 +41,19 @@ fun parseExtraUserInfoProfilePage(content: String): List<ExtraUserInfo> {
 }
 
 @WorkerThread
-@Throws(NullPointerException::class)
+@Throws(NullPointerException::class, AntiScrapingException::class)
 fun parseUserInfo(doc: Document): UserInfo {
     with(doc) {
         val userName = doc.selectFirst("h2.mt")?.text()
         val notif = LCGApp.context.getString(R.string.login_or_register)
         when {
             userName.isNullOrEmpty() -> {
-                return UserInfo(getElementById("messagetext")?.text())
+                val message = getElementById("messagetext")?.text()
+                if (message.isNullOrEmpty()) {
+                    throw AntiScrapingException()
+                } else {
+                    return UserInfo(message)
+                }
             }
             userName == notif -> {
                 return UserInfo(notif)

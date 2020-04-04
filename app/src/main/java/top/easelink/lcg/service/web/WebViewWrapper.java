@@ -21,7 +21,6 @@ import static top.easelink.lcg.utils.CookieUtilsKt.setCookies;
  * date   : 2019-07-23 13:58
  * desc   : can be a back-up method in case of Jsoup doesn't work
  */
-@Deprecated()
 @SuppressLint({"SetJavaScriptEnabled", "StaticFieldLeak"})
 public class WebViewWrapper {
 
@@ -96,7 +95,7 @@ public class WebViewWrapper {
         settings.setCacheMode(WebSettings.LOAD_DEFAULT);
     }
 
-    private class InnerWebViewClient extends WebViewClient {
+    private static class InnerWebViewClient extends WebViewClient {
         @Override
         public void onPageFinished(WebView view, String url) {
             CookieManager cookieManager = CookieManager.getInstance();
