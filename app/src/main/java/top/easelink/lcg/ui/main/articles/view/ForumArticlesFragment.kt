@@ -19,6 +19,7 @@ import top.easelink.lcg.R
 import top.easelink.lcg.appinit.LCGApp
 import top.easelink.lcg.databinding.FragmentForumArticlesBinding
 import top.easelink.lcg.mta.CHANGE_THREAD
+import top.easelink.lcg.mta.sendEvent
 import top.easelink.lcg.ui.main.articles.viewmodel.*
 import top.easelink.lcg.ui.main.source.model.ForumThread
 
@@ -113,7 +114,7 @@ class ForumArticlesFragment : BaseFragment<FragmentForumArticlesBinding, ForumAr
             }
             addOnTabSelectedListener(object : OnTabSelectedListener {
                 override fun onTabSelected(tab: TabLayout.Tab) {
-                    StatService.trackCustomEvent(context, CHANGE_THREAD)
+                    sendEvent(CHANGE_THREAD)
                     viewModel.initUrlAndFetch(
                         url = forumThreadList[tab.position].threadUrl,
                         fetchType = ArticleFetcher.FetchType.FETCH_INIT

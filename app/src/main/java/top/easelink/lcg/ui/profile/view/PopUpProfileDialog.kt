@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.FragmentManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import kotlinx.android.synthetic.main.dialog_profile.*
@@ -19,6 +20,9 @@ import top.easelink.framework.threadpool.ApiPool
 import top.easelink.framework.utils.dpToPx
 import top.easelink.framework.utils.getStatusBarHeight
 import top.easelink.lcg.R
+import top.easelink.lcg.mta.EVENT_OPEN_PROFILE
+import top.easelink.lcg.mta.EVENT_SUBSCRIBE_USER
+import top.easelink.lcg.mta.sendEvent
 import top.easelink.lcg.network.Client
 import top.easelink.lcg.ui.main.source.parseExtraUserInfoProfilePage
 import top.easelink.lcg.ui.profile.model.PopUpProfileInfo
@@ -85,7 +89,13 @@ class PopUpProfileDialog(
         dialog?.setCanceledOnTouchOutside(true)
     }
 
+    override fun show(manager: FragmentManager, tag: String?) {
+        super.show(manager, tag)
+        sendEvent(EVENT_OPEN_PROFILE)
+    }
+
     private fun onSubscribeClicked(url: String) {
+        sendEvent(EVENT_SUBSCRIBE_USER)
         GlobalScope.launch(ApiPool){
             try {
                 Client.sendGetRequestWithQuery(url).let {
