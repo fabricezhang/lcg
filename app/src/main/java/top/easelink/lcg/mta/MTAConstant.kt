@@ -22,3 +22,6 @@ const val PROP_IS_AUTO_SIGN_ENABLE = "is_auto_sign_enable"
 const val EVENT_ADD_TO_FAVORITE = "add_to_favorite"
 const val EVENT_SYNC_FAVORITE = "sync_favorite"
 const val PROP_IS_SYNC_FAVORITE_ENABLE = "is_sync_favorite_enable"
+
+// Follow
+const val EVENT_OPEN_FOLLOW_PAGE = "open_follow_page"

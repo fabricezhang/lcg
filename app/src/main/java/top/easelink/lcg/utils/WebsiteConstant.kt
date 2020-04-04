@@ -51,6 +51,7 @@ object WebsiteConstant {
 
     // follow
     const val UNFOLLOW_URL = "home.php?mod=spacecp&ac=follow&op=del&fuid=123456"
+    const val FOLLOW_PAGE_URL = "home.php?mod=follow"
     const val FOLLOWING_USERS_URL = "home.php?mod=follow&do=following"
     const val FOLLOWER_USERS_URL = "home.php?mod=follow&do=follower"
 

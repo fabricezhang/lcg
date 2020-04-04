@@ -8,6 +8,8 @@ import kotlinx.android.synthetic.main.fragment_follow.*
 import top.easelink.framework.topbase.ControllableFragment
 import top.easelink.framework.topbase.TopFragment
 import top.easelink.lcg.R
+import top.easelink.lcg.mta.EVENT_OPEN_FOLLOW_PAGE
+import top.easelink.lcg.mta.sendEvent
 
 class FollowFragment: TopFragment(), ControllableFragment{
 
@@ -31,5 +33,6 @@ class FollowFragment: TopFragment(), ControllableFragment{
                 mContext
             )
         follow_tab.setupWithViewPager(follow_view_pager)
+        sendEvent(EVENT_OPEN_FOLLOW_PAGE)
     }
 }
