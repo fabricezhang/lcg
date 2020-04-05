@@ -129,6 +129,7 @@
     <string name="tab_title_subscriber">听众列表</string>
     <string name="follower_num_template">听众 %d 人</string>
     <string name="following_num_template">收听 %d 人</string>
+    <string name="following_feed_open_original_content">查看原文</string>
 
     <!--download link dialog-->
     <string name="download_title">下载链接</string>

@@ -4,7 +4,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/follow_list_container"
     android:minHeight="@dimen/dp_50"
     android:clickable="true"
     android:focusable="true"
@@ -14,6 +13,26 @@
     android:descendantFocusability="blocksDescendants"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
+
+    <com.google.android.material.button.MaterialButton
+            android:id="@+id/open_article"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rectangle_bg_white_4dp"
+            android:backgroundTint="@color/black_effective"
+            android:gravity="center"
+            android:padding="@dimen/dp_4"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:drawableEnd="@drawable/ic_arrow_right"
+            android:text="@string/following_feed_open_original_content"
+            android:textColor="@color/red_dark2"
+            android:textSize="@dimen/sp_12"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:ignore="ContentDescription" />
+
     <ImageView
         android:id="@+id/avatar"
         android:layout_width="@dimen/dp_28"
@@ -64,7 +83,7 @@
         android:layout_width="0dp"
         android:textStyle="bold"
         android:layout_height="wrap_content"
-        android:lines="1"
+        android:maxLines="2"
         android:ellipsize="end"
         android:textSize="@dimen/sp_14"
         android:textColor="@color/black_effective"

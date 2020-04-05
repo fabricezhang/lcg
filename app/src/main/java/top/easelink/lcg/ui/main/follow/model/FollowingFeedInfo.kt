@@ -8,5 +8,6 @@ data class FeedInfo(
     val articleUrl: String,
     val content: String,
     val forum: String,
+    val quote: String,
     val images: List<String>?
 )

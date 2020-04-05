@@ -11,11 +11,13 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import kotlinx.android.synthetic.main.item_follow_content_view.view.*
 import kotlinx.android.synthetic.main.item_load_more_view.view.*
+import org.greenrobot.eventbus.EventBus
 import top.easelink.framework.base.BaseViewHolder
 import top.easelink.framework.utils.dpToPx
 import top.easelink.lcg.R
 import top.easelink.lcg.ui.main.follow.model.FeedInfo
 import top.easelink.lcg.ui.main.follow.viewmodel.FollowingFeedViewModel
+import top.easelink.lcg.ui.main.model.OpenArticleEvent
 
 
 class FollowingFeedAdapter(
@@ -92,6 +94,9 @@ class FollowingFeedAdapter(
         override fun onBind(position: Int) {
             val feed = mFeeds[position]
             view.apply {
+                open_article.setOnClickListener {
+                    EventBus.getDefault().post(OpenArticleEvent(feed.articleUrl))
+                }
                 feed.avatar.let {
                     if (it.isNotEmpty()) {
                         avatar.visibility = View.VISIBLE
@@ -111,7 +116,12 @@ class FollowingFeedAdapter(
                 date_time.text = feed.dateTime
                 title.text = feed.title
                 forum.text = "#${feed.forum}"
-                content.setHtml(feed.content)
+                if (feed.quote.isNotBlank()) {
+                    content.setHtml(feed.quote)
+                } else {
+                    content.setHtml(feed.content)
+                }
+
             }
         }
 

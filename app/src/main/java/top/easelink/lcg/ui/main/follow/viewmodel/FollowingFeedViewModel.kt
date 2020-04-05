@@ -72,12 +72,13 @@ class FollowingFeedViewModel : ViewModel() {
                     }
                 val content = it.selectFirst(".pbm").let { pbm ->
                     pbm.select("div.flw_image")?.remove() // 标题带的图片单独处理，此处删除
-                    pbm.select("img").remove() // 删除所有图片
+                    pbm.select("img")?.remove() // 删除所有图片
+                    pbm.select("a.flw_readfull")?.remove() // 删除查看全文链接
                     pbm.html()
                 }
                 // TODO add reply and relay
                 val forum = it.selectFirst("div.xg1 > a ").text()
-
+                val quote = it.selectFirst("div.flw_quotenote")?.text().orEmpty()
                 FeedInfo(
                     avatar = avatarUrl,
                     username = username,
@@ -86,6 +87,7 @@ class FollowingFeedViewModel : ViewModel() {
                     articleUrl = articleUrl,
                     content = content,
                     forum = forum,
+                    quote = quote,
                     images = followImages
                 )
             }
