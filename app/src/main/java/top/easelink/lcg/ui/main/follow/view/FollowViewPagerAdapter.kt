@@ -14,12 +14,18 @@ class FollowViewPagerAdapter internal constructor(
 ) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     private val tabModels: List<MessageTabModel> = listOf(
+        MessageTabModel(context.getString(R.string.tab_title_following_feed), ""),
         MessageTabModel(context.getString(R.string.tab_title_following), WebsiteConstant.FOLLOWING_USERS_URL),
         MessageTabModel(context.getString(R.string.tab_title_subscriber), WebsiteConstant.FOLLOWER_USERS_URL)
     )
 
     override fun getItem(position: Int): Fragment {
-        return FollowDetailFragment(tabModels[position].url)
+        return when(position) {
+            0 -> FollowingContentFragment()
+            else -> {
+                FollowDetailFragment(tabModels[position].url)
+            }
+        }
     }
 
     override fun getCount(): Int {

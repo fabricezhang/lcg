@@ -32,6 +32,7 @@ class FollowFragment: TopFragment(), ControllableFragment{
                 childFragmentManager,
                 mContext
             )
+        follow_view_pager.offscreenPageLimit = 0
         follow_tab.setupWithViewPager(follow_view_pager)
         sendEvent(EVENT_OPEN_FOLLOW_PAGE)
     }

@@ -58,6 +58,21 @@ object Client: ApiRequest {
             }
     }
 
+    fun sendAjaxRequest(query: String): String {
+        return Jsoup
+            .connect("$BASE_URL$query")
+            .timeout(TIME_OUT_LIMIT)
+            .ignoreHttpErrors(true)
+            .cookies(getCookies())
+            .method(Connection.Method.GET)
+            .followRedirects(false)
+            .execute()
+            .let {
+                setCookies(it.cookies())
+                it.body()
+            }
+    }
+
 
     override fun sendGetRequestWithUrl(url: String): Document {
         return Jsoup

@@ -83,7 +83,7 @@ class MainActivity : TopActivity(), BottomNavigationView.OnNavigationItemSelecte
         EventBus.getDefault().unregister(this)
     }
 
-    fun setupDrawer(toolbar: Toolbar) {
+    private fun setupDrawer(toolbar: Toolbar) {
         val header = layoutInflater.inflate(R.layout.nav_header, navigation_view, false)
         navigation_view.addHeaderView(header)
         app_version.text = BuildConfig.VERSION_NAME
