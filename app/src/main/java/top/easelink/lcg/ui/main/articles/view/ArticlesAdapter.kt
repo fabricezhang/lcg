@@ -12,6 +12,8 @@ import org.greenrobot.eventbus.EventBus
 import top.easelink.framework.base.BaseViewHolder
 import top.easelink.lcg.R
 import top.easelink.lcg.databinding.ItemArticleEmptyViewBinding
+import top.easelink.lcg.mta.EVENT_OPEN_PREVIEW
+import top.easelink.lcg.mta.sendEvent
 import top.easelink.lcg.spipedata.UserData
 import top.easelink.lcg.ui.main.article.view.PostPreviewDialog
 import top.easelink.lcg.ui.main.articles.viewmodel.ArticleEmptyItemViewModel
@@ -115,6 +117,7 @@ class ArticlesAdapter(
             val article = mArticleList[position]
             view.layout.apply {
                 setOnLongClickListener {
+                    sendEvent(EVENT_OPEN_PREVIEW)
                     fragmentManager?.get()?.let {
                         PostPreviewDialog.newInstance(mArticleList[position].url)
                             .show(it, PostPreviewDialog.TAG)

@@ -3,6 +3,7 @@ package top.easelink.lcg.mta
 // Article
 const val EVENT_OPEN_ARTICLE = "open_article"
 const val EVENT_TAP_FOR_CODE = "tap_for_code"
+const val EVENT_OPEN_PREVIEW = "open_preview"
 
 // Profile
 const val EVENT_OPEN_PROFILE = "open_profile"
