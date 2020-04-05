@@ -109,6 +109,8 @@ class FollowingFeedAdapter(
                 }
                 username.text = feed.username
                 date_time.text = feed.dateTime
+                title.text = feed.title
+                forum.text = "#${feed.forum}"
                 content.setHtml(feed.content)
             }
         }

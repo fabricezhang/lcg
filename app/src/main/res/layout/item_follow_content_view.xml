@@ -31,9 +31,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:lines="1"
+        android:textStyle="bold"
         android:textSize="@dimen/sp_14"
-        android:clickable="false"
-        android:longClickable="false"
         android:textColor="@color/black_effective"
         android:layout_marginStart="@dimen/dp_40"
         android:layout_marginTop="@dimen/dp_10"
@@ -47,7 +46,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textColor="@color/semi_gray"
-        android:textSize="@dimen/sp_14"
+        android:textSize="@dimen/sp_12"
         android:clickable="false"
         android:longClickable="false"
         android:textIsSelectable="false"
@@ -55,23 +54,56 @@
         android:layout_marginStart="@dimen/dp_10"
         android:ellipsize="end"
         android:lines="1"
-        app:layout_constraintStart_toEndOf="@id/username"
-        app:layout_constraintTop_toTopOf="@id/username"
-        app:layout_constraintBottom_toBottomOf="@id/username"
-        tools:text="2019-02-02"/>
+        app:layout_constraintStart_toEndOf="@id/forum"
+        app:layout_constraintTop_toTopOf="@id/forum"
+        app:layout_constraintBottom_toBottomOf="@id/forum"
+        tools:text="2019-02-02 00:13" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/title"
+        android:layout_width="0dp"
+        android:textStyle="bold"
+        android:layout_height="wrap_content"
+        android:lines="1"
+        android:ellipsize="end"
+        android:textSize="@dimen/sp_14"
+        android:textColor="@color/black_effective"
+        android:layout_marginTop="@dimen/dp_6"
+        android:layout_marginEnd="@dimen/dp_16"
+        app:layout_constraintStart_toStartOf="@id/username"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/username"
+        tools:text="吾爱破解开源APP"/>
 
     <top.easelink.framework.customview.htmltextview.HtmlTextView
         android:id="@+id/content"
-        android:layout_marginTop="@dimen/dp_10"
-        android:layout_marginBottom="@dimen/dp_10"
+        android:layout_marginTop="@dimen/dp_6"
         android:layout_marginEnd="@dimen/dp_10"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textSize="@dimen/sp_14"
+        android:lineSpacingExtra="@dimen/dp_4"
         app:layout_constraintStart_toStartOf="@id/username"
-        app:layout_constraintTop_toBottomOf="@id/username"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/title"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/forum"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/semi_gray"
+        android:textSize="@dimen/sp_12"
+        android:clickable="false"
+        android:longClickable="false"
+        android:textIsSelectable="false"
+        android:ellipsize="end"
+        android:lines="1"
+        android:layout_marginTop="@dimen/dp_6"
+        android:layout_marginBottom="@dimen/dp_4"
+        app:layout_constraintStart_toStartOf="@id/username"
+        app:layout_constraintTop_toBottomOf="@id/content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:text="水漫金山"/>
 
     <View
         android:id="@+id/split_line"
