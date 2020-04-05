@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
-import com.tencent.stat.StatService
 import kotlinx.android.synthetic.main.fragment_forum_articles.*
 import timber.log.Timber
 import top.easelink.framework.base.BaseFragment

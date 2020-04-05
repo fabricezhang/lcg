@@ -14,9 +14,8 @@ import kotlinx.android.synthetic.main.fragment_following.*
 import top.easelink.framework.topbase.TopFragment
 import top.easelink.lcg.R
 import top.easelink.lcg.ui.main.follow.viewmodel.FollowingFeedViewModel
-import top.easelink.lcg.utils.WebsiteConstant.FOLLOW_FEED_URL
 
-class FollowingContentFragment(): TopFragment() {
+class FollowingContentFragment: TopFragment() {
 
     private lateinit var mFollowVM: FollowingFeedViewModel
 
