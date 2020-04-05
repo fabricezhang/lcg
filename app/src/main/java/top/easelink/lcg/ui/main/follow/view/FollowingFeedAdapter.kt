@@ -1,5 +1,6 @@
 package top.easelink.lcg.ui.main.follow.view
 
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,11 +8,16 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import kotlinx.android.synthetic.main.item_follow_content_view.view.*
 import kotlinx.android.synthetic.main.item_load_more_view.view.*
 import org.greenrobot.eventbus.EventBus
+import timber.log.Timber
 import top.easelink.framework.base.BaseViewHolder
 import top.easelink.framework.utils.dpToPx
 import top.easelink.lcg.R
@@ -97,6 +103,7 @@ class FollowingFeedAdapter(
                 open_article.setOnClickListener {
                     EventBus.getDefault().post(OpenArticleEvent(feed.articleUrl))
                 }
+
                 feed.avatar.let {
                     if (it.isNotEmpty()) {
                         avatar.visibility = View.VISIBLE
@@ -118,7 +125,56 @@ class FollowingFeedAdapter(
                 forum.text = "#${feed.forum}"
                 if (feed.quote.isNotBlank()) {
                     content.setHtml(feed.quote)
+                    preview.visibility = View.INVISIBLE
+                    preview.setImageDrawable(null)
+                    preview.layoutParams.also {
+                        it.height = 0
+                    }
                 } else {
+                    feed.images?.takeIf {
+                        it.isNotEmpty()
+                    }?.let { images ->
+                        preview.visibility = View.VISIBLE
+                        Glide
+                            .with(this)
+                            .load(images[0])
+                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .transform(RoundedCorners(4.dpToPx(context).toInt()))
+                            .listener(object : RequestListener<Drawable>{
+                                override fun onLoadFailed(
+                                    e: GlideException?,
+                                    model: Any,
+                                    target: Target<Drawable>,
+                                    isFirstResource: Boolean
+                                ): Boolean {
+                                    Timber.e(e)
+                                    return false
+                                }
+
+                                override fun onResourceReady(
+                                    resource: Drawable,
+                                    model: Any,
+                                    target: Target<Drawable>,
+                                    dataSource: DataSource?,
+                                    isFirstResource: Boolean
+                                ): Boolean {
+                                    val newH = resource.intrinsicHeight.toFloat() / resource.intrinsicWidth.toFloat() * preview.width.toFloat()
+                                    preview.layoutParams.let {
+                                        it.height = newH.toInt()
+                                    }
+                                    preview.setImageDrawable(resource)
+                                    return true
+                                }
+
+                            })
+                            .into(preview)
+                    }?:run {
+                        preview.visibility = View.INVISIBLE
+                        preview.setImageDrawable(null)
+                        preview.layoutParams.also {
+                            it.height = 0
+                        }
+                    }
                     content.setHtml(feed.content)
                 }
 

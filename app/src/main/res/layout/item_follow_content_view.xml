@@ -15,23 +15,36 @@
     android:layout_height="wrap_content">
 
     <com.google.android.material.button.MaterialButton
-            android:id="@+id/open_article"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/rectangle_bg_white_4dp"
-            android:backgroundTint="@color/black_effective"
-            android:gravity="center"
-            android:padding="@dimen/dp_4"
-            android:minHeight="0dp"
-            android:minWidth="0dp"
-            android:drawableEnd="@drawable/ic_arrow_right"
-            android:text="@string/following_feed_open_original_content"
-            android:textColor="@color/red_dark2"
-            android:textSize="@dimen/sp_12"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            tools:ignore="ContentDescription" />
+        android:id="@+id/open_article"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rectangle_bg_white_4dp"
+        android:backgroundTint="@color/black_effective"
+        android:gravity="center"
+        android:padding="@dimen/dp_4"
+        android:minHeight="0dp"
+        android:minWidth="0dp"
+        android:drawableEnd="@drawable/ic_arrow_right"
+        android:text="@string/following_feed_open_original_content"
+        android:textColor="@color/red_dark2"
+        android:textSize="@dimen/sp_12"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/preview"
+        android:layout_marginTop="@dimen/dp_6"
+        app:layout_constraintTop_toBottomOf="@id/title"
+        app:layout_constraintBottom_toTopOf="@id/content"
+        app:layout_constraintStart_toStartOf="@id/content"
+        app:layout_constraintEnd_toEndOf="@id/content"
+        android:scaleType="fitCenter"
+        android:orientation="horizontal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:contentDescription="@null" />
 
     <ImageView
         android:id="@+id/avatar"
@@ -103,7 +116,7 @@
         android:textSize="@dimen/sp_14"
         android:lineSpacingExtra="@dimen/dp_4"
         app:layout_constraintStart_toStartOf="@id/username"
-        app:layout_constraintTop_toBottomOf="@id/title"
+        app:layout_constraintTop_toBottomOf="@id/preview"
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <com.google.android.material.textview.MaterialTextView
