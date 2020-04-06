@@ -21,6 +21,7 @@ import top.easelink.framework.utils.dpToPx
 import top.easelink.framework.utils.getStatusBarHeight
 import top.easelink.lcg.R
 import top.easelink.lcg.mta.EVENT_OPEN_PROFILE
+import top.easelink.lcg.mta.EVENT_OPEN_PROFILE_PAGE
 import top.easelink.lcg.mta.EVENT_SUBSCRIBE_USER
 import top.easelink.lcg.mta.sendEvent
 import top.easelink.lcg.network.Client
@@ -68,6 +69,7 @@ class PopUpProfileDialog(
         }
 
         profile_btn.setOnClickListener {
+            sendEvent(EVENT_OPEN_PROFILE_PAGE)
             WebViewActivity.startWebViewWith(SERVER_BASE_URL + popUpInfo.profileUrl, it.context)
         }
 

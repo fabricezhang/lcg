@@ -2,12 +2,13 @@ package top.easelink.lcg.mta
 
 // Article
 const val EVENT_OPEN_ARTICLE = "open_article"
-const val EVENT_TAP_FOR_CODE = "tap_for_code"
-const val EVENT_OPEN_PREVIEW = "open_preview"
+const val EVENT_TAP_FOR_CODE = "tap_for_code" // 点击文章Code排版
+const val EVENT_OPEN_PREVIEW = "open_preview" // 打开文章预览页面
 
 // Profile
-const val EVENT_OPEN_PROFILE = "open_profile"
-const val EVENT_SUBSCRIBE_USER = "subscribe_user"
+const val EVENT_OPEN_PROFILE = "open_profile" // 点击用户头像
+const val EVENT_OPEN_PROFILE_PAGE = "open_profile_page" // 打开个人详情页
+const val EVENT_SUBSCRIBE_USER = "subscribe_user" // 收听用户
 
 // Forum
 const val EVENT_OPEN_FORUM = "open_forum"
