@@ -1,39 +1,40 @@
-package top.easelink.lcg.ui.main.message.viewmodel
+package top.easelink.lcg.ui.main.message.view
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import kotlinx.android.synthetic.main.item_conversation_view.view.*
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import kotlinx.android.synthetic.main.item_load_more_view.view.*
+import kotlinx.android.synthetic.main.item_notification_view.view.*
 import top.easelink.framework.base.BaseViewHolder
+import top.easelink.framework.customview.htmltextview.HtmlGlideImageGetter
+import top.easelink.framework.utils.dpToPx
 import top.easelink.lcg.R
-import top.easelink.lcg.ui.main.model.Conversation
-import top.easelink.lcg.ui.webview.view.WebViewActivity
-import top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL
+import top.easelink.lcg.ui.main.message.viewmodel.NotificationViewModel
+import top.easelink.lcg.ui.main.model.BaseNotification
 
 
-class ConversationListAdapter(
-    val mConversationVM: ConversationListViewModel
+class NotificationsAdapter(
+    val notificationViewModel: NotificationViewModel
 ) : RecyclerView.Adapter<BaseViewHolder>() {
 
-    private val mConversations: MutableList<Conversation> = mutableListOf()
+    private val mNotifications: MutableList<BaseNotification> = mutableListOf()
 
     override fun getItemCount(): Int {
-        return if (mConversations.isEmpty()) {
+        return if (mNotifications.isEmpty()) {
             1
         } else {
-            // todo add load more in the future
-            mConversations.size
+            mNotifications.size + 1
         }
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (mConversations.isEmpty()) {
+        return if (mNotifications.isEmpty()) {
             VIEW_TYPE_EMPTY
         } else {
-            if (position == mConversations.size) {
+            if (position == mNotifications.size) {
                 VIEW_TYPE_LOAD_MORE
             } else VIEW_TYPE_NORMAL
         }
@@ -48,7 +49,7 @@ class ConversationListAdapter(
             VIEW_TYPE_NORMAL -> { ArticleViewHolder(
                 LayoutInflater
                     .from(parent.context)
-                    .inflate(R.layout.item_conversation_view, parent, false))
+                    .inflate(R.layout.item_notification_view, parent, false))
             }
             VIEW_TYPE_LOAD_MORE -> LoadMoreViewHolder(
                 LayoutInflater
@@ -62,40 +63,40 @@ class ConversationListAdapter(
         }
     }
 
-    fun addItems(conversations: List<Conversation>) {
-        mConversations.addAll(conversations)
+    fun addItems(notifications: List<BaseNotification>) {
+        mNotifications.addAll(notifications)
         notifyDataSetChanged()
     }
 
-    fun appendItems(conversations: List<Conversation>) {
+    fun appendItems(notifications: List<BaseNotification>) {
         val count = itemCount
-        mConversations.addAll(conversations)
-        notifyItemRangeInserted(count - 1, conversations.size)
+        mNotifications.addAll(notifications)
+        notifyItemRangeInserted(count - 1, notifications.size)
     }
 
     fun clearItems() {
-        mConversations.clear()
+        mNotifications.clear()
     }
 
     inner class ArticleViewHolder internal constructor(private val view: View) :
         BaseViewHolder(view) {
         override fun onBind(position: Int) {
-            val conversation = mConversations[position]
+            val notification = mNotifications[position]
             view.apply {
-                date_time.text = conversation.lastMessageDateTime
-                conversation.avatar?.let {
-                    Glide
-                        .with(this)
-                        .load(it)
-                        .error(R.drawable.ic_noavatar_middle_gray)
-                        .into(conversation_user_avatar)
+                line.visibility = if(position == 0) View.GONE else View.VISIBLE
+                notification_title.apply {
+                    setHtml(notification.content, HtmlGlideImageGetter(
+                        context,
+                        this
+                    ))
+                    linksClickable = false
                 }
-                last_message.text = conversation.lastMessage
-                username.text = conversation.username
-                conversation_list_container.setOnClickListener {
-                    WebViewActivity.startWebViewWith(SERVER_BASE_URL + conversation.replyUrl, context)
-//                    context.startActivity(Intent(context, ConversationDetailActivity::class.java))
-                }
+                date_time.text = notification.dateTime
+                Glide.with(notification_avatar)
+                    .load(notification.avatar)
+                    .transform(RoundedCorners(2.dpToPx(view.context).toInt()))
+                    .placeholder(R.drawable.ic_noavatar_middle_gray)
+                    .into(notification_avatar)
             }
         }
 
@@ -108,8 +109,12 @@ class ConversationListAdapter(
     inner class LoadMoreViewHolder internal constructor(val view: View) :
         BaseViewHolder(view) {
         override fun onBind(position: Int) {
-            //TODO add fetch more in the future
-            view.loading.visibility = View.GONE
+            view.loading.visibility = View.VISIBLE
+            notificationViewModel.fetchMoreNotifications {
+                view.post {
+                    view.loading.visibility = View.GONE
+                }
+            }
         }
     }
 

@@ -1,5 +1,6 @@
-package top.easelink.lcg.ui.main.article.viewmodel;
+package top.easelink.lcg.ui.main.article.view;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.text.Html;
 import android.text.TextUtils;
@@ -9,12 +10,15 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,15 +30,22 @@ import top.easelink.framework.customview.htmltextview.HtmlGlideImageGetter;
 import top.easelink.framework.utils.ScreenUtilsKt;
 import top.easelink.lcg.R;
 import top.easelink.lcg.databinding.ItemPostViewBinding;
+import top.easelink.lcg.mta.EventHelperKt;
 import top.easelink.lcg.spipedata.UserData;
+import top.easelink.lcg.ui.main.article.viewmodel.ArticleAdapterListener;
 import top.easelink.lcg.ui.main.model.OpenArticleEvent;
 import top.easelink.lcg.ui.main.model.OpenLargeImageViewEvent;
 import top.easelink.lcg.ui.main.model.ReplyPostEvent;
 import top.easelink.lcg.ui.main.model.ScreenCaptureEvent;
 import top.easelink.lcg.ui.main.source.model.Post;
+import top.easelink.lcg.ui.profile.model.PopUpProfileInfo;
+import top.easelink.lcg.ui.profile.view.PopUpProfileDialog;
+import top.easelink.lcg.ui.profile.view.ProfileActivity;
 import top.easelink.lcg.ui.webview.view.WebViewActivity;
 import top.easelink.lcg.utils.FileUtilsKt;
 
+import static top.easelink.lcg.mta.MTAConstantKt.EVENT_CAPTURE_ARTICLE;
+import static top.easelink.lcg.ui.profile.view.ProfileActivityKt.KEY_PROFILE_URL;
 import static top.easelink.lcg.utils.CopyUtilsKt.copyContent;
 import static top.easelink.lcg.utils.ToastUtilsKt.showMessage;
 import static top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL;
@@ -46,7 +57,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     private static final int VIEW_TYPE_LOAD_MORE = 2;
     private ArticleAdapterListener mListener;
     private List<Post> mPostList = new ArrayList<>();
-
+    private WeakReference<FragmentManager> fragmentManager = null;
     public ArticleAdapter(ArticleAdapterListener listener) {
         mListener = listener;
     }
@@ -110,6 +121,10 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         mPostList.clear();
     }
 
+    public void setFragmentManager(FragmentManager fragmentManager) {
+        this.fragmentManager = new WeakReference<>(fragmentManager);
+    }
+
     public class PostViewHolder extends BaseViewHolder implements View.OnClickListener {
 
         private Post post;
@@ -140,8 +155,33 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                 }
                 mBinding.authorTextView.setText(post.getAuthor());
                 mBinding.dateTextView.setText(post.getDate());
+                mBinding.postAvatar.setOnClickListener(v -> {
+                    FragmentManager fm = fragmentManager.get();
+                    if (fm != null) {
+                        int[] location = new int[2];
+                        mBinding.postAvatar.getLocationInWindow(location);
+                        PopUpProfileInfo popUpInfo = new PopUpProfileInfo(
+                                location[0],
+                                location[1],
+                                post.getAvatar(),
+                                post.getAuthor(),
+                                post.getExtraInfo(),
+                                post.getFollowInfo(),
+                                post.getProfileUrl()
+                        );
+                        new PopUpProfileDialog(popUpInfo)
+                                .show(fm, PopUpProfileDialog.class.getSimpleName());
+                    } else {
+                        Intent intent = new Intent(v.getContext(), ProfileActivity.class);
+                        intent.putExtra(KEY_PROFILE_URL, post.getProfileUrl());
+                        v.getContext().startActivity(intent);
+                    }
+                });
                 Glide.with(mBinding.postAvatar)
                         .load(post.getAvatar())
+                        .transform(new RoundedCorners(
+                                (int)ScreenUtilsKt.dp2px(mBinding.contentTextView.getContext(), 4f)
+                        ))
                         .placeholder(R.drawable.ic_noavatar_middle)
                         .error(R.drawable.ic_noavatar_middle_gray)
                         .into(mBinding.postAvatar);
@@ -183,6 +223,10 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                 } else {
                     mBinding.btnGroup.setVisibility(View.GONE);
                 }
+                mBinding.contentTextView.setOnLongClickListener(v -> {
+                    // fix crashes on xiaomi devices
+                    return true;
+                });
             } catch (Exception e) {
                 Timber.e(e);
             }
@@ -210,6 +254,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                     }
                     break;
                 case R.id.btn_capture:
+                    EventHelperKt.sendEvent(EVENT_CAPTURE_ARTICLE);
                     Bitmap bmp = ScreenUtilsKt.convertViewToBitmap(itemView, Bitmap.Config.ARGB_8888);
                     if (bmp != null) {
                         String path = FileUtilsKt.saveImageToGallery(bmp, String.valueOf(System.currentTimeMillis()));
@@ -222,7 +267,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         }
     }
 
-    public class PostEmptyViewHolder extends BaseViewHolder{
+    public static class PostEmptyViewHolder extends BaseViewHolder{
 
         PostEmptyViewHolder(View view) {
             super(view);

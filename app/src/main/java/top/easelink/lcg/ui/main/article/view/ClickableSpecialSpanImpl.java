@@ -1,4 +1,4 @@
-package top.easelink.lcg.ui.main.article.viewmodel;
+package top.easelink.lcg.ui.main.article.view;
 
 import android.view.View;
 

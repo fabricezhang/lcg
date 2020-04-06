@@ -10,7 +10,6 @@ import timber.log.Timber
 import top.easelink.framework.threadpool.BackGroundPool
 import top.easelink.lcg.BuildConfig
 import top.easelink.lcg.config.AppConfig.followRedirectsEnable
-import top.easelink.lcg.ui.main.source.checkLoginState
 import top.easelink.lcg.ui.main.source.checkMessages
 import top.easelink.lcg.ui.main.source.extractFormHash
 import top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL
@@ -51,7 +50,6 @@ object Client: ApiRequest {
             .method(Connection.Method.GET)
             .followRedirects(followRedirectsEnable())
             .execute()
-            .bufferUp()
             .let {
                 setCookies(it.cookies())
                 it.parse().also { doc ->
@@ -60,6 +58,20 @@ object Client: ApiRequest {
             }
     }
 
+    fun sendAjaxRequest(query: String): String {
+        return Jsoup
+            .connect("$BASE_URL$query")
+            .timeout(TIME_OUT_LIMIT)
+            .ignoreHttpErrors(true)
+            .cookies(getCookies())
+            .method(Connection.Method.GET)
+            .followRedirects(false)
+            .execute()
+            .let {
+                setCookies(it.cookies())
+                it.body()
+            }
+    }
 
 
     override fun sendGetRequestWithUrl(url: String): Document {
@@ -71,7 +83,6 @@ object Client: ApiRequest {
             .method(Connection.Method.GET)
             .followRedirects(followRedirectsEnable())
             .execute()
-            .bufferUp()
             .let {
                 setCookies(it.cookies())
                 it.parse().also { doc ->
@@ -92,7 +103,6 @@ object Client: ApiRequest {
             .postDataCharset("gbk")
             .method(Connection.Method.POST)
             .execute()
-            .bufferUp()
             .also {
                 setCookies(it.cookies())
             }
@@ -100,13 +110,15 @@ object Client: ApiRequest {
 
     private fun checkResponse(doc: Document) {
         GlobalScope.launch(BackGroundPool){
+            // try update from hash which is used to send post request, ex: replay
             if (formHash.isNullOrEmpty()) {
                 formHash = extractFormHash(doc)
             }
             if (System.currentTimeMillis() - lastTime > CHECK_INTERVAL) {
                 lastTime = System.currentTimeMillis()
                 try {
-                    checkLoginState(doc)
+                    // TODO check login state is not stable
+//                    checkLoginState(doc)
                     checkMessages(doc)
                 } catch (e: Exception) {
                     Timber.e(e)

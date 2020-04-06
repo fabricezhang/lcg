@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:clickable="true"
+    android:focusable="true"
+    android:padding="@dimen/dp_10"
+    android:background="@drawable/login_bg">
+    <ImageView
+        android:id="@+id/profile_avatar"
+        android:layout_width="@dimen/dp_40"
+        android:layout_height="@dimen/dp_40"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@null"
+        tools:src="@drawable/ic_noavatar_middle"/>
+
+    <TextView
+        android:id="@+id/username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/TextStyle.Title.Sub"
+        android:layout_marginTop="@dimen/dp_5"
+        android:layout_marginStart="@dimen/dp_5"
+        app:layout_constraintStart_toEndOf="@id/profile_avatar"
+        app:layout_constraintTop_toTopOf="@id/profile_avatar"
+        tools:text="author"
+        />
+
+    <GridView
+        android:id="@+id/extra_info_grid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dp_10"
+        android:numColumns="2"
+        android:alwaysDrawnWithCache="true"
+        android:columnWidth="@dimen/dp_40"
+        android:layout_gravity="center_vertical"
+        android:gravity="start"
+        android:verticalSpacing="@dimen/dp_4"
+        android:horizontalSpacing="@dimen/dp_40"
+        android:stretchMode="columnWidth"
+        app:layout_constraintTop_toBottomOf="@id/profile_avatar"
+        tools:layout_height="@dimen/dp_200"
+        tools:background="@color/gray"
+        />
+
+    <LinearLayout
+        app:layout_constraintTop_toBottomOf="@id/extra_info_grid"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/dp_4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content">
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/profile_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:text="@string/open_profile_btn"
+            android:textSize="@dimen/sp_12"
+            android:layout_margin="@dimen/dp_6" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/subscribe_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:text="@string/subscribe_btn"
+            android:textSize="@dimen/sp_12"
+            android:layout_margin="@dimen/dp_6" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

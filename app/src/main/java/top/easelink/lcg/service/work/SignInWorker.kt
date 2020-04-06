@@ -5,6 +5,7 @@ import androidx.work.*
 import timber.log.Timber
 import top.easelink.lcg.BuildConfig
 import top.easelink.lcg.network.Client
+import java.net.SocketTimeoutException
 import java.util.concurrent.TimeUnit
 
 class SignInWorker(context: Context, workerParams: WorkerParameters) :
@@ -26,16 +27,31 @@ class SignInWorker(context: Context, workerParams: WorkerParameters) :
         private val WORK_INTERVAL: Long = if (BuildConfig.DEBUG) 15L else 8L
         private val DEFAULT_TIME_UNIT = if (BuildConfig.DEBUG) TimeUnit.SECONDS else TimeUnit.HOURS
 
-        private const val SIGN_IN_URL = "https://www.52pojie.cn/home.php?mod=task&do=apply&id=2"
+        private const val APPLY_TASK_URL = "https://www.52pojie.cn/home.php?mod=task&do=apply&id=2"
+        private const val DRAW_TASK_URL = "https://www.52pojie.cn/home.php?mod=task&do=draw&id=2"
+        private const val TASK_APPLIED = "已申请"
         const val TAG = "SignInWorker"
 
+        @Throws(SocketTimeoutException::class)
         fun sendSignInRequest() {
-            val alertInfo = Client.sendGetRequestWithUrl(SIGN_IN_URL)
+            Client.sendGetRequestWithUrl(APPLY_TASK_URL)
                 .getElementsByClass("alert_info")
                 ?.first()
                 ?.selectFirst("p")
                 ?.text()
-            Timber.d(alertInfo)
+                ?.takeIf {
+                    Timber.d(it)
+                    it.contains(TASK_APPLIED)
+                }?.run {
+                    Client.sendGetRequestWithUrl(DRAW_TASK_URL)
+                        .getElementsByClass("alert_info")
+                        ?.first()
+                        ?.selectFirst("p")
+                        ?.text()
+                        ?.let {
+                            Timber.d(it)
+                        }
+                }
         }
 
         fun startSignInWork(): Operation {

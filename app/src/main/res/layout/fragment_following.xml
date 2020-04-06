@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:focusable="true"
+    android:clickable="true"
+    android:gravity="center"
+    android:background="@color/white" >
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/follow_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+    <com.airbnb.lottie.LottieAnimationView
+        android:layout_gravity="center"
+        android:id="@+id/loading"
+        android:layout_width="@dimen/dp_40"
+        android:layout_height="@dimen/dp_40"
+        android:scaleType="fitCenter"
+        android:visibility="gone"
+        app:lottie_rawRes="@raw/sync_icon"
+        app:lottie_loop="true"
+        app:lottie_autoPlay="true"
+        app:layout_constraintStart_toStartOf="@id/notification_recycler_view"
+        app:layout_constraintEnd_toEndOf="@id/notification_recycler_view"
+        app:layout_constraintBottom_toBottomOf="@id/notification_recycler_view"
+        app:layout_constraintTop_toTopOf="@id/notification_recycler_view"
+        />
+</FrameLayout>

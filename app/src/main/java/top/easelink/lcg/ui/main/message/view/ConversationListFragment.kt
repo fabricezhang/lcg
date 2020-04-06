@@ -6,14 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_conversation_list.*
 import top.easelink.framework.topbase.TopFragment
 import top.easelink.lcg.R
-import top.easelink.lcg.ui.main.message.viewmodel.ConversationListAdapter
 import top.easelink.lcg.ui.main.message.viewmodel.ConversationListViewModel
 
 class ConversationListFragment: TopFragment() {
@@ -22,7 +21,7 @@ class ConversationListFragment: TopFragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        mConversationVM = ViewModelProviders.of(this).get(ConversationListViewModel::class.java)
+        mConversationVM = ViewModelProvider(this)[ConversationListViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -45,7 +44,10 @@ class ConversationListFragment: TopFragment() {
                 it.orientation = RecyclerView.VERTICAL
             }
             itemAnimator = DefaultItemAnimator()
-            adapter = ConversationListAdapter(mConversationVM)
+            adapter =
+                ConversationListAdapter(
+                    mConversationVM
+                )
             mConversationVM.apply {
                 conversations.observe(viewLifecycleOwner, Observer {
                     (adapter as ConversationListAdapter).run {

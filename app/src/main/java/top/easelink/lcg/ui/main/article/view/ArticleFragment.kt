@@ -19,7 +19,6 @@ import top.easelink.lcg.databinding.FragmentArticleBinding
 import top.easelink.lcg.ui.main.article.view.DownloadLinkDialog.Companion.newInstance
 import top.easelink.lcg.ui.main.article.view.ReplyPostDialog.Companion.newInstance
 import top.easelink.lcg.ui.main.article.view.ScreenCaptureDialog.Companion.TAG
-import top.easelink.lcg.ui.main.article.viewmodel.ArticleAdapter
 import top.easelink.lcg.ui.main.article.viewmodel.ArticleAdapterListener.Companion.FETCH_POST_INIT
 import top.easelink.lcg.ui.main.article.viewmodel.ArticleViewModel
 import top.easelink.lcg.ui.main.model.ReplyPostEvent
@@ -83,7 +82,11 @@ class ArticleFragment(private var articleUrl: String) : BaseFragment<FragmentArt
             }
             layoutManager = mLayoutManager
             itemAnimator = DefaultItemAnimator()
-            adapter = ArticleAdapter(viewModel)
+            adapter = ArticleAdapter(
+                viewModel
+            ).also {
+                it.setFragmentManager(childFragmentManager)
+            }
 
             viewModel.posts.observe(viewLifecycleOwner, androidx.lifecycle.Observer{
                 val url = it[0].replyUrl

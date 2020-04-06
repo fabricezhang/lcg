@@ -9,22 +9,8 @@
     android:focusable="true"
     android:clickable="true"
     android:gravity="center"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
     android:background="@color/white">
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fitsSystemWindows="true"
-        app:elevation="@dimen/dp_5">
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar"
-            style="@style/Toolbar"
-            android:elevation="@dimen/dp_4"
-            app:subtitleTextColor="@color/white"
-            app:title="@string/app_name"
-            app:titleTextAppearance="@style/Toolbar.TitleText"
-            app:titleTextColor="@color/white"
-            app:layout_scrollFlags="scroll|enterAlways"/>
-    </com.google.android.material.appbar.AppBarLayout>
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/main_tab"
         android:layout_width="match_parent"
@@ -43,6 +29,5 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:focusableInTouchMode="true"
-        android:focusable="true"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+        android:focusable="true"/>
 </LinearLayout>

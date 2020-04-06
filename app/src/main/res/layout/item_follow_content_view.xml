@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:minHeight="@dimen/dp_50"
+    android:clickable="true"
+    android:focusable="true"
+    android:paddingTop="@dimen/dp_10"
+    android:paddingStart="@dimen/dp_10"
+    android:paddingEnd="@dimen/dp_10"
+    android:descendantFocusability="blocksDescendants"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/open_article"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rectangle_bg_white_4dp"
+        android:backgroundTint="@color/black_effective"
+        android:gravity="center"
+        android:padding="@dimen/dp_4"
+        android:minHeight="0dp"
+        android:minWidth="0dp"
+        android:drawableEnd="@drawable/ic_arrow_right"
+        android:text="@string/following_feed_open_original_content"
+        android:textColor="@color/red_dark2"
+        android:textSize="@dimen/sp_12"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/preview"
+        android:layout_marginTop="@dimen/dp_6"
+        app:layout_constraintTop_toBottomOf="@id/title"
+        app:layout_constraintBottom_toTopOf="@id/content"
+        app:layout_constraintStart_toStartOf="@id/content"
+        app:layout_constraintEnd_toEndOf="@id/content"
+        android:scaleType="fitCenter"
+        android:orientation="horizontal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:contentDescription="@null" />
+
+    <ImageView
+        android:id="@+id/avatar"
+        android:layout_width="@dimen/dp_28"
+        android:layout_height="@dimen/dp_28"
+        android:layout_marginStart="@dimen/dp_2"
+        android:clickable="false"
+        android:longClickable="false"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/username"
+        app:layout_constraintVertical_bias="0"
+        tools:ignore="ContentDescription" />
+    
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/username"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:lines="1"
+        android:textStyle="bold"
+        android:textSize="@dimen/sp_14"
+        android:textColor="@color/black_effective"
+        android:layout_marginStart="@dimen/dp_40"
+        android:layout_marginTop="@dimen/dp_10"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/split_line"
+        app:layout_goneMarginTop="@dimen/dp_10"
+        tools:text="Fabrice"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/date_time"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/semi_gray"
+        android:textSize="@dimen/sp_12"
+        android:clickable="false"
+        android:longClickable="false"
+        android:textIsSelectable="false"
+        android:layout_marginEnd="@dimen/dp_4"
+        android:layout_marginStart="@dimen/dp_10"
+        android:ellipsize="end"
+        android:lines="1"
+        app:layout_constraintStart_toEndOf="@id/forum"
+        app:layout_constraintTop_toTopOf="@id/forum"
+        app:layout_constraintBottom_toBottomOf="@id/forum"
+        tools:text="2019-02-02 00:13" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/title"
+        android:layout_width="0dp"
+        android:textStyle="bold"
+        android:layout_height="wrap_content"
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:textSize="@dimen/sp_14"
+        android:textColor="@color/black_effective"
+        android:layout_marginTop="@dimen/dp_6"
+        android:layout_marginEnd="@dimen/dp_16"
+        app:layout_constraintStart_toStartOf="@id/username"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/username"
+        tools:text="吾爱破解开源APP"/>
+
+    <top.easelink.framework.customview.htmltextview.HtmlTextView
+        android:id="@+id/content"
+        android:layout_marginTop="@dimen/dp_6"
+        android:layout_marginEnd="@dimen/dp_10"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/sp_14"
+        android:lineSpacingExtra="@dimen/dp_4"
+        app:layout_constraintStart_toStartOf="@id/username"
+        app:layout_constraintTop_toBottomOf="@id/preview"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/forum"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/semi_gray"
+        android:textSize="@dimen/sp_12"
+        android:clickable="false"
+        android:longClickable="false"
+        android:textIsSelectable="false"
+        android:ellipsize="end"
+        android:lines="1"
+        android:layout_marginTop="@dimen/dp_6"
+        android:layout_marginBottom="@dimen/dp_4"
+        app:layout_constraintStart_toStartOf="@id/username"
+        app:layout_constraintTop_toBottomOf="@id/content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:text="水漫金山"/>
+
+    <View
+        android:id="@+id/split_line"
+        android:layout_marginBottom="@dimen/dp_10"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_1"
+        android:backgroundTint="@color/slight_light_gray"
+        android:background="@drawable/rectangle_bg"
+        android:visibility="visible"
+        app:layout_constraintWidth_percent="0.8"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

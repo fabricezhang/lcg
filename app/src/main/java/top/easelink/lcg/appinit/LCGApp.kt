@@ -6,6 +6,7 @@ import com.tencent.bugly.Bugly
 import com.tencent.bugly.beta.Beta
 import com.tencent.stat.StatService
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import timber.log.Timber.DebugTree
@@ -30,13 +31,21 @@ class LCGApp : Application() {
         } else {
             Timber.plant(ErrorReportTree())
         }
-
         initBulgy()
         initMTA()
         AppGuardStarter.init(this)
+        trySignIn()
+    }
+
+    private fun trySignIn() {
         GlobalScope.launch(BackGroundPool) {
+            delay(2000)
             if (AppConfig.autoSignEnable) {
-                SignInWorker.sendSignInRequest()
+                try {
+                    SignInWorker.sendSignInRequest()
+                } catch (e: Exception) {
+                    Timber.e(e)
+                }
             }
         }
     }

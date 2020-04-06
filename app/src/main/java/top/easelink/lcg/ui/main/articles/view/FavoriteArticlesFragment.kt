@@ -3,8 +3,9 @@ package top.easelink.lcg.ui.main.articles.view
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_favorite_articles.*
@@ -13,8 +14,10 @@ import top.easelink.lcg.BR
 import top.easelink.lcg.R
 import top.easelink.lcg.databinding.FragmentFavoriteArticlesBinding
 import top.easelink.lcg.ui.main.articles.viewmodel.ArticleFetcher
-import top.easelink.lcg.ui.main.articles.viewmodel.FavoriteArticlesAdapterV2
 import top.easelink.lcg.ui.main.articles.viewmodel.FavoriteArticlesViewModel
+import top.easelink.lcg.ui.webview.view.WebViewActivity
+import top.easelink.lcg.utils.WebsiteConstant.GET_FAVORITE_QUERY
+import top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL
 
 class FavoriteArticlesFragment : BaseFragment<FragmentFavoriteArticlesBinding, FavoriteArticlesViewModel>() {
 
@@ -31,7 +34,7 @@ class FavoriteArticlesFragment : BaseFragment<FragmentFavoriteArticlesBinding, F
     }
 
     override fun getViewModel(): FavoriteArticlesViewModel {
-        return ViewModelProviders.of(this).get(FavoriteArticlesViewModel::class.java)
+        return ViewModelProvider(this)[FavoriteArticlesViewModel::class.java]
     }
 
     override fun onViewCreated(
@@ -50,10 +53,12 @@ class FavoriteArticlesFragment : BaseFragment<FragmentFavoriteArticlesBinding, F
                 orientation = RecyclerView.VERTICAL
             }
             itemAnimator = DefaultItemAnimator()
-            adapter = FavoriteArticlesAdapterV2(viewModel)
+            val adapter = FavoriteArticlesAdapter(viewModel)
+            this.adapter = adapter
+            ItemTouchHelper(ItemTouchHelperCallback(adapter)).attachToRecyclerView(this)
         }
         viewModel.articles.observe(viewLifecycleOwner, Observer {
-            (viewDataBinding.recyclerView.adapter as? FavoriteArticlesAdapterV2)?.apply {
+            (viewDataBinding.recyclerView.adapter as? FavoriteArticlesAdapter)?.apply {
                 clearItems()
                 addItems(it)
             }
@@ -68,6 +73,7 @@ class FavoriteArticlesFragment : BaseFragment<FragmentFavoriteArticlesBinding, F
                 when (it.itemId) {
                     R.id.action_remove_all -> viewModel.removeAllFavorites()
                     R.id.action_sync_my_favorites -> viewModel.syncFavorites()
+                    R.id.action_manage_favorites -> WebViewActivity.startWebViewWith(SERVER_BASE_URL + GET_FAVORITE_QUERY, context)
                     else -> {
                         // to add mores
                     }

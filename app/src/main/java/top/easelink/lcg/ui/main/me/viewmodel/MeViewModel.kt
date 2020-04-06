@@ -1,5 +1,6 @@
 package top.easelink.lcg.ui.main.me.viewmodel
 
+import android.webkit.JavascriptInterface
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.GlobalScope
@@ -7,21 +8,27 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import top.easelink.framework.base.BaseFragment
 import top.easelink.framework.threadpool.ApiPool
+import top.easelink.lcg.R
 import top.easelink.lcg.network.Client
+import top.easelink.lcg.service.web.WebViewWrapper
 import top.easelink.lcg.spipedata.UserData
 import top.easelink.lcg.ui.main.me.model.UserInfo
+import top.easelink.lcg.ui.main.model.AntiScrapingException
 import top.easelink.lcg.ui.main.source.parseUserInfo
 import top.easelink.lcg.utils.WebsiteConstant.PROFILE_URL
+import top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL
 import top.easelink.lcg.utils.clearCookies
+import top.easelink.lcg.utils.showMessage
 import java.lang.ref.WeakReference
+import java.net.SocketTimeoutException
 
 class MeViewModel: ViewModel() {
 
     private var mFragment: WeakReference<BaseFragment<*,*>>? = null
+    private var isResolvingAntiScrapingException: Boolean = false
 
     val mLoginState = MutableLiveData<Boolean>()
     val mUserInfo = MutableLiveData<UserInfo>()
-
 
     fun setFragment(fragment: BaseFragment<*,*>) {
         mFragment = WeakReference(fragment)
@@ -39,6 +46,8 @@ class MeViewModel: ViewModel() {
                         wuaiCoin = coin,
                         credit = credit,
                         groupInfo = group,
+                        enthusiasticValue = enthusiasticValue,
+                        answerRate = answerRate,
                         signInStateUrl = null
                     )
             }
@@ -55,7 +64,7 @@ class MeViewModel: ViewModel() {
                     UserData.clearAll()
                     mLoginState.postValue(false)
                 } else if (mUserInfo.value != userInfo) {
-                    // login successfully but userInfo not changed
+                    // login successfully but userInfo changed
                     mLoginState.postValue(true)
                     mUserInfo.postValue(userInfo)
                     UserData.isLoggedIn = true
@@ -73,9 +82,26 @@ class MeViewModel: ViewModel() {
                 }
             } catch (e: Exception) {
                 Timber.e(e)
-                mLoginState.postValue(false)
+                when(e) {
+                    is SocketTimeoutException -> showMessage(R.string.network_error) // 网络错误，不认为是登陆异常
+                    is AntiScrapingException -> tryResolveAntiScraping() // 针对触发反爬虫机制的处理
+                    else -> {
+                        mLoginState.postValue(false)
+                    }
+                }
             }
         }
     }
 
+    private fun tryResolveAntiScraping() {
+        if (isResolvingAntiScrapingException) return
+        isResolvingAntiScrapingException = true
+        WebViewWrapper.getInstance().loadUrl("$SERVER_BASE_URL${PROFILE_URL}", ::parseHtml)
+    }
+
+    @JavascriptInterface
+    fun parseHtml(html: String) {
+        Timber.d(html)
+        fetchUserInfoDirect()
+    }
 }

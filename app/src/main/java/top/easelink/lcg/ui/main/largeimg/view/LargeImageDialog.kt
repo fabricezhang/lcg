@@ -10,6 +10,9 @@ import top.easelink.lcg.R
 
 class LargeImageDialog(private val imageUrl: String) : TopDialog() {
 
+    // try fix no empty constructor issue
+    constructor(): this("")
+
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {

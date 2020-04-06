@@ -232,6 +232,12 @@
             android:id="@+id/cardview_me_notifications"
             layout="@layout/cardview_me_notifications"/>
 
+        <FrameLayout
+            android:id="@+id/child_root"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/cardview_me_notifications"/>
+
     </RelativeLayout>
 
 </layout>

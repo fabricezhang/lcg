@@ -1,4 +1,4 @@
-package top.easelink.lcg.ui.main.articles.viewmodel
+package top.easelink.lcg.ui.main.articles.view
 
 import android.view.LayoutInflater
 import android.view.View
@@ -12,9 +12,13 @@ import org.greenrobot.eventbus.EventBus
 import top.easelink.framework.base.BaseViewHolder
 import top.easelink.lcg.R
 import top.easelink.lcg.databinding.ItemArticleEmptyViewBinding
+import top.easelink.lcg.mta.EVENT_OPEN_PREVIEW
+import top.easelink.lcg.mta.sendEvent
 import top.easelink.lcg.spipedata.UserData
 import top.easelink.lcg.ui.main.article.view.PostPreviewDialog
+import top.easelink.lcg.ui.main.articles.viewmodel.ArticleEmptyItemViewModel
 import top.easelink.lcg.ui.main.articles.viewmodel.ArticleEmptyItemViewModel.ArticleEmptyItemViewModelListener
+import top.easelink.lcg.ui.main.articles.viewmodel.ArticleFetcher
 import top.easelink.lcg.ui.main.model.OpenArticleEvent
 import top.easelink.lcg.ui.main.source.model.Article
 import java.lang.ref.WeakReference
@@ -113,6 +117,7 @@ class ArticlesAdapter(
             val article = mArticleList[position]
             view.layout.apply {
                 setOnLongClickListener {
+                    sendEvent(EVENT_OPEN_PREVIEW)
                     fragmentManager?.get()?.let {
                         PostPreviewDialog.newInstance(mArticleList[position].url)
                             .show(it, PostPreviewDialog.TAG)
@@ -173,7 +178,10 @@ class ArticlesAdapter(
     inner class EmptyViewHolder internal constructor(private val mBinding: ItemArticleEmptyViewBinding) :
         BaseViewHolder(mBinding.root), ArticleEmptyItemViewModelListener {
         override fun onBind(position: Int) {
-            val emptyItemViewModel = ArticleEmptyItemViewModel(this)
+            val emptyItemViewModel =
+                ArticleEmptyItemViewModel(
+                    this
+                )
             mBinding.viewModel = emptyItemViewModel
         }
 

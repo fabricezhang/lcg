@@ -49,7 +49,6 @@ import kotlin.system.exitProcess
 
 class MainActivity : TopActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
     private var lastBackPressed = 0L
-
     private var bubbleView: View? = null
 
     override fun onBackPressed() {
@@ -72,6 +71,7 @@ class MainActivity : TopActivity(), BottomNavigationView.OnNavigationItemSelecte
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         EventBus.getDefault().register(this)
+        setupDrawer(toolbar)
         setupBottomNavMenu()
         showFragment(RecommendFragment::class.java)
         checkPermission()
@@ -82,7 +82,7 @@ class MainActivity : TopActivity(), BottomNavigationView.OnNavigationItemSelecte
         EventBus.getDefault().unregister(this)
     }
 
-    fun setupDrawer(toolbar: Toolbar) {
+    private fun setupDrawer(toolbar: Toolbar) {
         val header = layoutInflater.inflate(R.layout.nav_header, navigation_view, false)
         navigation_view.addHeaderView(header)
         app_version.text = BuildConfig.VERSION_NAME
@@ -103,6 +103,10 @@ class MainActivity : TopActivity(), BottomNavigationView.OnNavigationItemSelecte
                 }
                 R.id.nav_item_portal -> {
                     WebViewActivity.startWebViewWith(SERVER_BASE_URL, this)
+                    true
+                }
+                R.id.nav_item_jrs -> {
+                    WebViewActivity.startWebViewWith(AppConfig.getJrsUrl(), this)
                     true
                 }
                 R.id.nav_item_setting -> {
@@ -166,7 +170,7 @@ class MainActivity : TopActivity(), BottomNavigationView.OnNavigationItemSelecte
         val info = event.notificationInfo
         if (info.isNotEmpty()) {
             showMessage(getString(R.string.notification_arrival))
-            showBubbleView(2)
+            showBubbleView(PRIVATE_MESSAGE_POS)
         }
     }
 
@@ -190,13 +194,11 @@ class MainActivity : TopActivity(), BottomNavigationView.OnNavigationItemSelecte
 
     @Suppress("SameParameterValue")
     private fun removeBubbleView(pos: Int) {
-        bubbleView?.let {
-            // Try show badge on bottom nav bar
-            val menuView= bottom_navigation.getChildAt(0) as? BottomNavigationMenuView
-            val itemView = menuView?.getChildAt(pos) as? BottomNavigationItemView
-            itemView?.removeView(bubbleView)
-            bubbleView = null
-        }
+        // Try show badge on bottom nav bar
+        val menuView= bottom_navigation.getChildAt(0) as? BottomNavigationMenuView
+        val itemView = menuView?.getChildAt(pos) as? BottomNavigationItemView
+        itemView?.removeView(bubbleView)
+        bubbleView = null
     }
 
     private fun showFragmentWithTag(tag: String): Boolean {
@@ -237,7 +239,7 @@ class MainActivity : TopActivity(), BottomNavigationView.OnNavigationItemSelecte
         } else {
             when (item.itemId) {
                 R.id.action_message -> {
-                    removeBubbleView(2)
+                    removeBubbleView(PRIVATE_MESSAGE_POS)
                     showFragment(MessageFragment::class.java)
                 }
                 R.id.action_forum_navigation -> showFragment(ForumNavigationV3Fragment::class.java)
@@ -268,7 +270,7 @@ class MainActivity : TopActivity(), BottomNavigationView.OnNavigationItemSelecte
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == WRITE_EXTERNAL_CODE) {
-            if (grantResults.isNotEmpty() && grantResults[0] != PERMISSION_GRANTED) {
+            if (grantResults.isEmpty() || (grantResults.isNotEmpty() && grantResults[0] != PERMISSION_GRANTED)) {
                 showMessage(R.string.permission_denied)
             }
         }
@@ -276,5 +278,7 @@ class MainActivity : TopActivity(), BottomNavigationView.OnNavigationItemSelecte
 
     companion object {
         const val WRITE_EXTERNAL_CODE = 1
+
+        private const val PRIVATE_MESSAGE_POS = 2
     }
 }

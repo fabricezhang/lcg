@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,7 +15,6 @@ import top.easelink.lcg.R
 import top.easelink.lcg.appinit.LCGApp
 import top.easelink.lcg.databinding.FragmentArticlesBinding
 import top.easelink.lcg.ui.main.articles.viewmodel.ArticleFetcher
-import top.easelink.lcg.ui.main.articles.viewmodel.ArticlesAdapter
 import top.easelink.lcg.ui.main.articles.viewmodel.ArticlesViewModel
 
 class ArticlesFragment : BaseFragment<FragmentArticlesBinding, ArticlesViewModel>() {
@@ -35,7 +34,7 @@ class ArticlesFragment : BaseFragment<FragmentArticlesBinding, ArticlesViewModel
     }
 
     override fun getViewModel(): ArticlesViewModel {
-        return ViewModelProviders.of(this).get(ArticlesViewModel::class.java)
+        return ViewModelProvider(this)[ArticlesViewModel::class.java]
     }
 
     private fun scrollToTop() {
@@ -97,8 +96,10 @@ class ArticlesFragment : BaseFragment<FragmentArticlesBinding, ArticlesViewModel
             }
             layoutManager = mLayoutManager
             itemAnimator = DefaultItemAnimator()
-            adapter = ArticlesAdapter(viewModel).also {
-                it.setFragmentManager(fragmentManager?:baseActivity.supportFragmentManager)
+            adapter = ArticlesAdapter(
+                viewModel
+            ).also {
+                it.setFragmentManager(childFragmentManager)
             }
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrollStateChanged(

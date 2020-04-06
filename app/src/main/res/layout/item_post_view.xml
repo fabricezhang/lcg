@@ -65,6 +65,7 @@
                 android:layout_marginTop="@dimen/dp_10"
                 android:textIsSelectable="true"
                 android:textSize="@dimen/sp_14"
+                android:lineSpacingExtra="@dimen/dp_4"
                 app:layout_constraintTop_toBottomOf="@id/post_avatar"
                 app:layout_constraintStart_toStartOf="@id/post_avatar"
                 app:layout_constraintEnd_toEndOf="parent"

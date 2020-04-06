@@ -11,6 +11,10 @@
             android:icon="@drawable/ic_chrome"
             android:title="@string/open_portal_page" />
         <item
+            android:id="@+id/nav_item_jrs"
+            android:icon="@drawable/ic_basketball"
+            android:title="@string/open_jrs_page" />
+        <item
             android:id="@+id/nav_item_setting"
             android:icon="@drawable/ic_setting"
             android:title="@string/setting" />

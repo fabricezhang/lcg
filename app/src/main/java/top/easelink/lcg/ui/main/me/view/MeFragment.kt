@@ -21,6 +21,7 @@ import top.easelink.framework.base.BaseFragment
 import top.easelink.framework.threadpool.ImmediatePool
 import top.easelink.framework.threadpool.Main
 import top.easelink.framework.utils.addFragmentInActivity
+import top.easelink.framework.utils.addFragmentInFragment
 import top.easelink.framework.utils.bitmapBlur
 import top.easelink.framework.utils.convertViewToBitmap
 import top.easelink.lcg.BR
@@ -28,6 +29,7 @@ import top.easelink.lcg.R
 import top.easelink.lcg.databinding.FragmentMeBinding
 import top.easelink.lcg.ui.main.about.view.AboutFragment
 import top.easelink.lcg.ui.main.articles.view.FavoriteArticlesFragment
+import top.easelink.lcg.ui.main.follow.view.FollowFragment
 import top.easelink.lcg.ui.main.login.view.LoginHintDialog
 import top.easelink.lcg.ui.main.me.viewmodel.MeViewModel
 import top.easelink.lcg.ui.main.model.OpenForumEvent
@@ -102,8 +104,8 @@ class MeFragment : BaseFragment<FragmentMeBinding, MeViewModel>() {
                 showFragment(FavoriteArticlesFragment())
                 findViewById<View>(R.id.badge).visibility = View.GONE
             }
-            icon_notifications.btn_icon.setImageResource(R.drawable.ic_favorite)
-            icon_notifications.tv_icon.setText(R.string.ic_favorite)
+            btn_icon.setImageResource(R.drawable.ic_favorite)
+            tv_icon.setText(R.string.ic_favorite)
         }
         icon_my_articles?.apply {
             setOnClickListener {
@@ -113,15 +115,22 @@ class MeFragment : BaseFragment<FragmentMeBinding, MeViewModel>() {
                         getString(R.string.ic_my_articles), MY_ARTICLES_URL, false
                     ))
             }
-            icon_my_articles.btn_icon.setImageResource(R.drawable.ic_my_articles)
-            icon_my_articles.tv_icon.setText(R.string.ic_my_articles)
+            btn_icon.setImageResource(R.drawable.ic_my_articles)
+            tv_icon.setText(R.string.ic_my_articles)
+        }
+        icon_follow?.apply {
+            setOnClickListener {
+                showFragment(FollowFragment())
+            }
+            btn_icon.setImageResource(R.drawable.ic_follow)
+            tv_icon.setText(R.string.ic_follow)
         }
         icon_feedback?.apply {
             setOnClickListener {
                 showFragment(AboutFragment())
             }
-            icon_feedback.btn_icon.setImageResource(R.drawable.ic_about)
-            icon_feedback.tv_icon.setText(R.string.ic_feedback)
+            btn_icon.setImageResource(R.drawable.ic_about)
+            tv_icon.setText(R.string.ic_feedback)
         }
     }
 
@@ -147,6 +156,10 @@ class MeFragment : BaseFragment<FragmentMeBinding, MeViewModel>() {
                 R.id.clRootView
             )
         }
+    }
+
+    private fun showChildFragment(fragment: Fragment) {
+        addFragmentInFragment(childFragmentManager, fragment, R.id.child_root)
     }
 
     override fun onResume() {

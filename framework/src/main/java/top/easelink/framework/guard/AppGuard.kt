@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Process
 import timber.log.Timber
+import top.easelink.framework.BuildConfig
 
 class AppGuard(
     private var mContext: Context,
@@ -12,9 +13,11 @@ class AppGuard(
 ): Thread.UncaughtExceptionHandler{
 
     override fun uncaughtException(t: Thread?, e: Throwable?) {
-        restartApp(mContext)
-        mDefaultUncaughtExceptionHandler?.uncaughtException(t, e)
-        Process.killProcess(Process.myPid())
+        if (!BuildConfig.DEBUG) {
+            restartApp(mContext)
+            mDefaultUncaughtExceptionHandler?.uncaughtException(t, e)
+            Process.killProcess(Process.myPid())
+        }
     }
 
     private fun restartApp(context: Context) {

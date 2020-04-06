@@ -6,8 +6,8 @@ apply plugin: "kotlin-kapt"
 // App Version is composed by Major * 10000 + Minor * 100 + Patch
 // each version starts from 0
 def versionMajor = 1
-def versionMinor = 7
-def versionPatch = 6
+def versionMinor = 8
+def versionPatch = 1
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion

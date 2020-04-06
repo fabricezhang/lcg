@@ -5,3 +5,5 @@ class BlockException(val alertMessage: String) : Exception()
 class NetworkException : Exception()
 
 class LoginRequiredException: Exception()
+
+class AntiScrapingException: Exception()

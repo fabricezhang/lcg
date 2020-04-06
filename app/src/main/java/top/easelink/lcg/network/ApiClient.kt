@@ -18,6 +18,7 @@ import java.util.concurrent.TimeUnit
 
 object ApiClient: ApiRequest {
 
+    private const val TIME_OUT = 15L
     private var mClient: OkHttpClient
     init {
         val cacheDirectory = File(LCGApp.context.cacheDir, "okhttp_cache")
@@ -25,10 +26,10 @@ object ApiClient: ApiRequest {
             PersistentCookieJar(SetCookieCache(), SharedPrefsCookiePersistor(LCGApp.context))
         mClient = OkHttpClient
             .Builder()
-            .callTimeout(10, TimeUnit.SECONDS)
-            .connectTimeout(10, TimeUnit.SECONDS)
-            .readTimeout(10, TimeUnit.SECONDS)
-            .writeTimeout(10, TimeUnit.SECONDS)
+            .callTimeout(TIME_OUT, TimeUnit.SECONDS)
+            .connectTimeout(TIME_OUT, TimeUnit.SECONDS)
+            .readTimeout(TIME_OUT, TimeUnit.SECONDS)
+            .writeTimeout(TIME_OUT, TimeUnit.SECONDS)
             .addInterceptor(CacheControlInterceptor)
             .cookieJar(cookieJar)
             .followRedirects(followRedirects = followRedirectsEnable())

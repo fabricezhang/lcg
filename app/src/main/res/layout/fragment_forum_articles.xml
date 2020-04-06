@@ -11,49 +11,50 @@
             type="top.easelink.lcg.ui.main.articles.viewmodel.ForumArticlesViewModel"/>
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/clRootView"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipChildren="false"
-        android:background="@color/white"
-        android:focusable="true"
-        android:clickable="true">
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/article_toolbar"
-            app:layout_constraintTop_toTopOf="parent"
-            style="@style/Toolbar"
-            app:title="@{viewModel.title}"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_scrollFlags="scroll|enterAlways"
-            app:subtitleTextColor="@color/white"
-            app:titleTextAppearance="@style/Toolbar.TitleText"
-            app:titleTextColor="@color/white" />
-
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/forum_tab"
+        android:layout_height="match_parent">
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@id/article_toolbar"
-            app:tabMode="scrollable" />
+            android:layout_height="match_parent"
+            android:clipChildren="false"
+            android:background="@color/white"
+            android:focusable="true"
+            android:clickable="true"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/article_toolbar"
+                app:layout_constraintTop_toTopOf="parent"
+                style="@style/Toolbar"
+                app:title="@{viewModel.title}"
+                app:layout_scrollFlags="scroll|enterAlways"
+                app:subtitleTextColor="@color/white"
+                app:titleTextAppearance="@style/Toolbar.TitleText"
+                app:titleTextColor="@color/white" />
 
-        <top.easelink.framework.customview.ScrollChildSwipeRefreshLayout
-            android:id="@+id/refresh_layout"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            app:refreshing="@{viewModel.isLoading}"
-            app:layout_constraintTop_toBottomOf="@id/forum_tab">
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_view"
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/forum_tab"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:visibility="gone"
-                tools:visibility="visible"/>
-        </top.easelink.framework.customview.ScrollChildSwipeRefreshLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                android:layout_below="@id/article_toolbar"
+                app:tabMode="scrollable" />
+
+            <top.easelink.framework.customview.ScrollChildSwipeRefreshLayout
+                android:id="@+id/refresh_layout"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_alignParentBottom="true"
+                android:layout_below="@id/forum_tab"
+                app:refreshing="@{viewModel.isLoading}" >
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone"
+                    tools:visibility="visible"/>
+            </top.easelink.framework.customview.ScrollChildSwipeRefreshLayout>
+        </RelativeLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </layout>

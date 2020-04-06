@@ -43,7 +43,9 @@
             android:screenOrientation="portrait">
         </activity>
         <activity android:name=".ui.webview.view.WebViewActivity"
-            android:launchMode="singleTask"
+            android:launchMode="singleInstance"
+            android:configChanges="orientation|keyboardHidden|navigation|screenSize"
+            android:hardwareAccelerated="true"
             android:screenOrientation="portrait">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
@@ -75,6 +77,10 @@
         </activity>
         <activity android:name=".ui.setting.view.SettingActivity"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".ui.profile.view.ProfileActivity"
+            android:launchMode="standard"
             android:screenOrientation="portrait">
         </activity>
         <activity

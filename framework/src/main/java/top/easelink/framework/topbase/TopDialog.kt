@@ -2,11 +2,9 @@ package top.easelink.framework.topbase
 
 import android.app.Dialog
 import android.content.Context
-import android.content.DialogInterface
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.view.KeyEvent
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.RelativeLayout
@@ -42,21 +40,16 @@ abstract class TopDialog : DialogFragment() {
         }
     }
 
-    override fun show(
-        fragmentManager: FragmentManager,
-        tag: String?
-    ) {
-        dialog?.setOnKeyListener {
-                _: DialogInterface?, keyCode: Int, event: KeyEvent
-            -> keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_DOWN
-        }
-        val transaction = fragmentManager.beginTransaction()
-        val prevFragment = fragmentManager.findFragmentByTag(tag)
-        if (prevFragment != null) {
-            transaction.remove(prevFragment)
-        }
-        transaction.addToBackStack(null)
-        show(transaction, tag)
+    override fun show(fragmentManager: FragmentManager, tag: String?) {
+        fragmentManager
+            .beginTransaction()
+            .run {
+                fragmentManager.findFragmentByTag(tag)?.let {
+                    remove(it)
+                }
+                addToBackStack(null)
+                show(this, tag)
+            }
     }
 
     protected fun dismissDialog() {

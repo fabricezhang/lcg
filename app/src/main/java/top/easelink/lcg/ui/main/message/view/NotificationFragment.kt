@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -13,7 +13,6 @@ import kotlinx.android.synthetic.main.fragment_notification.*
 import top.easelink.framework.topbase.TopFragment
 import top.easelink.lcg.R
 import top.easelink.lcg.ui.main.message.viewmodel.NotificationViewModel
-import top.easelink.lcg.ui.main.message.viewmodel.NotificationsAdapter
 
 class NotificationFragment: TopFragment(){
 
@@ -29,7 +28,7 @@ class NotificationFragment: TopFragment(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        notificationViewModel = ViewModelProviders.of(this).get(NotificationViewModel::class.java)
+        notificationViewModel = ViewModelProvider(this)[NotificationViewModel::class.java]
         setupRecyclerView()
         notificationViewModel.fetchNotifications()
     }

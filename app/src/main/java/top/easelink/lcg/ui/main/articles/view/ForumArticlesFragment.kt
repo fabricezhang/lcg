@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
-import com.tencent.stat.StatService
 import kotlinx.android.synthetic.main.fragment_forum_articles.*
 import timber.log.Timber
 import top.easelink.framework.base.BaseFragment
@@ -19,6 +18,7 @@ import top.easelink.lcg.R
 import top.easelink.lcg.appinit.LCGApp
 import top.easelink.lcg.databinding.FragmentForumArticlesBinding
 import top.easelink.lcg.mta.CHANGE_THREAD
+import top.easelink.lcg.mta.sendEvent
 import top.easelink.lcg.ui.main.articles.viewmodel.*
 import top.easelink.lcg.ui.main.source.model.ForumThread
 
@@ -113,7 +113,7 @@ class ForumArticlesFragment : BaseFragment<FragmentForumArticlesBinding, ForumAr
             }
             addOnTabSelectedListener(object : OnTabSelectedListener {
                 override fun onTabSelected(tab: TabLayout.Tab) {
-                    StatService.trackCustomEvent(context, CHANGE_THREAD)
+                    sendEvent(CHANGE_THREAD)
                     viewModel.initUrlAndFetch(
                         url = forumThreadList[tab.position].threadUrl,
                         fetchType = ArticleFetcher.FetchType.FETCH_INIT
@@ -141,7 +141,9 @@ class ForumArticlesFragment : BaseFragment<FragmentForumArticlesBinding, ForumAr
                         orientation = RecyclerView.VERTICAL
                     }
                     itemAnimator = DefaultItemAnimator()
-                    adapter = ArticlesAdapter(viewModel).also {
+                    adapter = ArticlesAdapter(
+                        viewModel
+                    ).also {
                         it.setFragmentManager(fragmentManager?:baseActivity.supportFragmentManager)
                     }
                 }

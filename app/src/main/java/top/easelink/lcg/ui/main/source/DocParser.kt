@@ -2,6 +2,7 @@ package top.easelink.lcg.ui.main.source
 
 import androidx.annotation.WorkerThread
 import org.greenrobot.eventbus.EventBus
+import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 import timber.log.Timber
@@ -9,8 +10,10 @@ import top.easelink.lcg.R
 import top.easelink.lcg.appinit.LCGApp
 import top.easelink.lcg.spipedata.UserData
 import top.easelink.lcg.ui.main.me.model.UserInfo
+import top.easelink.lcg.ui.main.model.AntiScrapingException
 import top.easelink.lcg.ui.main.model.NewMessageEvent
 import top.easelink.lcg.ui.main.model.NotificationInfo
+import top.easelink.lcg.ui.profile.model.ExtraUserInfo
 
 @WorkerThread
 fun checkLoginState(doc: Document) {
@@ -29,14 +32,28 @@ fun checkLoginState(doc: Document) {
 }
 
 @WorkerThread
-@Throws(NullPointerException::class)
+fun parseExtraUserInfoProfilePage(content: String): List<ExtraUserInfo> {
+    return Jsoup.parse(content).let {
+        it.getElementsByTag("dt").zip(it.getElementsByTag("dd")).map {pairs ->
+            ExtraUserInfo(pairs.first.text(), pairs.second.text())
+        }
+    }
+}
+
+@WorkerThread
+@Throws(NullPointerException::class, AntiScrapingException::class)
 fun parseUserInfo(doc: Document): UserInfo {
     with(doc) {
         val userName = doc.selectFirst("h2.mt")?.text()
         val notif = LCGApp.context.getString(R.string.login_or_register)
         when {
             userName.isNullOrEmpty() -> {
-                return UserInfo(getElementById("messagetext")?.text())
+                val message = getElementById("messagetext")?.text()
+                if (message.isNullOrEmpty()) {
+                    throw AntiScrapingException()
+                } else {
+                    return UserInfo(message)
+                }
             }
             userName == notif -> {
                 return UserInfo(notif)
