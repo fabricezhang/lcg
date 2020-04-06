@@ -1,4 +1,4 @@
-package top.easelink.lcg.ui.main.article.viewmodel;
+package top.easelink.lcg.ui.main.article.view;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -31,6 +31,7 @@ import top.easelink.framework.utils.ScreenUtilsKt;
 import top.easelink.lcg.R;
 import top.easelink.lcg.databinding.ItemPostViewBinding;
 import top.easelink.lcg.spipedata.UserData;
+import top.easelink.lcg.ui.main.article.viewmodel.ArticleAdapterListener;
 import top.easelink.lcg.ui.main.model.OpenArticleEvent;
 import top.easelink.lcg.ui.main.model.OpenLargeImageViewEvent;
 import top.easelink.lcg.ui.main.model.ReplyPostEvent;
@@ -163,7 +164,8 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                                 post.getAvatar(),
                                 post.getAuthor(),
                                 post.getExtraInfo(),
-                                post.getFollowInfo()
+                                post.getFollowInfo(),
+                                post.getProfileUrl()
                         );
                         new PopUpProfileDialog(popUpInfo)
                                 .show(fm, PopUpProfileDialog.class.getSimpleName());
@@ -219,12 +221,9 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                 } else {
                     mBinding.btnGroup.setVisibility(View.GONE);
                 }
-                mBinding.contentTextView.setOnLongClickListener(new View.OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View v) {
-                        // fix crashes on xiaomi devices
-                        return true;
-                    }
+                mBinding.contentTextView.setOnLongClickListener(v -> {
+                    // fix crashes on xiaomi devices
+                    return true;
                 });
             } catch (Exception e) {
                 Timber.e(e);

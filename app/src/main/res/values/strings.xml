@@ -90,7 +90,8 @@
     <string name="clear_cookie">本地信息已清除</string>
 
     <!-- Profile Dialog   -->
-    <string name="subscribe_btn">收听</string>
+    <string name="subscribe_btn">收听TA</string>
+    <string name="open_profile_btn">查看TA</string>
     <string name="subscribe_failed">收听失败，请尝试从网站操作</string>
 
     <!--Notification-->

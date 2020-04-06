@@ -48,18 +48,30 @@
         tools:background="@color/gray"
         />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/subscribe_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:layout_marginTop="@dimen/dp_20"
-        android:text="@string/subscribe_btn"
-        android:textSize="@dimen/sp_12"
+    <LinearLayout
         app:layout_constraintTop_toBottomOf="@id/extra_info_grid"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        />
+        android:gravity="center"
+        android:layout_marginTop="@dimen/dp_4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content">
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/profile_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:text="@string/open_profile_btn"
+            android:textSize="@dimen/sp_12"
+            android:layout_margin="@dimen/dp_6" />
 
-
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/subscribe_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:text="@string/subscribe_btn"
+            android:textSize="@dimen/sp_12"
+            android:layout_margin="@dimen/dp_6" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -26,6 +26,8 @@ import top.easelink.lcg.mta.sendEvent
 import top.easelink.lcg.network.Client
 import top.easelink.lcg.ui.main.source.parseExtraUserInfoProfilePage
 import top.easelink.lcg.ui.profile.model.PopUpProfileInfo
+import top.easelink.lcg.ui.webview.view.WebViewActivity
+import top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL
 import top.easelink.lcg.utils.showMessage
 
 class PopUpProfileDialog(
@@ -63,6 +65,10 @@ class PopUpProfileDialog(
             }
         }?:run {
             subscribe_btn.visibility = View.GONE
+        }
+
+        profile_btn.setOnClickListener {
+            WebViewActivity.startWebViewWith(SERVER_BASE_URL + popUpInfo.profileUrl, it.context)
         }
 
         Glide.with(mContext)
