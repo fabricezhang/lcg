@@ -30,6 +30,7 @@ import top.easelink.framework.customview.htmltextview.HtmlGlideImageGetter;
 import top.easelink.framework.utils.ScreenUtilsKt;
 import top.easelink.lcg.R;
 import top.easelink.lcg.databinding.ItemPostViewBinding;
+import top.easelink.lcg.mta.EventHelperKt;
 import top.easelink.lcg.spipedata.UserData;
 import top.easelink.lcg.ui.main.article.viewmodel.ArticleAdapterListener;
 import top.easelink.lcg.ui.main.model.OpenArticleEvent;
@@ -43,6 +44,7 @@ import top.easelink.lcg.ui.profile.view.ProfileActivity;
 import top.easelink.lcg.ui.webview.view.WebViewActivity;
 import top.easelink.lcg.utils.FileUtilsKt;
 
+import static top.easelink.lcg.mta.MTAConstantKt.EVENT_CAPTURE_ARTICLE;
 import static top.easelink.lcg.ui.profile.view.ProfileActivityKt.KEY_PROFILE_URL;
 import static top.easelink.lcg.utils.CopyUtilsKt.copyContent;
 import static top.easelink.lcg.utils.ToastUtilsKt.showMessage;
@@ -252,6 +254,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                     }
                     break;
                 case R.id.btn_capture:
+                    EventHelperKt.sendEvent(EVENT_CAPTURE_ARTICLE);
                     Bitmap bmp = ScreenUtilsKt.convertViewToBitmap(itemView, Bitmap.Config.ARGB_8888);
                     if (bmp != null) {
                         String path = FileUtilsKt.saveImageToGallery(bmp, String.valueOf(System.currentTimeMillis()));

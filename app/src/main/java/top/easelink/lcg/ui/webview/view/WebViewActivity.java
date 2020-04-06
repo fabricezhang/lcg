@@ -43,10 +43,12 @@ import timber.log.Timber;
 import top.easelink.framework.customview.webview.HorizontalScrollDisableWebView;
 import top.easelink.lcg.R;
 import top.easelink.lcg.appinit.LCGApp;
+import top.easelink.lcg.mta.EventHelperKt;
 import top.easelink.lcg.service.web.HookInterface;
 import top.easelink.lcg.ui.main.view.MainActivity;
 import top.easelink.lcg.utils.ToastUtilsKt;
 
+import static top.easelink.lcg.mta.MTAConstantKt.EVENT_SHARE_ARTICLE_URL;
 import static top.easelink.lcg.ui.webview.WebViewConstantsKt.FORCE_ENABLE_JS_KEY;
 import static top.easelink.lcg.ui.webview.WebViewConstantsKt.OPEN_LOGIN_PAGE;
 import static top.easelink.lcg.ui.webview.WebViewConstantsKt.TITLE_KEY;
@@ -204,6 +206,7 @@ public class WebViewActivity extends AppCompatActivity {
         }
         switch (item.getItemId()) {
             case R.id.action_share:
+                EventHelperKt.sendEvent(EVENT_SHARE_ARTICLE_URL);
                 Intent shareIntent = getShareIntent();
                 startActivity(shareIntent);
                 return true;
