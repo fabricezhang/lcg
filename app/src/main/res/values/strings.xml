@@ -125,8 +125,8 @@
 
     <!--follow fragment-->
     <string name="tab_title_following_feed">广播动态</string>
-    <string name="tab_title_following">收听列表</string>
-    <string name="tab_title_subscriber">听众列表</string>
+    <string name="tab_title_following">我的收听</string>
+    <string name="tab_title_subscriber">我的听众</string>
     <string name="follower_num_template">听众 %d 人</string>
     <string name="following_num_template">收听 %d 人</string>
     <string name="following_feed_open_original_content">查看原文</string>
