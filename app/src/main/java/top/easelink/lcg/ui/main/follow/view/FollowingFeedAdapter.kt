@@ -1,5 +1,6 @@
 package top.easelink.lcg.ui.main.follow.view
 
+import android.annotation.SuppressLint
 import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
@@ -97,6 +98,7 @@ class FollowingFeedAdapter(
     }
 
     inner class ArticleViewHolder internal constructor(private val view: View) : BaseViewHolder(view) {
+        @SuppressLint("SetTextI18n")
         override fun onBind(position: Int) {
             val feed = mFeeds[position]
             view.apply {
@@ -159,9 +161,7 @@ class FollowingFeedAdapter(
                                     isFirstResource: Boolean
                                 ): Boolean {
                                     val newH = resource.intrinsicHeight.toFloat() / resource.intrinsicWidth.toFloat() * preview.width.toFloat()
-                                    preview.layoutParams.let {
-                                        it.height = newH.toInt()
-                                    }
+                                    preview.layoutParams.height = newH.toInt()
                                     preview.setImageDrawable(resource)
                                     return true
                                 }
@@ -171,9 +171,7 @@ class FollowingFeedAdapter(
                     }?:run {
                         preview.visibility = View.INVISIBLE
                         preview.setImageDrawable(null)
-                        preview.layoutParams.also {
-                            it.height = 0
-                        }
+                        preview.layoutParams.height = 0
                     }
                     content.setHtml(feed.content)
                 }
