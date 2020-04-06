@@ -124,7 +124,7 @@
     <string name="tab_title_notification">通知</string>
 
     <!--follow fragment-->
-    <string name="tab_title_following_feed">新闻广播</string>
+    <string name="tab_title_following_feed">广播动态</string>
     <string name="tab_title_following">收听列表</string>
     <string name="tab_title_subscriber">听众列表</string>
     <string name="follower_num_template">听众 %d 人</string>
