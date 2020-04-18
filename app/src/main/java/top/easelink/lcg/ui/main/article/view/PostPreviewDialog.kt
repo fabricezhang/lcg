@@ -1,12 +1,12 @@
 package top.easelink.lcg.ui.main.article.view
 
-import android.animation.AnimatorSet
-import android.animation.ObjectAnimator
 import android.os.Bundle
-import android.view.*
-import android.view.animation.AnticipateOvershootInterpolator
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.dialog_post_preview.*
 import timber.log.Timber
@@ -16,6 +16,7 @@ import top.easelink.framework.utils.dpToPx
 import top.easelink.lcg.R
 import top.easelink.lcg.appinit.LCGApp
 import top.easelink.lcg.ui.main.article.viewmodel.PostPreviewViewModel
+import top.easelink.lcg.utils.getScreenWidthDp
 
 class PostPreviewDialog : SafeShowDialogFragment() {
 
@@ -36,7 +37,7 @@ class PostPreviewDialog : SafeShowDialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mViewModel = ViewModelProviders.of(this).get(PostPreviewViewModel::class.java)
+        mViewModel = ViewModelProvider(this)[PostPreviewViewModel::class.java]
     }
 
     override fun onCreateView(inflater: LayoutInflater,
@@ -47,40 +48,46 @@ class PostPreviewDialog : SafeShowDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        exit.setOnClickListener {
+            dismissDialog()
+        }
+        dialog?.setCanceledOnTouchOutside(true)
+        initView()
+    }
+
+    private fun initView() {
         try {
-            exit.setOnClickListener {
-                dismissDialog()
-            }
-            val query = arguments?.getString(ARTICLE_QUERY)
-            if (query?.isNotBlank() == true) {
-                mViewModel.content.observe(this, Observer {
-                    content_text_view.setHtml(it, HtmlGlideImageGetter(
-                        content_text_view.context,
-                        content_text_view
-                    ))
-                })
-                mViewModel.author.observe(this, Observer {
-                    author_text_view.text = it
-                })
-                mViewModel.avatar.observe(this, Observer {
-                    Glide.with(this)
-                        .load(it)
-                        .into(post_avatar)
-                })
-                mViewModel.date.observe(this, Observer {
-                    date_text_view.text = it
-                })
-                mViewModel.loadingResult.observe(this, Observer {
-                    if (it == -1) {
-                        loading_status.visibility = View.GONE
-                    } else {
-                        loading_status.visibility = View.VISIBLE
-                        loading_info.setText(it)
-                    }
-                })
-                mViewModel.initUrl(query)
-            }
-            dialog?.setCanceledOnTouchOutside(true)
+            arguments
+                ?.getString(ARTICLE_QUERY)
+                ?.takeIf { it.isNotBlank() }
+                ?.let { query ->
+                    mViewModel.content.observe(viewLifecycleOwner, Observer {
+                        content_text_view.setHtml(it, HtmlGlideImageGetter(
+                            content_text_view.context,
+                            content_text_view
+                        ))
+                    })
+                    mViewModel.author.observe(viewLifecycleOwner, Observer {
+                        author_text_view.text = it
+                    })
+                    mViewModel.avatar.observe(viewLifecycleOwner, Observer {
+                        Glide.with(this)
+                            .load(it)
+                            .into(post_avatar)
+                    })
+                    mViewModel.date.observe(viewLifecycleOwner, Observer {
+                        date_text_view.text = it
+                    })
+                    mViewModel.loadingResult.observe(viewLifecycleOwner, Observer {
+                        if (it == -1) {
+                            loading_status.visibility = View.GONE
+                        } else {
+                            loading_status.visibility = View.VISIBLE
+                            loading_info.setText(it)
+                        }
+                    })
+                    mViewModel.initUrl(query)
+                }
         } catch (e: Exception) {
             Timber.e(e)
         }
@@ -89,19 +96,12 @@ class PostPreviewDialog : SafeShowDialogFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         dialog?.window?.attributes?.apply {
-            width = WindowManager.LayoutParams.MATCH_PARENT
+            width = (getScreenWidthDp(this@PostPreviewDialog.mContext)
+                .dpToPx(this@PostPreviewDialog.mContext) * 0.95)
+                .toInt()
             height = 400.dpToPx(LCGApp.context).toInt()
             gravity = Gravity.CENTER
         }
-        AnimatorSet().apply {
-            playTogether(
-                ObjectAnimator.ofFloat(view, "scaleX", 0f, 0.9f),
-                ObjectAnimator.ofFloat(view, "scaleY", 0f, 0.9f),
-                ObjectAnimator.ofFloat(view, "alpha", 0f, 1f)
-            )
-            interpolator = AnticipateOvershootInterpolator()
-            duration = 800
-        }.start()
     }
 
 }

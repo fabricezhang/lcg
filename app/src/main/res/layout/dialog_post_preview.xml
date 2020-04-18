@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.cardview.widget.CardView
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -10,7 +10,7 @@
     android:layout_marginEnd="@dimen/dp_20"
     android:layout_marginTop="@dimen/dp_30"
     android:layout_marginBottom="@dimen/dp_30"
-    android:background="@color/white"
+    android:background="@drawable/rectangle_bg_white_4dp"
     android:orientation="vertical"
     app:cardCornerRadius="@dimen/dp_6"
     app:cardElevation="@dimen/dp_3">
@@ -113,4 +113,4 @@
             tools:text="This repository contains a detailed sample app that implements MVVM architecture using Dagger2, Android Room, RxJava2 ,etc" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.cardview.widget.CardView>
+</ScrollView>
