@@ -55,16 +55,16 @@ public class HtmlGlideImageGetter implements Html.ImageGetter {
             }
         }
 
-
         private void setDrawable(Drawable drawable) {
             this.drawable = drawable;
             int drawableWidth = drawable.getIntrinsicWidth();
             int drawableHeight = drawable.getIntrinsicHeight();
-            int maxWidth = textView.getMeasuredWidth();
-            int calculatedHeight = maxWidth * drawableHeight / drawableWidth;
-            drawable.setBounds(0, 0, maxWidth, calculatedHeight);
-            setBounds(0, 0, maxWidth, calculatedHeight);
-
+            if (drawableWidth > 300) {
+                int maxWidth =  textView.getMeasuredWidth();
+                drawableHeight = maxWidth * drawableHeight / drawableWidth;
+            }
+            drawable.setBounds(0, 0, drawableWidth, drawableHeight);
+            setBounds(0, 0, drawableWidth, drawableHeight);
             textView.setText(textView.getText());
         }
 
