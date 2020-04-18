@@ -14,11 +14,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import kotlinx.android.synthetic.main.item_post_view.view.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import timber.log.Timber
 import top.easelink.framework.base.BaseViewHolder
 import top.easelink.framework.customview.htmltextview.DrawTableLinkSpan
 import top.easelink.framework.customview.htmltextview.HtmlGlideImageGetter
+import top.easelink.framework.threadpool.Main
 import top.easelink.framework.utils.convertViewToBitmap
 import top.easelink.framework.utils.dp2px
 import top.easelink.lcg.R
@@ -244,7 +247,9 @@ class ArticleAdapter(
         BaseViewHolder(mView) {
         override fun onBind(position: Int) {
             mListener.fetchArticlePost(ArticleAdapterListener.FETCH_POST_MORE) { res ->
-                mView.visibility = if (res) View.GONE else View.VISIBLE
+                GlobalScope.launch(Main) {
+                    mView.visibility = if (res) View.GONE else View.VISIBLE
+                }
             }
         }
     }
