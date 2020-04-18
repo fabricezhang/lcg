@@ -13,6 +13,7 @@ object AppConfig {
     private const val CONFIG_JRS_URL = "jrs_page"
     private const val CONFIG_ENABLE_FOLLOW_REDIRECTS = "follow_redirects"
     private const val CONFIG_SEARCH_OPEN_RESULT_IN_WEBVIEW = "open_result_in_webview"
+    private const val CONFIG_ARTICLE_IN_WEBVIEW = "open_article_in_webview"
     private const val CONFIG_DEFAULT_SEARCH_ENGINE = "default_search_engine"
     private const val CONFIG_AUTO_SIGN_IN = "auto_sign_in"
     private const val CONFIG_SYNC_FAVORITES = "sync_favorites"
@@ -33,6 +34,11 @@ object AppConfig {
     var searchResultShowInWebView: Boolean
         get() = get(CONFIG_SEARCH_OPEN_RESULT_IN_WEBVIEW, false)
         set(value) = put(CONFIG_SEARCH_OPEN_RESULT_IN_WEBVIEW, value)
+
+    // open article, true -> WebView false -> render article by native
+    var articleShowInWebView: Boolean
+        get() = get(CONFIG_ARTICLE_IN_WEBVIEW, false)
+        set(value) = put(CONFIG_ARTICLE_IN_WEBVIEW, value)
 
     var defaultSearchEngine: Int
         get() = get(CONFIG_DEFAULT_SEARCH_ENGINE, 0)
