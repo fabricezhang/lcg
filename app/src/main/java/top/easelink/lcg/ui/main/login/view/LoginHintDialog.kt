@@ -5,12 +5,12 @@ import android.content.DialogInterface
 import android.os.Bundle
 import android.view.*
 import android.widget.Button
-import top.easelink.framework.base.SafeShowDialogFragment
 import top.easelink.framework.customview.htmltextview.HtmlTextView
+import top.easelink.framework.topbase.TopDialog
 import top.easelink.lcg.R
 import top.easelink.lcg.ui.webview.view.WebViewActivity
 
-class LoginHintDialog : SafeShowDialogFragment() {
+class LoginHintDialog : TopDialog() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

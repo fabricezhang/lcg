@@ -20,7 +20,6 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 
-import top.easelink.framework.customview.linkagerv.adapter.viewholder.BaseViewHolder;
 import top.easelink.framework.customview.linkagerv.contract.ILinkagePrimaryAdapterConfig;
 
 /**

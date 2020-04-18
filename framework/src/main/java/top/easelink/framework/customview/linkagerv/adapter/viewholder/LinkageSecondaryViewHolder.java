@@ -20,8 +20,6 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 
-import top.easelink.framework.customview.linkagerv.adapter.viewholder.BaseViewHolder;
-
 /**
  * Create by KunMinX at 19/5/15
  */

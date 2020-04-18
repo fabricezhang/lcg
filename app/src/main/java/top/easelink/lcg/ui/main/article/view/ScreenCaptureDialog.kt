@@ -11,12 +11,12 @@ import com.bumptech.glide.request.target.Target
 import kotlinx.android.synthetic.main.dialog_screen_capture.*
 import kotlinx.android.synthetic.main.dialog_screen_capture.view.*
 import timber.log.Timber
-import top.easelink.framework.base.SafeShowDialogFragment
+import top.easelink.framework.topbase.TopDialog
 import top.easelink.lcg.R
 import top.easelink.lcg.utils.startWeChat
 import top.easelink.lcg.utils.syncSystemGallery
 
-class ScreenCaptureDialog : SafeShowDialogFragment() {
+class ScreenCaptureDialog : TopDialog() {
 
     companion object {
         val TAG: String = ScreenCaptureDialog::class.java.simpleName

@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.*
 import android.widget.Button
 import android.widget.TextView
-import top.easelink.framework.base.SafeShowDialogFragment
+import top.easelink.framework.topbase.TopDialog
 import top.easelink.framework.utils.dpToPx
 import top.easelink.lcg.R
 import top.easelink.lcg.appinit.LCGApp
@@ -13,7 +13,7 @@ import top.easelink.lcg.spipedata.UserData
 class LogoutHintDialog(
     private val positive: ()-> Unit,
     private val negative: () -> Unit
-) : SafeShowDialogFragment() {
+) : TopDialog() {
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,

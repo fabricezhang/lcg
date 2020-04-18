@@ -24,11 +24,11 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import top.easelink.framework.customview.linkagerv.adapter.viewholder.LinkagePrimaryViewHolder;
-import top.easelink.framework.customview.linkagerv.contract.ILinkagePrimaryAdapterConfig;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import top.easelink.framework.customview.linkagerv.adapter.viewholder.LinkagePrimaryViewHolder;
+import top.easelink.framework.customview.linkagerv.contract.ILinkagePrimaryAdapterConfig;
 
 /**
  * Create by KunMinX at 19/4/29

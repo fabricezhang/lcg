@@ -10,15 +10,15 @@ import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.dialog_post_preview.*
 import timber.log.Timber
-import top.easelink.framework.base.SafeShowDialogFragment
 import top.easelink.framework.customview.htmltextview.HtmlGlideImageGetter
+import top.easelink.framework.topbase.TopDialog
 import top.easelink.framework.utils.dpToPx
 import top.easelink.lcg.R
 import top.easelink.lcg.appinit.LCGApp
 import top.easelink.lcg.ui.main.article.viewmodel.PostPreviewViewModel
 import top.easelink.lcg.utils.getScreenWidthDp
 
-class PostPreviewDialog : SafeShowDialogFragment() {
+class PostPreviewDialog : TopDialog() {
 
     private lateinit var mViewModel: PostPreviewViewModel
 

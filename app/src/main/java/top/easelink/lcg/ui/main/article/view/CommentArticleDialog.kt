@@ -8,13 +8,13 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.dialog_comment_article.*
-import top.easelink.framework.base.SafeShowDialogFragment
+import top.easelink.framework.topbase.TopDialog
 import top.easelink.lcg.R
 import top.easelink.lcg.spipedata.UserData
 import top.easelink.lcg.ui.main.article.viewmodel.ReplyPostViewModel
 import top.easelink.lcg.ui.main.source.model.Post
 
-class CommentArticleDialog : SafeShowDialogFragment() {
+class CommentArticleDialog : TopDialog() {
 
     private lateinit var replyPostViewModel: ReplyPostViewModel
 

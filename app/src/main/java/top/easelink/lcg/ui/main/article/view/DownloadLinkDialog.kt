@@ -11,12 +11,12 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.FragmentManager
 import kotlinx.android.synthetic.main.dialog_download_link.*
-import top.easelink.framework.base.SafeShowDialogFragment
+import top.easelink.framework.topbase.TopDialog
 import top.easelink.lcg.R
 import top.easelink.lcg.utils.showMessage
 import java.util.*
 
-class DownloadLinkDialog : SafeShowDialogFragment() {
+class DownloadLinkDialog : TopDialog() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
