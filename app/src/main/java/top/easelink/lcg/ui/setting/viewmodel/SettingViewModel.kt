@@ -13,12 +13,16 @@ class SettingViewModel : ViewModel() {
     val syncFavoriteEnable = MutableLiveData<Boolean>()
     val searchEngineSelected = MutableLiveData<Int>()
     val openSearchResultInWebView = MutableLiveData<Boolean>()
+    val openArticleInWebView = MutableLiveData<Boolean>()
 
     fun init() {
-        autoSignInEnable.value = AppConfig.autoSignEnable
-        syncFavoriteEnable.value = AppConfig.syncFavorites
-        searchEngineSelected.value = AppConfig.defaultSearchEngine
-        openSearchResultInWebView.value = AppConfig.searchResultShowInWebView
+        with(AppConfig) {
+            autoSignInEnable.value = autoSignEnable
+            syncFavoriteEnable.value = syncFavorites
+            searchEngineSelected.value = defaultSearchEngine
+            openSearchResultInWebView.value = searchResultShowInWebView
+            openArticleInWebView.value = articleShowInWebView
+        }
     }
 
     fun scheduleJob(enable: Boolean) {

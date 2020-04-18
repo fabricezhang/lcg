@@ -19,7 +19,7 @@ class FollowingFeedViewModel : ViewModel() {
     var pageNum = 1
 
     fun fetchData() {
-        val url = String.format(FOLLOW_FEED_URL, 1, 0)
+        val url = String.format(FOLLOW_FEED_URL, 1, 1)
         isLoading.value = true
         GlobalScope.launch(ApiPool) {
             try {

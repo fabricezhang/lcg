@@ -57,6 +57,7 @@
     <string name="start_auto_sign_in">开启自动签到</string>
     <string name="search_engine_setting">默认搜索引擎</string>
     <string name="open_search_result_in_webview">网页形式打开搜索结果</string>
+    <string name="open_article_in_webview">网页形式打开文章</string>
     <string name="sync_favorites">同步收藏文章到网站</string>
     <string name="sync_favorites_instruction">（默认仅收藏到本地）</string>
     <string name="check_app_update">检查最新版本</string>

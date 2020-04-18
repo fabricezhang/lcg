@@ -109,6 +109,9 @@ class SettingActivity : TopActivity() {
         show_search_result_in_webview.setOnCheckedChangeListener { _, isChecked ->
             AppConfig.searchResultShowInWebView = isChecked
         }
+        show_article_in_webview.setOnCheckedChangeListener { _, isChecked ->
+            AppConfig.articleShowInWebView = isChecked
+        }
     }
 
     private fun setupObserver() {
@@ -123,6 +126,9 @@ class SettingActivity : TopActivity() {
         })
         mViewModel.openSearchResultInWebView.observe(this, Observer {
             show_search_result_in_webview.isChecked = it
+        })
+        mViewModel.openArticleInWebView.observe(this, Observer {
+            show_article_in_webview.isChecked = it
         })
     }
 

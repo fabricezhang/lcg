@@ -154,7 +154,11 @@ class MainActivity : TopActivity(), BottomNavigationView.OnNavigationItemSelecte
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageEvent(event: OpenArticleEvent) {
         sendEvent(EVENT_OPEN_ARTICLE)
-        showFragment(ArticleFragment(event.url))
+        if (AppConfig.articleShowInWebView) {
+            WebViewActivity.startWebViewWith(SERVER_BASE_URL + event.url, this)
+        } else {
+            showFragment(ArticleFragment(event.url))
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
