@@ -62,6 +62,7 @@ public class HtmlGlideImageGetter implements Html.ImageGetter {
             if (drawableWidth > 300) {
                 int maxWidth =  textView.getMeasuredWidth();
                 drawableHeight = maxWidth * drawableHeight / drawableWidth;
+                drawableWidth = maxWidth;
             }
             drawable.setBounds(0, 0, drawableWidth, drawableHeight);
             setBounds(0, 0, drawableWidth, drawableHeight);
