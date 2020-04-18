@@ -23,6 +23,7 @@ import top.easelink.lcg.ui.main.article.viewmodel.ArticleAdapterListener.Compani
 import top.easelink.lcg.ui.main.article.viewmodel.ArticleViewModel
 import top.easelink.lcg.ui.main.model.ReplyPostEvent
 import top.easelink.lcg.ui.main.model.ScreenCaptureEvent
+import top.easelink.lcg.ui.main.source.model.Post
 import top.easelink.lcg.ui.webview.view.WebViewActivity
 import top.easelink.lcg.utils.WebsiteConstant
 import top.easelink.lcg.utils.showMessage
@@ -141,11 +142,12 @@ class ArticleFragment(private var articleUrl: String) : BaseFragment<FragmentArt
             REPLY_POST_RESULT -> {
                 if (resultCode == 1) {
                     data?.getBundleExtra("post")
-                        ?.getParcelable<top.easelink.lcg.ui.main.source.model.Post>("post")
+                        ?.getParcelable<Post>("post")
                         ?.let {
                             viewModel.addPostToTop(it)
                             viewDataBinding.postRecyclerView.scrollToPosition(1)
                         }
+                    showMessage(R.string.reply_post_succeed)
                 } else {
                     showMessage(R.string.reply_post_failed)
                 }

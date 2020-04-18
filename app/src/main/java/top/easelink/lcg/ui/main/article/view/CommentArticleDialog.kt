@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.dialog_comment_article.*
 import top.easelink.framework.topbase.TopDialog
+import top.easelink.framework.utils.CommonUtils
 import top.easelink.lcg.R
 import top.easelink.lcg.spipedata.UserData
 import top.easelink.lcg.ui.main.article.viewmodel.ReplyPostViewModel
@@ -68,10 +69,9 @@ class CommentArticleDialog : TopDialog() {
                 putParcelable("post", Post(
                     UserData.username,
                     UserData.avatar,
-                    "",
+                    CommonUtils.getCurrentDate(),
                     content, null, null
-                )
-                )
+                ))
             }
             targetFragment?.onActivityResult(
                 ArticleFragment.REPLY_POST_RESULT,
