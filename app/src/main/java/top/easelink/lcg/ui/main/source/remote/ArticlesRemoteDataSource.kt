@@ -10,6 +10,7 @@ import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
 import timber.log.Timber
+import top.easelink.lcg.config.AppConfig
 import top.easelink.lcg.network.Client
 import top.easelink.lcg.ui.main.model.BlockException
 import top.easelink.lcg.ui.main.model.LoginRequiredException
@@ -181,26 +182,30 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
                                 0
                             }
                         }
-                        val isRecommended = e.selectFirst("th.common")
-                            ?.getElementsByTag("img")
-                            ?.map { it.attr("title") }
-                            ?.any { s ->
-                                when {
-                                    s.contains(HOT_PATTERN) ->
-                                        s.replace(HOT_PATTERN, "")
-                                            .trim()
-                                            .toIntOrNull()
-                                            ?.let { it >= HOT_LIMIT }
-                                            ?: false
-                                    s.contains(RECOMMENDED_PATTERN) ->
-                                        s.replace(RECOMMENDED_PATTERN, "")
-                                            .trim()
-                                            .toIntOrNull()
-                                            ?.let { it >= RECOMMENDED_LIMIT }
-                                            ?: false
-                                    else -> false
-                                }
-                            }?:false
+                        val isRecommended = if (AppConfig.articleShowRecommendFlag) {
+                            e.selectFirst("th.common")
+                                ?.getElementsByTag("img")
+                                ?.map { it.attr("title") }
+                                ?.any { s ->
+                                    when {
+                                        s.contains(HOT_PATTERN) ->
+                                            s.replace(HOT_PATTERN, "")
+                                                .trim()
+                                                .toIntOrNull()
+                                                ?.let { it >= HOT_LIMIT }
+                                                ?: false
+                                        s.contains(RECOMMENDED_PATTERN) ->
+                                            s.replace(RECOMMENDED_PATTERN, "")
+                                                .trim()
+                                                .toIntOrNull()
+                                                ?.let { it >= RECOMMENDED_LIMIT }
+                                                ?: false
+                                        else -> false
+                                    }
+                                } ?: false
+                        } else {
+                            false
+                        }
                         if (title.isNotBlank() && author.isNotEmpty()) {
                             return@map Article(title, author, date, url, view, reply, origin, helpCoin, isRecommended)
                         }

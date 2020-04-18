@@ -112,6 +112,9 @@ class SettingActivity : TopActivity() {
         show_article_in_webview.setOnCheckedChangeListener { _, isChecked ->
             AppConfig.articleShowInWebView = isChecked
         }
+        show_recommend_flag.setOnCheckedChangeListener { _, isChecked ->
+            AppConfig.articleShowRecommendFlag = isChecked
+        }
     }
 
     private fun setupObserver() {
@@ -129,6 +132,9 @@ class SettingActivity : TopActivity() {
         })
         mViewModel.openArticleInWebView.observe(this, Observer {
             show_article_in_webview.isChecked = it
+        })
+        mViewModel.showRecommendFlag.observe(this, Observer {
+            show_recommend_flag.isChecked = it
         })
     }
 

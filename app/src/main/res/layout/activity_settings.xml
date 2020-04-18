@@ -1,72 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    android:background="@color/slight_light_light_gray"
-    android:orientation="vertical">
-
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar"
-        style="@style/Toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_40"
-        app:titleTextColor="@color/white"
-        app:title="@string/setting_title"
-        app:titleTextAppearance="@style/Toolbar.TitleText"/>
-
-    <com.google.android.material.switchmaterial.SwitchMaterial
-        android:layout_marginTop="@dimen/dp_4"
-        android:padding="@dimen/dp_12"
-        android:elevation="@dimen/dp_2"
-        android:background="@color/white"
-        android:id="@+id/auto_sign_switch"
+    android:layout_height="match_parent">
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/start_auto_sign_in" />
+        android:fitsSystemWindows="true"
+        android:background="@color/slight_light_light_gray"
+        android:orientation="vertical">
 
-    <com.google.android.material.switchmaterial.SwitchMaterial
-        android:layout_marginTop="@dimen/dp_8"
-        android:padding="@dimen/dp_12"
-        android:elevation="@dimen/dp_2"
-        android:background="@color/white"
-        android:id="@+id/sync_favorites_switch"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/sync_favorites" />
-
-    <RelativeLayout
-        android:layout_marginTop="@dimen/dp_8"
-        android:padding="@dimen/dp_12"
-        android:elevation="@dimen/dp_2"
-        android:background="@color/white"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            style="@style/Toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_40"
+            app:titleTextColor="@color/white"
+            app:title="@string/setting_title"
+            app:titleTextAppearance="@style/Toolbar.TitleText"/>
 
         <com.google.android.material.textview.MaterialTextView
-            android:layout_width="wrap_content"
+            android:layout_marginTop="@dimen/dp_4"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/search_engine_setting"/>
-        <androidx.appcompat.widget.AppCompatSpinner
-            android:id="@+id/search_engine_spinner"
-            android:layout_alignParentEnd="true"
-            android:layout_width="wrap_content"
+            android:layout_marginStart="@dimen/dp_4"
+            android:background="@color/transparent"
+            android:text="@string/account_setting"
+            android:textSize="@dimen/sp_10"
+            android:textColor="@color/gray" />
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:padding="@dimen/dp_12"
+            android:elevation="@dimen/dp_2"
+            android:background="@color/white"
+            android:id="@+id/auto_sign_switch"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:entries="@array/search_engine_array" />
-    </RelativeLayout>
+            android:text="@string/start_auto_sign_in" />
 
-    <com.google.android.material.switchmaterial.SwitchMaterial
-        android:padding="@dimen/dp_12"
-        android:elevation="@dimen/dp_2"
-        android:background="@color/white"
-        android:id="@+id/show_search_result_in_webview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/open_search_result_in_webview" />
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_marginTop="@dimen/dp_8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_4"
+            android:background="@color/transparent"
+            android:text="@string/favorite_setting"
+            android:textSize="@dimen/sp_10"
+            android:textColor="@color/gray" />
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:padding="@dimen/dp_12"
+            android:elevation="@dimen/dp_2"
+            android:background="@color/white"
+            android:id="@+id/sync_favorites_switch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/sync_favorites" />
 
-    <com.google.android.material.switchmaterial.SwitchMaterial
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_marginTop="@dimen/dp_8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_4"
+            android:background="@color/transparent"
+            android:text="@string/search_setting"
+            android:textSize="@dimen/sp_10"
+            android:textColor="@color/gray" />
+        <FrameLayout
+            android:padding="@dimen/dp_12"
+            android:elevation="@dimen/dp_2"
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/search_engine_setting"/>
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:layout_gravity="end"
+                android:id="@+id/search_engine_spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:entries="@array/search_engine_array" />
+        </FrameLayout>
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:padding="@dimen/dp_12"
+            android:elevation="@dimen/dp_2"
+            android:background="@color/white"
+            android:id="@+id/show_search_result_in_webview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/open_search_result_in_webview" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_marginTop="@dimen/dp_8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_4"
+            android:background="@color/transparent"
+            android:text="@string/article_setting"
+            android:textSize="@dimen/sp_10"
+            android:textColor="@color/gray" />
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:padding="@dimen/dp_12"
+            android:elevation="@dimen/dp_2"
+            android:background="@color/white"
+            android:id="@+id/show_recommend_flag"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/show_recommend_flag_on_article" />
+        <com.google.android.material.switchmaterial.SwitchMaterial
             android:padding="@dimen/dp_12"
             android:elevation="@dimen/dp_2"
             android:background="@color/white"
@@ -75,35 +118,44 @@
             android:layout_height="wrap_content"
             android:text="@string/open_article_in_webview" />
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/check_update_btn"
-        android:layout_marginTop="@dimen/dp_8"
-        android:padding="@dimen/dp_12"
-        android:elevation="@dimen/dp_2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:text="@string/check_app_update"
-        android:focusable="true"
-        android:textColor="@color/black"
-        android:background="@color/white" />
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_marginTop="@dimen/dp_8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_4"
+            android:background="@color/transparent"
+            android:text="@string/app_setting"
+            android:textSize="@dimen/sp_10"
+            android:textColor="@color/gray" />
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/check_update_btn"
+            android:padding="@dimen/dp_12"
+            android:elevation="@dimen/dp_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:text="@string/check_app_update"
+            android:focusable="true"
+            android:textColor="@color/black"
+            android:background="@color/white" />
 
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/account_btn"
-        android:padding="@dimen/dp_12"
-        android:layout_marginTop="@dimen/dp_8"
-        android:background="@color/white"
-        android:elevation="@dimen/dp_2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:text="@string/logout_confirm_message"
-        android:gravity="center"
-        android:focusable="true"
-        android:textStyle="bold"
-        android:textColor="@color/black"
-        app:backgroundTint="@color/white" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/account_btn"
+            android:padding="@dimen/dp_12"
+            android:layout_marginTop="@dimen/dp_20"
+            android:background="@color/white"
+            android:elevation="@dimen/dp_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:text="@string/logout_confirm_message"
+            android:gravity="center"
+            android:focusable="true"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            app:backgroundTint="@color/white" />
 
 
-</LinearLayout>
+    </LinearLayout>
+</ScrollView>
