@@ -25,18 +25,17 @@
         android:orientation="vertical"
         android:background="@color/white"
         android:paddingBottom="@dimen/dp_10">
-
         <TextView
             android:id="@+id/title_text_view"
             style="@style/TextStyle.Heading"
             android:textStyle="bold"
             android:layout_width="@dimen/dp_0"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dp_10"
+            android:layout_marginStart="@dimen/dp_14"
             android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginEnd="@dimen/dp_14"
             android:maxLines="2"
             android:textSize="@dimen/sp_14"
-            android:layout_marginEnd="@dimen/dp_15"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -48,7 +47,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_8"
-            android:layout_marginTop="@dimen/dp_4"
+            android:layout_marginTop="@dimen/dp_5"
             app:layout_constraintTop_toBottomOf="@id/title_text_view"
             app:layout_constraintStart_toStartOf="@id/title_text_view"
             tools:text="10 / 200"/>
@@ -61,6 +60,7 @@
             android:ellipsize="middle"
             android:maxWidth="@dimen/dp_200"
             android:singleLine="true"
+            android:layout_marginTop="@dimen/dp_4"
             app:layout_constraintTop_toBottomOf="@id/reply_and_view"
             app:layout_constraintStart_toStartOf="@id/title_text_view"
             tools:text="『原创发布区』"/>
@@ -94,9 +94,18 @@
             style="@style/TextStyle.Title.Sub"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/author_text_view"
+            app:layout_constraintTop_toTopOf="@id/origin"
             app:layout_constraintEnd_toEndOf="@id/author_text_view"
             tools:text="2019-07-04"/>
+
+        <ImageView
+            android:id="@+id/recommend_flag"
+            android:layout_width="@dimen/dp_30"
+            android:layout_height="@dimen/dp_30"
+            android:src="@drawable/ic_recommendation"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@null" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

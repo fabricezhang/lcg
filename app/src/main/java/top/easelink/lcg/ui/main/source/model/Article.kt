@@ -13,5 +13,6 @@ class Article(
     val view: Int,
     val reply: Int,
     val origin: String = "",
-    val helpCoin: Int = 0
+    val helpCoin: Int = 0,
+    val isRecommended: Boolean = false
 )

@@ -142,29 +142,34 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
         }
     }
 
+    private const val HOT_PATTERN = "热度"
+    private const val RECOMMENDED_PATTERN = "评价指数"
+    private const val HOT_LIMIT = 100
+    private const val RECOMMENDED_LIMIT = 10
+
     private fun getArticles(query: String): List<Article> {
         var list: List<Article> = emptyList()
         try {
             list = Client
                 .sendGetRequestWithQuery(query)
-                .select("tbody")
-                .map {
+                .select("tbody[id^=normal]")
+                .map { e ->
                     try {
-                        val reply = extractFrom(it, "td.num", "a.xi2")
+                        val reply = extractFrom(e, "td.num", "a.xi2")
                             .ifBlank { return@map null }
                             .toInt()
-                        val view = extractFrom(it, "td.num", "em")
+                        val view = extractFrom(e, "td.num", "em")
                             .ifBlank { return@map null }
                             .toInt()
-                        val title = it.selectFirst("th.common > .xst")?.text().orEmpty()
-                        val author = extractFrom(it, "td.by", "a[href*=uid]")
-                        val date = extractFrom(it, "td.by", "span")
-                        val url = extractAttrFrom(it, "href", "th.common", "a.xst")
-                        val origin = it.selectFirst("td.by > a[target]")?.text().orEmpty()
-                        val helpInfo = it.select("th.common > span.xi1 > span.xw1")?.text().orEmpty()
+                        val title = e.selectFirst("th.common > .xst")?.text().orEmpty()
+                        val author = extractFrom(e, "td.by", "a[href*=uid]")
+                        val date = extractFrom(e, "td.by", "span")
+                        val url = extractAttrFrom(e, "href", "th.common", "a.xst")
+                        val origin = e.selectFirst("td.by > a[target]")?.text().orEmpty()
+                        val helpInfo = e.select("th.common > span.xi1 > span.xw1")?.text().orEmpty()
                         var helpCoin = 0
                         if (helpInfo.isEmpty()) {
-                            if (it.selectFirst("th.common")
+                            if (e.selectFirst("th.common")
                                     ?.text()
                                     ?.contains("- [已解决]") == true) {
                                 helpCoin = -1
@@ -176,8 +181,28 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
                                 0
                             }
                         }
+                        val isRecommended = e.selectFirst("th.common")
+                            ?.getElementsByTag("img")
+                            ?.map { it.attr("title") }
+                            ?.any { s ->
+                                when {
+                                    s.contains(HOT_PATTERN) ->
+                                        s.replace(HOT_PATTERN, "")
+                                            .trim()
+                                            .toIntOrNull()
+                                            ?.let { it >= HOT_LIMIT }
+                                            ?: false
+                                    s.contains(RECOMMENDED_PATTERN) ->
+                                        s.replace(RECOMMENDED_PATTERN, "")
+                                            .trim()
+                                            .toIntOrNull()
+                                            ?.let { it >= RECOMMENDED_LIMIT }
+                                            ?: false
+                                    else -> false
+                                }
+                            }?:false
                         if (title.isNotBlank() && author.isNotEmpty()) {
-                            return@map Article(title, author, date, url, view, reply, origin, helpCoin)
+                            return@map Article(title, author, date, url, view, reply, origin, helpCoin, isRecommended)
                         }
                     } catch (e: Exception) {
                         Timber.e(e)
@@ -357,8 +382,8 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
                 throw BlockException(message)
             }
         val content = getFirstContent(document)
-        var avatar: String? = null
-        var name: String? = null
+        var avatar: String?
+        var name: String?
         document.selectFirst("td[rowspan]").apply {
             avatar = selectFirst("div.avatar").selectFirst("img").attr("src")
             name = selectFirst("a.xw1").text()
