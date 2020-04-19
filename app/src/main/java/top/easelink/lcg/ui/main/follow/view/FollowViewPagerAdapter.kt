@@ -15,8 +15,8 @@ class FollowViewPagerAdapter internal constructor(
 
     private val tabModels: List<MessageTabModel> = listOf(
         MessageTabModel(context.getString(R.string.tab_title_following_feed), ""),
-        MessageTabModel(context.getString(R.string.tab_title_following), WebsiteConstant.FOLLOWING_USERS_URL),
-        MessageTabModel(context.getString(R.string.tab_title_subscriber), WebsiteConstant.FOLLOWER_USERS_URL)
+        MessageTabModel(context.getString(R.string.tab_title_following), WebsiteConstant.FOLLOWING_USERS_QUERY),
+        MessageTabModel(context.getString(R.string.tab_title_subscriber), WebsiteConstant.FOLLOWER_USERS_QUERY)
     )
 
     override fun getItem(position: Int): Fragment {

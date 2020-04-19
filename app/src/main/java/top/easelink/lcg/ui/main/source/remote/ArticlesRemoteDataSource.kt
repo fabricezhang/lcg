@@ -19,7 +19,7 @@ import top.easelink.lcg.ui.main.source.ArticlesDataSource
 import top.easelink.lcg.ui.main.source.FavoritesRemoteDataSource
 import top.easelink.lcg.ui.main.source.model.*
 import top.easelink.lcg.utils.WebsiteConstant.ADD_TO_FAVORITE_QUERY
-import top.easelink.lcg.utils.WebsiteConstant.FORUM_BASE_URL
+import top.easelink.lcg.utils.WebsiteConstant.FORUM_BASE_QUERY
 import java.net.SocketTimeoutException
 import java.util.*
 
@@ -50,7 +50,7 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
     @WorkerThread
     override fun getHomePageArticles(param: String, pageNum: Int): List<Article> {
         return try {
-            getArticles("$FORUM_BASE_URL$param&page=$pageNum")
+            getArticles("$FORUM_BASE_QUERY$param&page=$pageNum")
         } catch (e: Exception) {
             emptyList()
         }

@@ -15,7 +15,7 @@ import top.easelink.lcg.spipedata.UserData
 import top.easelink.lcg.ui.main.me.model.UserInfo
 import top.easelink.lcg.ui.main.model.AntiScrapingException
 import top.easelink.lcg.ui.main.source.parseUserInfo
-import top.easelink.lcg.utils.WebsiteConstant.PROFILE_URL
+import top.easelink.lcg.utils.WebsiteConstant.PROFILE_QUERY
 import top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL
 import top.easelink.lcg.utils.clearCookies
 import top.easelink.lcg.utils.showMessage
@@ -55,7 +55,7 @@ class MeViewModel: ViewModel() {
         GlobalScope.launch(ApiPool) {
             try {
                 val userInfo = Client
-                    .sendGetRequestWithQuery(PROFILE_URL).let {
+                    .sendGetRequestWithQuery(PROFILE_QUERY).let {
                         parseUserInfo(it)
                     }
                 // login failed
@@ -96,7 +96,7 @@ class MeViewModel: ViewModel() {
     private fun tryResolveAntiScraping() {
         if (isResolvingAntiScrapingException) return
         isResolvingAntiScrapingException = true
-        WebViewWrapper.getInstance().loadUrl("$SERVER_BASE_URL${PROFILE_URL}", ::parseHtml)
+        WebViewWrapper.getInstance().loadUrl("$SERVER_BASE_URL${PROFILE_QUERY}", ::parseHtml)
     }
 
     @JavascriptInterface

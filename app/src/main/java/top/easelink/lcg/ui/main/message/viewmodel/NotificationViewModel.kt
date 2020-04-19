@@ -11,7 +11,7 @@ import top.easelink.lcg.network.Client
 import top.easelink.lcg.ui.main.model.BaseNotification
 import top.easelink.lcg.ui.main.model.NotificationModel
 import top.easelink.lcg.ui.main.model.SystemNotification
-import top.easelink.lcg.utils.WebsiteConstant.NOTIFICATION_HOME_URL
+import top.easelink.lcg.utils.WebsiteConstant.NOTIFICATION_HOME_QUERY
 
 class NotificationViewModel: ViewModel(){
 
@@ -41,7 +41,7 @@ class NotificationViewModel: ViewModel(){
         GlobalScope.launch(ApiPool) {
             isLoading.postValue(true)
             try {
-                Client.sendGetRequestWithQuery(NOTIFICATION_HOME_URL).let {
+                Client.sendGetRequestWithQuery(NOTIFICATION_HOME_QUERY).let {
                     notifications.postValue(parseResponse(it))
                 }
             } catch (e: Exception) {

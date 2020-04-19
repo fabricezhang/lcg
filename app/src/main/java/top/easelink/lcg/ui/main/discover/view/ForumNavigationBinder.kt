@@ -9,14 +9,14 @@ import top.easelink.lcg.R
 import top.easelink.lcg.ui.main.discover.model.ForumListModel
 import top.easelink.lcg.ui.main.discover.model.ForumNavigationModel
 
-class ForumNavigationBinder : BaseNavigationBinder<ForumListModel, ForumNavigationVH>() {
+class ForumNavigationBinder : BaseNavigationBinder<ForumListModel, RankListVH>() {
 
-    override fun onBindViewHolder(holder: ForumNavigationVH, item: ForumListModel) {
+    override fun onBindViewHolder(holder: RankListVH, item: ForumListModel) {
         holder.onBind(item, null)
     }
 
     override fun onBindViewHolder(
-        holder: ForumNavigationVH,
+        holder: RankListVH,
         item: ForumListModel,
         payloads: List<Any>
     ) {
@@ -26,8 +26,8 @@ class ForumNavigationBinder : BaseNavigationBinder<ForumListModel, ForumNavigati
     override fun onCreateViewHolder(
         inflater: LayoutInflater,
         parent: ViewGroup
-    ): ForumNavigationVH {
-        return ForumNavigationVH(inflater, parent)
+    ): RankListVH {
+        return RankListVH(inflater, parent)
     }
 }
 

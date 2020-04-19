@@ -58,7 +58,7 @@ class DiscoverFragment : TopFragment(), ControllableFragment{
             }
             itemAnimator = DefaultItemAnimator()
             val multiTypeAdapter =  MultiTypeAdapter().apply {
-                register(ForumListModel::class.java, ForumNavigationBinder())
+                register(ForumListModel::class.java, RankListBinder())
             }
             mViewModel.aggregationModels.observe(viewLifecycleOwner, Observer {
                 multiTypeAdapter.items = it

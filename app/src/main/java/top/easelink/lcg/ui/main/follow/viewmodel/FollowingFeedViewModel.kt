@@ -9,7 +9,7 @@ import timber.log.Timber
 import top.easelink.framework.threadpool.ApiPool
 import top.easelink.lcg.network.Client
 import top.easelink.lcg.ui.main.follow.model.FeedInfo
-import top.easelink.lcg.utils.WebsiteConstant.FOLLOW_FEED_URL
+import top.easelink.lcg.utils.WebsiteConstant.FOLLOW_FEED_QUERY
 
 class FollowingFeedViewModel : ViewModel() {
 
@@ -19,7 +19,7 @@ class FollowingFeedViewModel : ViewModel() {
     var pageNum = 1
 
     fun fetchData() {
-        val url = String.format(FOLLOW_FEED_URL, 1, 1)
+        val url = String.format(FOLLOW_FEED_QUERY, 1, 1)
         isLoading.value = true
         GlobalScope.launch(ApiPool) {
             try {
@@ -33,7 +33,7 @@ class FollowingFeedViewModel : ViewModel() {
 
     fun fetchMore(callBack: (Boolean) -> Unit) {
         isLoadingForLoadMore.postValue(true)
-        val url = String.format(FOLLOW_FEED_URL, pageNum, 1)
+        val url = String.format(FOLLOW_FEED_QUERY, pageNum, 1)
         GlobalScope.launch(ApiPool){
             try {
                 parseFeeds(Client.sendAjaxRequest(url))

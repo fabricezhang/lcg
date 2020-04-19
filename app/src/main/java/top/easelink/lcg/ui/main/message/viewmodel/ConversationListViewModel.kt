@@ -22,7 +22,7 @@ class ConversationListViewModel : ViewModel() {
         isLoading.value = true
         GlobalScope.launch(ApiPool) {
             try {
-                parseConversations(Client.sendGetRequestWithQuery(WebsiteConstant.PRIVATE_MESSAGE_URL))
+                parseConversations(Client.sendGetRequestWithQuery(WebsiteConstant.PRIVATE_MESSAGE_QUERY))
             } catch (e: Exception) {
                 Timber.e(e)
             }

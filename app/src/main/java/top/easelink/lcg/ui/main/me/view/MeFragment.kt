@@ -34,7 +34,7 @@ import top.easelink.lcg.ui.main.login.view.LoginHintDialog
 import top.easelink.lcg.ui.main.me.viewmodel.MeViewModel
 import top.easelink.lcg.ui.main.model.OpenForumEvent
 import top.easelink.lcg.ui.setting.view.SettingActivity
-import top.easelink.lcg.utils.WebsiteConstant.MY_ARTICLES_URL
+import top.easelink.lcg.utils.WebsiteConstant.MY_ARTICLES_QUERY
 
 class MeFragment : BaseFragment<FragmentMeBinding, MeViewModel>() {
 
@@ -112,7 +112,7 @@ class MeFragment : BaseFragment<FragmentMeBinding, MeViewModel>() {
                 EventBus
                     .getDefault()
                     .post(OpenForumEvent(
-                        getString(R.string.ic_my_articles), MY_ARTICLES_URL, false
+                        getString(R.string.ic_my_articles), MY_ARTICLES_QUERY, false
                     ))
             }
             btn_icon.setImageResource(R.drawable.ic_my_articles)

@@ -12,7 +12,7 @@ import top.easelink.lcg.ui.main.model.LoginRequiredException
 import top.easelink.lcg.ui.main.source.model.Article
 import top.easelink.lcg.ui.main.source.model.ForumThread
 import top.easelink.lcg.ui.main.source.remote.ArticlesRemoteDataSource.getForumArticles
-import top.easelink.lcg.utils.WebsiteConstant.FORUM_URL_TEMPLATE
+import top.easelink.lcg.utils.WebsiteConstant.FORUM_URL_QUERY
 import top.easelink.lcg.utils.showMessage
 
 const val LAST_POST_ORDER = "&orderby=lastpost"
@@ -36,7 +36,7 @@ class ForumArticlesViewModel : ViewModel(), ArticleFetcher {
         //Fabrice: add a workaround to  map forum-16-1.html to forum.php?mod=forumdisplay&fid=16
         mUrl = if (url.startsWith("forum-") && url.endsWith("html")) {
             try {
-                String.format(FORUM_URL_TEMPLATE, url.split("-")[1])
+                String.format(FORUM_URL_QUERY, url.split("-")[1])
             } catch (e: Exception) {
                 Timber.e(e)
                 url

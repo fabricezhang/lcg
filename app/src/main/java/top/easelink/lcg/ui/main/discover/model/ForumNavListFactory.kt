@@ -12,21 +12,21 @@ fun generateAllForums(context: Context): List<ForumNavigationModel> {
         ForumNavigationModel(
             context.getString(R.string.forum_mobile_security),
             R.drawable.ic_sercurite,
-            WebsiteConstant.MOB_SECURITY_URL
+            WebsiteConstant.MOB_SECURITY_QUERY
         )
     )
     list.add(
         ForumNavigationModel(
             context.getString(R.string.forum_software),
             R.drawable.ic_software,
-            WebsiteConstant.SOFTWARE_URL
+            WebsiteConstant.SOFTWARE_QUERY
         )
     )
     list.add(
         ForumNavigationModel(
             context.getString(R.string.forum_original_release),
             R.drawable.ic_creator,
-            WebsiteConstant.ORIGINAL_RELEASE_URL
+            WebsiteConstant.ORIGINAL_RELEASE_QUERY
         )
     )
     if (UserData.isLoggedIn) {
@@ -34,14 +34,14 @@ fun generateAllForums(context: Context): List<ForumNavigationModel> {
             ForumNavigationModel(
                 context.getString(R.string.free_chat_title),
                 R.drawable.ic_water,
-                WebsiteConstant.FREE_CHAT_URL
+                WebsiteConstant.FREE_CHAT_QUERY
             )
         )
         list.add(
             ForumNavigationModel(
                 context.getString(R.string.welfare_title),
                 R.drawable.ic_welfare,
-                WebsiteConstant.WELFARE_URL
+                WebsiteConstant.WELFARE_QUERY
             )
         )
     }
@@ -54,28 +54,28 @@ fun generateOptionalList(context: Context): List<ForumNavigationModel> {
         ForumNavigationModel(
             context.getString(R.string.forum_program_language),
             R.drawable.ic_message_black_24dp,
-            WebsiteConstant.PROGRAM_LANGUAGE_URL
+            WebsiteConstant.PROGRAM_LANGUAGE_QUERY
         )
     )
     list.add(
         ForumNavigationModel(
             context.getString(R.string.forum_animation_release),
             R.drawable.ic_message_black_24dp,
-            WebsiteConstant.ANIMATION_RELEASE_URL
+            WebsiteConstant.ANIMATION_RELEASE_QUERY
         )
     )
     list.add(
         ForumNavigationModel(
             context.getString(R.string.forum_reverse_resource),
             R.drawable.ic_message_black_24dp,
-            WebsiteConstant.REVERSE_RESOURCE_URL
+            WebsiteConstant.REVERSE_RESOURCE_QUERY
         )
     )
     list.add(
         ForumNavigationModel(
             context.getString(R.string.forum_qa),
             R.drawable.ic_message_black_24dp,
-            WebsiteConstant.QA_URL
+            WebsiteConstant.QA_QUERY
         )
     )
     if (UserData.isLoggedIn) {
@@ -83,21 +83,21 @@ fun generateOptionalList(context: Context): List<ForumNavigationModel> {
             ForumNavigationModel(
                 context.getString(R.string.forum_virus_analysis),
                 R.drawable.ic_message_black_24dp,
-                WebsiteConstant.VIRUS_ANALYSIS_URL
+                WebsiteConstant.VIRUS_ANALYSIS_QUERY
             )
         )
         list.add(
             ForumNavigationModel(
                 context.getString(R.string.forum_virus_rescue),
                 R.drawable.ic_message_black_24dp,
-                WebsiteConstant.VIRUS_RESCUE_URL
+                WebsiteConstant.VIRUS_RESCUE_QUERY
             )
         )
         list.add(
             ForumNavigationModel(
                 context.getString(R.string.forum_virus_sample),
                 R.drawable.ic_message_black_24dp,
-                WebsiteConstant.VIRUS_SAMPLE_URL
+                WebsiteConstant.VIRUS_SAMPLE_QUERY
             )
         )
     }
