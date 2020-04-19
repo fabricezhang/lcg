@@ -40,6 +40,11 @@ class ForumNavigationVH(inflater: LayoutInflater, parentView: ViewGroup): BaseNa
 
     private fun setUp(listModel: List<ForumNavigationModel>) {
         with(itemView) {
+            forum_tips.setOnClickListener {
+                navigation_grid.smoothScrollToPosition(
+                    (navigation_grid.layoutManager as LinearLayoutManager).findLastVisibleItemPosition() + 1
+                )
+            }
             navigation_grid.apply {
                 layoutManager = LinearLayoutManager(context).apply {
                     orientation = RecyclerView.HORIZONTAL

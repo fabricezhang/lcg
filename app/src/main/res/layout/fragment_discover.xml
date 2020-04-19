@@ -9,11 +9,11 @@
     android:focusable="true"
     android:clickable="true"
     android:padding="@dimen/dp_4"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
     android:background="@color/slight_light_gray">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/forum_rv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+        android:layout_height="match_parent" />
 </LinearLayout>
