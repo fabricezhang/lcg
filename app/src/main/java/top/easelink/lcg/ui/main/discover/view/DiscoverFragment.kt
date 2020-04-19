@@ -15,6 +15,7 @@ import top.easelink.framework.topbase.ControllableFragment
 import top.easelink.framework.topbase.TopFragment
 import top.easelink.lcg.R
 import top.easelink.lcg.ui.main.discover.model.ForumListModel
+import top.easelink.lcg.ui.main.discover.model.RankListModel
 import top.easelink.lcg.ui.main.discover.viewmodel.DiscoverViewModel
 
 class DiscoverFragment : TopFragment(), ControllableFragment{
@@ -58,7 +59,8 @@ class DiscoverFragment : TopFragment(), ControllableFragment{
             }
             itemAnimator = DefaultItemAnimator()
             val multiTypeAdapter =  MultiTypeAdapter().apply {
-                register(ForumListModel::class.java, RankListBinder())
+                register(ForumListModel::class.java, ForumNavigationBinder())
+                register(RankListModel::class.java, RankListBinder())
             }
             mViewModel.aggregationModels.observe(viewLifecycleOwner, Observer {
                 multiTypeAdapter.items = it

@@ -8,14 +8,13 @@ import kotlinx.android.synthetic.main.item_forums_grid.view.*
 import org.greenrobot.eventbus.EventBus
 import top.easelink.framework.base.BaseViewHolder
 import top.easelink.lcg.R
-import top.easelink.lcg.ui.main.discover.model.ForumNavigationModel
-
+import top.easelink.lcg.ui.main.discover.model.RankModel
 import top.easelink.lcg.ui.main.forumnav.view.ForumNavigationFragment
 import top.easelink.lcg.ui.main.model.OpenForumEvent
 
 
-class ForumNavigationAdapter : RecyclerView.Adapter<BaseViewHolder>() {
-    private val mForumItems: MutableList<ForumNavigationModel> = mutableListOf()
+class RankListAdapter : RecyclerView.Adapter<BaseViewHolder>() {
+    private val mForumItems: MutableList<RankModel> = mutableListOf()
     override fun getItemCount(): Int {
         return mForumItems.size + 1
     }
@@ -34,7 +33,7 @@ class ForumNavigationAdapter : RecyclerView.Adapter<BaseViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         return when (viewType) {
-            VIEW_TYPE_NORMAL -> ForumViewHolder(
+            VIEW_TYPE_NORMAL -> RankHolder(
                 LayoutInflater.from(parent.context).inflate(
                     R.layout.item_forums_grid, parent, false)
             )
@@ -47,12 +46,12 @@ class ForumNavigationAdapter : RecyclerView.Adapter<BaseViewHolder>() {
         }
     }
 
-    fun addItems(forumModels: List<ForumNavigationModel>) {
+    fun addItems(forumModels: List<RankModel>) {
         mForumItems.addAll(forumModels)
         notifyDataSetChanged()
     }
-    
-    inner class ForumViewHolder internal constructor(view: View) : BaseViewHolder(view) {
+
+    inner class RankHolder internal constructor(view: View) : BaseViewHolder(view) {
 
         private fun onItemClick(title: String, url: String) {
             EventBus.getDefault().post(OpenForumEvent(title, url, true))
@@ -61,11 +60,7 @@ class ForumNavigationAdapter : RecyclerView.Adapter<BaseViewHolder>() {
         override fun onBind(position: Int) {
             val forumModel = mForumItems[position]
             itemView.run {
-                setOnClickListener {
-                    onItemClick(forumModel.title, forumModel.url)
-                }
-                grid_text.text = forumModel.title
-                grid_image.setImageResource(forumModel.drawableRes)
+
             }
         }
 

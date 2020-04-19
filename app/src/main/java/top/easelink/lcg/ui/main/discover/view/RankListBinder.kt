@@ -6,19 +6,18 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_forums_navigation.view.*
 import top.easelink.lcg.R
-import top.easelink.lcg.ui.main.discover.model.ForumListModel
-import top.easelink.lcg.ui.main.discover.model.ForumNavigationModel
+import top.easelink.lcg.ui.main.discover.model.RankListModel
+import top.easelink.lcg.ui.main.discover.model.RankModel
 
+class RankListBinder : BaseNavigationBinder<RankListModel, RankListVH>() {
 
-class ForumNavigationBinder : BaseNavigationBinder<ForumListModel, ForumNavigationVH>() {
-
-    override fun onBindViewHolder(holder: ForumNavigationVH, item: ForumListModel) {
+    override fun onBindViewHolder(holder: RankListVH, item: RankListModel) {
         holder.onBind(item, null)
     }
 
     override fun onBindViewHolder(
-        holder: ForumNavigationVH,
-        item: ForumListModel,
+        holder: RankListVH,
+        item: RankListModel,
         payloads: List<Any>
     ) {
         holder.onBind(item, payloads)
@@ -27,19 +26,22 @@ class ForumNavigationBinder : BaseNavigationBinder<ForumListModel, ForumNavigati
     override fun onCreateViewHolder(
         inflater: LayoutInflater,
         parent: ViewGroup
-    ): ForumNavigationVH {
-        return ForumNavigationVH(inflater, parent)
+    ): RankListVH {
+        return RankListVH(
+            inflater,
+            parent
+        )
     }
 }
 
-class ForumNavigationVH(inflater: LayoutInflater, parentView: ViewGroup): BaseNavigationViewHolder(
+class RankListVH(inflater: LayoutInflater, parentView: ViewGroup): BaseNavigationViewHolder(
     inflater.inflate(R.layout.fragment_forums_navigation, parentView, false)
 ) {
-    fun onBind(item: ForumListModel, payloads: List<Any>?) {
-        setUp(item.forumList)
+    fun onBind(item: RankListModel, payloads: List<Any>?) {
+        setUp(item.listModel)
     }
 
-    private fun setUp(listModel: List<ForumNavigationModel>) {
+    private fun setUp(rankModel: List<RankModel>) {
         with(itemView) {
             forum_tips.setOnClickListener {
                 navigation_grid.smoothScrollToPosition(
@@ -48,10 +50,11 @@ class ForumNavigationVH(inflater: LayoutInflater, parentView: ViewGroup): BaseNa
             }
             navigation_grid.apply {
                 layoutManager = LinearLayoutManager(context).apply {
-                    orientation = RecyclerView.HORIZONTAL
+                    orientation = RecyclerView.VERTICAL
                 }
-                adapter = ForumNavigationAdapter().also {
-                    it.addItems(listModel)
+                adapter = RankListAdapter()
+                    .also {
+                    it.addItems(rankModel)
                 }
             }
         }
