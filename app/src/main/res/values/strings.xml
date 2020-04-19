@@ -37,11 +37,11 @@
     <string name="close_drawer">Drawer Close</string>
 
     <!--Drawer Menus-->
-    <string name="setting">『应用设置』</string>
-    <string name="about">『关于应用』</string>
-    <string name="thread_about_app">『App发布页』</string>
-    <string name="open_portal_page">『吾爱网页版』</string>
-    <string name="open_jrs_page">『JRS看球』</string>
+    <string name="setting">应用设置』</string>
+    <string name="about">关于应用』</string>
+    <string name="thread_about_app">App发布页』</string>
+    <string name="open_portal_page">吾爱网页版』</string>
+    <string name="open_jrs_page">JRS看球』</string>
 
     <!--home fragment-->
     <string name="tab_title_hot">人气热门</string>
@@ -124,7 +124,7 @@
     <!--feed-->
     <string name="load_more">加载更多</string>
     <string name="no_more_content">没有更多了</string>
-    <string name="tap_for_code">『点击显示代码』</string>
+    <string name="tap_for_code">点击显示代码』</string>
     <string name="tap_for_large_image_failed">查看失败</string>
 
     <!--message fragment-->
@@ -169,21 +169,25 @@
     <string name="share_title">快来看这篇</string>
 
     <!--forum grid-->
+    <string name="more_forums">更多板块</string>
+    <string name="forum_most_frequent_title">常用板块导航</string>
+    <string name="forum_title_tips">右滑查看更多</string>
+    
     <string name="forum_title">论坛板块导航</string>
     <string name="forum_doctors">向逆行的白衣天使们致敬！</string>
     <string name="forum_secondary_footer">没有更多了</string>
-    <string name="forum_mobile_security">『移动安全区』</string>
-    <string name="forum_software">『精品软件区』</string>
-    <string name="forum_original_release">『原创发布区』</string>
-    <string name="forum_program_language">『编程语言区』</string>
-    <string name="forum_animation_release">『动画发布区』</string>
-    <string name="forum_reverse_resource">『逆向资源区』</string>
-    <string name="forum_qa">『悬赏问答区』</string>
-    <string name="forum_virus_analysis">『病毒分析区』</string>
-    <string name="forum_virus_sample">『病毒样本区』</string>
-    <string name="forum_virus_rescue">『病毒救援区』</string>
-    <string name="free_chat_title">『水漫金山』</string>
-    <string name="welfare_title">『福利经验』</string>
+    <string name="forum_mobile_security">移动安全</string>
+    <string name="forum_software">精品软件</string>
+    <string name="forum_original_release">原创发布</string>
+    <string name="forum_program_language">编程语言</string>
+    <string name="forum_animation_release">动画发布</string>
+    <string name="forum_reverse_resource">逆向资源</string>
+    <string name="forum_qa">悬赏问答</string>
+    <string name="forum_virus_analysis">病毒分析</string>
+    <string name="forum_virus_sample">病毒样本</string>
+    <string name="forum_virus_rescue">病毒救援</string>
+    <string name="free_chat_title">水漫金山</string>
+    <string name="welfare_title">福利经验</string>
 
     <!-- setting -->
     <string name="setting_title">设置</string>
@@ -202,5 +206,5 @@
     <string name="permission_denied">未授权，部分功能可能无法使用</string>
 
     <!--extras-->
-    <string name="jrs_sport">『看球直播』</string>
+    <string name="jrs_sport">看球直播』</string>
 </resources>

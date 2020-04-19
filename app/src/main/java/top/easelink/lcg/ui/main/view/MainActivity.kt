@@ -22,6 +22,7 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import top.easelink.framework.topbase.TopActivity
+import top.easelink.framework.topbase.TopFragment
 import top.easelink.framework.utils.addFragmentInActivity
 import top.easelink.framework.utils.popBackFragmentUntil
 import top.easelink.lcg.BuildConfig
@@ -31,7 +32,8 @@ import top.easelink.lcg.mta.*
 import top.easelink.lcg.ui.main.about.view.AboutFragment
 import top.easelink.lcg.ui.main.article.view.ArticleFragment
 import top.easelink.lcg.ui.main.articles.view.ForumArticlesFragment.Companion.newInstance
-import top.easelink.lcg.ui.main.forumnav3.view.ForumNavigationV3Fragment
+import top.easelink.lcg.ui.main.discover.view.DiscoverFragment
+import top.easelink.lcg.ui.main.forumnav.view.ForumNavigationFragment
 import top.easelink.lcg.ui.main.largeimg.view.LargeImageDialog
 import top.easelink.lcg.ui.main.me.view.MeFragment
 import top.easelink.lcg.ui.main.message.view.MessageFragment
@@ -137,7 +139,7 @@ class MainActivity : TopActivity(), BottomNavigationView.OnNavigationItemSelecte
                 MessageFragment::class.java.simpleName -> {
                     view.selectedItemId = R.id.action_message
                 }
-                ForumNavigationV3Fragment::class.java.simpleName -> {
+                ForumNavigationFragment::class.java.simpleName -> {
                     view.selectedItemId = R.id.action_forum_navigation
                 }
                 MeFragment::class.java.simpleName -> {
@@ -179,6 +181,11 @@ class MainActivity : TopActivity(), BottomNavigationView.OnNavigationItemSelecte
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onShowFragmentEvent(clazz: Class<TopFragment>) {
+        showFragment(clazz)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageEvent(event: OpenLargeImageViewEvent) {
         if (event.url.isNotEmpty()) {
             LargeImageDialog(event.url).show(supportFragmentManager, LargeImageDialog::class.java.simpleName)
@@ -198,11 +205,13 @@ class MainActivity : TopActivity(), BottomNavigationView.OnNavigationItemSelecte
 
     @Suppress("SameParameterValue")
     private fun removeBubbleView(pos: Int) {
-        // Try show badge on bottom nav bar
-        val menuView= bottom_navigation.getChildAt(0) as? BottomNavigationMenuView
-        val itemView = menuView?.getChildAt(pos) as? BottomNavigationItemView
-        itemView?.removeView(bubbleView)
-        bubbleView = null
+        bubbleView?.let {
+            // remove bubble view
+            val menuView= bottom_navigation.getChildAt(0) as? BottomNavigationMenuView
+            val itemView = menuView?.getChildAt(pos) as? BottomNavigationItemView
+            itemView?.removeView(it)
+            bubbleView = null
+        }
     }
 
     private fun showFragmentWithTag(tag: String): Boolean {
@@ -246,7 +255,7 @@ class MainActivity : TopActivity(), BottomNavigationView.OnNavigationItemSelecte
                     removeBubbleView(PRIVATE_MESSAGE_POS)
                     showFragment(MessageFragment::class.java)
                 }
-                R.id.action_forum_navigation -> showFragment(ForumNavigationV3Fragment::class.java)
+                R.id.action_forum_navigation -> showFragment(DiscoverFragment::class.java)
                 R.id.action_about_me -> showFragment(MeFragment::class.java)
                 R.id.action_home -> showFragment(RecommendFragment::class.java)
                 else -> { }

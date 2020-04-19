@@ -1,28 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:orientation="vertical" >
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/dp_2"
+    android:layout_marginEnd="@dimen/dp_20"
+    android:orientation="vertical" >
 
     <ImageView
-            android:id="@+id/grid_image"
-            android:layout_width="@dimen/dp_40"
-            android:layout_height="@dimen/dp_40"
-            android:scaleType="fitCenter"
-            android:clickable="false"
-            android:contentDescription="@null"/>
+        android:id="@+id/grid_image"
+        android:layout_width="@dimen/dp_28"
+        android:layout_height="@dimen/dp_28"
+        android:scaleType="fitCenter"
+        android:clickable="false"
+        tools:src="@drawable/ic_welfare"
+        android:layout_alignStart="@id/grid_text"
+        android:layout_alignEnd="@id/grid_text"
+        android:contentDescription="@null"/>
 
     <TextView
-            android:id="@+id/grid_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/dp_5"
-            android:textSize="@dimen/sp_10"
-            tools:text="@string/forum_mobile_security" />
+        android:layout_below="@id/grid_image"
+        android:id="@+id/grid_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/dp_4"
+        android:ellipsize="end"
+        android:lines="1"
+        android:textSize="@dimen/sp_12"
+        tools:text="@string/forum_mobile_security" />
 
-</LinearLayout>
+</RelativeLayout>
