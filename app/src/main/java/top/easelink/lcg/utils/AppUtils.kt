@@ -4,6 +4,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.Intent.*
+import top.easelink.lcg.R
 
 fun isApplicationAvailable(context: Context, packageName: String): Boolean {
     context.packageManager.getInstalledPackages(0).forEach {
@@ -24,7 +25,7 @@ fun startWeChat(context: Context) {
             component = ComponentName(WECHAT_PACKAGE_NAME, "com.tencent.mm.ui.LauncherUI")
         })
     } else {
-        showMessage("您没有安装微信，请先安装")
+        showMessage(R.string.install_wechat_tips)
     }
 }
 
@@ -32,3 +33,5 @@ fun getScreenWidthDp(context: Context): Int {
     val displayMetrics = context.resources.displayMetrics
     return (displayMetrics.widthPixels / displayMetrics.density).toInt()
 }
+
+fun getScreenWidth(context: Context): Int = context.resources.displayMetrics.widthPixels

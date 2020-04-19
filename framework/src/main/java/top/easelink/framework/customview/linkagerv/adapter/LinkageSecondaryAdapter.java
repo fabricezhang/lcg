@@ -25,15 +25,15 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import top.easelink.framework.R;
 import top.easelink.framework.customview.linkagerv.adapter.viewholder.LinkageSecondaryFooterViewHolder;
 import top.easelink.framework.customview.linkagerv.adapter.viewholder.LinkageSecondaryHeaderViewHolder;
 import top.easelink.framework.customview.linkagerv.adapter.viewholder.LinkageSecondaryViewHolder;
 import top.easelink.framework.customview.linkagerv.bean.BaseGroupedItem;
 import top.easelink.framework.customview.linkagerv.contract.ILinkageSecondaryAdapterConfig;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Create by KunMinX at 19/4/29

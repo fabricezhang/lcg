@@ -3,11 +3,11 @@ package top.easelink.lcg.ui.main.login.view
 import android.os.Bundle
 import android.view.*
 import androidx.lifecycle.ViewModelProviders
-import top.easelink.framework.base.SafeShowDialogFragment
+import top.easelink.framework.topbase.TopDialog
 import top.easelink.lcg.R
 import top.easelink.lcg.ui.main.login.viewmodel.LoginViewModel
 
-class LoginDialog : SafeShowDialogFragment() {
+class LoginDialog : TopDialog() {
 
     private lateinit var viewModel: LoginViewModel
 

@@ -19,6 +19,8 @@ import top.easelink.lcg.config.AppConfig
 import top.easelink.lcg.mta.EVENT_OPEN_ARTICLE
 import top.easelink.lcg.mta.sendEvent
 import top.easelink.lcg.ui.main.article.view.ArticleFragment
+import top.easelink.lcg.ui.main.largeimg.view.LargeImageDialog
+import top.easelink.lcg.ui.main.model.OpenLargeImageViewEvent
 import top.easelink.lcg.ui.search.model.OpenSearchResultEvent
 import top.easelink.lcg.ui.search.viewmodel.LCGSearchResultAdapter
 import top.easelink.lcg.ui.search.viewmodel.LCGSearchViewModel
@@ -121,6 +123,15 @@ class LCGSearchActivity : TopActivity() {
             WebViewActivity.startWebViewWith(event.url, this)
         } else {
             showMessage(R.string.general_error)
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onMessageEvent(event: OpenLargeImageViewEvent) {
+        if (event.url.isNotEmpty()) {
+            LargeImageDialog(event.url).show(supportFragmentManager, LargeImageDialog::class.java.simpleName)
+        } else {
+            showMessage(R.string.tap_for_large_image_failed)
         }
     }
 

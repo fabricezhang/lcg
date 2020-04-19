@@ -25,6 +25,7 @@ import top.easelink.lcg.R
 import top.easelink.lcg.ui.main.follow.model.FeedInfo
 import top.easelink.lcg.ui.main.follow.viewmodel.FollowingFeedViewModel
 import top.easelink.lcg.ui.main.model.OpenArticleEvent
+import top.easelink.lcg.ui.main.model.OpenLargeImageViewEvent
 
 
 class FollowingFeedAdapter(
@@ -136,6 +137,9 @@ class FollowingFeedAdapter(
                     feed.images?.takeIf {
                         it.isNotEmpty()
                     }?.let { images ->
+                        preview.setOnClickListener {
+                            EventBus.getDefault().post(OpenLargeImageViewEvent(images[0]))
+                        }
                         preview.visibility = View.VISIBLE
                         Glide
                             .with(this)
@@ -161,11 +165,12 @@ class FollowingFeedAdapter(
                                     isFirstResource: Boolean
                                 ): Boolean {
                                     val newH = resource.intrinsicHeight.toFloat() / resource.intrinsicWidth.toFloat() * preview.width.toFloat()
-                                    preview.layoutParams.height = newH.toInt()
-                                    preview.setImageDrawable(resource)
+                                    preview.apply {
+                                        layoutParams.height = newH.toInt()
+                                        setImageDrawable(resource)
+                                    }
                                     return true
                                 }
-
                             })
                             .into(preview)
                     }?:run {
@@ -175,7 +180,6 @@ class FollowingFeedAdapter(
                     }
                     content.setHtml(feed.content)
                 }
-
             }
         }
 

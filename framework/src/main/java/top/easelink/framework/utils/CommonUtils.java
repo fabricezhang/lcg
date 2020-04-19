@@ -24,13 +24,13 @@ public final class CommonUtils {
         // This utility class is not publicly instantiable
     }
 
-    @SuppressLint("all")
+    @SuppressLint("HardwareIds")
     public static String getDeviceId(Context context) {
         return Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
     }
 
-    public static String getTimestamp() {
-        return new SimpleDateFormat(AppConstants.TIMESTAMP_FORMAT, Locale.US).format(new Date());
+    public static String getCurrentDate() {
+        return new SimpleDateFormat(AppConstants.TIMESTAMP_FORMAT, Locale.CHINA).format(new Date());
     }
 
     public static boolean isEmailValid(String email) {

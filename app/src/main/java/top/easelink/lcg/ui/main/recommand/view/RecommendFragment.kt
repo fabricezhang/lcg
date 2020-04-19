@@ -14,7 +14,7 @@ import top.easelink.lcg.ui.main.recommand.viewmodel.RecommendViewPagerAdapter
 import top.easelink.lcg.ui.search.view.BaiduSearchActivity
 import top.easelink.lcg.ui.search.view.LCGSearchActivity
 import top.easelink.lcg.ui.search.view.LCGSearchActivity.Companion.KEY_WORD
-import top.easelink.lcg.utils.WebsiteConstant.SEARCH_URL
+import top.easelink.lcg.utils.WebsiteConstant.SEARCH_QUERY
 import top.easelink.lcg.utils.WebsiteConstant.URL_KEY
 
 
@@ -63,7 +63,7 @@ class RecommendFragment: TopFragment(), ControllableFragment {
                     }
                     1 -> {
                         val intent = Intent(context, BaiduSearchActivity::class.java)
-                        intent.putExtra(URL_KEY, java.lang.String.format(SEARCH_URL, query))
+                        intent.putExtra(URL_KEY, java.lang.String.format(SEARCH_QUERY, query))
                         context?.startActivity(intent)
                     }
                     else -> {
@@ -86,6 +86,5 @@ class RecommendFragment: TopFragment(), ControllableFragment {
         return if (item.itemId == R.id.search) {
             true
         } else super.onOptionsItemSelected(item)
-
     }
 }

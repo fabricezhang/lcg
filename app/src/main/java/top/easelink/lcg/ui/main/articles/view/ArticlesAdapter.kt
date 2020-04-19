@@ -127,12 +127,6 @@ class ArticlesAdapter(
                 setOnClickListener {
                     EventBus.getDefault().post(OpenArticleEvent(article.url))
                 }
-//                if (article.author == UserData.username) {
-//                    layout.strokeColor = ContextCompat.getColor(context, R.color.google)
-//                    layout.strokeWidth = 1.dpToPx(context).toInt()
-//                } else {
-//                    layout.strokeWidth = 0
-//                }
             }
             view.apply {
                 title_text_view.text = article.title
@@ -140,6 +134,11 @@ class ArticlesAdapter(
                 date_text_view.text = article.date
                 reply_and_view.text = article.let { "${it.reply} / ${it.view}" }
                 origin.text = article.origin
+                if (article.isRecommended) {
+                    recommend_flag.visibility = View.VISIBLE
+                } else {
+                    recommend_flag.visibility = View.GONE
+                }
                 if (article.author == UserData.username) {
                     stamp.apply {
                         visibility = View.VISIBLE

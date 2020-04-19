@@ -35,6 +35,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import top.easelink.framework.R;
 import top.easelink.framework.customview.linkagerv.adapter.LinkagePrimaryAdapter;
 import top.easelink.framework.customview.linkagerv.adapter.LinkageSecondaryAdapter;
@@ -46,9 +49,6 @@ import top.easelink.framework.customview.linkagerv.contract.ILinkageSecondaryAda
 import top.easelink.framework.customview.linkagerv.defaults.DefaultLinkagePrimaryAdapterConfig;
 import top.easelink.framework.customview.linkagerv.defaults.DefaultLinkageSecondaryAdapterConfig;
 import top.easelink.framework.customview.linkagerv.manager.RecyclerViewScrollHelper;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Create by KunMinX at 19/4/27

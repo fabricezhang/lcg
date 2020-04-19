@@ -44,7 +44,7 @@
                 android:textSize="@dimen/sp_12"
                 tools:text="吾爱破解坛友原创作品展示，包含Windows原创工具，也有Android、iOS和Mac OS程序相应的原创程序！" />
 
-        <top.easelink.lcg.ui.main.forumnav3.view.WrapFixGridView
+        <top.easelink.lcg.ui.main.forumnav.view.WrapFixGridView
                 android:id="@+id/children_grid_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -54,7 +54,7 @@ import static top.easelink.lcg.ui.webview.WebViewConstantsKt.OPEN_LOGIN_PAGE;
 import static top.easelink.lcg.ui.webview.WebViewConstantsKt.TITLE_KEY;
 import static top.easelink.lcg.utils.CookieUtilsKt.setCookies;
 import static top.easelink.lcg.utils.WebsiteConstant.EXTRA_TABLE_HTML;
-import static top.easelink.lcg.utils.WebsiteConstant.LOGIN_URL;
+import static top.easelink.lcg.utils.WebsiteConstant.LOGIN_QUERY;
 import static top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL;
 import static top.easelink.lcg.utils.WebsiteConstant.URL_KEY;
 
@@ -88,7 +88,7 @@ public class WebViewActivity extends AppCompatActivity {
 
     public static void openLoginPage(Context context) {
         Intent intent = new Intent(context, WebViewActivity.class);
-        intent.putExtra(URL_KEY, SERVER_BASE_URL + LOGIN_URL);
+        intent.putExtra(URL_KEY, SERVER_BASE_URL + LOGIN_QUERY);
         intent.putExtra(FORCE_ENABLE_JS_KEY, true);
         intent.putExtra(OPEN_LOGIN_PAGE, true);
         context = context == null? LCGApp.getContext() : context;

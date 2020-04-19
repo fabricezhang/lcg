@@ -4,13 +4,13 @@ import android.webkit.JavascriptInterface
 import androidx.lifecycle.ViewModel
 import org.jsoup.Jsoup
 import top.easelink.lcg.service.web.WebViewWrapper
-import top.easelink.lcg.utils.WebsiteConstant.LOGIN_URL
+import top.easelink.lcg.utils.WebsiteConstant.LOGIN_QUERY
 import top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL
 
 class LoginViewModel: ViewModel() {
 
     fun fetchLoginPage() {
-        WebViewWrapper.getInstance().loadUrl("$SERVER_BASE_URL${LOGIN_URL}", ::parseHtml)
+        WebViewWrapper.getInstance().loadUrl("$SERVER_BASE_URL${LOGIN_QUERY}", ::parseHtml)
     }
 
     @JavascriptInterface

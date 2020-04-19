@@ -1,26 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/rectangle_bg_white_4dp"
+    android:padding="@dimen/dp_2"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <TextView
+        android:id="@+id/forum_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/forum_most_frequent_title"
+        android:textSize="@dimen/sp_14"
+        android:textStyle="bold"
+        android:layout_marginBottom="@dimen/dp_8"
+        android:layout_marginTop="@dimen/dp_4"
+        android:layout_marginStart="@dimen/dp_4"
+        android:textColor="@color/black_effective" />
 
-<androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <TextView
+        android:id="@+id/forum_tips"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/forum_title_tips"
+        android:textSize="@dimen/sp_10"
+        android:drawableEnd="@drawable/ic_arrow_right_gray"
+        android:layout_alignBottom="@id/forum_title"
+        android:layout_alignParentEnd="true"
+        android:textColor="@color/gray" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/navigation_grid"
+        android:layout_below="@id/forum_title"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:focusable="true"
-        android:clickable="true"
-        android:background="@color/white">
-    <GridView
-            android:id="@+id/navigation_grid"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dp_30"
-            android:numColumns="4"
-            android:alwaysDrawnWithCache="true"
-            android:columnWidth="@dimen/dp_40"
-            android:layout_gravity="center_vertical"
-            android:gravity="center"
-            android:verticalSpacing="@dimen/dp_30"
-            android:horizontalSpacing="@dimen/dp_5"
-            android:stretchMode="columnWidth"
-            app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dp_2"
+        android:padding="@dimen/dp_4" />
+
+</RelativeLayout>

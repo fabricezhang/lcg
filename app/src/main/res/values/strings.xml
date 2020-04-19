@@ -29,6 +29,7 @@
     <!--Toolbar menus-->
     <string name="about_me">我的</string>
     <string name="message">消息</string>
+    <string name="discover_tab">发现</string>
     <string name="forum_page">专区</string>
     <string name="home_page">首页</string>
 
@@ -37,11 +38,11 @@
     <string name="close_drawer">Drawer Close</string>
 
     <!--Drawer Menus-->
-    <string name="setting">『应用设置』</string>
-    <string name="about">『关于应用』</string>
-    <string name="thread_about_app">『App发布页』</string>
-    <string name="open_portal_page">『吾爱网页版』</string>
-    <string name="open_jrs_page">『JRS看球』</string>
+    <string name="setting">应用设置』</string>
+    <string name="about">关于应用』</string>
+    <string name="thread_about_app">App发布页』</string>
+    <string name="open_portal_page">吾爱网页版』</string>
+    <string name="open_jrs_page">JRS看球』</string>
 
     <!--home fragment-->
     <string name="tab_title_hot">人气热门</string>
@@ -54,12 +55,18 @@
     <string name="app_exit_tip">再按一次退出应用</string>
 
     <!--Setting Activity-->
+    <string name="account_setting">账号</string>
     <string name="start_auto_sign_in">开启自动签到</string>
+    <string name="search_setting">搜索</string>
     <string name="search_engine_setting">默认搜索引擎</string>
     <string name="open_search_result_in_webview">网页形式打开搜索结果</string>
+    <string name="article_setting">文章</string>
     <string name="open_article_in_webview">网页形式打开文章</string>
+    <string name="show_recommend_flag_on_article">标题显示推荐标签</string>
+    <string name="favorite_setting">收藏</string>
     <string name="sync_favorites">同步收藏文章到网站</string>
     <string name="sync_favorites_instruction">（默认仅收藏到本地）</string>
+    <string name="app_setting">应用</string>
     <string name="check_app_update">检查最新版本</string>
 
     <!--Me Fragment-->
@@ -118,7 +125,7 @@
     <!--feed-->
     <string name="load_more">加载更多</string>
     <string name="no_more_content">没有更多了</string>
-    <string name="tap_for_code">『点击显示代码』</string>
+    <string name="tap_for_code">点击显示代码』</string>
     <string name="tap_for_large_image_failed">查看失败</string>
 
     <!--message fragment-->
@@ -147,6 +154,7 @@
     <string name="reply_post_btn_sent">完成</string>
     <string name="reply_post_input_hint">请输入回复内容…</string>
     <string name="reply_post_failed">回复失败</string>
+    <string name="reply_post_succeed">回复成功</string>
 
     <!--comment article dialog  -->
     <string name="comment_article_dialog_title">跟帖评论：</string>
@@ -161,22 +169,34 @@
     <string name="share_template">分享文章 %s %s</string>
     <string name="share_title">快来看这篇</string>
 
+    <!--rank list-->
+    <string name="rank_list_today_heat_title">今日热榜</string>
+    <string name="type_view_template">查看：%d</string>
+    <string name="type_heat_template">热度：%d</string>
+    <string name="type_share_template">分享：%d</string>
+    <string name="type_favorite_template">收藏：%d</string>
+    <string name="type_reply_template">回复：%d</string>
+
     <!--forum grid-->
+    <string name="more_forums">更多板块</string>
+    <string name="forum_most_frequent_title">常用板块导航</string>
+    <string name="forum_title_tips">右滑查看更多</string>
+    
     <string name="forum_title">论坛板块导航</string>
     <string name="forum_doctors">向逆行的白衣天使们致敬！</string>
     <string name="forum_secondary_footer">没有更多了</string>
-    <string name="forum_mobile_security">『移动安全区』</string>
-    <string name="forum_software">『精品软件区』</string>
-    <string name="forum_original_release">『原创发布区』</string>
-    <string name="forum_program_language">『编程语言区』</string>
-    <string name="forum_animation_release">『动画发布区』</string>
-    <string name="forum_reverse_resource">『逆向资源区』</string>
-    <string name="forum_qa">『悬赏问答区』</string>
-    <string name="forum_virus_analysis">『病毒分析区』</string>
-    <string name="forum_virus_sample">『病毒样本区』</string>
-    <string name="forum_virus_rescue">『病毒救援区』</string>
-    <string name="free_chat_title">『水漫金山』</string>
-    <string name="welfare_title">『福利经验』</string>
+    <string name="forum_mobile_security">移动安全</string>
+    <string name="forum_software">精品软件</string>
+    <string name="forum_original_release">原创发布</string>
+    <string name="forum_program_language">编程语言</string>
+    <string name="forum_animation_release">动画发布</string>
+    <string name="forum_reverse_resource">逆向资源</string>
+    <string name="forum_qa">悬赏问答</string>
+    <string name="forum_virus_analysis">病毒分析</string>
+    <string name="forum_virus_sample">病毒样本</string>
+    <string name="forum_virus_rescue">病毒救援</string>
+    <string name="free_chat_title">水漫金山</string>
+    <string name="welfare_title">福利经验</string>
 
     <!-- setting -->
     <string name="setting_title">设置</string>
@@ -195,5 +215,5 @@
     <string name="permission_denied">未授权，部分功能可能无法使用</string>
 
     <!--extras-->
-    <string name="jrs_sport">『看球直播』</string>
+    <string name="jrs_sport">看球直播』</string>
 </resources>
