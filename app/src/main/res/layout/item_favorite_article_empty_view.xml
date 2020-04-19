@@ -26,13 +26,13 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/sync_favorites"
-        android:layout_marginTop="@dimen/dp_10"
+        android:layout_marginTop="@dimen/dp_28"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="@dimen/sp_12"
-        android:textColor="@color/black_effective"
-        android:paddingStart="@dimen/dp_3"
-        android:paddingEnd="@dimen/dp_3"
+        android:textColor="@color/white"
+        android:minHeight="0dp"
+        android:minWidth="0dp"
         android:backgroundTint="@color/slight_light_gray"
         android:background="@drawable/rectangle_bg"
         android:text="@string/start_sync"
