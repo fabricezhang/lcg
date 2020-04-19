@@ -9,8 +9,8 @@
             app:showAsAction="ifRoom"/>
     <item
             android:id="@+id/action_forum_navigation"
-            android:icon="@drawable/ic_topic"
-            android:title="@string/forum_page"
+            android:icon="@drawable/ic_discover"
+            android:title="@string/discover_tab"
             app:showAsAction="ifRoom"/>
     <item
             android:id="@+id/action_message"
