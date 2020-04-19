@@ -45,7 +45,6 @@ abstract class TopDialog : DialogFragment() {
 
     override fun show(fragmentManager: FragmentManager, tag: String?) {
         safelyShow(fragmentManager, tag)
-
     }
 
     private fun safelyShow(fragmentManager: FragmentManager, tag: String?) {
@@ -80,9 +79,8 @@ abstract class TopDialog : DialogFragment() {
                     .beginTransaction()
                     .run {
                         manager.findFragmentByTag(tag)?.let {
-                            remove(it)
+                            remove(it).commit()
                         }
-                        addToBackStack(null)
                         add(this@TopDialog, tag ?: this::class.java.simpleName)
                         commitAllowingStateLoss()
                     }
