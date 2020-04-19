@@ -14,9 +14,7 @@ class DiscoverViewModel : ViewModel() {
 
     @MainThread
     fun initOptions(context: Context) {
-        val list = generateAllForums(
-            context
-        )
+        val list = generateAllForums(context)
             .fold(mutableListOf<ForumNavigationModel>()){ acc, model ->
                 acc.also {
                     it.add(model)

@@ -86,6 +86,5 @@ class RecommendFragment: TopFragment(), ControllableFragment {
         return if (item.itemId == R.id.search) {
             true
         } else super.onOptionsItemSelected(item)
-
     }
 }
