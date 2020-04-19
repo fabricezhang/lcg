@@ -169,6 +169,14 @@
     <string name="share_template">分享文章 %s %s</string>
     <string name="share_title">快来看这篇</string>
 
+    <!--rank list-->
+    <string name="rank_list_today_heat_title">今日热榜</string>
+    <string name="type_view_template">查看：%d</string>
+    <string name="type_heat_template">热度：%d</string>
+    <string name="type_share_template">分享：%d</string>
+    <string name="type_favorite_template">收藏：%d</string>
+    <string name="type_reply_template">回复：%d</string>
+
     <!--forum grid-->
     <string name="more_forums">更多板块</string>
     <string name="forum_most_frequent_title">常用板块导航</string>

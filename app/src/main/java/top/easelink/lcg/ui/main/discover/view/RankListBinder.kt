@@ -4,10 +4,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.fragment_forums_navigation.view.*
+import kotlinx.android.synthetic.main.fragment_rank_list.view.*
 import top.easelink.lcg.R
 import top.easelink.lcg.ui.main.discover.model.RankListModel
-import top.easelink.lcg.ui.main.discover.model.RankModel
 
 class RankListBinder : BaseNavigationBinder<RankListModel, RankListVH>() {
 
@@ -35,26 +34,22 @@ class RankListBinder : BaseNavigationBinder<RankListModel, RankListVH>() {
 }
 
 class RankListVH(inflater: LayoutInflater, parentView: ViewGroup): BaseNavigationViewHolder(
-    inflater.inflate(R.layout.fragment_forums_navigation, parentView, false)
+    inflater.inflate(R.layout.fragment_rank_list, parentView, false)
 ) {
     fun onBind(item: RankListModel, payloads: List<Any>?) {
-        setUp(item.listModel)
+        setUp(item)
     }
 
-    private fun setUp(rankModel: List<RankModel>) {
+    private fun setUp(rankModel: RankListModel) {
         with(itemView) {
-            forum_tips.setOnClickListener {
-                navigation_grid.smoothScrollToPosition(
-                    (navigation_grid.layoutManager as LinearLayoutManager).findLastVisibleItemPosition() + 1
-                )
-            }
-            navigation_grid.apply {
+            rank_tips.text = rankModel.notice
+            rank_recycler_view.apply {
                 layoutManager = LinearLayoutManager(context).apply {
                     orientation = RecyclerView.VERTICAL
                 }
                 adapter = RankListAdapter()
                     .also {
-                    it.addItems(rankModel)
+                    it.addItems(rankModel.listModel)
                 }
             }
         }

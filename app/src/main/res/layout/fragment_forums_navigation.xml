@@ -14,7 +14,8 @@
         android:textStyle="bold"
         android:layout_marginBottom="@dimen/dp_8"
         android:layout_marginTop="@dimen/dp_4"
-        android:textColor="@color/gray" />
+        android:layout_marginStart="@dimen/dp_4"
+        android:textColor="@color/black_effective" />
 
     <TextView
         android:id="@+id/forum_tips"

@@ -8,16 +8,15 @@ import top.easelink.lcg.utils.WebsiteConstant.RANK_QUERY
 
 
 fun fetchRank(type: RankType, dateType: DateType): RankListModel {
-    return RankListModel(
-        parseRankModelInfo(
-            Client.sendGetRequestWithQuery(RANK_QUERY.format(type.value, dateType.value))
-        )
+    return parseRankModelInfo(
+        Client.sendGetRequestWithQuery(RANK_QUERY.format(type.value, dateType.value)), type
     )
 }
 
-fun parseRankModelInfo(document: Document): List<RankModel> {
+fun parseRankModelInfo(document: Document, rankType: RankType): RankListModel {
     return with(document) {
-        getElementsByTag("table")
+        val time = selectFirst("div.notice").text()
+        val list = getElementsByTag("table")
             ?.select("tbody")
             ?.select("tr")
             ?.mapNotNull { tr ->
@@ -44,7 +43,8 @@ fun parseRankModelInfo(document: Document): List<RankModel> {
                         date = date,
                         index = index.toInt(),
                         num = num.toInt(),
-                        forum = forum
+                        forum = forum,
+                        type = rankType
                     )
 
                 } catch (e: Exception) {
@@ -52,6 +52,7 @@ fun parseRankModelInfo(document: Document): List<RankModel> {
                 }
             }
             .orEmpty()
+        RankListModel(list, time)
     }
 }
 

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_marginTop="@dimen/dp_20"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/rectangle_bg_white_4dp"
+    android:padding="@dimen/dp_2"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <TextView
+        android:id="@+id/rank_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/rank_list_today_heat_title"
+        android:textSize="@dimen/sp_14"
+        android:textStyle="bold"
+        android:layout_marginBottom="@dimen/dp_8"
+        android:layout_marginTop="@dimen/dp_4"
+        android:layout_marginStart="@dimen/dp_4"
+        android:textColor="@color/red_dark2" />
+
+    <TextView
+        android:id="@+id/rank_tips"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="update time"
+        android:textSize="@dimen/sp_10"
+        android:layout_marginTop="@dimen/dp_2"
+        android:layout_marginStart="@dimen/dp_6"
+        android:layout_alignStart="@id/rank_recycler_view"
+        android:layout_below="@id/rank_recycler_view"
+        android:layout_alignParentStart="true"
+        android:textColor="@color/gray" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rank_recycler_view"
+        android:background="@color/slight_light_gray"
+        android:layout_below="@id/rank_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>
