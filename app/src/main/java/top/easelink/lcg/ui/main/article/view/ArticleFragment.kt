@@ -27,7 +27,6 @@ import top.easelink.lcg.ui.main.source.model.Post
 import top.easelink.lcg.ui.webview.view.WebViewActivity
 import top.easelink.lcg.utils.WebsiteConstant
 import top.easelink.lcg.utils.showMessage
-import java.util.*
 
 class ArticleFragment(private var articleUrl: String) : BaseFragment<FragmentArticleBinding, ArticleViewModel>() {
 
@@ -120,16 +119,14 @@ class ArticleFragment(private var articleUrl: String) : BaseFragment<FragmentArt
                         context
                     )
                     R.id.action_extract_urls -> {
-                        val linkList: ArrayList<String>? = viewModel.extractDownloadUrl()
-                        if (linkList != null && linkList.isNotEmpty()) {
-                            newInstance(linkList).show(if (isAdded) parentFragmentManager else childFragmentManager)
-                        } else {
-                            showMessage(R.string.download_link_not_found)
-                        }
+                        viewModel.extractDownloadUrl()
+                            ?.takeIf { list -> list.isNotEmpty() }
+                            ?.run {
+                                newInstance(this).show(if (isAdded) parentFragmentManager else childFragmentManager)
+                            } ?: showMessage(R.string.download_link_not_found)
                     }
                     R.id.action_add_to_my_favorite -> viewModel.addToFavorite()
-                    else -> {
-                    }
+                    else -> {  }
                 }
                 return@setOnMenuItemClickListener true
             }
