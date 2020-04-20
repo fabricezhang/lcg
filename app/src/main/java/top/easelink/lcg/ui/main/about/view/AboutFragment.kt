@@ -24,6 +24,10 @@ class AboutFragment : BaseFragment<FragmentAboutBinding, AboutViewModel?>() {
         return ViewModelProvider(this)[AboutViewModel::class.java]
     }
 
+    override fun isControllable(): Boolean {
+        return true
+    }
+
     override fun onViewCreated(
         view: View,
         savedInstanceState: Bundle?
