@@ -8,6 +8,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import top.easelink.framework.base.BaseFragment
 import top.easelink.framework.threadpool.ApiPool
+import top.easelink.framework.threadpool.Main
 import top.easelink.lcg.R
 import top.easelink.lcg.network.Client
 import top.easelink.lcg.service.web.WebViewWrapper
@@ -96,7 +97,9 @@ class MeViewModel: ViewModel() {
     private fun tryResolveAntiScraping() {
         if (isResolvingAntiScrapingException) return
         isResolvingAntiScrapingException = true
-        WebViewWrapper.getInstance().loadUrl("$SERVER_BASE_URL${PROFILE_QUERY}", ::parseHtml)
+        GlobalScope.launch(Main) {
+            WebViewWrapper.getInstance().loadUrl("$SERVER_BASE_URL${PROFILE_QUERY}", ::parseHtml)
+        }
     }
 
     @JavascriptInterface
