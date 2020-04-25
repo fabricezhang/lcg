@@ -6,12 +6,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/slight_light_gray"
     android:padding="@dimen/dp_8">
-    <View
+    <androidx.appcompat.widget.AppCompatImageView
+        android:paddingTop="@dimen/dp_3"
+        android:paddingBottom="@dimen/dp_3"
         android:id="@+id/title_flag"
-        android:background="@drawable/rectangle_bg_white_4dp"
-        android:backgroundTint="@color/red_dark2"
         android:layout_width="@dimen/dp_4"
         android:layout_height="0dp"
+        android:tint="@color/red_dark2"
+        android:src="@drawable/rectangle_bg_white_4dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/reply_header_title"
         app:layout_constraintBottom_toBottomOf="@id/reply_header_title"
