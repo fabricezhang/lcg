@@ -1,5 +1,6 @@
 package top.easelink.lcg.ui.main.article.view
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -240,8 +241,9 @@ class ArticleAdapter(
 
         private var post: Post? = null
         private val htmlHttpImageGetter: Html.ImageGetter by lazy {
-            HtmlGlideImageGetter(view.context, view.content_text_view)
+            HtmlGlideImageGetter(view.context, view.reply_content_text_view)
         }
+        @SuppressLint("SetTextI18n")
         override fun onBind(position: Int) {
             post = mPostList[position]
             post?.let { p ->
