@@ -14,10 +14,12 @@ import top.easelink.lcg.R
 import top.easelink.lcg.spipedata.UserData
 import top.easelink.lcg.ui.main.article.viewmodel.ReplyPostViewModel
 import top.easelink.lcg.ui.main.source.model.Post
+import top.easelink.lcg.utils.showMessage
 
 class CommentArticleDialog : TopDialog() {
 
     private lateinit var replyPostViewModel: ReplyPostViewModel
+    private var lastClickTime = 0L
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,6 +54,11 @@ class CommentArticleDialog : TopDialog() {
             }
         })
         button.setOnClickListener {
+            if (System.currentTimeMillis() - lastClickTime < 2000) {
+                showMessage(R.string.reply_btn_debounced_notice)
+                return@setOnClickListener
+            }
+            lastClickTime = System.currentTimeMillis()
             val content = reply_content.text?.trimEnd()
             replyPostViewModel.sendReply(
                 arguments?.getString(REPLY_POST_URL),
