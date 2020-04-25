@@ -253,6 +253,7 @@ class ArticleAdapter(
                         } else {
                             reply_card.strokeWidth = 0
                         }
+                        reply_position.text = "#$position"
                         reply_author_text_view.text = p.author
                         reply_date_text_view.text = p.date
                         reply_avatar.setOnClickListener { _ ->

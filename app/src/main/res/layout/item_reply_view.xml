@@ -44,6 +44,15 @@
             tools:text="Author"/>
 
         <TextView
+            android:id="@+id/reply_position"
+            style="@style/TextStyle.Title.Sub"
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="@id/reply_content_text_view"
+            app:layout_constraintTop_toTopOf="@id/reply_author_text_view"
+            tools:text="#1"/>
+
+        <TextView
             android:id="@+id/reply_date_text_view"
             style="@style/TextStyle.Title.Sub"
             android:layout_marginTop="@dimen/dp_5"
