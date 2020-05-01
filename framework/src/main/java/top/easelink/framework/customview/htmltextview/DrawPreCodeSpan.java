@@ -28,7 +28,7 @@ import android.text.style.ReplacementSpan;
  * This is to be used in conjunction with the ClickableSpecialSpan which will redirect a click to the
  * text some application-defined action (i.e. render the raw HTML in a WebView).
  */
-public class DrawTableLinkSpan extends ReplacementSpan {
+public class DrawPreCodeSpan extends ReplacementSpan {
 
     private static final String DEFAULT_TABLE_LINK_TEXT = "";
     private static float DEFAULT_TEXT_SIZE = 80f;
@@ -40,13 +40,13 @@ public class DrawTableLinkSpan extends ReplacementSpan {
 
     // This sucks, but we need this so that each table can get drawn.
     // Otherwise, we end up with the default table link text (nothing) for earlier tables.
-    public DrawTableLinkSpan newInstance() {
-        final DrawTableLinkSpan drawTableLinkSpan = new DrawTableLinkSpan();
-        drawTableLinkSpan.setTableLinkText(mTableLinkText);
-        drawTableLinkSpan.setTextSize(mTextSize);
-        drawTableLinkSpan.setTextColor(mTextColor);
+    public DrawPreCodeSpan newInstance() {
+        final DrawPreCodeSpan drawPreCodeSpan = new DrawPreCodeSpan();
+        drawPreCodeSpan.setTableLinkText(mTableLinkText);
+        drawPreCodeSpan.setTextSize(mTextSize);
+        drawPreCodeSpan.setTextColor(mTextColor);
 
-        return drawTableLinkSpan;
+        return drawPreCodeSpan;
     }
 
     @Override

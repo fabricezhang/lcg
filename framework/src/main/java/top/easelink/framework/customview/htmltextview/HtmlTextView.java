@@ -41,7 +41,7 @@ public class HtmlTextView extends JellyBeanSpanFixTextView {
     @Nullable
     private ClickableSpecialSpan clickableSpecialSpan;
     @Nullable
-    private DrawTableLinkSpan drawTableLinkSpan;
+    private DrawPreCodeSpan drawPreCodeSpan;
 
     private OnImgTagClickListener onImgTagClickListener;
     private OnLinkTagClickListener onLinkTagClickListener;
@@ -99,7 +99,7 @@ public class HtmlTextView extends JellyBeanSpanFixTextView {
                             html,
                             imageGetter,
                             clickableSpecialSpan,
-                            drawTableLinkSpan,
+                            drawPreCodeSpan,
                             indent,
                             removeTrailingWhiteSpace,
                             getContext(),
@@ -147,8 +147,8 @@ public class HtmlTextView extends JellyBeanSpanFixTextView {
         this.clickableSpecialSpan = clickableSpecialSpan;
     }
 
-    public void setDrawTableLinkSpan(@Nullable DrawTableLinkSpan drawTableLinkSpan) {
-        this.drawTableLinkSpan = drawTableLinkSpan;
+    public void setDrawPreCodeSpan(@Nullable DrawPreCodeSpan drawPreCodeSpan) {
+        this.drawPreCodeSpan = drawPreCodeSpan;
     }
 
     public void setImageTagClickListener(OnImgTagClickListener onImgTagClickListener) {

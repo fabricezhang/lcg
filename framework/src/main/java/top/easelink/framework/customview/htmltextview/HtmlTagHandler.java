@@ -37,6 +37,8 @@ import org.xml.sax.XMLReader;
 
 import java.util.Stack;
 
+import timber.log.Timber;
+
 /**
  * Some parts of this code are based on android.text.Html
  */
@@ -114,7 +116,7 @@ public class HtmlTagHandler implements Html.TagHandler {
     private static final int defaultListItemIndent = defaultIndent * 2;
     private static final BulletSpan defaultBullet = new BulletSpan(defaultIndent);
     private ClickableSpecialSpan clickableSpecialSpan;
-    private DrawTableLinkSpan drawTableLinkSpan;
+    private DrawPreCodeSpan drawPreCodeSpan;
 
     private static class Ul {
     }
@@ -151,7 +153,7 @@ public class HtmlTagHandler implements Html.TagHandler {
         if (opening) {
             // opening tag
             if (HtmlTextView.DEBUG) {
-                Log.d(HtmlTextView.TAG, "opening, output: " + output.toString());
+                Timber.d("opening, output: " + output.toString());
             }
 
             if (tag.equalsIgnoreCase(UNORDERED_LIST)) {
@@ -178,18 +180,6 @@ public class HtmlTagHandler implements Html.TagHandler {
                 start(output, new Center());
             } else if (tag.equalsIgnoreCase("s") || tag.equalsIgnoreCase("strike")) {
                 start(output, new Strike());
-//          TODO Active Table feature in the future
-
-//            } else if (tag.equalsIgnoreCase("table")) {
-//                start(output, new Table());
-//                if (tableTagLevel == 0) {
-//                    tableHtmlBuilder = new StringBuilder();
-//                    // We need some text for the table to be replaced by the span because
-//                    // the other tags will remove their text when their text is extracted
-//                    output.append("table placeholder");
-//                }
-//
-//                tableTagLevel++;
             } else if (tag.equalsIgnoreCase("tr")) {
                 start(output, new Tr());
             } else if (tag.equalsIgnoreCase("th")) {
@@ -264,28 +254,6 @@ public class HtmlTagHandler implements Html.TagHandler {
                 end(output, Center.class, true, new AlignmentSpan.Standard(Layout.Alignment.ALIGN_CENTER));
             } else if (tag.equalsIgnoreCase("s") || tag.equalsIgnoreCase("strike")) {
                 end(output, Strike.class, false, new StrikethroughSpan());
-//            } else if (tag.equalsIgnoreCase("table")) {
-//                tableTagLevel--;
-//
-//                // When we're back at the root-level table
-//                if (tableTagLevel == 0) {
-//                    final String tableHtml = tableHtmlBuilder.toString();
-//
-//                    ClickableSpecialSpan myClickableSpecialSpan = null;
-//                    if (clickableSpecialSpan != null) {
-//                        myClickableSpecialSpan = clickableSpecialSpan.newInstance();
-//                        myClickableSpecialSpan.setHtml(tableHtml);
-//                    }
-//
-//                    DrawTableLinkSpan myDrawTableLinkSpan = null;
-//                    if (drawTableLinkSpan != null) {
-//                        myDrawTableLinkSpan = drawTableLinkSpan.newInstance();
-//                    }
-//
-//                    end(output, Table.class, false, myDrawTableLinkSpan, myClickableSpecialSpan);
-//                } else {
-//                    end(output, Table.class, false);
-//                }
             } else if (tag.equalsIgnoreCase("tr")) {
                 end(output, Tr.class, false);
             } else if (tag.equalsIgnoreCase("th")) {
@@ -303,16 +271,16 @@ public class HtmlTagHandler implements Html.TagHandler {
                             .append(">");
                     myClickableSpecialSpan.setHtml(preHtmlBuilder.toString());
                 }
-                DrawTableLinkSpan myDrawTableLinkSpan = null;
-                if (drawTableLinkSpan != null) {
-                    myDrawTableLinkSpan = drawTableLinkSpan.newInstance();
+                DrawPreCodeSpan myDrawPreCodeSpan = null;
+                if (drawPreCodeSpan != null) {
+                    myDrawPreCodeSpan = drawPreCodeSpan.newInstance();
                 }
-                end(output, Pre.class, false, myDrawTableLinkSpan, myClickableSpecialSpan);
+                end(output, Pre.class, false, myDrawPreCodeSpan, myClickableSpecialSpan);
                 preStart = false;
             }
         }
 
-        storeSpecialTags(opening, tag);
+//        storeSpecialTags(opening, tag);
     }
 
     /**
@@ -339,7 +307,7 @@ public class HtmlTagHandler implements Html.TagHandler {
         output.setSpan(mark, len, len, Spannable.SPAN_MARK_MARK);
 
         if (HtmlTextView.DEBUG) {
-            Log.d(HtmlTextView.TAG, "len: " + len);
+            Timber.d("len: %s", len);
         }
     }
 
@@ -379,8 +347,8 @@ public class HtmlTagHandler implements Html.TagHandler {
             }
 
             if (HtmlTextView.DEBUG) {
-                Log.d(HtmlTextView.TAG, "where: " + where);
-                Log.d(HtmlTextView.TAG, "thisLen: " + thisLen);
+                Timber.d("where: %s", where);
+                Timber.d("thisLen: %s", thisLen);
             }
         }
     }
@@ -426,7 +394,7 @@ public class HtmlTagHandler implements Html.TagHandler {
         this.clickableSpecialSpan = clickableSpecialSpan;
     }
 
-    public void setDrawTableLinkSpan(DrawTableLinkSpan drawTableLinkSpan) {
-        this.drawTableLinkSpan = drawTableLinkSpan;
+    public void setDrawPreCodeSpan(DrawPreCodeSpan drawPreCodeSpan) {
+        this.drawPreCodeSpan = drawPreCodeSpan;
     }
 } 

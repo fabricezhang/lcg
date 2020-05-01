@@ -37,7 +37,7 @@ public class HtmlFormatter {
                 builder.getHtml(),
                 builder.getImageGetter(),
                 builder.getClickableSpecialSpan(),
-                builder.getDrawTableLinkSpan(),
+                builder.getDrawPreCodeSpan(),
                 builder.getIndent(),
                 builder.isRemoveTrailingWhiteSpace(),
                 null,
@@ -49,7 +49,7 @@ public class HtmlFormatter {
             @Nullable String html,
             ImageGetter imageGetter,
             ClickableSpecialSpan clickableSpecialSpan,
-            DrawTableLinkSpan drawTableLinkSpan,
+            DrawPreCodeSpan drawPreCodeSpan,
             float indent,
             boolean removeTrailingWhiteSpace,
             @Nullable Context context,
@@ -57,7 +57,7 @@ public class HtmlFormatter {
             @Nullable OnLinkTagClickListener onLinkTagClickListener) {
         final HtmlTagHandler htmlTagHandler = new HtmlTagHandler();
         htmlTagHandler.setClickableSpecialSpan(clickableSpecialSpan);
-        htmlTagHandler.setDrawTableLinkSpan(drawTableLinkSpan);
+        htmlTagHandler.setDrawPreCodeSpan(drawPreCodeSpan);
         htmlTagHandler.setListIndentPx(indent);
 
         html = htmlTagHandler.overrideTags(html);
