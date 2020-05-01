@@ -63,8 +63,7 @@ public class DrawTableLinkSpan extends ReplacementSpan {
         paint2.setColor(mTextColor);
         paint2.setAntiAlias(true);
         paint2.setTextSize(mTextSize);
-
-        canvas.drawText(mTableLinkText, x, bottom, paint2);
+        canvas.drawText(mTableLinkText, x, y, paint2);
     }
 
     public void setTableLinkText(String tableLinkText) {
