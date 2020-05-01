@@ -63,6 +63,7 @@
     <string name="article_setting">文章</string>
     <string name="open_article_in_webview">网页形式打开文章</string>
     <string name="show_recommend_flag_on_article">标题显示推荐标签</string>
+    <string name="article_handle_pre_tag">单独页面展示代码</string>
     <string name="favorite_setting">收藏</string>
     <string name="sync_favorites">同步收藏文章到网站</string>
     <string name="sync_favorites_instruction">（默认仅收藏到本地）</string>

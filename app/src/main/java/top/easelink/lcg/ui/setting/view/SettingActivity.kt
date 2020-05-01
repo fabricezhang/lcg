@@ -112,6 +112,9 @@ class SettingActivity : TopActivity() {
         show_article_in_webview.setOnCheckedChangeListener { _, isChecked ->
             AppConfig.articleShowInWebView = isChecked
         }
+        article_handle_pre_tag.setOnCheckedChangeListener { _, isChecked ->
+            AppConfig.articleHandlePreTag = isChecked
+        }
         show_recommend_flag.setOnCheckedChangeListener { _, isChecked ->
             AppConfig.articleShowRecommendFlag = isChecked
         }
@@ -135,6 +138,9 @@ class SettingActivity : TopActivity() {
         })
         mViewModel.showRecommendFlag.observe(this, Observer {
             show_recommend_flag.isChecked = it
+        })
+        mViewModel.handlePreTagInArticle.observe(this, Observer {
+            article_handle_pre_tag.isChecked = it
         })
     }
 

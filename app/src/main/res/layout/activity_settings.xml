@@ -117,6 +117,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/open_article_in_webview" />
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:padding="@dimen/dp_12"
+            android:elevation="@dimen/dp_2"
+            android:background="@color/white"
+            android:id="@+id/article_handle_pre_tag"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/article_handle_pre_tag" />
 
         <com.google.android.material.textview.MaterialTextView
             android:layout_marginTop="@dimen/dp_8"

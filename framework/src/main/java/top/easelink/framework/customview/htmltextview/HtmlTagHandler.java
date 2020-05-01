@@ -197,7 +197,7 @@ public class HtmlTagHandler implements Html.TagHandler {
         } else {
             // closing tag
             if (HtmlTextView.DEBUG) {
-                Log.d(HtmlTextView.TAG, "closing, output: " + output.toString());
+                Timber.d("closing, output: %s", output.toString());
             }
 
             if (tag.equalsIgnoreCase(UNORDERED_LIST)) {
@@ -320,12 +320,6 @@ public class HtmlTagHandler implements Html.TagHandler {
         int where = output.getSpanStart(obj);
         // end of the tag
         int len = output.length();
-
-        // If we're in a table, then we need to store the raw HTML for later
-        if (tableTagLevel > 0) {
-            final CharSequence extractedSpanText = extractSpanText(output, kind);
-            tableHtmlBuilder.append(extractedSpanText);
-        }
 
         if (preStart) {
             String placeHolder = "LCG";

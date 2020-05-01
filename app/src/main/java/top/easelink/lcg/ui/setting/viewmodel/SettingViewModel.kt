@@ -14,6 +14,7 @@ class SettingViewModel : ViewModel() {
     val searchEngineSelected = MutableLiveData<Int>()
     val openSearchResultInWebView = MutableLiveData<Boolean>()
     val openArticleInWebView = MutableLiveData<Boolean>()
+    val handlePreTagInArticle = MutableLiveData<Boolean>()
     val showRecommendFlag = MutableLiveData<Boolean>()
 
     fun init() {
@@ -23,7 +24,8 @@ class SettingViewModel : ViewModel() {
             searchEngineSelected.value = defaultSearchEngine
             openSearchResultInWebView.value = searchResultShowInWebView
             openArticleInWebView.value = articleShowInWebView
-            showRecommendFlag.value= articleShowRecommendFlag
+            showRecommendFlag.value = articleShowRecommendFlag
+            handlePreTagInArticle.value = articleHandlePreTag
         }
     }
 

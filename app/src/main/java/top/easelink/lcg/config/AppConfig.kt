@@ -13,12 +13,14 @@ object AppConfig {
     private const val CONFIG_JRS_URL = "jrs_page"
     private const val CONFIG_ENABLE_FOLLOW_REDIRECTS = "follow_redirects"
     private const val CONFIG_SEARCH_OPEN_RESULT_IN_WEBVIEW = "open_result_in_webview"
+    private const val CONFIG_ARTICLE_HANDLE_PRE_TAG = "handle_pre_tag_in_article"
     private const val CONFIG_ARTICLE_IN_WEBVIEW = "open_article_in_webview"
     private const val CONFIG_ARTICLE_SHOW_RECOMMEND_FLAG = "article_show_recommend_flag"
     private const val CONFIG_DEFAULT_SEARCH_ENGINE = "default_search_engine"
     private const val CONFIG_AUTO_SIGN_IN = "auto_sign_in"
     private const val CONFIG_SYNC_FAVORITES = "sync_favorites"
 
+    // Config from Remote
     fun getAppReleaseUrl(): String {
         return StatConfig.getCustomProperty(CONFIG_APP_RELEASE_URL, "thread-1073834-1-1.html")
     }
@@ -40,6 +42,10 @@ object AppConfig {
     var articleShowInWebView: Boolean
         get() = get(CONFIG_ARTICLE_IN_WEBVIEW, false)
         set(value) = put(CONFIG_ARTICLE_IN_WEBVIEW, value)
+
+    var articleHandlePreTag: Boolean
+        get() = get(CONFIG_ARTICLE_HANDLE_PRE_TAG, true)
+        set(value) = put(CONFIG_ARTICLE_HANDLE_PRE_TAG, value)
 
     var articleShowRecommendFlag: Boolean
         get() = get(CONFIG_ARTICLE_SHOW_RECOMMEND_FLAG, true)

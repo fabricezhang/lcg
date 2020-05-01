@@ -27,6 +27,7 @@ import top.easelink.framework.threadpool.Main
 import top.easelink.framework.utils.convertViewToBitmap
 import top.easelink.framework.utils.dp2px
 import top.easelink.lcg.R
+import top.easelink.lcg.config.AppConfig
 import top.easelink.lcg.mta.EVENT_CAPTURE_ARTICLE
 import top.easelink.lcg.mta.sendEvent
 import top.easelink.lcg.spipedata.UserData.isLoggedIn
@@ -160,12 +161,17 @@ class ArticleAdapter(
                             .error(R.drawable.ic_noavatar_middle_gray)
                             .into(post_avatar)
                         content_text_view.run {
-                            setClickableSpecialSpan(ClickableSpecialSpanImpl())
-                            val drawTableLinkSpan = DrawPreCodeSpan()
-                                .also {
-                                it.tableLinkText = context.getString(R.string.tap_for_code)
+                            if (AppConfig.articleHandlePreTag) {
+                                setClickableSpecialSpan(ClickableSpecialSpanImpl())
+                                val drawTableLinkSpan = DrawPreCodeSpan()
+                                    .also {
+                                        it.tableLinkText = context.getString(R.string.tap_for_code)
+                                    }
+                                setDrawPreCodeSpan(drawTableLinkSpan)
+                            } else {
+                                setClickableSpecialSpan(null)
+                                setDrawPreCodeSpan(null)
                             }
-                            setDrawPreCodeSpan(drawTableLinkSpan)
                             setImageTagClickListener { _: Context, imageUrl: String, _: Int ->
                                 EventBus.getDefault().post(OpenLargeImageViewEvent(imageUrl))
                             }
@@ -284,12 +290,17 @@ class ArticleAdapter(
                             .error(R.drawable.ic_noavatar_middle_gray)
                             .into(reply_avatar)
                         reply_content_text_view.run {
-                            setClickableSpecialSpan(ClickableSpecialSpanImpl())
-                            val drawTableLinkSpan = DrawPreCodeSpan()
-                                .also {
-                                it.tableLinkText = context.getString(R.string.tap_for_code)
+                            if (AppConfig.articleHandlePreTag) {
+                                setClickableSpecialSpan(ClickableSpecialSpanImpl())
+                                val drawTableLinkSpan = DrawPreCodeSpan()
+                                    .also {
+                                        it.tableLinkText = context.getString(R.string.tap_for_code)
+                                    }
+                                setDrawPreCodeSpan(drawTableLinkSpan)
+                            } else {
+                                setClickableSpecialSpan(null)
+                                setDrawPreCodeSpan(null)
                             }
-                            setDrawPreCodeSpan(drawTableLinkSpan)
                             setImageTagClickListener { _: Context, imageUrl: String, _: Int ->
                                 EventBus.getDefault().post(OpenLargeImageViewEvent(imageUrl))
                             }
