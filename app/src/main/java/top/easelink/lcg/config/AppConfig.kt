@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.tencent.stat.StatConfig
 import top.easelink.lcg.appinit.LCGApp
+import top.easelink.lcg.spipedata.UserData
 
 object AppConfig {
 
@@ -20,6 +21,9 @@ object AppConfig {
     private const val CONFIG_AUTO_SIGN_IN = "auto_sign_in"
     private const val CONFIG_SYNC_FAVORITES = "sync_favorites"
 
+
+    const val CONFIG_SEARCH_ENGINE_BAIDU = 1
+    const val CONFIG_SEARCH_ENGINE_WUAI = 0
     // Config from Remote
     fun getAppReleaseUrl(): String {
         return StatConfig.getCustomProperty(CONFIG_APP_RELEASE_URL, "thread-1073834-1-1.html")
@@ -52,7 +56,10 @@ object AppConfig {
         set(value) = put(CONFIG_ARTICLE_SHOW_RECOMMEND_FLAG, value)
 
     var defaultSearchEngine: Int
-        get() = get(CONFIG_DEFAULT_SEARCH_ENGINE, 0)
+        get() = get(
+            CONFIG_DEFAULT_SEARCH_ENGINE,
+            if (UserData.isLoggedIn) CONFIG_SEARCH_ENGINE_WUAI else CONFIG_SEARCH_ENGINE_BAIDU
+        )
         set(value) = put(CONFIG_DEFAULT_SEARCH_ENGINE, value)
 
     var autoSignEnable: Boolean
