@@ -16,13 +16,12 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import kotlinx.android.synthetic.main.item_post_view.view.*
 import kotlinx.android.synthetic.main.item_reply_view.view.*
-
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import timber.log.Timber
 import top.easelink.framework.base.BaseViewHolder
-import top.easelink.framework.customview.htmltextview.DrawTableLinkSpan
+import top.easelink.framework.customview.htmltextview.DrawPreCodeSpan
 import top.easelink.framework.customview.htmltextview.HtmlGlideImageGetter
 import top.easelink.framework.threadpool.Main
 import top.easelink.framework.utils.convertViewToBitmap
@@ -162,10 +161,11 @@ class ArticleAdapter(
                             .into(post_avatar)
                         content_text_view.run {
                             setClickableSpecialSpan(ClickableSpecialSpanImpl())
-                            val drawTableLinkSpan = DrawTableLinkSpan().also {
+                            val drawTableLinkSpan = DrawPreCodeSpan()
+                                .also {
                                 it.tableLinkText = context.getString(R.string.tap_for_code)
                             }
-                            setDrawTableLinkSpan(drawTableLinkSpan)
+                            setDrawPreCodeSpan(drawTableLinkSpan)
                             setImageTagClickListener { _: Context, imageUrl: String, _: Int ->
                                 EventBus.getDefault().post(OpenLargeImageViewEvent(imageUrl))
                             }
@@ -285,10 +285,11 @@ class ArticleAdapter(
                             .into(reply_avatar)
                         reply_content_text_view.run {
                             setClickableSpecialSpan(ClickableSpecialSpanImpl())
-                            val drawTableLinkSpan = DrawTableLinkSpan().also {
+                            val drawTableLinkSpan = DrawPreCodeSpan()
+                                .also {
                                 it.tableLinkText = context.getString(R.string.tap_for_code)
                             }
-                            setDrawTableLinkSpan(drawTableLinkSpan)
+                            setDrawPreCodeSpan(drawTableLinkSpan)
                             setImageTagClickListener { _: Context, imageUrl: String, _: Int ->
                                 EventBus.getDefault().post(OpenLargeImageViewEvent(imageUrl))
                             }

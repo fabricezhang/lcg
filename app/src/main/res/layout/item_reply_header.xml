@@ -5,7 +5,11 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/slight_light_gray"
-    android:padding="@dimen/dp_8">
+    android:paddingTop="@dimen/dp_6"
+    android:paddingBottom="@dimen/dp_6"
+    android:paddingStart="@dimen/dp_8"
+    android:paddingEnd="@dimen/dp_8"
+    >
     <androidx.appcompat.widget.AppCompatImageView
         android:paddingTop="@dimen/dp_3"
         android:paddingBottom="@dimen/dp_3"
