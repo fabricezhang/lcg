@@ -9,17 +9,16 @@
     android:orientation="vertical"
     android:background="@color/white"
     android:layout_marginBottom="@dimen/dp_1"
-    android:paddingBottom="@dimen/dp_6"
-    >
+    android:paddingBottom="@dimen/dp_6">
     <TextView
         android:id="@+id/title_text_view"
         style="@style/TextStyle.Heading"
         android:textStyle="bold"
         android:layout_width="@dimen/dp_0"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dp_6"
-        android:layout_marginTop="@dimen/dp_10"
-        android:layout_marginEnd="@dimen/dp_4"
+        android:layout_marginStart="@dimen/dp_9"
+        android:layout_marginTop="@dimen/dp_7"
+        android:layout_marginEnd="@dimen/dp_8"
         android:maxLines="2"
         android:textSize="@dimen/sp_12"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,10 +32,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp_8"
+        android:minEms="4"
+        android:gravity="start"
         app:layout_constraintTop_toTopOf="@id/forum"
         app:layout_constraintEnd_toEndOf="@id/title_text_view"
         android:textColor="@color/red_dark2"
-        tools:text="233"/>
+        tools:text="热度:233"/>
 
     <TextView
         android:id="@+id/forum"
@@ -53,8 +54,9 @@
 
     <ImageView
         android:id="@+id/index"
-        android:layout_width="@dimen/dp_20"
-        android:layout_height="@dimen/dp_20"
+        android:layout_width="@dimen/dp_16"
+        android:layout_height="@dimen/dp_16"
+        android:scaleType="fitCenter"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:contentDescription="@null" />

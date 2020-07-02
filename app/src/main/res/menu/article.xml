@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-            android:id="@+id/action_open_in_webview"
-            android:icon="@drawable/ic_open_in_browser_white_24dp"
-            android:title="@string/open_in_webview"
-            app:showAsAction="collapseActionView"/>
+        android:id="@+id/action_open_in_webview"
+        android:icon="@drawable/ic_open_in_browser_white_24dp"
+        android:title="@string/open_in_webview"
+        app:showAsAction="collapseActionView"/>
     <item
-            android:id="@+id/action_extract_urls"
-            android:title="@string/extract_urls"
-            app:showAsAction="collapseActionView"/>
+        android:id="@+id/action_extract_urls"
+        android:title="@string/extract_urls"
+        app:showAsAction="collapseActionView"/>
     <item
-            android:id="@+id/action_add_to_my_favorite"
-            android:title="@string/add_to_my_favorite"
-            app:showAsAction="collapseActionView"/>
+        android:id="@+id/action_add_to_my_favorite"
+        android:title="@string/add_to_my_favorite"
+        app:showAsAction="collapseActionView"/>
 
 </menu>

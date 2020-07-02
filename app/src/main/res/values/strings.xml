@@ -4,6 +4,7 @@
     <string name="login_required_error">请求页面失败，请确认是否登陆</string>
     <string name="error">请求页面失败，请稍后再试</string>
     <string name="network_error">当前网络质量差，请稍后再试</string>
+    <string name="anti_scraping_error">请重新清除账户信息，重新登录</string>
     <string name="request_too_often_warning">访问接口过于频繁，请稍后重试</string>
     <string name="qq_not_support">暂不支持QQ登陆</string>
     <string name="login_or_register">登录或注册</string>
@@ -63,6 +64,7 @@
     <string name="article_setting">文章</string>
     <string name="open_article_in_webview">网页形式打开文章</string>
     <string name="show_recommend_flag_on_article">标题显示推荐标签</string>
+    <string name="article_handle_pre_tag">单独页面展示代码</string>
     <string name="favorite_setting">收藏</string>
     <string name="sync_favorites">同步收藏文章到网站</string>
     <string name="sync_favorites_instruction">（默认仅收藏到本地）</string>
@@ -125,7 +127,7 @@
     <!--feed-->
     <string name="load_more">加载更多</string>
     <string name="no_more_content">没有更多了</string>
-    <string name="tap_for_code">点击显示代码』</string>
+    <string name="tap_for_code">『点击显示代码』</string>
     <string name="tap_for_large_image_failed">查看失败</string>
 
     <!--message fragment-->
@@ -155,10 +157,12 @@
     <string name="reply_post_input_hint">请输入回复内容…</string>
     <string name="reply_post_failed">回复失败</string>
     <string name="reply_post_succeed">回复成功</string>
+    <string name="reply_btn_debounced_notice">发送中，请稍等</string>
 
     <!--comment article dialog  -->
     <string name="comment_article_dialog_title">跟帖评论：</string>
     <string name="comment_article_input_hint">请输入评论内容…</string>
+    <string name="reply_title">全部回复</string>
 
     <!--empty state-->
     <string name="empty_screen">目前没有内容可供展示</string>

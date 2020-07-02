@@ -1,27 +1,30 @@
 package top.easelink.lcg.ui.main.about.view
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import androidx.lifecycle.ViewModelProvider
-import top.easelink.framework.base.BaseFragment
-import top.easelink.lcg.BR
+import android.view.ViewGroup
+import kotlinx.android.synthetic.main.fragment_about.*
+import top.easelink.framework.topbase.ControllableFragment
+import top.easelink.framework.topbase.TopFragment
 import top.easelink.lcg.R
-import top.easelink.lcg.databinding.FragmentAboutBinding
-import top.easelink.lcg.ui.main.about.viewmodel.AboutViewModel
 import top.easelink.lcg.ui.webview.view.WebViewActivity
 import java.util.*
 
-class AboutFragment : BaseFragment<FragmentAboutBinding, AboutViewModel?>() {
-    override fun getBindingVariable(): Int {
-        return BR.viewModel
+
+class AboutFragment : TopFragment(), ControllableFragment {
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_about, container, false)
     }
 
-    override fun getLayoutId(): Int {
-        return R.layout.fragment_about
-    }
-
-    override fun getViewModel(): AboutViewModel {
-        return ViewModelProvider(this)[AboutViewModel::class.java]
+    override fun isControllable(): Boolean {
+        return true
     }
 
     override fun onViewCreated(
@@ -30,8 +33,16 @@ class AboutFragment : BaseFragment<FragmentAboutBinding, AboutViewModel?>() {
     ) {
         super.onViewCreated(view, savedInstanceState)
         syncAuthorState()
-        viewDataBinding!!.githubUrl.setOnClickListener {
+        github_url.setOnClickListener {
             WebViewActivity.startWebViewWith(getString(R.string.github_url), it.context)
+        }
+        author_email.setOnClickListener {
+            val intent = Intent(Intent.ACTION_SEND)
+            intent.type = "text/plain"
+            intent.putExtra(Intent.EXTRA_EMAIL, getString(R.string.author_email))
+            intent.putExtra(Intent.EXTRA_SUBJECT, "问题反馈")
+//            intent.putExtra(Intent.EXTRA_TEXT, "")
+            startActivity(Intent.createChooser(intent, "发送反馈邮件"))
         }
     }
 
@@ -39,22 +50,22 @@ class AboutFragment : BaseFragment<FragmentAboutBinding, AboutViewModel?>() {
         val hour = Calendar.getInstance()[Calendar.HOUR_OF_DAY]
         when {
             hour < 7 -> {
-                viewDataBinding!!.me.setAnimation(R.raw.moon_stars)
+                me.setAnimation(R.raw.moon_stars)
             }
             hour < 12 -> {
-                viewDataBinding!!.me.setAnimation(R.raw.personal_mac_daytime)
+                me.setAnimation(R.raw.personal_mac_daytime)
             }
             hour == 12 -> {
-                viewDataBinding!!.me.setAnimation(R.raw.sun)
+                me.setAnimation(R.raw.sun)
             }
             hour < 18 -> {
-                viewDataBinding!!.me.setAnimation(R.raw.personal_phone_daytime)
+                me.setAnimation(R.raw.personal_phone_daytime)
             }
             hour < 22 -> {
-                viewDataBinding!!.me.setAnimation(R.raw.personal_mac_night)
+                me.setAnimation(R.raw.personal_mac_night)
             }
             else -> {
-                viewDataBinding!!.me.setAnimation(R.raw.personal_phone_night)
+                me.setAnimation(R.raw.personal_phone_night)
             }
         }
     }

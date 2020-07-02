@@ -1,6 +1,6 @@
 <resources>
     <string name="input_key_word">输入关键字</string>
-    <string name="html_general_error">文章解析失败，欢迎将文章反馈给作者以便及时修复</string>
+    <string name="html_general_error">内容解析失败，欢迎将文章反馈给作者以便及时修复</string>
     <string name="linkage_rv_the_end">这里是底线</string>
     <string name="install_wechat_tips">您没有安装微信，请先安装</string>
 </resources>

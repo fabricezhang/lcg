@@ -15,7 +15,7 @@ fun fetchRank(type: RankType, dateType: DateType): RankListModel {
 
 fun parseRankModelInfo(document: Document, rankType: RankType): RankListModel {
     return with(document) {
-        val time = selectFirst("div.notice").text()
+        val time = selectFirst("div.notice").text().orEmpty()
         val list = getElementsByTag("table")
             ?.select("tbody")
             ?.select("tr")

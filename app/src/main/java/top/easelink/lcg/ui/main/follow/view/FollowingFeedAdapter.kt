@@ -98,7 +98,9 @@ class FollowingFeedAdapter(
         super.onViewRecycled(holder)
     }
 
-    inner class ArticleViewHolder internal constructor(private val view: View) : BaseViewHolder(view) {
+    inner class ArticleViewHolder internal constructor(
+        private val view: View
+    ) : BaseViewHolder(view) {
         @SuppressLint("SetTextI18n")
         override fun onBind(position: Int) {
             val feed = mFeeds[position]

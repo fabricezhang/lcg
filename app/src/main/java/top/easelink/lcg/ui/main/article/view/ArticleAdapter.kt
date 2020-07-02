@@ -1,5 +1,6 @@
 package top.easelink.lcg.ui.main.article.view
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -13,18 +14,22 @@ import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.request.transition.DrawableCrossFadeFactory
 import kotlinx.android.synthetic.main.item_post_view.view.*
+import kotlinx.android.synthetic.main.item_reply_view.view.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import timber.log.Timber
 import top.easelink.framework.base.BaseViewHolder
-import top.easelink.framework.customview.htmltextview.DrawTableLinkSpan
+import top.easelink.framework.customview.htmltextview.DrawPreCodeSpan
 import top.easelink.framework.customview.htmltextview.HtmlGlideImageGetter
 import top.easelink.framework.threadpool.Main
 import top.easelink.framework.utils.convertViewToBitmap
 import top.easelink.framework.utils.dp2px
 import top.easelink.lcg.R
+import top.easelink.lcg.config.AppConfig
 import top.easelink.lcg.mta.EVENT_CAPTURE_ARTICLE
 import top.easelink.lcg.mta.sendEvent
 import top.easelink.lcg.spipedata.UserData.isLoggedIn
@@ -44,6 +49,7 @@ import top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL
 import top.easelink.lcg.utils.copyContent
 import top.easelink.lcg.utils.saveImageToGallery
 import top.easelink.lcg.utils.showMessage
+import top.easelink.lcg.utils.toTimeStamp
 import java.lang.ref.WeakReference
 import java.util.*
 
@@ -62,8 +68,9 @@ class ArticleAdapter(
 
     override fun getItemViewType(position: Int) = when {
         mPostList.isEmpty() -> VIEW_TYPE_EMPTY
+        position == 0 -> VIEW_TYPE_POST
         position == mPostList.size -> VIEW_TYPE_LOAD_MORE
-        else -> VIEW_TYPE_NORMAL
+        else -> VIEW_TYPE_REPLY
     }
 
     override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
@@ -75,9 +82,15 @@ class ArticleAdapter(
         viewType: Int
     ): BaseViewHolder {
         return when (viewType) {
-            VIEW_TYPE_NORMAL -> PostViewHolder(
+            VIEW_TYPE_POST -> PostViewHolder(
                 LayoutInflater.from(parent.context)
                     .inflate(R.layout.item_post_view,
+                        parent, false
+                    )
+            )
+            VIEW_TYPE_REPLY -> ReplyViewHolder(
+                LayoutInflater.from(parent.context)
+                    .inflate(R.layout.item_reply_view,
                         parent, false
                     )
             )
@@ -112,7 +125,9 @@ class ArticleAdapter(
         this.fragmentManager = WeakReference(fragmentManager)
     }
 
-    inner class PostViewHolder internal constructor(view: View): BaseViewHolder(view), View.OnClickListener {
+    inner class PostViewHolder internal constructor(
+        view: View
+    ): BaseViewHolder(view), View.OnClickListener {
 
         private var post: Post? = null
         private val htmlHttpImageGetter: Html.ImageGetter by lazy {
@@ -120,18 +135,11 @@ class ArticleAdapter(
         }
         override fun onBind(position: Int) {
             post = mPostList[position]
-            val postCard = itemView.post_card
             post?.let { p ->
                 with(itemView){
                     try {
-                        if (p.author == username) {
-                            postCard.strokeColor = ContextCompat.getColor(context, R.color.orange)
-                            postCard.strokeWidth = dp2px(context, 1f).toInt()
-                        } else {
-                            postCard.strokeWidth = 0
-                        }
                         author_text_view.text = p.author
-                        date_text_view.text = p.date
+                        date_text_view.text = getDateDiff(p.date)
                         post_avatar.setOnClickListener { _ ->
                             fragmentManager?.get()?.let {
                                 val location = IntArray(2)
@@ -158,11 +166,17 @@ class ArticleAdapter(
                             .error(R.drawable.ic_noavatar_middle_gray)
                             .into(post_avatar)
                         content_text_view.run {
-                            setClickableSpecialSpan(ClickableSpecialSpanImpl())
-                            val drawTableLinkSpan = DrawTableLinkSpan().also {
-                                it.tableLinkText = context.getString(R.string.tap_for_code)
+                            if (AppConfig.articleHandlePreTag) {
+                                setClickableSpecialSpan(ClickableSpecialSpanImpl())
+                                val drawTableLinkSpan = DrawPreCodeSpan()
+                                    .also {
+                                        it.tableLinkText = context.getString(R.string.tap_for_code)
+                                    }
+                                setDrawPreCodeSpan(drawTableLinkSpan)
+                            } else {
+                                setClickableSpecialSpan(null)
+                                setDrawPreCodeSpan(null)
                             }
-                            setDrawTableLinkSpan(drawTableLinkSpan)
                             setImageTagClickListener { _: Context, imageUrl: String, _: Int ->
                                 EventBus.getDefault().post(OpenLargeImageViewEvent(imageUrl))
                             }
@@ -176,29 +190,25 @@ class ArticleAdapter(
                             }
                             setHtml(p.content, htmlHttpImageGetter)
                         }
-                        if (position == 0) {
-                            btn_capture.visibility = View.VISIBLE
-                            btn_capture.setOnClickListener(this@PostViewHolder)
-                        } else {
-                            btn_capture.visibility = View.GONE
-                        }
+                        post_btn_capture.visibility = View.VISIBLE
+                        post_btn_capture.setOnClickListener(this@PostViewHolder)
                         if (isLoggedIn) {
-                            btn_group.visibility = View.VISIBLE
+                            post_btn_group.visibility = View.VISIBLE
                             if (TextUtils.isEmpty(p.replyUrl)) {
-                                btn_reply.visibility = View.GONE
+                                post_btn_reply.visibility = View.GONE
                             } else {
-                                btn_reply.visibility = View.VISIBLE
-                                btn_reply.setOnClickListener(this@PostViewHolder)
+                                post_btn_reply.visibility = View.VISIBLE
+                                post_btn_reply.setOnClickListener(this@PostViewHolder)
                             }
                             if (TextUtils.isEmpty(p.replyAddUrl)) {
-                                btn_thumb_up.visibility = View.GONE
+                                post_btn_thumb_up.visibility = View.GONE
                             } else {
-                                btn_thumb_up.visibility = View.VISIBLE
-                                btn_thumb_up.setOnClickListener(this@PostViewHolder)
+                                post_btn_thumb_up.visibility = View.VISIBLE
+                                post_btn_thumb_up.setOnClickListener(this@PostViewHolder)
                             }
-                            btn_copy.setOnClickListener(this@PostViewHolder)
+                            post_btn_copy.setOnClickListener(this@PostViewHolder)
                         } else {
-                            btn_group.visibility = View.GONE
+                            post_btn_group.visibility = View.GONE
                         }
                         // fix issue occurs on some manufactures os, like MIUI
                         content_text_view.setOnLongClickListener { true }
@@ -212,18 +222,18 @@ class ArticleAdapter(
         override fun onClick(v: View) {
             post?.let { p ->
                 when (v.id) {
-                    R.id.btn_reply -> p.replyUrl?.let {
+                    R.id.post_btn_reply -> p.replyUrl?.let {
                         EventBus.getDefault().post(ReplyPostEvent(it, p.author))
                     }
-                    R.id.btn_copy -> if (copyContent(p.content, p.author)) {
+                    R.id.post_btn_copy -> if (copyContent(p.content, p.author)) {
                         showMessage(R.string.copy_succeed)
                     } else {
                         showMessage(R.string.copy_failed)
                     }
-                    R.id.btn_thumb_up -> p.replyAddUrl?.let {
+                    R.id.post_btn_thumb_up -> p.replyAddUrl?.let {
                         mListener.replyAdd(it)
                     }
-                    R.id.btn_capture -> {
+                    R.id.post_btn_capture -> {
                         sendEvent(EVENT_CAPTURE_ARTICLE)
                         convertViewToBitmap(itemView, Bitmap.Config.ARGB_8888)?.let {
                             val path = saveImageToGallery(it, System.currentTimeMillis().toString())
@@ -236,6 +246,151 @@ class ArticleAdapter(
                 }
             }
         }
+    }
+
+    inner class ReplyViewHolder internal constructor(view: View): BaseViewHolder(view), View.OnClickListener {
+
+        private var post: Post? = null
+        private val htmlHttpImageGetter: Html.ImageGetter by lazy {
+            HtmlGlideImageGetter(view.context, view.reply_content_text_view)
+        }
+        @SuppressLint("SetTextI18n")
+        override fun onBind(position: Int) {
+            post = mPostList[position]
+            post?.let { p ->
+                with(itemView){
+                    try {
+                        if (p.author == username) {
+                            reply_card.strokeColor = ContextCompat.getColor(context, R.color.orange)
+                            reply_card.strokeWidth = dp2px(context, 1f).toInt()
+                        } else {
+                            reply_card.strokeWidth = 0
+                        }
+                        reply_position.text = "#$position"
+                        reply_author_text_view.text = p.author
+                        reply_date_text_view.text = getDateDiff(p.date)
+                        reply_avatar.setOnClickListener { _ ->
+                            fragmentManager?.get()?.let {
+                                val location = IntArray(2)
+                                reply_avatar.getLocationInWindow(location)
+                                val popUpInfo = PopUpProfileInfo(
+                                    location[0],
+                                    location[1],
+                                    p.avatar,
+                                    p.author,
+                                    p.extraInfo,
+                                    p.followInfo,
+                                    p.profileUrl
+                                )
+                                PopUpProfileDialog(popUpInfo).show(it, PopUpProfileDialog::class.java.simpleName)
+                            }?: context.startActivity(
+                                Intent(context, ProfileActivity::class.java).also {
+                                    it.putExtra(KEY_PROFILE_URL, p.profileUrl)
+                                })
+                        }
+                        val drawableCrossFadeFactory = DrawableCrossFadeFactory
+                            .Builder(150)
+                            .setCrossFadeEnabled(true)
+                            .build()
+                        Glide.with(context)
+                            .load(p.avatar)
+                            .transition(DrawableTransitionOptions.with(drawableCrossFadeFactory))
+                            .transform(RoundedCorners(dp2px(context, 6f).toInt()))
+                            .placeholder(R.drawable.ic_avatar_placeholder)
+                            .error(R.drawable.ic_noavatar_middle_gray)
+                            .into(reply_avatar)
+                        reply_content_text_view.run {
+                            if (AppConfig.articleHandlePreTag) {
+                                setClickableSpecialSpan(ClickableSpecialSpanImpl())
+                                val drawTableLinkSpan = DrawPreCodeSpan()
+                                    .also {
+                                        it.tableLinkText = context.getString(R.string.tap_for_code)
+                                    }
+                                setDrawPreCodeSpan(drawTableLinkSpan)
+                            } else {
+                                setClickableSpecialSpan(null)
+                                setDrawPreCodeSpan(null)
+                            }
+                            setImageTagClickListener { _: Context, imageUrl: String, _: Int ->
+                                EventBus.getDefault().post(OpenLargeImageViewEvent(imageUrl))
+                            }
+                            setOnLinkTagClickListener { c: Context?, url: String ->
+                                if (url.startsWith(SERVER_BASE_URL + "thread")) {
+                                    EventBus.getDefault()
+                                        .post(OpenArticleEvent(url.substring(SERVER_BASE_URL.length)))
+                                } else {
+                                    WebViewActivity.startWebViewWith(url, c)
+                                }
+                            }
+                            setHtml(p.content, htmlHttpImageGetter)
+                        }
+                        if (isLoggedIn) {
+                            reply_btn_group.visibility = View.VISIBLE
+                            if (TextUtils.isEmpty(p.replyUrl)) {
+                                reply_btn_reply.visibility = View.GONE
+                            } else {
+                                reply_btn_reply.visibility = View.VISIBLE
+                                reply_btn_reply.setOnClickListener(this@ReplyViewHolder)
+                            }
+                            if (TextUtils.isEmpty(p.replyAddUrl)) {
+                                reply_btn_thumb_up.visibility = View.GONE
+                            } else {
+                                reply_btn_thumb_up.visibility = View.VISIBLE
+                                reply_btn_thumb_up.setOnClickListener(this@ReplyViewHolder)
+                            }
+                            reply_btn_copy.setOnClickListener(this@ReplyViewHolder)
+                        } else {
+                            reply_btn_group.visibility = View.GONE
+                        }
+                        // fix issue occurs on some manufactures os, like MIUI
+                        reply_content_text_view.setOnLongClickListener { true }
+                    } catch (e: Exception) {
+                        Timber.e(e)
+                    }
+                }
+            }
+        }
+
+        override fun onClick(v: View) {
+            post?.let { p ->
+                when (v.id) {
+                    R.id.reply_btn_reply -> p.replyUrl?.let {
+                        EventBus.getDefault().post(ReplyPostEvent(it, p.author))
+                    }
+                    R.id.reply_btn_copy -> if (copyContent(p.content, p.author)) {
+                        showMessage(R.string.copy_succeed)
+                    } else {
+                        showMessage(R.string.copy_failed)
+                    }
+                    R.id.reply_btn_thumb_up -> p.replyAddUrl?.let {
+                        mListener.replyAdd(it)
+                    }
+                    else -> {
+                        // do nothing
+                    }
+                }
+            }
+        }
+    }
+
+    fun getDateDiff(date: String): String {
+        val tips = "发表于 "
+        return date.replace(tips, "").toTimeStamp()?.let {
+            val diff = System.currentTimeMillis() - it
+            when(val minutesDiff = diff/ 1000 / 60) {
+                in 0..1 -> return "${tips}1 分钟前"
+                in 1..60 -> return "${tips}${minutesDiff} 分钟前"
+                in 60..24*60 -> {
+                    val hoursDiff = diff / 1000 / 60 / 60
+                    return "${tips}${hoursDiff} 小时前"
+                }
+                in 24*60..7*24*60 -> {
+                    val dayDiff = diff / 1000 /60 / 60 /24
+                    return "${tips}${dayDiff} 天前"
+                }
+                else -> { date }
+            }
+        } ?: date
     }
 
     class PostEmptyViewHolder internal constructor(view: View?) :
@@ -256,8 +411,9 @@ class ArticleAdapter(
 
     companion object {
         private const val VIEW_TYPE_EMPTY = 0
-        private const val VIEW_TYPE_NORMAL = 1
-        private const val VIEW_TYPE_LOAD_MORE = 2
+        private const val VIEW_TYPE_REPLY = 1
+        private const val VIEW_TYPE_POST = 2
+        private const val VIEW_TYPE_LOAD_MORE = 3
     }
 
 }

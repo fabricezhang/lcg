@@ -9,10 +9,13 @@ import kotlinx.android.synthetic.main.dialog_reply_post.*
 import top.easelink.framework.topbase.TopDialog
 import top.easelink.lcg.R
 import top.easelink.lcg.ui.main.article.viewmodel.ReplyPostViewModel
+import top.easelink.lcg.utils.showMessage
 
 class ReplyPostDialog : TopDialog() {
 
     private lateinit var replyPostViewModel: ReplyPostViewModel
+
+    private var lastClickTime = 0L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,6 +55,11 @@ class ReplyPostDialog : TopDialog() {
             }
         })
         btn_confirm.setOnClickListener {
+            if (System.currentTimeMillis() - lastClickTime < 2000) {
+                showMessage(R.string.reply_btn_debounced_notice)
+                return@setOnClickListener
+            }
+            lastClickTime = System.currentTimeMillis()
             val content = reply_content.text?.trimEnd()
             replyPostViewModel.sendReply(
                 arguments?.getString(REPLY_POST_URL),
