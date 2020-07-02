@@ -49,14 +49,14 @@ class LCGSearchActivity : TopActivity() {
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        toolbar.visibility = View.GONE
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         EventBus.getDefault().unregister(this)
-    }
-
-    override fun onFragmentAttached(tag: String) {
-        super.onFragmentAttached(tag)
-        toolbar.visibility = View.GONE
     }
 
     override fun onBackPressed() {

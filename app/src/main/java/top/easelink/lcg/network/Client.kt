@@ -108,21 +108,19 @@ object Client: ApiRequest {
             }
     }
 
-    private fun checkResponse(doc: Document) {
-        GlobalScope.launch(BackGroundPool){
-            // try update from hash which is used to send post request, ex: replay
-            if (formHash.isNullOrEmpty()) {
-                formHash = extractFormHash(doc)
-            }
-            if (System.currentTimeMillis() - lastTime > CHECK_INTERVAL) {
-                lastTime = System.currentTimeMillis()
-                try {
-                    // TODO check login state is not stable
+    private fun checkResponse(doc: Document) = GlobalScope.launch(BackGroundPool){
+        // try update from hash which is used to send post request, ex: replay
+        if (formHash.isNullOrEmpty()) {
+            formHash = extractFormHash(doc)
+        }
+        if (System.currentTimeMillis() - lastTime > CHECK_INTERVAL) {
+            lastTime = System.currentTimeMillis()
+            try {
+                // TODO check login state is not stable
 //                    checkLoginState(doc)
-                    checkMessages(doc)
-                } catch (e: Exception) {
-                    Timber.e(e)
-                }
+                checkMessages(doc)
+            } catch (e: Exception) {
+                Timber.e(e)
             }
         }
     }
