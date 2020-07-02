@@ -32,10 +32,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp_8"
+        android:minEms="4"
+        android:gravity="start"
         app:layout_constraintTop_toTopOf="@id/forum"
         app:layout_constraintEnd_toEndOf="@id/title_text_view"
         android:textColor="@color/red_dark2"
-        tools:text="233"/>
+        tools:text="热度:233"/>
 
     <TextView
         android:id="@+id/forum"
