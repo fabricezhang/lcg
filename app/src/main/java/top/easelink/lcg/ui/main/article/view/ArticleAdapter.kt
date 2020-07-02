@@ -14,6 +14,8 @@ import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.request.transition.DrawableCrossFadeFactory
 import kotlinx.android.synthetic.main.item_post_view.view.*
 import kotlinx.android.synthetic.main.item_reply_view.view.*
 import kotlinx.coroutines.GlobalScope
@@ -47,6 +49,7 @@ import top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL
 import top.easelink.lcg.utils.copyContent
 import top.easelink.lcg.utils.saveImageToGallery
 import top.easelink.lcg.utils.showMessage
+import top.easelink.lcg.utils.toTimeStamp
 import java.lang.ref.WeakReference
 import java.util.*
 
@@ -122,7 +125,9 @@ class ArticleAdapter(
         this.fragmentManager = WeakReference(fragmentManager)
     }
 
-    inner class PostViewHolder internal constructor(view: View): BaseViewHolder(view), View.OnClickListener {
+    inner class PostViewHolder internal constructor(
+        view: View
+    ): BaseViewHolder(view), View.OnClickListener {
 
         private var post: Post? = null
         private val htmlHttpImageGetter: Html.ImageGetter by lazy {
@@ -134,7 +139,7 @@ class ArticleAdapter(
                 with(itemView){
                     try {
                         author_text_view.text = p.author
-                        date_text_view.text = p.date
+                        date_text_view.text = getDateDiff(p.date)
                         post_avatar.setOnClickListener { _ ->
                             fragmentManager?.get()?.let {
                                 val location = IntArray(2)
@@ -263,7 +268,7 @@ class ArticleAdapter(
                         }
                         reply_position.text = "#$position"
                         reply_author_text_view.text = p.author
-                        reply_date_text_view.text = p.date
+                        reply_date_text_view.text = getDateDiff(p.date)
                         reply_avatar.setOnClickListener { _ ->
                             fragmentManager?.get()?.let {
                                 val location = IntArray(2)
@@ -283,10 +288,15 @@ class ArticleAdapter(
                                     it.putExtra(KEY_PROFILE_URL, p.profileUrl)
                                 })
                         }
+                        val drawableCrossFadeFactory = DrawableCrossFadeFactory
+                            .Builder(150)
+                            .setCrossFadeEnabled(true)
+                            .build()
                         Glide.with(context)
                             .load(p.avatar)
+                            .transition(DrawableTransitionOptions.with(drawableCrossFadeFactory))
                             .transform(RoundedCorners(dp2px(context, 6f).toInt()))
-                            .placeholder(R.drawable.ic_noavatar_middle)
+                            .placeholder(R.drawable.ic_avatar_placeholder)
                             .error(R.drawable.ic_noavatar_middle_gray)
                             .into(reply_avatar)
                         reply_content_text_view.run {
@@ -361,6 +371,26 @@ class ArticleAdapter(
                 }
             }
         }
+    }
+
+    fun getDateDiff(date: String): String {
+        val tips = "发表于 "
+        return date.replace(tips, "").toTimeStamp()?.let {
+            val diff = System.currentTimeMillis() - it
+            when(val minutesDiff = diff/ 1000 / 60) {
+                in 0..1 -> return "${tips}1 分钟前"
+                in 1..60 -> return "${tips}${minutesDiff} 分钟前"
+                in 60..24*60 -> {
+                    val hoursDiff = diff / 1000 / 60 / 60
+                    return "${tips}${hoursDiff} 小时前"
+                }
+                in 24*60..7*24*60 -> {
+                    val dayDiff = diff / 1000 /60 / 60 /24
+                    return "${tips}${dayDiff} 天前"
+                }
+                else -> { date }
+            }
+        } ?: date
     }
 
     class PostEmptyViewHolder internal constructor(view: View?) :
