@@ -22,8 +22,8 @@ object AppConfig {
     private const val CONFIG_SYNC_FAVORITES = "sync_favorites"
 
 
-    const val CONFIG_SEARCH_ENGINE_BAIDU = 1
-    const val CONFIG_SEARCH_ENGINE_WUAI = 0
+    private const val CONFIG_SEARCH_ENGINE_BAIDU = 1
+    private const val CONFIG_SEARCH_ENGINE_WUAI = 0
     // Config from Remote
     fun getAppReleaseUrl(): String {
         return StatConfig.getCustomProperty(CONFIG_APP_RELEASE_URL, "thread-1073834-1-1.html")
