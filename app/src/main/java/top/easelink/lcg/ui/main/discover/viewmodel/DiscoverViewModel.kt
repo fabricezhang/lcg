@@ -32,17 +32,15 @@ class DiscoverViewModel : ViewModel() {
             }
         aggregationModels.value = mutableListOf(ForumListModel(list))
         GlobalScope.launch(ApiPool) {
-            try {
-                runCatching {
-                    fetchRank(RankType.HEAT, DateType.TODAY).let { ranks ->
-                        aggregationModels.value?.let {
-                            it.add(ranks)
-                            aggregationModels.postValue(it)
-                        }
+            runCatching {
+                fetchRank(RankType.HEAT, DateType.TODAY).let { ranks ->
+                    aggregationModels.value?.let {
+                        it.add(ranks)
+                        aggregationModels.postValue(it)
                     }
                 }
-            } catch (e: Exception) {
-                when(e) {
+            }.getOrElse {
+                when(it) {
                     is SocketTimeoutException -> showMessage(R.string.network_error)
                     else -> showMessage(R.string.error)
                 }

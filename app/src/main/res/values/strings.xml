@@ -4,6 +4,7 @@
     <string name="login_required_error">请求页面失败，请确认是否登陆</string>
     <string name="error">请求页面失败，请稍后再试</string>
     <string name="network_error">当前网络质量差，请稍后再试</string>
+    <string name="anti_scraping_error">请重新清除账户信息，重新登录</string>
     <string name="request_too_often_warning">访问接口过于频繁，请稍后重试</string>
     <string name="qq_not_support">暂不支持QQ登陆</string>
     <string name="login_or_register">登录或注册</string>
