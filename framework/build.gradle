@@ -1,7 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
-apply plugin: "kotlin-kapt"
+
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -42,7 +41,7 @@ dependencies {
     api "androidx.vectordrawable:vectordrawable:$rootProject.vectorDrawableVersion"
     api "androidx.vectordrawable:vectordrawable-animated:$rootProject.animatedVectorDrawableVersion"
     api "androidx.constraintlayout:constraintlayout:$rootProject.constraintLayoutVersion"
-    api 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
+    api 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     api "android.arch.work:work-runtime:$rootProject.workVersion"
     api 'pub.devrel:easypermissions:1.0.1'
 
@@ -84,7 +83,7 @@ dependencies {
     api "com.tencent.bugly:crashreport_upgrade:$rootProject.buglyVersion"
 
     // kotlin
-    kapt "com.android.databinding:compiler:3.1.4"
+
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$rootProject.coroutineVersion"
     api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$rootProject.coroutineVersion"

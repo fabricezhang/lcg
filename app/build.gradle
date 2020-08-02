@@ -25,6 +25,7 @@ android {
                 MTA_APPKEY : rootProject.ext.MTA_APP_KEY,
                 MTA_CHANNEL: rootProject.ext.MTA_CHANNEL
         ]
+        resConfigs "zh"
     }
     signingConfigs {
         releaseConfig {
@@ -50,6 +51,15 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
         incremental true
     }
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/*android*'
+        exclude 'META-INF/*kotlin*'
+        exclude 'okhttp3/**'
+        exclude 'kotlin/**'
+        exclude 'META-INF/ASL2.0'
+    }
     // Generate Version Info
     android.applicationVariants.all { variant ->
         variant.outputs.all {
@@ -65,7 +75,7 @@ android {
 dependencies {
     // database
     kapt "androidx.room:room-compiler:$roomVersion"
-    kapt "com.android.databinding:compiler:$dataBindingVersion"
+//    kapt "com.android.databinding:compiler:$dataBindingVersion"
 
     implementation project(':framework')
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -76,3 +86,5 @@ dependencies {
     androidTestImplementation "androidx.test:runner:$rootProject.runnerVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.espressoVersion"
 }
+
+apply from: "../andres.gradle"
