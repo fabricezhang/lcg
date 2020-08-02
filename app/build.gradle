@@ -25,6 +25,10 @@ android {
                 MTA_APPKEY : rootProject.ext.MTA_APP_KEY,
                 MTA_CHANNEL: rootProject.ext.MTA_CHANNEL
         ]
+
+        ndk {
+            abiFilters 'armeabi-v7a', 'x86', 'arm64-v8a'//,'armeabi',
+        }
         resConfigs "zh"
     }
     signingConfigs {
@@ -59,15 +63,26 @@ android {
         exclude 'okhttp3/**'
         exclude 'kotlin/**'
         exclude 'META-INF/ASL2.0'
+        exclude 'META-INF/README.md'
+        exclude 'META-INF/services/**'
+        exclude 'META-INF/CHANGES'
     }
     // Generate Version Info
     android.applicationVariants.all { variant ->
         variant.outputs.all {
-            outputFileName = "lcg-${variant.versionName}.apk"
+            outputFileName = "lcg-${variant.versionName}-${releaseTime}.apk"
         }
     }
-    dataBinding {
-        enabled = true
+
+    // AGP 5.0后会被移除
+//    dataBinding {
+//        enabled = true
+//    }
+
+    buildFeatures {
+        dataBinding = true
+        // for view binding :
+        // viewBinding = true
     }
     buildToolsVersion = buildToolsVersion
 }
