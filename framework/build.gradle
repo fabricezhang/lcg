@@ -103,7 +103,7 @@ dependencies {
     // test related
     // java script engine
 //    testApi 'io.apisense:rhino-android:1.1.1'
-    testImplementation "junit:junit:$rootProject.junitVersion"
+//    testImplementation "junit:junit:$rootProject.junitVersion"
 //    androidTestImplementation "androidx.test:runner:$rootProject.runnerVersion"
 //    androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.espressoVersion"
 
