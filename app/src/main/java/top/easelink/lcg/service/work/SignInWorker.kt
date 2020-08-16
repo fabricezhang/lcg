@@ -1,6 +1,7 @@
 package top.easelink.lcg.service.work
 
 import android.content.Context
+import android.os.Build
 import androidx.work.*
 import timber.log.Timber
 import top.easelink.lcg.BuildConfig
@@ -56,7 +57,11 @@ class SignInWorker(context: Context, workerParams: WorkerParameters) :
 
         fun startSignInWork(): Operation {
             val constraints = Constraints.Builder()
-                .setRequiresDeviceIdle(false)
+                .apply {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        setRequiresDeviceIdle(false)
+                    }
+                }
                 .setRequiresCharging(false)
                 .setRequiredNetworkType(NetworkType.CONNECTED)
                 .setRequiresBatteryNotLow(false)
