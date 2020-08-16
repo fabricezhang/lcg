@@ -7,7 +7,7 @@ apply plugin: "kotlin-kapt"
 // each version starts from 0
 def versionMajor = 1
 def versionMinor = 8
-def versionPatch = 4
+def versionPatch = 5
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -40,6 +40,12 @@ android {
         }
     }
     buildTypes {
+
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.releaseConfig
+        }
         release {
             minifyEnabled true
             debuggable false
