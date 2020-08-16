@@ -6,7 +6,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import top.easelink.framework.base.BaseFragment
-import top.easelink.framework.threadpool.ApiPool
+import top.easelink.framework.threadpool.IOPool
 import top.easelink.lcg.R
 import top.easelink.lcg.network.Client
 import top.easelink.lcg.spipedata.UserData
@@ -49,7 +49,7 @@ class MeViewModel: ViewModel() {
                     )
             }
         }
-        GlobalScope.launch(ApiPool) {
+        GlobalScope.launch(IOPool) {
             try {
                 val userInfo = Client
                     .sendGetRequestWithQuery(PROFILE_QUERY).let {

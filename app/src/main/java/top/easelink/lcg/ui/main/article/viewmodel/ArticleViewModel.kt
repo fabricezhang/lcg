@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import top.easelink.framework.threadpool.ApiPool
+import top.easelink.framework.threadpool.IOPool
 import top.easelink.lcg.R
 import top.easelink.lcg.config.AppConfig
 import top.easelink.lcg.mta.EVENT_ADD_TO_FAVORITE
@@ -56,7 +56,7 @@ class ArticleViewModel: ViewModel(), ArticleAdapterListener {
             isLoading.value = false
             return
         }
-        GlobalScope.launch(ApiPool) {
+        GlobalScope.launch(IOPool) {
             try {
                 ArticlesRemoteDataSource.getArticleDetail(query)?.let {
                     articleAbstract = it.articleAbstractResponse
@@ -100,7 +100,7 @@ class ArticleViewModel: ViewModel(), ArticleAdapterListener {
             isLoading.value = false
             throw IllegalStateException()
         }
-        GlobalScope.launch(ApiPool) {
+        GlobalScope.launch(IOPool) {
             ArticlesRemoteDataSource.replyAdd(url).also {
                 showMessage(it)
             }
@@ -130,7 +130,7 @@ class ArticleViewModel: ViewModel(), ArticleAdapterListener {
         if (posts.isEmpty()) {
             showMessage(R.string.add_to_favorite_failed)
         }
-        GlobalScope.launch(ApiPool) {
+        GlobalScope.launch(IOPool) {
             try {
                 // if title is null, use abstract's title, this rarely happens
                 val title = articleTitle.value?:articleAbstract?.title

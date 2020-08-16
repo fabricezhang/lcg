@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import timber.log.Timber
 import top.easelink.framework.base.BaseFragment
-import top.easelink.framework.threadpool.ImmediatePool
+import top.easelink.framework.threadpool.CalcPool
 import top.easelink.framework.threadpool.Main
 import top.easelink.framework.utils.addFragmentInActivity
 import top.easelink.framework.utils.addFragmentInFragment
@@ -70,7 +70,7 @@ class MeFragment : BaseFragment<FragmentMeBinding, MeViewModel>() {
             if (!it) {
                 // add a blur effect
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    GlobalScope.launch(ImmediatePool){
+                    GlobalScope.launch(CalcPool){
                         val bitmap = bitmapBlur(baseActivity, convertViewToBitmap(view), 20)
                         GlobalScope.launch(Main) {
                             try {

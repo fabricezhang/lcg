@@ -2,7 +2,7 @@ package top.easelink.lcg.spipedata
 
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import top.easelink.framework.threadpool.CommonPool
+import top.easelink.framework.threadpool.CalcPool
 import top.easelink.lcg.ui.main.source.local.ArticlesLocalDataSource
 import top.easelink.lcg.utils.SharedPreferencesHelper
 
@@ -48,7 +48,7 @@ object UserData {
 
     fun clearAll() {
         SharedPreferencesHelper.getUserSp().edit().clear().apply()
-        GlobalScope.launch(CommonPool) {
+        GlobalScope.launch(CalcPool) {
             ArticlesLocalDataSource.delAllArticlesFromFavorite()
         }
     }

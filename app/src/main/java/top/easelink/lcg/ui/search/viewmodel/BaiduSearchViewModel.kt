@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import top.easelink.framework.threadpool.ApiPool
+import top.easelink.framework.threadpool.IOPool
 import top.easelink.lcg.ui.search.model.BaiduSearchResult
 import top.easelink.lcg.ui.search.source.BaiduSearchService.doSearchRequest
 import top.easelink.lcg.ui.search.viewmodel.BaiduSearchResultAdapter.SearchAdapterListener
@@ -33,7 +33,7 @@ class BaiduSearchViewModel : ViewModel(), SearchAdapterListener {
             }
             else ->  return
         }
-        GlobalScope.launch(ApiPool){
+        GlobalScope.launch(IOPool){
             doSearchRequest(requestUrl, 0).apply {
                 if (baiduSearchResultList.isNotEmpty()) {
                     val list = searchResults.value

@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import top.easelink.framework.threadpool.ApiPool
+import top.easelink.framework.threadpool.IOPool
 import top.easelink.lcg.R
 import top.easelink.lcg.ui.main.model.LoginRequiredException
 import top.easelink.lcg.ui.main.source.model.Article
@@ -64,7 +64,7 @@ class ForumArticlesViewModel : ViewModel(), ArticleFetcher {
 
     override fun fetchArticles(fetchType: ArticleFetcher.FetchType, callback: (Boolean) -> Unit) {
         isLoading.value = true
-        GlobalScope.launch(ApiPool) {
+        GlobalScope.launch(IOPool) {
             try {
                 val query = composeUrlByRequestType(fetchType)
                 val forumPage = getForumArticles(

@@ -6,7 +6,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.jsoup.nodes.Document
 import timber.log.Timber
-import top.easelink.framework.threadpool.ApiPool
+import top.easelink.framework.threadpool.IOPool
 import top.easelink.lcg.network.Client
 import top.easelink.lcg.ui.main.model.Conversation
 import top.easelink.lcg.utils.WebsiteConstant
@@ -20,7 +20,7 @@ class ConversationListViewModel : ViewModel() {
 
     fun fetchConversations() {
         isLoading.value = true
-        GlobalScope.launch(ApiPool) {
+        GlobalScope.launch(IOPool) {
             try {
                 parseConversations(Client.sendGetRequestWithQuery(WebsiteConstant.PRIVATE_MESSAGE_QUERY))
             } catch (e: Exception) {

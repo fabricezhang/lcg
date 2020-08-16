@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.dialog_profile.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import top.easelink.framework.threadpool.ApiPool
+import top.easelink.framework.threadpool.IOPool
 import top.easelink.framework.utils.dpToPx
 import top.easelink.framework.utils.getStatusBarHeight
 import top.easelink.lcg.R
@@ -104,7 +104,7 @@ class PopUpProfileDialog(
 
     private fun onSubscribeClicked(url: String) {
         sendEvent(EVENT_SUBSCRIBE_USER)
-        GlobalScope.launch(ApiPool){
+        GlobalScope.launch(IOPool){
             try {
                 Client.sendGetRequestWithQuery(url).let {
                     it.getElementById("messagetext")?.text()?.let {msg ->

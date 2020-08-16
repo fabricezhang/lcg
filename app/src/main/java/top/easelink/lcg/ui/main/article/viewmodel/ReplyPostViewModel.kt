@@ -7,7 +7,7 @@ import kotlinx.coroutines.launch
 import org.jsoup.Connection
 import org.jsoup.Jsoup
 import timber.log.Timber
-import top.easelink.framework.threadpool.ApiPool
+import top.easelink.framework.threadpool.IOPool
 import top.easelink.lcg.network.Client
 import top.easelink.lcg.utils.WebsiteConstant.CHECK_RULE_URL
 import top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL
@@ -20,7 +20,7 @@ class ReplyPostViewModel : ViewModel() {
 
     fun sendReply(query: String?, content: String, callback: (Boolean) -> Unit) {
         sending.value = true
-        GlobalScope.launch(ApiPool) {
+        GlobalScope.launch(IOPool) {
             sendReplyAsync(query, content, callback)
         }
     }

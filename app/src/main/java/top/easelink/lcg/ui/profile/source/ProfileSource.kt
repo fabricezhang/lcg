@@ -2,11 +2,11 @@ package top.easelink.lcg.ui.profile.source
 
 import kotlinx.coroutines.withContext
 import org.jsoup.nodes.Document
-import top.easelink.framework.threadpool.ApiPool
+import top.easelink.framework.threadpool.IOPool
 import top.easelink.lcg.network.Client
 
 object ProfileSource {
-    suspend fun getProfile(query: String) = withContext(ApiPool) {
+    suspend fun getProfile(query: String) = withContext(IOPool) {
         Client.sendGetRequestWithQuery(query)
     }
 
