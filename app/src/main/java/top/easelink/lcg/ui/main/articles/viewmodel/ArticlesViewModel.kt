@@ -10,11 +10,11 @@ import top.easelink.lcg.ui.main.source.remote.ArticlesRemoteDataSource
 
 class ArticlesViewModel : ViewModel(), ArticleFetcher {
     private var mCurrentPage = 0
-    private var mUrl: String? = null
+    private lateinit var mUrl: String
     val isLoading = MutableLiveData<Boolean>()
     val articles = MutableLiveData<List<Article>>()
 
-    fun initUrl(url: String?) {
+    fun initUrl(url: String) {
         mUrl = url
         fetchArticles(ArticleFetcher.FetchType.FETCH_INIT){}
     }
@@ -26,7 +26,7 @@ class ArticlesViewModel : ViewModel(), ArticleFetcher {
         }
         isLoading.value = true
         GlobalScope.launch(IOPool){
-            ArticlesRemoteDataSource.getHomePageArticles(mUrl!!, pageNum).let {
+            ArticlesRemoteDataSource.getHomePageArticles(mUrl, pageNum).let {
                 if (it.isNotEmpty().also(callback)) {
                     val list = articles.value?.toMutableList()
                     if (fetchType == ArticleFetcher.FetchType.FETCH_MORE && list != null && list.size != 0) {

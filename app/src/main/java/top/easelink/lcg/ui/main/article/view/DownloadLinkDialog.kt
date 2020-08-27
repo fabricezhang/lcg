@@ -58,7 +58,7 @@ class DownloadLinkDialog : TopDialog() {
     private fun copy(clipString: String) {
         val cm = mContext.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         val mClipData = ClipData.newPlainText("DownloadLink", clipString)
-        cm.primaryClip = mClipData
+        cm.setPrimaryClip(mClipData)
         showMessage(R.string.copy_succeed)
     }
 

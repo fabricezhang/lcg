@@ -44,7 +44,7 @@ class LCGSearchActivity : TopActivity() {
         mSearchViewModel = ViewModelProvider(this)[LCGSearchViewModel::class.java]
         setUp()
         val kw = intent.getStringExtra(KEY_WORD)
-        if (kw.isNotBlank()) {
+        if (!kw.isNullOrBlank()) {
             mSearchViewModel.setKeyword(kw)
         }
     }

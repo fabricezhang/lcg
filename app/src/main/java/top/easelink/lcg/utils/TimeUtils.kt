@@ -12,7 +12,7 @@ import java.util.*
 
 fun toTimeStamp(date: String): Long {
     return try {
-        SimpleDateFormat.getDateTimeInstance().parse(date).time
+        SimpleDateFormat.getDateTimeInstance().parse(date)?.time ?: System.currentTimeMillis()
     } catch (e: ParseException) {
         System.currentTimeMillis()
     }
@@ -22,6 +22,6 @@ fun String.toTimeStamp(): Long? {
     return runCatching {
         SimpleDateFormat("yyyy-MM-dd hh:mm", Locale.CHINA)
             .parse(this)
-            .time
+            ?.time
     }.getOrNull()
 }

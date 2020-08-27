@@ -6,7 +6,7 @@ import android.view.*
 import android.widget.Button
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.dialog_comment_article.*
 import top.easelink.framework.topbase.TopDialog
 import top.easelink.framework.utils.CommonUtils
@@ -35,7 +35,7 @@ class CommentArticleDialog : TopDialog() {
         savedInstanceState: Bundle?
     ) {
         super.onViewCreated(view, savedInstanceState)
-        replyPostViewModel = ViewModelProviders.of(this).get(ReplyPostViewModel::class.java)
+        replyPostViewModel = ViewModelProvider(this).get(ReplyPostViewModel::class.java)
         view.findViewById<Button>(R.id.btn_cancel).setOnClickListener {
             dismissDialog()
         }

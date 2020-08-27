@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.dialog_reply_post.*
 import top.easelink.framework.topbase.TopDialog
 import top.easelink.lcg.R
@@ -36,7 +36,7 @@ class ReplyPostDialog : TopDialog() {
         savedInstanceState: Bundle?
     ) {
         super.onViewCreated(view, savedInstanceState)
-        replyPostViewModel = ViewModelProviders.of(this).get(ReplyPostViewModel::class.java)
+        replyPostViewModel = ViewModelProvider(this).get(ReplyPostViewModel::class.java)
         btn_cancel.setOnClickListener {
             dismissDialog()
         }

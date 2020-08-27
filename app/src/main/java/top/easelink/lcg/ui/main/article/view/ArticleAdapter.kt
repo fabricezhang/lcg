@@ -162,7 +162,6 @@ class ArticleAdapter(
                         Glide.with(context)
                             .load(p.avatar)
                             .transform(RoundedCorners(dp2px(context, 4f).toInt()))
-                            .placeholder(R.drawable.ic_noavatar_middle)
                             .error(R.drawable.ic_noavatar_middle_gray)
                             .into(post_avatar)
                         content_text_view.run {

@@ -56,8 +56,8 @@ android {
             outputFileName = "lcg-${variant.versionName}.apk"
         }
     }
-    dataBinding {
-        enabled = true
+    buildFeatures {
+        dataBinding = true
     }
     buildToolsVersion = buildToolsVersion
 }
