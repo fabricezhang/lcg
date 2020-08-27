@@ -46,6 +46,7 @@ import top.easelink.lcg.ui.profile.view.PopUpProfileDialog
 import top.easelink.lcg.ui.profile.view.ProfileActivity
 import top.easelink.lcg.ui.webview.view.WebViewActivity
 import top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL
+import top.easelink.lcg.utils.avatar.getAvatar
 import top.easelink.lcg.utils.copyContent
 import top.easelink.lcg.utils.saveImageToGallery
 import top.easelink.lcg.utils.showMessage
@@ -296,7 +297,7 @@ class ArticleAdapter(
                             .transition(DrawableTransitionOptions.with(drawableCrossFadeFactory))
                             .transform(RoundedCorners(dp2px(context, 6f).toInt()))
                             .placeholder(R.drawable.ic_avatar_placeholder)
-                            .error(R.drawable.ic_noavatar_middle_gray)
+                            .error(getAvatar())
                             .into(reply_avatar)
                         reply_content_text_view.run {
                             if (AppConfig.articleHandlePreTag) {
