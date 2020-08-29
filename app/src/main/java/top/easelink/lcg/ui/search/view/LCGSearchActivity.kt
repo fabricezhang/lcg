@@ -113,16 +113,18 @@ class LCGSearchActivity : TopActivity() {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageEvent(event: OpenSearchResultEvent) {
         sendEvent(EVENT_OPEN_ARTICLE)
-        if (threadRegex.containsMatchIn(event.url)) {
-            if (AppConfig.searchResultShowInWebView) {
-                WebViewActivity.startWebViewWith(SERVER_BASE_URL + event.url, this)
-            } else {
-                showFragment(ArticleFragment(event.url))
+        when {
+            threadRegex.containsMatchIn(event.url) || event.url.startsWith("forum.php") -> {
+                if (AppConfig.searchResultShowInWebView) {
+                    WebViewActivity.startWebViewWith(SERVER_BASE_URL + event.url, this)
+                } else {
+                    showFragment(ArticleFragment(event.url))
+                }
             }
-        } else if (event.url.startsWith("http") || event.url.startsWith(SERVER_BASE_URL)){
-            WebViewActivity.startWebViewWith(event.url, this)
-        } else {
-            showMessage(R.string.general_error)
+            event.url.startsWith("http") || event.url.startsWith(SERVER_BASE_URL) -> {
+                WebViewActivity.startWebViewWith(event.url, this)
+            }
+            else -> showMessage(R.string.general_error)
         }
     }
 
