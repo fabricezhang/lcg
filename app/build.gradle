@@ -73,6 +73,4 @@ dependencies {
     debugImplementation "com.amitshekhar.android:debug-db:1.0.4"
     // test related
     testImplementation "junit:junit:$rootProject.junitVersion"
-    androidTestImplementation "androidx.test:runner:$rootProject.runnerVersion"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.espressoVersion"
 }
