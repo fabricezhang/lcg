@@ -1,33 +1,34 @@
-package top.easelink.lcg.ui.main.article.view;
+package top.easelink.lcg.ui.main.article.view
 
-import android.view.View;
+import android.view.View
+import com.tencent.stat.StatService
+import org.greenrobot.eventbus.EventBus
+import top.easelink.framework.customview.htmltextview.ClickablePreCodeSpan
+import top.easelink.lcg.R
+import top.easelink.lcg.mta.EVENT_TAP_FOR_CODE
+import top.easelink.lcg.ui.main.model.OpenHalfWebViewFragmentEvent
+import top.easelink.lcg.ui.webview.view.HalfScreenWebViewFragment
+import top.easelink.lcg.ui.webview.view.WebViewActivity
+import top.easelink.lcg.utils.showMessage
 
-import androidx.annotation.NonNull;
+internal class ClickablePreCodeSpanImpl : ClickablePreCodeSpan {
 
-import com.tencent.stat.StatService;
+    constructor()
 
-import top.easelink.framework.customview.htmltextview.ClickablePreCodeSpan;
-import top.easelink.lcg.ui.webview.view.WebViewActivity;
-
-import static top.easelink.lcg.mta.MTAConstantKt.EVENT_TAP_FOR_CODE;
-
-class ClickablePreCodeSpanImpl extends ClickablePreCodeSpan {
-
-    public ClickablePreCodeSpanImpl() {
+    private constructor(html: String?) {
+        this.html = html
     }
 
-    private ClickablePreCodeSpanImpl(String html) {
-        this.html = html;
+    override fun newInstance(): ClickablePreCodeSpan {
+        return ClickablePreCodeSpanImpl(getHtml())
     }
 
-    @Override
-    public ClickablePreCodeSpan newInstance() {
-        return new ClickablePreCodeSpanImpl(getHtml());
-    }
-
-    @Override
-    public void onClick(@NonNull View view) {
-        StatService.trackCustomEvent(view.getContext(), EVENT_TAP_FOR_CODE);
-        WebViewActivity.startWebViewWithHtml(html, view.getContext());
+    override fun onClick(view: View) {
+        StatService.trackCustomEvent(view.context, EVENT_TAP_FOR_CODE)
+        html?.let {
+            EventBus.getDefault().post(OpenHalfWebViewFragmentEvent(it))
+        } ?: run {
+            showMessage(R.string.general_error)
+        }
     }
 }

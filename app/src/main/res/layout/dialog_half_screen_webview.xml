@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="@dimen/dp_4"
+    app:cardUseCompatPadding="true">
+    <top.easelink.framework.customview.webview.HorizontalScrollDisableWebView
+        android:id="@+id/web_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="@null" />
+</com.google.android.material.card.MaterialCardView>

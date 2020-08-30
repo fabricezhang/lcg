@@ -35,3 +35,4 @@ fun getScreenWidthDp(context: Context): Int {
 }
 
 fun getScreenWidth(context: Context): Int = context.resources.displayMetrics.widthPixels
+fun getScreenHeight(context: Context): Int = context.resources.displayMetrics.heightPixels

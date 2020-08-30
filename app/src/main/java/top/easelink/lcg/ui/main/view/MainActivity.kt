@@ -37,12 +37,10 @@ import top.easelink.lcg.ui.main.forumnav.view.ForumNavigationFragment
 import top.easelink.lcg.ui.main.largeimg.view.LargeImageDialog
 import top.easelink.lcg.ui.main.me.view.MeFragment
 import top.easelink.lcg.ui.main.message.view.MessageFragment
-import top.easelink.lcg.ui.main.model.NewMessageEvent
-import top.easelink.lcg.ui.main.model.OpenArticleEvent
-import top.easelink.lcg.ui.main.model.OpenForumEvent
-import top.easelink.lcg.ui.main.model.OpenLargeImageViewEvent
+import top.easelink.lcg.ui.main.model.*
 import top.easelink.lcg.ui.main.recommand.view.RecommendFragment
 import top.easelink.lcg.ui.setting.view.SettingActivity
+import top.easelink.lcg.ui.webview.view.HalfScreenWebViewFragment
 import top.easelink.lcg.ui.webview.view.WebViewActivity
 import top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL
 import top.easelink.lcg.utils.showMessage
@@ -201,6 +199,11 @@ class MainActivity : TopActivity(), BottomNavigationView.OnNavigationItemSelecte
         } else {
             showMessage(R.string.tap_for_large_image_failed)
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onOpenHalfScreenWebViewEvent(event: OpenHalfWebViewFragmentEvent) {
+        HalfScreenWebViewFragment.newInstance(event.html).show(supportFragmentManager, HalfScreenWebViewFragment::class.simpleName)
     }
 
     @Suppress("SameParameterValue")
