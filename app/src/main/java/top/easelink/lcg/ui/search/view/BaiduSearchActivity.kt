@@ -30,7 +30,12 @@ import top.easelink.lcg.utils.WebsiteConstant.URL_KEY
 class BaiduSearchActivity : TopActivity() {
 
     private lateinit var mViewModelBaidu: BaiduSearchViewModel
-    private val threadRegex by lazy { Regex("thread-[0-9]+-[0-9]+-[0-9]+.html$", RegexOption.IGNORE_CASE) }
+    private val threadRegex by lazy {
+        Regex(
+            "thread-[0-9]+-[0-9]+-[0-9]+.html$",
+            RegexOption.IGNORE_CASE
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,7 +64,7 @@ class BaiduSearchActivity : TopActivity() {
                 it.orientation = RecyclerView.VERTICAL
             }
             itemAnimator = DefaultItemAnimator()
-            adapter =  BaiduSearchResultAdapter(mViewModelBaidu)
+            adapter = BaiduSearchResultAdapter(mViewModelBaidu)
             mViewModelBaidu.searchResults.observe(this@BaiduSearchActivity, Observer {
                 (adapter as? BaiduSearchResultAdapter)?.apply {
                     clearItems()

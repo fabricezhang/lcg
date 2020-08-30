@@ -57,10 +57,12 @@ class FollowingFeedAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         return when (viewType) {
-            VIEW_TYPE_NORMAL -> { ArticleViewHolder(
-                LayoutInflater
-                    .from(parent.context)
-                    .inflate(R.layout.item_follow_content_view, parent, false))
+            VIEW_TYPE_NORMAL -> {
+                ArticleViewHolder(
+                    LayoutInflater
+                        .from(parent.context)
+                        .inflate(R.layout.item_follow_content_view, parent, false)
+                )
             }
             VIEW_TYPE_LOAD_MORE -> LoadMoreViewHolder(
                 LayoutInflater
@@ -70,7 +72,8 @@ class FollowingFeedAdapter(
             else -> EmptyViewHolder(
                 LayoutInflater
                     .from(parent.context)
-                    .inflate(R.layout.item_empty_view, parent, false))
+                    .inflate(R.layout.item_empty_view, parent, false)
+            )
         }
     }
 
@@ -146,7 +149,8 @@ class FollowingFeedAdapter(
                                 .size(SizeResolver(OriginalSize))
                                 .transformations(RoundedCornersTransformation(round))
                                 .target {
-                                    val newH = it.intrinsicHeight.toFloat() / it.intrinsicWidth.toFloat() * preview.width.toFloat()
+                                    val newH =
+                                        it.intrinsicHeight.toFloat() / it.intrinsicWidth.toFloat() * preview.width.toFloat()
                                     preview.apply {
                                         layoutParams.height = newH.toInt()
                                         setImageDrawable(it)
@@ -156,7 +160,7 @@ class FollowingFeedAdapter(
                                     Coil.imageLoader(context).enqueue(it)
                                 }
                         }
-                    }?:run {
+                    } ?: run {
                         preview.visibility = View.INVISIBLE
                         preview.setImageDrawable(null)
                         preview.layoutParams.height = 0
@@ -168,8 +172,8 @@ class FollowingFeedAdapter(
 
     }
 
-    class EmptyViewHolder(view: View) : BaseViewHolder(view){
-        override fun onBind(position: Int) { }
+    class EmptyViewHolder(view: View) : BaseViewHolder(view) {
+        override fun onBind(position: Int) {}
     }
 
     inner class LoadMoreViewHolder internal constructor(val view: View) : BaseViewHolder(view) {

@@ -41,16 +41,16 @@ class BaiduSearchResultAdapter(private var mListener: SearchAdapterListener) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         return when (viewType) {
-            VIEW_TYPE_NORMAL -> SearchResultViewHolder(LayoutInflater.from(parent.context)
-                .inflate(
-                    R.layout.item_search_result_view
-                    , parent, false
-                ))
+            VIEW_TYPE_NORMAL -> SearchResultViewHolder(
+                LayoutInflater.from(parent.context)
+                    .inflate(
+                        R.layout.item_search_result_view, parent, false
+                    )
+            )
             VIEW_TYPE_LOAD_MORE -> LoadMoreViewHolder(
                 LayoutInflater.from(parent.context)
                     .inflate(
-                        R.layout.item_search_load_more_view
-                        , parent, false
+                        R.layout.item_search_load_more_view, parent, false
                     )
             )
             VIEW_TYPE_EMPTY -> EmptyViewHolder(

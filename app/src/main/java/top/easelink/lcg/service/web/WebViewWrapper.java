@@ -38,6 +38,17 @@ public class WebViewWrapper {
         instance = getInstance();
     }
 
+    public static WebViewWrapper getInstance() {
+        if (instance == null) {
+            synchronized (WebViewWrapper.class) {
+                if (instance == null) {
+                    instance = new WebViewWrapper();
+                }
+            }
+        }
+        return instance;
+    }
+
     public void post(String url, HookInterface hookInterface) {
         mWebView.post(() -> {
             mWebView.removeJavascriptInterface(HOOK_NAME);
@@ -52,17 +63,6 @@ public class WebViewWrapper {
         mWebView.loadUrl(url);
     }
 
-    public static WebViewWrapper getInstance() {
-        if (instance == null) {
-            synchronized (WebViewWrapper.class) {
-                if (instance == null) {
-                    instance = new WebViewWrapper();
-                }
-            }
-        }
-        return instance;
-    }
-
     @SuppressWarnings("deprecation")
     public void clearCookies() {
         mWebView.clearCache(true);
@@ -72,7 +72,7 @@ public class WebViewWrapper {
             CookieManager.getInstance().removeAllCookies(null);
             CookieManager.getInstance().flush();
         } else {
-            CookieSyncManager cookieSyncMngr=CookieSyncManager.createInstance(mWebView.getContext());
+            CookieSyncManager cookieSyncMngr = CookieSyncManager.createInstance(mWebView.getContext());
             cookieSyncMngr.startSync();
             CookieManager cookieManager = CookieManager.getInstance();
             cookieManager.removeAllCookie();

@@ -84,13 +84,15 @@ class ArticleAdapter(
         return when (viewType) {
             VIEW_TYPE_POST -> PostViewHolder(
                 LayoutInflater.from(parent.context)
-                    .inflate(R.layout.item_post_view,
+                    .inflate(
+                        R.layout.item_post_view,
                         parent, false
                     )
             )
             VIEW_TYPE_REPLY -> ReplyViewHolder(
                 LayoutInflater.from(parent.context)
-                    .inflate(R.layout.item_reply_view,
+                    .inflate(
+                        R.layout.item_reply_view,
                         parent, false
                     )
             )
@@ -104,8 +106,7 @@ class ArticleAdapter(
             else -> PostEmptyViewHolder(
                 LayoutInflater.from(parent.context)
                     .inflate(
-                        R.layout.layout_skelton_article
-                        , parent, false
+                        R.layout.layout_skelton_article, parent, false
                     )
             )
         }
@@ -127,16 +128,17 @@ class ArticleAdapter(
 
     inner class PostViewHolder internal constructor(
         view: View
-    ): BaseViewHolder(view), View.OnClickListener {
+    ) : BaseViewHolder(view), View.OnClickListener {
 
         private var post: Post? = null
         private val htmlHttpImageGetter: Html.ImageGetter by lazy {
             HtmlCoilImageGetter(view.context, view.content_text_view)
         }
+
         override fun onBind(position: Int) {
             post = mPostList[position]
             post?.let { p ->
-                with(itemView){
+                with(itemView) {
                     try {
                         author_text_view.text = p.author
                         date_text_view.text = getDateDiff(p.date)
@@ -153,8 +155,11 @@ class ArticleAdapter(
                                     p.followInfo,
                                     p.profileUrl
                                 )
-                                PopUpProfileDialog(popUpInfo).show(it, PopUpProfileDialog::class.java.simpleName)
-                            }?: context.startActivity(
+                                PopUpProfileDialog(popUpInfo).show(
+                                    it,
+                                    PopUpProfileDialog::class.java.simpleName
+                                )
+                            } ?: context.startActivity(
                                 Intent(context, ProfileActivity::class.java).also {
                                     it.putExtra(KEY_PROFILE_URL, p.profileUrl)
                                 })
@@ -236,7 +241,7 @@ class ArticleAdapter(
                         convertViewToBitmap(itemView, Bitmap.Config.ARGB_8888)?.let {
                             val path = saveImageToGallery(it, System.currentTimeMillis().toString())
                             EventBus.getDefault().post(ScreenCaptureEvent(path))
-                        }?: showMessage(R.string.general_error)
+                        } ?: showMessage(R.string.general_error)
                     }
                     else -> {
                         // do nothing
@@ -246,17 +251,19 @@ class ArticleAdapter(
         }
     }
 
-    inner class ReplyViewHolder internal constructor(view: View): BaseViewHolder(view), View.OnClickListener {
+    inner class ReplyViewHolder internal constructor(view: View) : BaseViewHolder(view),
+        View.OnClickListener {
 
         private var post: Post? = null
         private val htmlHttpImageGetter: Html.ImageGetter by lazy {
             HtmlCoilImageGetter(view.context, view.reply_content_text_view)
         }
+
         @SuppressLint("SetTextI18n")
         override fun onBind(position: Int) {
             post = mPostList[position]
             post?.let { p ->
-                with(itemView){
+                with(itemView) {
                     try {
                         if (p.author == username) {
                             reply_card.strokeColor = ContextCompat.getColor(context, R.color.orange)
@@ -280,8 +287,11 @@ class ArticleAdapter(
                                     p.followInfo,
                                     p.profileUrl
                                 )
-                                PopUpProfileDialog(popUpInfo).show(it, PopUpProfileDialog::class.java.simpleName)
-                            }?: context.startActivity(
+                                PopUpProfileDialog(popUpInfo).show(
+                                    it,
+                                    PopUpProfileDialog::class.java.simpleName
+                                )
+                            } ?: context.startActivity(
                                 Intent(context, ProfileActivity::class.java).also {
                                     it.putExtra(KEY_PROFILE_URL, p.profileUrl)
                                 })
@@ -370,18 +380,20 @@ class ArticleAdapter(
         val tips = "发表于 "
         return date.replace(tips, "").toTimeStamp()?.let {
             val diff = System.currentTimeMillis() - it
-            when(val minutesDiff = diff/ 1000 / 60) {
+            when (val minutesDiff = diff / 1000 / 60) {
                 in 0..1 -> return "${tips}1 分钟前"
                 in 1..60 -> return "${tips}${minutesDiff} 分钟前"
-                in 60..24*60 -> {
+                in 60..24 * 60 -> {
                     val hoursDiff = diff / 1000 / 60 / 60
                     return "${tips}${hoursDiff} 小时前"
                 }
-                in 24*60..7*24*60 -> {
-                    val dayDiff = diff / 1000 /60 / 60 /24
+                in 24 * 60..7 * 24 * 60 -> {
+                    val dayDiff = diff / 1000 / 60 / 60 / 24
                     return "${tips}${dayDiff} 天前"
                 }
-                else -> { date }
+                else -> {
+                    date
+                }
             }
         } ?: date
     }

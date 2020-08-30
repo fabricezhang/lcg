@@ -9,6 +9,7 @@ data class NotificationInfo(
     fun isEmpty(): Boolean {
         return !isNotEmpty()
     }
+
     fun isNotEmpty(): Boolean {
         return message > 0 || follower > 0 || posts > 0 || systemNotifications > 0
     }

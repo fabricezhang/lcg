@@ -24,7 +24,7 @@ object BaiduSearchService {
             }
         } catch (e: RequestTooOftenException) {
             delay(1000)
-            doSearchRequest(requestUrl, retryTime+1)
+            doSearchRequest(requestUrl, retryTime + 1)
         }
     }
 

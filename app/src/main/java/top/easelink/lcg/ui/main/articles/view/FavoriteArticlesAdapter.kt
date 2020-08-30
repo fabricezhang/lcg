@@ -50,7 +50,8 @@ class FavoriteArticlesAdapter(private var favoriteArticlesViewModel: FavoriteArt
         return when (viewType) {
             VIEW_TYPE_NORMAL -> ArticleViewHolder(
                 LayoutInflater.from(parent.context).inflate(
-                    R.layout.item_favorite_article_view_v2, parent, false)
+                    R.layout.item_favorite_article_view_v2, parent, false
+                )
             )
             VIEW_TYPE_LOAD_MORE -> LoadMoreViewHolder(
                 LayoutInflater.from(parent.context).inflate(
@@ -85,10 +86,12 @@ class FavoriteArticlesAdapter(private var favoriteArticlesViewModel: FavoriteArt
         override fun onBind(position: Int) {
             val articleEntity = mArticleEntities[position]
             itemView.run {
-                startAnimation(AnimationUtils.loadAnimation(
-                    context,
-                    R.anim.recycler_item_show
-                ))
+                startAnimation(
+                    AnimationUtils.loadAnimation(
+                        context,
+                        R.anim.recycler_item_show
+                    )
+                )
                 favorite_container.setOnClickListener {
                     onItemClick(articleEntity.url)
                 }
@@ -101,7 +104,7 @@ class FavoriteArticlesAdapter(private var favoriteArticlesViewModel: FavoriteArt
                         text = articleEntity.author
                         visibility = View.VISIBLE
                     }
-                }  else {
+                } else {
                     author_text_view.visibility = View.GONE
                 }
             }

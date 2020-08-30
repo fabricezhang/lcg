@@ -54,7 +54,7 @@ object UserData {
     }
 
     @Suppress("UNCHECKED_CAST", "IMPLICIT_CAST_TO_ANY")
-    private fun <T: Any> get(key: String, default: T): T {
+    private fun <T : Any> get(key: String, default: T): T {
         SharedPreferencesHelper.getUserSp().let {
             val res = when (default) {
                 is String -> it.getString(key, default as String)
@@ -62,11 +62,11 @@ object UserData {
                 is Boolean -> it.getBoolean(key, default as Boolean)
                 else -> null
             }
-            return res as? T?:default
+            return res as? T ?: default
         }
     }
 
-    private fun <T: Any?> put(key: String, value: T) {
+    private fun <T : Any?> put(key: String, value: T) {
         SharedPreferencesHelper
             .getUserSp()
             .edit()

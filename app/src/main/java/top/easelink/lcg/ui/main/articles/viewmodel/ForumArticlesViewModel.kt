@@ -32,7 +32,11 @@ class ForumArticlesViewModel : ViewModel(), ArticleFetcher {
     val threadList = MutableLiveData<List<ForumThread>>()
     val isLoading = MutableLiveData<Boolean>()
 
-    fun initUrlAndFetch(url: String, fetchType: ArticleFetcher.FetchType, order: String = DEFAULT_ORDER) {
+    fun initUrlAndFetch(
+        url: String,
+        fetchType: ArticleFetcher.FetchType,
+        order: String = DEFAULT_ORDER
+    ) {
         //Fabrice: add a workaround to  map forum-16-1.html to forum.php?mod=forumdisplay&fid=16
         mUrl = if (url.startsWith("forum-") && url.endsWith("html")) {
             try {
@@ -46,7 +50,7 @@ class ForumArticlesViewModel : ViewModel(), ArticleFetcher {
         }
         mFetchType = fetchType
         orderType = order
-        fetchArticles(mFetchType){}
+        fetchArticles(mFetchType) {}
     }
 
     @MainThread

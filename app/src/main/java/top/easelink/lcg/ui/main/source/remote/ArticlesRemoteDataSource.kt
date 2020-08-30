@@ -28,7 +28,7 @@ import java.util.*
  * date   : 2019-07-04 16:22
  * desc   :
  */
-object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
+object ArticlesRemoteDataSource : ArticlesDataSource, FavoritesRemoteDataSource {
     private const val USER_NAME = "name"
     private const val USER_AVATAR = "avatar"
     private const val USER_PROFILE_URL = "profile_url"
@@ -62,7 +62,7 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
         return try {
             getFirstPost(JsoupClient.sendGetRequestWithQuery(query))
         } catch (e: Exception) {
-            when(e) {
+            when (e) {
                 is BlockException,
                 is HttpStatusException -> throw e
             }
@@ -134,7 +134,7 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
             val fromHash = doc.selectFirst("input[name=formhash]")?.attr("value")
             return ArticleDetail(title, postList, nextPageUrl, fromHash, articleAbstract)
         } catch (e: Exception) {
-            when(e) {
+            when (e) {
                 // map to NetWorkException
                 is SocketTimeoutException -> throw NetworkException()
                 is BlockException -> throw e
@@ -172,7 +172,8 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
                         if (helpInfo.isEmpty()) {
                             if (e.selectFirst("th.common")
                                     ?.text()
-                                    ?.contains("- [已解决]") == true) {
+                                    ?.contains("- [已解决]") == true
+                            ) {
                                 helpCoin = -1
                             }
                         } else {
@@ -207,7 +208,17 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
                             false
                         }
                         if (title.isNotBlank() && author.isNotEmpty()) {
-                            return@map Article(title, author, date, url, view, reply, origin, helpCoin, isRecommended)
+                            return@map Article(
+                                title,
+                                author,
+                                date,
+                                url,
+                                view,
+                                reply,
+                                origin,
+                                helpCoin,
+                                isRecommended
+                            )
                         }
                     } catch (e: Exception) {
                         Timber.e(e)
@@ -223,7 +234,10 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
     }
 
     @Throws(LoginRequiredException::class)
-    private fun processForumArticlesDocument(doc: Document, processThreadList: Boolean): ForumPage? {
+    private fun processForumArticlesDocument(
+        doc: Document,
+        processThreadList: Boolean
+    ): ForumPage? {
         try {
             var elements = doc.select("tbody[id^=normal]")
             if (elements.isEmpty()) {
@@ -269,7 +283,7 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
             // for thread part
             var threadList: List<ForumThread>? = null
             if (processThreadList) {
-                doc.getElementById("thread_types")?.let {threadTypes ->
+                doc.getElementById("thread_types")?.let { threadTypes ->
                     threadList = threadTypes
                         .getElementsByTag("li")
                         .mapNotNull { elementByTag ->
@@ -291,7 +305,7 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
 
                 }
             }
-            return ForumPage(articleList, threadList?: emptyList())
+            return ForumPage(articleList, threadList ?: emptyList())
         } catch (e: LoginRequiredException) {
             throw e
         } catch (e: Exception) {
@@ -394,8 +408,8 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
             name = selectFirst("a.xw1").text()
         }
         return PreviewPost(
-            avatar = avatar?:"",
-            author = name?:"Unknown",
+            avatar = avatar ?: "",
+            author = name ?: "Unknown",
             date = dateTime,
             content = content
         )
@@ -403,11 +417,11 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
 
     private fun getFirstContent(doc: Document): String {
         return doc.selectFirst("div.pcb")
-            .let {
-                    element -> element.selectFirst("td.t_f")?.let {
-                    tmp -> processContentElement(tmp).html()
-            }
-                ?: element.selectFirst("div.locked").html()
+            .let { element ->
+                element.selectFirst("td.t_f")?.let { tmp ->
+                    processContentElement(tmp).html()
+                }
+                    ?: element.selectFirst("div.locked").html()
             }
     }
 
@@ -415,10 +429,10 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
         return doc.select("div.pcb")
             .filterNotNull()
             .mapTo(ArrayList<String>(), {
-                it.selectFirst("td.t_f")?.let {
-                        tmp -> processContentElement(tmp)
-                }?.let {res ->
-                    it.select("div.savephotop > img")?.forEach {imgElement ->
+                it.selectFirst("td.t_f")?.let { tmp ->
+                    processContentElement(tmp)
+                }?.let { res ->
+                    it.select("div.savephotop > img")?.forEach { imgElement ->
                         res.appendChild(
                             imgElement.attr("src", imgElement.attr("file"))
                         )
@@ -467,11 +481,13 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
     @WorkerThread
     override fun addFavorites(threadId: String, formHash: String): Boolean {
         return try {
-            JsoupClient.sendGetRequestWithQuery(String.format(
-                ADD_TO_FAVORITE_QUERY,
-                threadId,
-                formHash
-            ))
+            JsoupClient.sendGetRequestWithQuery(
+                String.format(
+                    ADD_TO_FAVORITE_QUERY,
+                    threadId,
+                    formHash
+                )
+            )
             true
         } catch (e: Exception) {
             Timber.e(e)

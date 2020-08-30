@@ -17,14 +17,14 @@ import top.easelink.lcg.utils.clearCookies
 import top.easelink.lcg.utils.showMessage
 import java.net.SocketTimeoutException
 
-class MeViewModel: ViewModel() {
+class MeViewModel : ViewModel() {
 
     val mLoginState = MutableLiveData<Boolean>()
     val mUserInfo = MutableLiveData<UserInfo>()
 
     @Suppress("BlockingMethodInNonBlockingContext")
     fun fetchUserInfoDirect() {
-        if(UserData.isLoggedIn) {
+        if (UserData.isLoggedIn) {
             mLoginState.postValue(true)
             UserData.apply {
                 mUserInfo.value =
@@ -70,7 +70,7 @@ class MeViewModel: ViewModel() {
                 }
             } catch (e: Exception) {
                 Timber.e(e)
-                when(e) {
+                when (e) {
                     is SocketTimeoutException -> showMessage(R.string.network_error) // 网络错误，不认为是登陆异常
                     is AntiScrapingException -> showMessage(R.string.anti_scraping_error) // 针对触发反爬虫机制的处理
                     else -> {

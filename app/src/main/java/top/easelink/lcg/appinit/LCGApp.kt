@@ -49,8 +49,10 @@ class LCGApp : Application() {
     }
 
     private fun initBulgy() {
-        Bugly.init(applicationContext,
-            BuildConfig.BUGLY_APP_ID, false)
+        Bugly.init(
+            applicationContext,
+            BuildConfig.BUGLY_APP_ID, false
+        )
         Beta.largeIconId = R.drawable.ic_noavatar_middle
         Beta.smallIconId = R.drawable.ic_noavatar_middle
         Beta.enableHotfix = false
@@ -70,6 +72,7 @@ class LCGApp : Application() {
     companion object {
         lateinit var instance: LCGApp
             private set
+
         @JvmStatic
         val context: Context
             get() = instance

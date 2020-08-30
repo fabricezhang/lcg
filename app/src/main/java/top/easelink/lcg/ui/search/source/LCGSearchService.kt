@@ -66,7 +66,7 @@ object LCGSearchService {
         }
         try {
             return parseSearchResults(JsoupClient.sendGetRequestWithQuery(mNextPageUrl!!))
-        } catch (e: SocketTimeoutException){
+        } catch (e: SocketTimeoutException) {
             showMessage(R.string.network_error)
         } catch (e: Exception) {
             Timber.e(e)

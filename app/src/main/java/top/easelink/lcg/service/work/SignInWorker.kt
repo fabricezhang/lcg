@@ -67,10 +67,10 @@ class SignInWorker(context: Context, workerParams: WorkerParameters) :
                 .setRequiresBatteryNotLow(false)
                 .build()
             val request = PeriodicWorkRequest.Builder(
-                    SignInWorker::class.java,
-                    WORK_INTERVAL,
-                    DEFAULT_TIME_UNIT
-                )
+                SignInWorker::class.java,
+                WORK_INTERVAL,
+                DEFAULT_TIME_UNIT
+            )
                 .setConstraints(constraints)
                 .addTag(TAG)
                 .setBackoffCriteria(BackoffPolicy.LINEAR, 15L, TimeUnit.MINUTES)

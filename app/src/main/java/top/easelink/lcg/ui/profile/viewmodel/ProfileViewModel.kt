@@ -7,7 +7,7 @@ import kotlinx.coroutines.async
 import top.easelink.framework.threadpool.CalcPool
 import top.easelink.lcg.ui.profile.source.ProfileSource
 
-class ProfileViewModel: ViewModel() {
+class ProfileViewModel : ViewModel() {
 
     private var job = Job()
 

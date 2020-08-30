@@ -17,9 +17,11 @@ class LoginHintDialog : TopDialog() {
         setStyle(STYLE_NORMAL, R.style.AppTheme_Dialog_FullScreen_BottomInOut)
     }
 
-    override fun onCreateView(inflater: LayoutInflater,
-                              container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         dialog?.window?.setWindowAnimations(R.style.BottomInOutAnim)
         return inflater.inflate(R.layout.dialog_login_hint, container, false)
     }
@@ -27,7 +29,8 @@ class LoginHintDialog : TopDialog() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        view.findViewById<HtmlTextView>(R.id.login_hint_instruction).setHtml(R.raw.login_instruction)
+        view.findViewById<HtmlTextView>(R.id.login_hint_instruction)
+            .setHtml(R.raw.login_instruction)
         view.findViewById<Button>(R.id.login_hint_btn).setOnClickListener {
             WebViewActivity.openLoginPage(context)
             dismissDialog()

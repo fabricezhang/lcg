@@ -95,16 +95,16 @@ public class HtmlTextView extends JellyBeanSpanFixTextView {
     public void setHtml(@NonNull String html, @Nullable Html.ImageGetter imageGetter) {
         try {
             setText(
-                    HtmlFormatter.formatHtml(
-                            html,
-                            imageGetter,
-                            clickableSpecialSpan,
-                            drawPreCodeSpan,
-                            indent,
-                            removeTrailingWhiteSpace,
-                            getContext(),
-                            onImgTagClickListener,
-                            onLinkTagClickListener)
+                HtmlFormatter.formatHtml(
+                    html,
+                    imageGetter,
+                    clickableSpecialSpan,
+                    drawPreCodeSpan,
+                    indent,
+                    removeTrailingWhiteSpace,
+                    getContext(),
+                    onImgTagClickListener,
+                    onLinkTagClickListener)
             );
 
             // make links work

@@ -15,7 +15,7 @@ import top.easelink.framework.topbase.TopFragment
 import top.easelink.lcg.R
 import top.easelink.lcg.ui.main.message.viewmodel.ConversationListViewModel
 
-class ConversationListFragment: TopFragment() {
+class ConversationListFragment : TopFragment() {
 
     private lateinit var mConversationVM: ConversationListViewModel
 
@@ -38,7 +38,7 @@ class ConversationListFragment: TopFragment() {
         mConversationVM.fetchConversations()
     }
 
-    private fun setUpRV(){
+    private fun setUpRV() {
         conversation_list.apply {
             layoutManager = LinearLayoutManager(context).also {
                 it.orientation = RecyclerView.VERTICAL

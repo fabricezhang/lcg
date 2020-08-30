@@ -48,10 +48,12 @@ class ConversationListAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         return when (viewType) {
-            VIEW_TYPE_NORMAL -> { ArticleViewHolder(
-                LayoutInflater
-                    .from(parent.context)
-                    .inflate(R.layout.item_conversation_view, parent, false))
+            VIEW_TYPE_NORMAL -> {
+                ArticleViewHolder(
+                    LayoutInflater
+                        .from(parent.context)
+                        .inflate(R.layout.item_conversation_view, parent, false)
+                )
             }
             VIEW_TYPE_LOAD_MORE -> LoadMoreViewHolder(
                 LayoutInflater
@@ -61,7 +63,8 @@ class ConversationListAdapter(
             else -> EmptyViewHolder(
                 LayoutInflater
                     .from(parent.context)
-                    .inflate(R.layout.item_empty_view, parent, false))
+                    .inflate(R.layout.item_empty_view, parent, false)
+            )
         }
     }
 
@@ -95,7 +98,10 @@ class ConversationListAdapter(
                 last_message.text = conversation.lastMessage
                 username.text = conversation.username
                 conversation_list_container.setOnClickListener {
-                    WebViewActivity.startWebViewWith(SERVER_BASE_URL + conversation.replyUrl, context)
+                    WebViewActivity.startWebViewWith(
+                        SERVER_BASE_URL + conversation.replyUrl,
+                        context
+                    )
 //                    context.startActivity(Intent(context, ConversationDetailActivity::class.java))
                 }
             }
@@ -103,8 +109,8 @@ class ConversationListAdapter(
 
     }
 
-    inner class EmptyViewHolder(view: View) : BaseViewHolder(view){
-        override fun onBind(position: Int) { }
+    inner class EmptyViewHolder(view: View) : BaseViewHolder(view) {
+        override fun onBind(position: Int) {}
     }
 
     inner class LoadMoreViewHolder internal constructor(val view: View) :

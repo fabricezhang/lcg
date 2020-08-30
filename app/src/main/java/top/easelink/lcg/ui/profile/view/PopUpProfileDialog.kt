@@ -33,7 +33,7 @@ import top.easelink.lcg.utils.showMessage
 
 class PopUpProfileDialog(
     private val popUpInfo: PopUpProfileInfo
-): DialogFragment() {
+) : DialogFragment() {
 
     private lateinit var mContext: Context
 
@@ -52,19 +52,20 @@ class PopUpProfileDialog(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        extra_info_grid.adapter = UserInfoGridViewAdapter(view.context, R.layout.item_profile_user_info).also {
-            popUpInfo.extraUserInfo?.let { info ->
-                it.addAll(parseExtraUserInfoProfilePage(info))
+        extra_info_grid.adapter =
+            UserInfoGridViewAdapter(view.context, R.layout.item_profile_user_info).also {
+                popUpInfo.extraUserInfo?.let { info ->
+                    it.addAll(parseExtraUserInfoProfilePage(info))
+                }
             }
-        }
         username.text = popUpInfo.userName
         popUpInfo.followInfo?.let { info ->
             subscribe_btn.visibility = View.VISIBLE
             subscribe_btn.text = info.first
-            subscribe_btn.setOnClickListener{
+            subscribe_btn.setOnClickListener {
                 onSubscribeClicked(info.second)
             }
-        }?:run {
+        } ?: run {
             subscribe_btn.visibility = View.GONE
         }
 
@@ -102,10 +103,10 @@ class PopUpProfileDialog(
 
     private fun onSubscribeClicked(url: String) {
         sendEvent(EVENT_SUBSCRIBE_USER)
-        GlobalScope.launch(IOPool){
+        GlobalScope.launch(IOPool) {
             try {
                 JsoupClient.sendGetRequestWithQuery(url).let {
-                    it.getElementById("messagetext")?.text()?.let {msg ->
+                    it.getElementById("messagetext")?.text()?.let { msg ->
                         showMessage(msg)
                     }
                 }

@@ -36,7 +36,7 @@ class ConversationListViewModel : ViewModel() {
             val conversationList = select("dl[id^=pmlist]").map {
                 val avatarUrl = it.selectFirst("img[onerror]")?.attr("src")
                 val username = it.selectFirst("dd.ptm > a[target]")?.text().orEmpty()
-                val lastMessage =  it.selectFirst("dd.ptm").textNodes().let { node->
+                val lastMessage = it.selectFirst("dd.ptm").textNodes().let { node ->
                     if (node.size > 5) {
                         node[4].text()?.replaceFirst(" ", "").orEmpty()
                     } else {

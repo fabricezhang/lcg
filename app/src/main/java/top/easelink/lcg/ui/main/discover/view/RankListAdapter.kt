@@ -32,7 +32,8 @@ class RankListAdapter : RecyclerView.Adapter<BaseViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         return RankHolder(
             LayoutInflater.from(parent.context).inflate(
-                R.layout.item_rank_article_view, parent, false)
+                R.layout.item_rank_article_view, parent, false
+            )
         )
     }
 
@@ -63,7 +64,7 @@ class RankListAdapter : RecyclerView.Adapter<BaseViewHolder>() {
         }
 
         private fun getMappingStringByType(context: Context, type: RankType, num: Int): String {
-            val resource = when(type) {
+            val resource = when (type) {
                 RankType.VIEW -> R.string.type_view_template
                 RankType.REPLY -> R.string.type_reply_template
                 RankType.HEAT -> R.string.type_heat_template
@@ -74,7 +75,7 @@ class RankListAdapter : RecyclerView.Adapter<BaseViewHolder>() {
         }
 
         private fun getImageResourceByIndex(index: Int): Int {
-            return when(index) {
+            return when (index) {
                 1 -> R.drawable.ic_first
                 2 -> R.drawable.ic_second
                 3 -> R.drawable.ic_third

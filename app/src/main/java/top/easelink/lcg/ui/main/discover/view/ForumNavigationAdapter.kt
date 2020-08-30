@@ -36,7 +36,8 @@ class ForumNavigationAdapter : RecyclerView.Adapter<BaseViewHolder>() {
         return when (viewType) {
             VIEW_TYPE_NORMAL -> ForumViewHolder(
                 LayoutInflater.from(parent.context).inflate(
-                    R.layout.item_forums_grid, parent, false)
+                    R.layout.item_forums_grid, parent, false
+                )
             )
             VIEW_TYPE_LOAD_MORE -> LoadMoreViewHolder(
                 LayoutInflater.from(parent.context).inflate(
@@ -51,7 +52,7 @@ class ForumNavigationAdapter : RecyclerView.Adapter<BaseViewHolder>() {
         mForumItems.addAll(forumModels)
         notifyDataSetChanged()
     }
-    
+
     inner class ForumViewHolder internal constructor(view: View) : BaseViewHolder(view) {
 
         private fun onItemClick(title: String, url: String) {
@@ -77,7 +78,7 @@ class ForumNavigationAdapter : RecyclerView.Adapter<BaseViewHolder>() {
                 setOnClickListener {
                     EventBus.getDefault().post(ForumNavigationFragment::class.java)
                 }
-                grid_text.text =  context.getText(R.string.more_forums)
+                grid_text.text = context.getText(R.string.more_forums)
                 grid_image.setImageResource(R.drawable.ic_more)
             }
         }

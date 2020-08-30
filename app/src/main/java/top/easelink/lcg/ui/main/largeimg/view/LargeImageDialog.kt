@@ -12,11 +12,13 @@ import top.easelink.lcg.R
 class LargeImageDialog(private val imageUrl: String) : TopDialog() {
 
     // try fix no empty constructor issue
-    constructor(): this("")
+    constructor() : this("")
 
-    override fun onCreateView(inflater: LayoutInflater,
-                              container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         dialog?.window?.setWindowAnimations(R.style.FadeInOutAnim)
         return inflater.inflate(R.layout.dialog_large_image, container, false)
     }

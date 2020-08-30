@@ -46,10 +46,12 @@ class NotificationsAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         return when (viewType) {
-            VIEW_TYPE_NORMAL -> { ArticleViewHolder(
-                LayoutInflater
-                    .from(parent.context)
-                    .inflate(R.layout.item_notification_view, parent, false))
+            VIEW_TYPE_NORMAL -> {
+                ArticleViewHolder(
+                    LayoutInflater
+                        .from(parent.context)
+                        .inflate(R.layout.item_notification_view, parent, false)
+                )
             }
             VIEW_TYPE_LOAD_MORE -> LoadMoreViewHolder(
                 LayoutInflater
@@ -59,7 +61,8 @@ class NotificationsAdapter(
             else -> EmptyViewHolder(
                 LayoutInflater
                     .from(parent.context)
-                    .inflate(R.layout.item_empty_view, parent, false))
+                    .inflate(R.layout.item_empty_view, parent, false)
+            )
         }
     }
 
@@ -83,12 +86,14 @@ class NotificationsAdapter(
         override fun onBind(position: Int) {
             val notification = mNotifications[position]
             view.apply {
-                line.visibility = if(position == 0) View.GONE else View.VISIBLE
+                line.visibility = if (position == 0) View.GONE else View.VISIBLE
                 notification_title.apply {
-                    setHtml(notification.content, HtmlCoilImageGetter(
-                        context,
-                        this
-                    ))
+                    setHtml(
+                        notification.content, HtmlCoilImageGetter(
+                            context,
+                            this
+                        )
+                    )
                     linksClickable = false
                 }
                 date_time.text = notification.dateTime
@@ -101,8 +106,8 @@ class NotificationsAdapter(
 
     }
 
-    inner class EmptyViewHolder(view: View) : BaseViewHolder(view){
-        override fun onBind(position: Int) { }
+    inner class EmptyViewHolder(view: View) : BaseViewHolder(view) {
+        override fun onBind(position: Int) {}
     }
 
     inner class LoadMoreViewHolder internal constructor(val view: View) :

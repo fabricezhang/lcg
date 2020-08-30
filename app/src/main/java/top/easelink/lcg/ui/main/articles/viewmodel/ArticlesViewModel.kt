@@ -16,7 +16,7 @@ class ArticlesViewModel : ViewModel(), ArticleFetcher {
 
     fun initUrl(url: String) {
         mUrl = url
-        fetchArticles(ArticleFetcher.FetchType.FETCH_INIT){}
+        fetchArticles(ArticleFetcher.FetchType.FETCH_INIT) {}
     }
 
     override fun fetchArticles(fetchType: ArticleFetcher.FetchType, callback: (Boolean) -> Unit) {
@@ -25,7 +25,7 @@ class ArticlesViewModel : ViewModel(), ArticleFetcher {
             ArticleFetcher.FetchType.FETCH_INIT -> 1
         }
         isLoading.value = true
-        GlobalScope.launch(IOPool){
+        GlobalScope.launch(IOPool) {
             ArticlesRemoteDataSource.getHomePageArticles(mUrl, pageNum).let {
                 if (it.isNotEmpty().also(callback)) {
                     val list = articles.value?.toMutableList()

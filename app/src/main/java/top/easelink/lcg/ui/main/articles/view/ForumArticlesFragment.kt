@@ -84,13 +84,14 @@ class ForumArticlesFragment : BaseFragment<FragmentForumArticlesBinding, ForumAr
 
 
     private fun setUp() {
-        viewModel.threadList.observe(viewLifecycleOwner, Observer {
-                threadList -> setUpTabLayout(threadList)
+        viewModel.threadList.observe(viewLifecycleOwner, Observer { threadList ->
+            setUpTabLayout(threadList)
         })
         arguments?.let {
             viewModel.initUrlAndFetch(
                 url = it.getString(ARG_PARAM)!!,
-                fetchType = ArticleFetcher.FetchType.FETCH_INIT)
+                fetchType = ArticleFetcher.FetchType.FETCH_INIT
+            )
             viewModel.setTitle(it.getString(ARG_TITLE).orEmpty())
         }
         setUpRecyclerView()
@@ -119,6 +120,7 @@ class ForumArticlesFragment : BaseFragment<FragmentForumArticlesBinding, ForumAr
                         fetchType = ArticleFetcher.FetchType.FETCH_INIT
                     )
                 }
+
                 override fun onTabUnselected(tab: TabLayout.Tab) {}
                 override fun onTabReselected(tab: TabLayout.Tab) {}
             })
@@ -144,12 +146,14 @@ class ForumArticlesFragment : BaseFragment<FragmentForumArticlesBinding, ForumAr
                     adapter = ArticlesAdapter(
                         viewModel
                     ).also {
-                        it.setFragmentManager(fragmentManager?:baseActivity.supportFragmentManager)
+                        it.setFragmentManager(
+                            fragmentManager ?: baseActivity.supportFragmentManager
+                        )
                     }
                 }
             )
             setOnRefreshListener {
-                viewModel.fetchArticles(ArticleFetcher.FetchType.FETCH_INIT){}
+                viewModel.fetchArticles(ArticleFetcher.FetchType.FETCH_INIT) {}
             }
         }
         // Add articles observer
@@ -171,8 +175,13 @@ class ForumArticlesFragment : BaseFragment<FragmentForumArticlesBinding, ForumAr
         private const val ARG_PARAM = "url"
         private const val ARG_TITLE = "title"
         private const val ARG_SHOW_TAB = "showTab"
+
         @JvmStatic
-        fun newInstance(title: String, param: String, showTab: Boolean = true): ForumArticlesFragment {
+        fun newInstance(
+            title: String,
+            param: String,
+            showTab: Boolean = true
+        ): ForumArticlesFragment {
             val args = Bundle()
             args.putString(ARG_PARAM, param)
             args.putString(ARG_TITLE, title)

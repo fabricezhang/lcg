@@ -13,7 +13,8 @@ import static top.easelink.lcg.mta.MTAConstantKt.EVENT_TAP_FOR_CODE;
 
 class ClickableSpecialSpanImpl extends ClickableSpecialSpan {
 
-    public ClickableSpecialSpanImpl() {}
+    public ClickableSpecialSpanImpl() {
+    }
 
     private ClickableSpecialSpanImpl(String html) {
         this.html = html;

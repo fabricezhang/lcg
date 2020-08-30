@@ -33,8 +33,14 @@ class LCGSearchActivity : TopActivity() {
     companion object {
         const val KEY_WORD = "key_word"
     }
+
     private lateinit var mSearchViewModel: LCGSearchViewModel
-    private val threadRegex by lazy { Regex("thread-[0-9]+-[0-9]+-[0-9]+.html$", RegexOption.IGNORE_CASE) }
+    private val threadRegex by lazy {
+        Regex(
+            "thread-[0-9]+-[0-9]+-[0-9]+.html$",
+            RegexOption.IGNORE_CASE
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -125,7 +131,10 @@ class LCGSearchActivity : TopActivity() {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageEvent(event: OpenLargeImageViewEvent) {
         if (event.url.isNotEmpty()) {
-            LargeImageDialog(event.url).show(supportFragmentManager, LargeImageDialog::class.java.simpleName)
+            LargeImageDialog(event.url).show(
+                supportFragmentManager,
+                LargeImageDialog::class.java.simpleName
+            )
         } else {
             showMessage(R.string.tap_for_large_image_failed)
         }

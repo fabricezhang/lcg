@@ -49,14 +49,14 @@ class ReplyPostViewModel : ViewModel() {
                     val noticeauthormsg = selectFirst("input[name=noticeauthormsg]").attr("value")
                     val noticetrimstr = selectFirst("input[name=noticetrimstr]").attr("value")
                     val noticeauthor = selectFirst("input[name=noticeauthor]").attr("value")
-                    val handlekey = selectFirst("input[name=handlekey]")?.attr("value")?:"reply"
-                    val usesig = selectFirst("input[name=usesig]")?.attr("value")?:"1"
+                    val handlekey = selectFirst("input[name=handlekey]")?.attr("value") ?: "reply"
+                    val usesig = selectFirst("input[name=usesig]")?.attr("value") ?: "1"
                     val reppid = selectFirst("input[name=reppid]").attr("value")
                     val reppost = selectFirst("input[name=reppost]").attr("value")
                     val formHash = selectFirst("input[name=formhash]").attr("value")
                     var response = Jsoup
                         .connect(CHECK_RULE_URL)
-                        .timeout(60* 1000)
+                        .timeout(60 * 1000)
                         .cookies(getCookies())
                         .method(Connection.Method.GET)
                         .execute()

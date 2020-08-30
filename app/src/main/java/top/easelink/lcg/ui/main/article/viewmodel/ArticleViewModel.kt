@@ -25,7 +25,7 @@ import top.easelink.lcg.utils.showMessage
 import java.io.IOException
 import java.util.*
 
-class ArticleViewModel: ViewModel(), ArticleAdapterListener {
+class ArticleViewModel : ViewModel(), ArticleAdapterListener {
     val posts = MutableLiveData<MutableList<Post>>()
     val isBlocked = MutableLiveData<String>()
     val isNotFound = MutableLiveData<Boolean>()
@@ -35,6 +35,7 @@ class ArticleViewModel: ViewModel(), ArticleAdapterListener {
 
     private var mUrl: String? = null
     private var nextPageUrl: String? = null
+
     // formhash is used for add favorite/reply/rate etc
     private var mFormHash: String? = null
     private var articleAbstract: ArticleAbstractResponse? = null
@@ -76,14 +77,14 @@ class ArticleViewModel: ViewModel(), ArticleAdapterListener {
                             }
                         }
                     }
-                    nextPageUrl = it.nextPageUrl.also {url ->
+                    nextPageUrl = it.nextPageUrl.also { url ->
                         callback.invoke(url.isEmpty())
                     }
                     mFormHash = it.fromHash
                     shouldDisplayPosts.postValue(true)
                 }
             } catch (e: Exception) {
-                when(e) {
+                when (e) {
                     is BlockException -> setArticleBlocked(e.alertMessage)
                     is NetworkException -> setArticleNotFound()
                     is IOException -> showMessage(R.string.io_error_mark_invalid)
@@ -133,7 +134,7 @@ class ArticleViewModel: ViewModel(), ArticleAdapterListener {
         GlobalScope.launch(IOPool) {
             try {
                 // if title is null, use abstract's title, this rarely happens
-                val title = articleTitle.value?:articleAbstract?.title
+                val title = articleTitle.value ?: articleAbstract?.title
                 val threadId = extractThreadId(mUrl)
                 val author = posts[0].author
                 val content = articleAbstract?.description ?: ""

@@ -34,7 +34,7 @@ fun checkLoginState(doc: Document) {
 @WorkerThread
 fun parseExtraUserInfoProfilePage(content: String): List<ExtraUserInfo> {
     return Jsoup.parse(content).let {
-        it.getElementsByTag("dt").zip(it.getElementsByTag("dd")).map {pairs ->
+        it.getElementsByTag("dt").zip(it.getElementsByTag("dd")).map { pairs ->
             ExtraUserInfo(pairs.first.text(), pairs.second.text())
         }
     }
@@ -61,14 +61,15 @@ fun parseUserInfo(doc: Document): UserInfo {
             else -> {
                 val avatar = selectFirst("div.avt > a > img")?.attr("src")
                 val groupInfo = getElementById("g_upmine")?.text()
-                val infoList = getElementById("psts").selectFirst("ul.pf_l").getElementsByTag("li").also {
-                    it.forEach { il ->
-                        il.selectFirst("em").appendText(" : ")
+                val infoList =
+                    getElementById("psts").selectFirst("ul.pf_l").getElementsByTag("li").also {
+                        it.forEach { il ->
+                            il.selectFirst("em").appendText(" : ")
+                        }
                     }
-                }
                 val signInState = select("img.qq_bind")
                     ?.firstOrNull {
-                        !(it.attr("src")?.contains("qq")?:true)
+                        !(it.attr("src")?.contains("qq") ?: true)
                     }
                     ?.attr("src")
                 return UserInfo(
@@ -79,7 +80,8 @@ fun parseUserInfo(doc: Document): UserInfo {
                     credit = infoList[1].text(),
                     answerRate = infoList[6].text(),
                     enthusiasticValue = infoList[7].text(),
-                    signInStateUrl = signInState)
+                    signInStateUrl = signInState
+                )
             }
         }
     }
@@ -126,7 +128,7 @@ fun parseNotificationInfo(doc: Document): NotificationInfo {
                         }
                     }
                 }
-            } catch (e :NumberFormatException) {
+            } catch (e: NumberFormatException) {
                 // don't care
             }
         }

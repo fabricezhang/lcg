@@ -14,7 +14,7 @@ import top.easelink.framework.topbase.TopFragment
 import top.easelink.lcg.R
 import top.easelink.lcg.ui.main.message.viewmodel.NotificationViewModel
 
-class NotificationFragment: TopFragment(){
+class NotificationFragment : TopFragment() {
 
     private lateinit var notificationViewModel: NotificationViewModel
 

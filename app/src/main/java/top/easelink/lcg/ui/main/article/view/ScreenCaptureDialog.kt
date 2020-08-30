@@ -20,6 +20,7 @@ class ScreenCaptureDialog : TopDialog() {
     companion object {
         val TAG: String = ScreenCaptureDialog::class.java.simpleName
         private const val IMAGE_PATH = "image_path"
+
         @JvmStatic
         fun newInstance(imagePath: String): ScreenCaptureDialog {
             return ScreenCaptureDialog().apply {
@@ -35,9 +36,11 @@ class ScreenCaptureDialog : TopDialog() {
         setStyle(STYLE_NORMAL, R.style.AppTheme_Dialog_FullScreen_BottomInOut)
     }
 
-    override fun onCreateView(inflater: LayoutInflater,
-                              container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.dialog_screen_capture, container, false)
     }
 

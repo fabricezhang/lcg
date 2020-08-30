@@ -65,6 +65,7 @@ class DownloadLinkDialog : TopDialog() {
     companion object {
         private val TAG: String = DownloadLinkDialog::class.java.simpleName
         private const val KEY_LINK_LIST = "KEY_LINK_LIST"
+
         @JvmStatic
         fun newInstance(downloadLinkList: ArrayList<String>): DownloadLinkDialog {
             val fragment = DownloadLinkDialog()

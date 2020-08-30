@@ -61,12 +61,10 @@ import static top.easelink.lcg.utils.WebsiteConstant.URL_KEY;
 public class WebViewActivity extends AppCompatActivity {
 
     private static final String HOOK_NAME = "hook";
-    private boolean mForceEnableJs = true;
-
-    private  boolean isOpenLoginEvent = false;
     protected String mUrl;
     protected String mHtml;
-
+    private boolean mForceEnableJs = true;
+    private boolean isOpenLoginEvent = false;
     private WebView mWebView;
     private LottieAnimationView animationView;
     private FrameLayout videoLayout;
@@ -75,12 +73,12 @@ public class WebViewActivity extends AppCompatActivity {
         Intent intent = new Intent(context, WebViewActivity.class);
         intent.putExtra(URL_KEY, url);
         intent.putExtra(FORCE_ENABLE_JS_KEY, true);
-        context = context == null? LCGApp.getContext() : context;
+        context = context == null ? LCGApp.getContext() : context;
         context.startActivity(intent);
     }
 
     public static void startWebViewWithHtml(String html, Context context) {
-        context = context == null? LCGApp.getContext() : context;
+        context = context == null ? LCGApp.getContext() : context;
         Intent intent = new Intent(context, WebViewActivity.class);
         intent.putExtra(EXTRA_TABLE_HTML, html);
         context.startActivity(intent);
@@ -91,7 +89,7 @@ public class WebViewActivity extends AppCompatActivity {
         intent.putExtra(URL_KEY, SERVER_BASE_URL + LOGIN_QUERY);
         intent.putExtra(FORCE_ENABLE_JS_KEY, true);
         intent.putExtra(OPEN_LOGIN_PAGE, true);
-        context = context == null? LCGApp.getContext() : context;
+        context = context == null ? LCGApp.getContext() : context;
         context.startActivity(intent);
     }
 
@@ -109,10 +107,10 @@ public class WebViewActivity extends AppCompatActivity {
         super.onDestroy();
 
         // safe remove webview refers : https://stackoverflow.com/questions/5267639/how-to-safely-turn-webview-zooming-on-and-off-as-needed
-        if (mWebView != null && mWebView.getParent() != null){
-            ((ViewGroup)mWebView.getParent()).removeView(mWebView);
+        if (mWebView != null && mWebView.getParent() != null) {
+            ((ViewGroup) mWebView.getParent()).removeView(mWebView);
             mWebView.destroy();
-            mWebView=null;
+            mWebView = null;
         }
     }
 
@@ -134,7 +132,7 @@ public class WebViewActivity extends AppCompatActivity {
         mWebView.setWebViewClient(getWebViewClient());
         mWebView.setWebChromeClient(new InnerChromeClient());
         mWebView.setDownloadListener((url, userAgent, contentDisposition, mimetype, contentLength)
-                -> openInSystemBrowser(url));
+            -> openInSystemBrowser(url));
         Intent intent = getIntent();
         // load url from intent data
         isOpenLoginEvent = getIntent().getBooleanExtra(OPEN_LOGIN_PAGE, false);
@@ -169,7 +167,7 @@ public class WebViewActivity extends AppCompatActivity {
 
             }
             mWebView.loadUrl(mUrl);
-        } else if(!TextUtils.isEmpty(mHtml)) {
+        } else if (!TextUtils.isEmpty(mHtml)) {
             updateWebViewSettingsLocal();
             mWebView.loadData(mHtml, "text/html", "UTF-8");
         }
@@ -222,11 +220,11 @@ public class WebViewActivity extends AppCompatActivity {
 
     private Intent getShareIntent() {
         return ShareCompat.IntentBuilder.from(this)
-                .setText(getString(R.string.share_template, mWebView.getTitle(), mWebView.getUrl()))
-                .setSubject(mWebView.getTitle())
-                .setChooserTitle(getString(R.string.share_title))
-                .setType("text/plain")
-                .createChooserIntent();
+            .setText(getString(R.string.share_template, mWebView.getTitle(), mWebView.getUrl()))
+            .setSubject(mWebView.getTitle())
+            .setChooserTitle(getString(R.string.share_title))
+            .setType("text/plain")
+            .createChooserIntent();
     }
 
     @Override
@@ -274,6 +272,52 @@ public class WebViewActivity extends AppCompatActivity {
     protected void setLoading(boolean isLoading) {
         animationView.setVisibility(isLoading ? View.VISIBLE : View.GONE);
         mWebView.setVisibility(isLoading ? View.INVISIBLE : View.VISIBLE);
+    }
+
+    @SuppressLint("SetJavaScriptEnabled")
+    private void updateWebViewSettingsLocal() {
+        WebSettings settings = mWebView.getSettings();
+        if (mWebView instanceof HorizontalScrollDisableWebView) {
+            ((HorizontalScrollDisableWebView) mWebView).setScrollEnable(true);
+        }
+        if (mForceEnableJs) {
+            settings.setJavaScriptEnabled(true);
+        } else {
+            settings.setJavaScriptEnabled(false);
+        }
+        // Zoom Setting
+        settings.setSupportZoom(true);
+        settings.setBuiltInZoomControls(true);
+        settings.setDisplayZoomControls(false);
+
+        settings.setBlockNetworkImage(false);
+        settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+        settings.setDefaultTextEncodingName("UTF-8");
+        settings.setBuiltInZoomControls(true);
+        settings.setAppCacheEnabled(true);
+        settings.setSupportZoom(true);
+        settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+    }
+
+    @SuppressLint("SetJavaScriptEnabled")
+    private void updateWebViewSettingsRemote() {
+        WebSettings settings = mWebView.getSettings();
+        if (mForceEnableJs) {
+            settings.setJavaScriptEnabled(true);
+        } else {
+            settings.setJavaScriptEnabled(false);
+        }
+        settings.setDomStorageEnabled(true);
+        settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        settings.setUseWideViewPort(true);
+        settings.setLoadWithOverviewMode(true);
+        settings.setDefaultTextEncodingName("UTF-8");
+        settings.setBuiltInZoomControls(false);
+        settings.setAppCacheEnabled(true);
+        settings.setSupportZoom(false);
+        settings.setCacheMode(WebSettings.LOAD_DEFAULT);
+        settings.setBlockNetworkImage(true);
     }
 
     @SuppressLint("SourceLockedOrientationActivity")
@@ -348,7 +392,7 @@ public class WebViewActivity extends AppCompatActivity {
             String url = request.getUrl().toString();
             if (TextUtils.isEmpty(url)) {
                 return false;
-            } else if (url.startsWith("https://www.52pojie.cn/connect.php?mod=login&op=init&referer=https%3A%2F%2Fwww.52pojie.cn%2F&statfrom=login")){
+            } else if (url.startsWith("https://www.52pojie.cn/connect.php?mod=login&op=init&referer=https%3A%2F%2Fwww.52pojie.cn%2F&statfrom=login")) {
                 ToastUtilsKt.showMessage(R.string.qq_not_support);
                 return true;
             } else if (url.startsWith("wtloginmqq://ptlogin/qlogin")) {
@@ -358,51 +402,5 @@ public class WebViewActivity extends AppCompatActivity {
             }
             return false;
         }
-    }
-
-    @SuppressLint("SetJavaScriptEnabled")
-    private void updateWebViewSettingsLocal() {
-        WebSettings settings = mWebView.getSettings();
-        if (mWebView instanceof HorizontalScrollDisableWebView) {
-            ((HorizontalScrollDisableWebView) mWebView).setScrollEnable(true);
-        }
-        if (mForceEnableJs) {
-            settings.setJavaScriptEnabled(true);
-        } else {
-            settings.setJavaScriptEnabled(false);
-        }
-        // Zoom Setting
-        settings.setSupportZoom(true);
-        settings.setBuiltInZoomControls(true);
-        settings.setDisplayZoomControls(false);
-
-        settings.setBlockNetworkImage(false);
-        settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
-        settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
-        settings.setDefaultTextEncodingName("UTF-8");
-        settings.setBuiltInZoomControls(true);
-        settings.setAppCacheEnabled(true);
-        settings.setSupportZoom(true);
-        settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
-    }
-
-    @SuppressLint("SetJavaScriptEnabled")
-    private void updateWebViewSettingsRemote() {
-        WebSettings settings = mWebView.getSettings();
-        if (mForceEnableJs) {
-            settings.setJavaScriptEnabled(true);
-        } else {
-            settings.setJavaScriptEnabled(false);
-        }
-        settings.setDomStorageEnabled(true);
-        settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
-        settings.setUseWideViewPort(true);
-        settings.setLoadWithOverviewMode(true);
-        settings.setDefaultTextEncodingName("UTF-8");
-        settings.setBuiltInZoomControls(false);
-        settings.setAppCacheEnabled(true);
-        settings.setSupportZoom(false);
-        settings.setCacheMode(WebSettings.LOAD_DEFAULT);
-        settings.setBlockNetworkImage(true);
     }
 }

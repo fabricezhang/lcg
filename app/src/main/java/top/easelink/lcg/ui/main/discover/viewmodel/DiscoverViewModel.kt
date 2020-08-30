@@ -25,7 +25,7 @@ class DiscoverViewModel : ViewModel() {
     @MainThread
     fun initOptions(context: Context) {
         val list = generateAllForums(context)
-            .fold(mutableListOf<ForumNavigationModel>()){ acc, model ->
+            .fold(mutableListOf<ForumNavigationModel>()) { acc, model ->
                 acc.also {
                     it.add(model)
                 }
@@ -40,7 +40,7 @@ class DiscoverViewModel : ViewModel() {
                     }
                 }
             }.getOrElse {
-                when(it) {
+                when (it) {
                     is SocketTimeoutException -> showMessage(R.string.network_error)
                     else -> showMessage(R.string.error)
                 }

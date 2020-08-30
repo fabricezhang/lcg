@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import top.easelink.framework.threadpool.IOPool
 import top.easelink.framework.threadpool.CalcPool
+import top.easelink.framework.threadpool.IOPool
 import top.easelink.lcg.R
 import top.easelink.lcg.ui.main.articles.source.FavoriteDataSource.getAllRemoteFavorites
 import top.easelink.lcg.ui.main.source.local.ArticlesLocalDataSource
@@ -32,7 +32,7 @@ class FavoriteArticlesViewModel : ViewModel(), ArticleFetcher {
         GlobalScope.launch(CalcPool) {
             try {
                 ArticlesLocalDataSource.getAllFavoriteArticles().let {
-                    if(it.isNotEmpty().also(callback))  {
+                    if (it.isNotEmpty().also(callback)) {
                         articles.postValue(it)
                     }
                 }
@@ -48,7 +48,7 @@ class FavoriteArticlesViewModel : ViewModel(), ArticleFetcher {
         isLoading.value = true
         GlobalScope.launch(CalcPool) {
             try {
-                if(ArticlesLocalDataSource.delAllArticlesFromFavorite()){
+                if (ArticlesLocalDataSource.delAllArticlesFromFavorite()) {
                     articles.postValue(emptyList())
                     showMessage(R.string.remove_all_favorites_successfully)
                 } else {
@@ -68,7 +68,7 @@ class FavoriteArticlesViewModel : ViewModel(), ArticleFetcher {
         GlobalScope.launch(IOPool) {
             try {
                 val articleEntities = getAllRemoteFavorites()
-                if(ArticlesLocalDataSource.addAllArticleToFavorite(articleEntities)) {
+                if (ArticlesLocalDataSource.addAllArticleToFavorite(articleEntities)) {
                     articles.postValue(ArticlesLocalDataSource.getAllFavoriteArticles())
                 }
             } catch (e: Exception) {

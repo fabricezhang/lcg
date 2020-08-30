@@ -19,7 +19,8 @@ import top.easelink.lcg.ui.webview.view.WebViewActivity
 import top.easelink.lcg.utils.WebsiteConstant.GET_FAVORITE_QUERY
 import top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL
 
-class FavoriteArticlesFragment : BaseFragment<FragmentFavoriteArticlesBinding, FavoriteArticlesViewModel>() {
+class FavoriteArticlesFragment :
+    BaseFragment<FragmentFavoriteArticlesBinding, FavoriteArticlesViewModel>() {
 
     override fun isControllable(): Boolean {
         return true
@@ -44,7 +45,7 @@ class FavoriteArticlesFragment : BaseFragment<FragmentFavoriteArticlesBinding, F
         super.onViewCreated(view, savedInstanceState)
         setUpRecyclerView()
         setupToolBar()
-        viewModel.fetchArticles(ArticleFetcher.FetchType.FETCH_INIT){}
+        viewModel.fetchArticles(ArticleFetcher.FetchType.FETCH_INIT) {}
     }
 
     private fun setUpRecyclerView() {
@@ -73,7 +74,10 @@ class FavoriteArticlesFragment : BaseFragment<FragmentFavoriteArticlesBinding, F
                 when (it.itemId) {
                     R.id.action_remove_all -> viewModel.removeAllFavorites()
                     R.id.action_sync_my_favorites -> viewModel.syncFavorites()
-                    R.id.action_manage_favorites -> WebViewActivity.startWebViewWith(SERVER_BASE_URL + GET_FAVORITE_QUERY, context)
+                    R.id.action_manage_favorites -> WebViewActivity.startWebViewWith(
+                        SERVER_BASE_URL + GET_FAVORITE_QUERY,
+                        context
+                    )
                     else -> {
                         // to add mores
                     }

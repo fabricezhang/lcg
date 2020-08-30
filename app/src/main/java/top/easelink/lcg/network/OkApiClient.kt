@@ -16,10 +16,11 @@ import top.easelink.lcg.ui.search.model.RequestTooOftenException
 import java.io.File
 import java.util.concurrent.TimeUnit
 
-object OkApiClient: ApiRequest {
+object OkApiClient : ApiRequest {
 
     private const val TIME_OUT = 15L
     private var mClient: OkHttpClient
+
     init {
         val cacheDirectory = File(LCGApp.context.cacheDir, "okhttp_cache")
         val cookieJar: ClearableCookieJar =
@@ -46,7 +47,7 @@ object OkApiClient: ApiRequest {
     override fun sendGetRequestWithUrl(url: String): Document? {
         val request = Request.Builder().get().url(url).build()
         val response = mClient.newCall(request).execute()
-        return when(response.code) {
+        return when (response.code) {
             in 200..299 -> Jsoup.parse(response.body?.string())
             302 -> throw RequestTooOftenException()
             else -> null

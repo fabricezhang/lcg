@@ -34,7 +34,7 @@ class FollowingFeedViewModel : ViewModel() {
     fun fetchMore(callBack: (Boolean) -> Unit) {
         isLoadingForLoadMore.postValue(true)
         val url = String.format(FOLLOW_FEED_QUERY, pageNum, 1)
-        GlobalScope.launch(IOPool){
+        GlobalScope.launch(IOPool) {
             try {
                 parseFeeds(JsoupClient.sendAjaxRequest(url))
                     .also(callBack)

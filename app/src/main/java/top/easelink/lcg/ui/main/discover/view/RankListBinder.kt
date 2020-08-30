@@ -33,7 +33,7 @@ class RankListBinder : BaseNavigationBinder<RankListModel, RankListVH>() {
     }
 }
 
-class RankListVH(inflater: LayoutInflater, parentView: ViewGroup): BaseNavigationViewHolder(
+class RankListVH(inflater: LayoutInflater, parentView: ViewGroup) : BaseNavigationViewHolder(
     inflater.inflate(R.layout.fragment_rank_list, parentView, false)
 ) {
     fun onBind(item: RankListModel, payloads: List<Any>?) {
@@ -49,8 +49,8 @@ class RankListVH(inflater: LayoutInflater, parentView: ViewGroup): BaseNavigatio
                 }
                 adapter = RankListAdapter()
                     .also {
-                    it.addItems(rankModel.listModel)
-                }
+                        it.addItems(rankModel.listModel)
+                    }
             }
         }
     }

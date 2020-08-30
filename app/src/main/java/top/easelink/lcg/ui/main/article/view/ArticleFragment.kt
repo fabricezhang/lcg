@@ -28,7 +28,8 @@ import top.easelink.lcg.ui.webview.view.WebViewActivity
 import top.easelink.lcg.utils.WebsiteConstant
 import top.easelink.lcg.utils.showMessage
 
-class ArticleFragment(private var articleUrl: String) : BaseFragment<FragmentArticleBinding, ArticleViewModel>() {
+class ArticleFragment(private var articleUrl: String) :
+    BaseFragment<FragmentArticleBinding, ArticleViewModel>() {
 
     // try fix no empty constructor issue
     constructor() : this(AppConfig.getAppReleaseUrl())
@@ -67,7 +68,7 @@ class ArticleFragment(private var articleUrl: String) : BaseFragment<FragmentArt
         setUp()
         setupToolBar()
         viewModel.setUrl(articleUrl)
-        viewModel.fetchArticlePost(FETCH_POST_INIT){}
+        viewModel.fetchArticlePost(FETCH_POST_INIT) {}
     }
 
     override fun onDetach() {
@@ -88,7 +89,7 @@ class ArticleFragment(private var articleUrl: String) : BaseFragment<FragmentArt
                 it.setFragmentManager(childFragmentManager)
             }
 
-            viewModel.posts.observe(viewLifecycleOwner, androidx.lifecycle.Observer{
+            viewModel.posts.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
                 val url = it[0].replyUrl
                 if (it.size > 0 && url != null) {
                     comment.apply {
@@ -126,7 +127,8 @@ class ArticleFragment(private var articleUrl: String) : BaseFragment<FragmentArt
                             } ?: showMessage(R.string.download_link_not_found)
                     }
                     R.id.action_add_to_my_favorite -> viewModel.addToFavorite()
-                    else -> {  }
+                    else -> {
+                    }
                 }
                 return@setOnMenuItemClickListener true
             }
@@ -135,7 +137,7 @@ class ArticleFragment(private var articleUrl: String) : BaseFragment<FragmentArt
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        when(requestCode) {
+        when (requestCode) {
             REPLY_POST_RESULT -> {
                 if (resultCode == 1) {
                     data?.getBundleExtra("post")

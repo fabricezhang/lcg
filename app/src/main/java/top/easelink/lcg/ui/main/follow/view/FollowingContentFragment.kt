@@ -15,7 +15,7 @@ import top.easelink.framework.topbase.TopFragment
 import top.easelink.lcg.R
 import top.easelink.lcg.ui.main.follow.viewmodel.FollowingFeedViewModel
 
-class FollowingContentFragment: TopFragment() {
+class FollowingContentFragment : TopFragment() {
 
     private lateinit var mFollowVM: FollowingFeedViewModel
 
@@ -38,7 +38,7 @@ class FollowingContentFragment: TopFragment() {
         mFollowVM.fetchData()
     }
 
-    private fun setUpRV(){
+    private fun setUpRV() {
         follow_list.apply {
             layoutManager = LinearLayoutManager(context).also {
                 it.orientation = RecyclerView.VERTICAL

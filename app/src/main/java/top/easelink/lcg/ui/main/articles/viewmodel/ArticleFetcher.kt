@@ -4,7 +4,7 @@ interface ArticleFetcher {
 
     fun fetchArticles(fetchType: FetchType, callback: (Boolean) -> Unit)
 
-    enum class FetchType{
+    enum class FetchType {
         FETCH_INIT,
         FETCH_MORE
     }

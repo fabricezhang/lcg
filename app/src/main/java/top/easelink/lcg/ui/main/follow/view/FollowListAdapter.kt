@@ -49,10 +49,12 @@ class FollowListAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         return when (viewType) {
-            VIEW_TYPE_NORMAL -> { ArticleViewHolder(
-                LayoutInflater
-                    .from(parent.context)
-                    .inflate(R.layout.item_follow_view, parent, false))
+            VIEW_TYPE_NORMAL -> {
+                ArticleViewHolder(
+                    LayoutInflater
+                        .from(parent.context)
+                        .inflate(R.layout.item_follow_view, parent, false)
+                )
             }
             VIEW_TYPE_LOAD_MORE -> LoadMoreViewHolder(
                 LayoutInflater
@@ -62,7 +64,8 @@ class FollowListAdapter(
             else -> EmptyViewHolder(
                 LayoutInflater
                     .from(parent.context)
-                    .inflate(R.layout.item_empty_view, parent, false))
+                    .inflate(R.layout.item_empty_view, parent, false)
+            )
         }
     }
 
@@ -101,8 +104,10 @@ class FollowListAdapter(
                 }
                 last_action.text = follow.lastAction
                 username.text = follow.username
-                follower_num.text = context.getString(R.string.follower_num_template, follow.followerNum)
-                following_num.text = context.getString(R.string.following_num_template, follow.followingNum)
+                follower_num.text =
+                    context.getString(R.string.follower_num_template, follow.followerNum)
+                following_num.text =
+                    context.getString(R.string.following_num_template, follow.followingNum)
                 follow_list_container.setOnClickListener {
                     //open article
                 }
@@ -111,8 +116,8 @@ class FollowListAdapter(
 
     }
 
-    inner class EmptyViewHolder(view: View) : BaseViewHolder(view){
-        override fun onBind(position: Int) { }
+    inner class EmptyViewHolder(view: View) : BaseViewHolder(view) {
+        override fun onBind(position: Int) {}
     }
 
     inner class LoadMoreViewHolder internal constructor(val view: View) : BaseViewHolder(view) {
@@ -133,7 +138,7 @@ class FollowListAdapter(
             nextPageUrl?.let {
                 followListViewModel.isLoadingForLoadMore.observe(lifecycleOwner, observer)
                 followListViewModel.fetchData(it, true)
-            }?: run {
+            } ?: run {
                 view.loading.apply {
                     cancelAnimation()
                     visibility = View.GONE

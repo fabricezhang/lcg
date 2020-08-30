@@ -10,7 +10,7 @@ import top.easelink.framework.topbase.TopFragment
 import top.easelink.lcg.R
 import top.easelink.lcg.ui.profile.viewmodel.ProfileViewModel
 
-class ProfileFragment: TopFragment() {
+class ProfileFragment : TopFragment() {
 
     private lateinit var mViewModel: ProfileViewModel
 
@@ -29,6 +29,7 @@ class ProfileFragment: TopFragment() {
 
     companion object {
         private const val PROFILE_URL = "profile_url"
+
         @JvmStatic
         fun newInstance(profileUrl: String): ProfileFragment {
             return ProfileFragment().also {

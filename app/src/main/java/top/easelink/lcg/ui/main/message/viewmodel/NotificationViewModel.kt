@@ -13,9 +13,9 @@ import top.easelink.lcg.ui.main.model.NotificationModel
 import top.easelink.lcg.ui.main.model.SystemNotification
 import top.easelink.lcg.utils.WebsiteConstant.NOTIFICATION_HOME_QUERY
 
-class NotificationViewModel: ViewModel(){
+class NotificationViewModel : ViewModel() {
 
-    val notifications= MutableLiveData<NotificationModel>()
+    val notifications = MutableLiveData<NotificationModel>()
     val isLoading = MutableLiveData<Boolean>()
     var nextPageUrl = ""
 

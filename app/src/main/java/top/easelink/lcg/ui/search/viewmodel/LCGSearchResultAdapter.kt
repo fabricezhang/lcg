@@ -42,16 +42,16 @@ class LCGSearchResultAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         return when (viewType) {
-            VIEW_TYPE_NORMAL -> SearchResultViewHolder(LayoutInflater.from(parent.context)
-                .inflate(
-                    R.layout.item_lcg_search_result_view
-                    , parent, false
-                ))
+            VIEW_TYPE_NORMAL -> SearchResultViewHolder(
+                LayoutInflater.from(parent.context)
+                    .inflate(
+                        R.layout.item_lcg_search_result_view, parent, false
+                    )
+            )
             VIEW_TYPE_LOAD_MORE -> LoadMoreViewHolder(
                 LayoutInflater.from(parent.context)
                     .inflate(
-                        R.layout.item_load_more_view
-                        , parent, false
+                        R.layout.item_load_more_view, parent, false
                     )
             )
             //VIEW_TYPE_EMPTY
@@ -74,7 +74,7 @@ class LCGSearchResultAdapter(
     interface ContentFetcher {
         fun fetch(type: Type, callback: ((Boolean) -> Unit)?)
 
-        enum class Type{
+        enum class Type {
             INIT,
             NEXT_PAGE
         }

@@ -20,7 +20,7 @@ class FollowListViewModel : ViewModel() {
     fun fetchData(url: String, isLoadMore: Boolean = false) {
         if (isLoadMore) {
             isLoadingForLoadMore.value = true
-        } else  {
+        } else {
             isLoading.value = true
         }
         GlobalScope.launch(IOPool) {
@@ -31,7 +31,7 @@ class FollowListViewModel : ViewModel() {
             }
             if (isLoadMore) {
                 isLoadingForLoadMore.postValue(false)
-            } else  {
+            } else {
                 isLoading.postValue(false)
             }
         }
@@ -42,7 +42,7 @@ class FollowListViewModel : ViewModel() {
             val followInfos = select("li.cl").map {
                 val avatarUrl = it.selectFirst("img")?.attr("src").orEmpty()
                 val username = it.getElementById("edit_avt")?.attr("title").orEmpty()
-                val lastAction =  it.selectFirst("p").text()
+                val lastAction = it.selectFirst("p").text()
                 val url = it.selectFirst("a[id^=a_followmod]")?.text().orEmpty()
                 var following: Int = 0
                 var follower: Int = 0

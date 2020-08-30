@@ -63,22 +63,26 @@ class CommentArticleDialog : TopDialog() {
             replyPostViewModel.sendReply(
                 arguments?.getString(REPLY_POST_URL),
                 content.toString()
-            ) {success -> view.postDelayed({
-                setResult(content = content.toString(), success = success)
-                dismissDialog()
-            }, 1000L)}
+            ) { success ->
+                view.postDelayed({
+                    setResult(content = content.toString(), success = success)
+                    dismissDialog()
+                }, 1000L)
+            }
         }
     }
 
     private fun setResult(content: String, success: Boolean) {
         if (targetFragment != null) {
             val bundle = Bundle().apply {
-                putParcelable("post", Post(
-                    UserData.username,
-                    UserData.avatar,
-                    CommonUtils.getCurrentDate(),
-                    content, null, null
-                ))
+                putParcelable(
+                    "post", Post(
+                        UserData.username,
+                        UserData.avatar,
+                        CommonUtils.getCurrentDate(),
+                        content, null, null
+                    )
+                )
             }
             targetFragment?.onActivityResult(
                 ArticleFragment.REPLY_POST_RESULT,
@@ -104,6 +108,7 @@ class CommentArticleDialog : TopDialog() {
     companion object {
         private val TAG = CommentArticleDialog::class.java.simpleName
         private const val REPLY_POST_URL = "reply_article_url"
+
         @JvmStatic
         fun newInstance(replyPostUrl: String): CommentArticleDialog {
             return CommentArticleDialog().apply {
