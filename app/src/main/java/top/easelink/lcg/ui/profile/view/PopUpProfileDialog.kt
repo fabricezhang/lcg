@@ -10,8 +10,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import coil.load
+import coil.transform.RoundedCornersTransformation
 import kotlinx.android.synthetic.main.dialog_profile.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -73,11 +73,9 @@ class PopUpProfileDialog(
             WebViewActivity.startWebViewWith(SERVER_BASE_URL + popUpInfo.profileUrl, it.context)
         }
 
-        Glide.with(mContext)
-            .load(popUpInfo.imageUrl)
-            .transform(RoundedCorners(4.dpToPx(mContext).toInt()))
-            .into(profile_avatar)
-
+        profile_avatar.load(popUpInfo.imageUrl) {
+            transformations(RoundedCornersTransformation(4.dpToPx(mContext)))
+        }
     }
 
     override fun onStart() {

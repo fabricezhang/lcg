@@ -12,10 +12,8 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.bumptech.glide.request.transition.DrawableCrossFadeFactory
+import coil.load
+import coil.transform.RoundedCornersTransformation
 import kotlinx.android.synthetic.main.item_post_view.view.*
 import kotlinx.android.synthetic.main.item_reply_view.view.*
 import kotlinx.coroutines.GlobalScope
@@ -24,10 +22,11 @@ import org.greenrobot.eventbus.EventBus
 import timber.log.Timber
 import top.easelink.framework.base.BaseViewHolder
 import top.easelink.framework.customview.htmltextview.DrawPreCodeSpan
-import top.easelink.framework.customview.htmltextview.HtmlGlideImageGetter
+import top.easelink.framework.customview.htmltextview.HtmlCoilImageGetter
 import top.easelink.framework.threadpool.Main
 import top.easelink.framework.utils.convertViewToBitmap
 import top.easelink.framework.utils.dp2px
+import top.easelink.framework.utils.dpToPx
 import top.easelink.lcg.R
 import top.easelink.lcg.config.AppConfig
 import top.easelink.lcg.mta.EVENT_CAPTURE_ARTICLE
@@ -132,7 +131,7 @@ class ArticleAdapter(
 
         private var post: Post? = null
         private val htmlHttpImageGetter: Html.ImageGetter by lazy {
-            HtmlGlideImageGetter(view.context, view.content_text_view)
+            HtmlCoilImageGetter(view.context, view.content_text_view)
         }
         override fun onBind(position: Int) {
             post = mPostList[position]
@@ -160,11 +159,10 @@ class ArticleAdapter(
                                     it.putExtra(KEY_PROFILE_URL, p.profileUrl)
                                 })
                         }
-                        Glide.with(context)
-                            .load(p.avatar)
-                            .transform(RoundedCorners(dp2px(context, 4f).toInt()))
-                            .error(R.drawable.ic_noavatar_middle_gray)
-                            .into(post_avatar)
+                        post_avatar.load(p.avatar) {
+                            transformations(RoundedCornersTransformation(4.dpToPx(context)))
+                            error(R.drawable.ic_noavatar_middle_gray)
+                        }
                         content_text_view.run {
                             if (AppConfig.articleHandlePreTag) {
                                 setClickableSpecialSpan(ClickableSpecialSpanImpl())
@@ -252,7 +250,7 @@ class ArticleAdapter(
 
         private var post: Post? = null
         private val htmlHttpImageGetter: Html.ImageGetter by lazy {
-            HtmlGlideImageGetter(view.context, view.reply_content_text_view)
+            HtmlCoilImageGetter(view.context, view.reply_content_text_view)
         }
         @SuppressLint("SetTextI18n")
         override fun onBind(position: Int) {
@@ -288,17 +286,12 @@ class ArticleAdapter(
                                     it.putExtra(KEY_PROFILE_URL, p.profileUrl)
                                 })
                         }
-                        val drawableCrossFadeFactory = DrawableCrossFadeFactory
-                            .Builder(150)
-                            .setCrossFadeEnabled(true)
-                            .build()
-                        Glide.with(context)
-                            .load(p.avatar)
-                            .transition(DrawableTransitionOptions.with(drawableCrossFadeFactory))
-                            .transform(RoundedCorners(dp2px(context, 6f).toInt()))
-                            .placeholder(R.drawable.ic_avatar_placeholder)
-                            .error(getAvatar())
-                            .into(reply_avatar)
+                        reply_avatar.load(p.avatar) {
+                            crossfade(true)
+                            transformations(RoundedCornersTransformation(6.dpToPx(context)))
+                            placeholder(R.drawable.ic_avatar_placeholder)
+                            error(getAvatar())
+                        }
                         reply_content_text_view.run {
                             if (AppConfig.articleHandlePreTag) {
                                 setClickableSpecialSpan(ClickableSpecialSpanImpl())

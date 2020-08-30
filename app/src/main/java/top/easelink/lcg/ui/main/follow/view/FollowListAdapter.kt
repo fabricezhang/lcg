@@ -6,9 +6,8 @@ import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import coil.load
+import coil.transform.RoundedCornersTransformation
 import kotlinx.android.synthetic.main.item_follow_view.view.*
 import kotlinx.android.synthetic.main.item_load_more_view.view.*
 import top.easelink.framework.base.BaseViewHolder
@@ -95,13 +94,10 @@ class FollowListAdapter(
             val follow = mFollowing[position]
             view.apply {
                 follow.avatar.let {
-                    Glide
-                        .with(this)
-                        .load(it)
-                        .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .transform(RoundedCorners(2.dpToPx(context).toInt()))
-                        .error(R.drawable.ic_noavatar_middle_gray)
-                        .into(avatar)
+                    avatar.load(it) {
+                        transformations(RoundedCornersTransformation(2.dpToPx(context)))
+                            .error(R.drawable.ic_noavatar_middle_gray)
+                    }
                 }
                 last_action.text = follow.lastAction
                 username.text = follow.username

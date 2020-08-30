@@ -44,7 +44,7 @@ class FollowingContentFragment: TopFragment() {
                 it.orientation = RecyclerView.VERTICAL
             }
             itemAnimator = DefaultItemAnimator()
-            adapter = FollowingFeedAdapter(mFollowVM, viewLifecycleOwner)
+            adapter = FollowingFeedAdapter(mFollowVM)
             mFollowVM.apply {
                 isLoading.observe(viewLifecycleOwner, Observer {
                     if (it) {

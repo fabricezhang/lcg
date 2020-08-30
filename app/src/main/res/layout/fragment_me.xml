@@ -82,7 +82,6 @@
                 android:scaleType="fitCenter"
                 android:padding="@dimen/dp_4"
                 android:contentDescription="@null"
-                app:imageUrlOnly="@{viewModel.mUserInfo.signInStateUrl}"
                 app:layout_constraintBottom_toBottomOf="@id/me_user_name"
                 app:layout_constraintStart_toEndOf="@id/me_user_name"
                 app:layout_constraintTop_toTopOf="@id/me_user_name" />

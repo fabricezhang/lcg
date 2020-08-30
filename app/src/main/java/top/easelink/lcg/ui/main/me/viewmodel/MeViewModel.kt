@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import top.easelink.framework.base.BaseFragment
 import top.easelink.framework.threadpool.IOPool
 import top.easelink.lcg.R
 import top.easelink.lcg.network.JsoupClient
@@ -16,20 +15,12 @@ import top.easelink.lcg.ui.main.source.parseUserInfo
 import top.easelink.lcg.utils.WebsiteConstant.PROFILE_QUERY
 import top.easelink.lcg.utils.clearCookies
 import top.easelink.lcg.utils.showMessage
-import java.lang.ref.WeakReference
 import java.net.SocketTimeoutException
 
 class MeViewModel: ViewModel() {
 
-    private var mFragment: WeakReference<BaseFragment<*,*>>? = null
-    private var isResolvingAntiScrapingException: Boolean = false
-
     val mLoginState = MutableLiveData<Boolean>()
     val mUserInfo = MutableLiveData<UserInfo>()
-
-    fun setFragment(fragment: BaseFragment<*,*>) {
-        mFragment = WeakReference(fragment)
-    }
 
     @Suppress("BlockingMethodInNonBlockingContext")
     fun fetchUserInfoDirect() {

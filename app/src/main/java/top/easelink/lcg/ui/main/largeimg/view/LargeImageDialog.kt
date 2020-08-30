@@ -2,8 +2,9 @@ package top.easelink.lcg.ui.main.largeimg.view
 
 import android.os.Bundle
 import android.view.*
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.Target.SIZE_ORIGINAL
+import coil.load
+import coil.size.OriginalSize
+import coil.size.SizeResolver
 import kotlinx.android.synthetic.main.dialog_large_image.*
 import top.easelink.framework.topbase.TopDialog
 import top.easelink.lcg.R
@@ -23,11 +24,9 @@ class LargeImageDialog(private val imageUrl: String) : TopDialog() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Glide
-            .with(view)
-            .load(imageUrl)
-            .override(SIZE_ORIGINAL)
-            .into(photo)
+        photo.load(imageUrl) {
+            size(SizeResolver(OriginalSize))
+        }
         exit.setOnClickListener {
             dismissDialog()
         }

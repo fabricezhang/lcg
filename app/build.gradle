@@ -50,6 +50,9 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
         incremental true
     }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
+    }
     // Generate Version Info
     android.applicationVariants.all { variant ->
         variant.outputs.all {

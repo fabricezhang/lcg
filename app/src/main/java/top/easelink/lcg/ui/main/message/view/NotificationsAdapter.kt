@@ -4,12 +4,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import coil.load
+import coil.transform.RoundedCornersTransformation
 import kotlinx.android.synthetic.main.item_load_more_view.view.*
 import kotlinx.android.synthetic.main.item_notification_view.view.*
 import top.easelink.framework.base.BaseViewHolder
-import top.easelink.framework.customview.htmltextview.HtmlGlideImageGetter
+import top.easelink.framework.customview.htmltextview.HtmlCoilImageGetter
 import top.easelink.framework.utils.dpToPx
 import top.easelink.lcg.R
 import top.easelink.lcg.ui.main.message.viewmodel.NotificationViewModel
@@ -85,18 +85,17 @@ class NotificationsAdapter(
             view.apply {
                 line.visibility = if(position == 0) View.GONE else View.VISIBLE
                 notification_title.apply {
-                    setHtml(notification.content, HtmlGlideImageGetter(
+                    setHtml(notification.content, HtmlCoilImageGetter(
                         context,
                         this
                     ))
                     linksClickable = false
                 }
                 date_time.text = notification.dateTime
-                Glide.with(notification_avatar)
-                    .load(notification.avatar)
-                    .transform(RoundedCorners(2.dpToPx(view.context).toInt()))
-                    .placeholder(R.drawable.ic_noavatar_middle_gray)
-                    .into(notification_avatar)
+                notification_avatar.load(notification.avatar) {
+                    transformations(RoundedCornersTransformation(2.dpToPx(view.context)))
+                    placeholder(R.drawable.ic_noavatar_middle_gray)
+                }
             }
         }
 
