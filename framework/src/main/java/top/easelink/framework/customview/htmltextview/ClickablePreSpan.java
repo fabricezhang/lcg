@@ -6,10 +6,10 @@ import org.jetbrains.annotations.NotNull;
 
 import timber.log.Timber;
 
-class ClickablePreSpan extends ClickableSpecialSpan {
+class ClickablePreSpan extends ClickablePreCodeSpan {
 
     @Override
-    public ClickableSpecialSpan newInstance() {
+    public ClickablePreCodeSpan newInstance() {
         return new ClickablePreSpan();
     }
 

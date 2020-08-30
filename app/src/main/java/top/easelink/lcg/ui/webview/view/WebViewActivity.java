@@ -169,7 +169,7 @@ public class WebViewActivity extends AppCompatActivity {
             mWebView.loadUrl(mUrl);
         } else if (!TextUtils.isEmpty(mHtml)) {
             updateWebViewSettingsLocal();
-            mWebView.loadData(mHtml, "text/html", "UTF-8");
+            mWebView.loadDataWithBaseURL("", mHtml, "text/html","UTF-8", "");
         }
     }
 

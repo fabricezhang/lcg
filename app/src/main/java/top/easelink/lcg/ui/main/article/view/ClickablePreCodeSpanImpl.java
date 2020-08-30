@@ -6,23 +6,23 @@ import androidx.annotation.NonNull;
 
 import com.tencent.stat.StatService;
 
-import top.easelink.framework.customview.htmltextview.ClickableSpecialSpan;
+import top.easelink.framework.customview.htmltextview.ClickablePreCodeSpan;
 import top.easelink.lcg.ui.webview.view.WebViewActivity;
 
 import static top.easelink.lcg.mta.MTAConstantKt.EVENT_TAP_FOR_CODE;
 
-class ClickableSpecialSpanImpl extends ClickableSpecialSpan {
+class ClickablePreCodeSpanImpl extends ClickablePreCodeSpan {
 
-    public ClickableSpecialSpanImpl() {
+    public ClickablePreCodeSpanImpl() {
     }
 
-    private ClickableSpecialSpanImpl(String html) {
+    private ClickablePreCodeSpanImpl(String html) {
         this.html = html;
     }
 
     @Override
-    public ClickableSpecialSpan newInstance() {
-        return new ClickableSpecialSpanImpl(getHtml());
+    public ClickablePreCodeSpan newInstance() {
+        return new ClickablePreCodeSpanImpl(getHtml());
     }
 
     @Override

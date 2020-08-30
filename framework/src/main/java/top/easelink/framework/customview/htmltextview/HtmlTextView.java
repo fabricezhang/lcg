@@ -39,7 +39,7 @@ public class HtmlTextView extends JellyBeanSpanFixTextView {
     public static final boolean DEBUG = false;
 
     @Nullable
-    private ClickableSpecialSpan clickableSpecialSpan;
+    private ClickablePreCodeSpan clickablePreCodeSpan;
     @Nullable
     private DrawPreCodeSpan drawPreCodeSpan;
 
@@ -98,7 +98,7 @@ public class HtmlTextView extends JellyBeanSpanFixTextView {
                 HtmlFormatter.formatHtml(
                     html,
                     imageGetter,
-                    clickableSpecialSpan,
+                    clickablePreCodeSpan,
                     drawPreCodeSpan,
                     indent,
                     removeTrailingWhiteSpace,
@@ -143,8 +143,8 @@ public class HtmlTextView extends JellyBeanSpanFixTextView {
         this.removeTrailingWhiteSpace = removeFromHtmlSpace;
     }
 
-    public void setClickableSpecialSpan(@Nullable ClickableSpecialSpan clickableSpecialSpan) {
-        this.clickableSpecialSpan = clickableSpecialSpan;
+    public void setClickablePreCodeSpan(@Nullable ClickablePreCodeSpan clickablePreCodeSpan) {
+        this.clickablePreCodeSpan = clickablePreCodeSpan;
     }
 
     public void setDrawPreCodeSpan(@Nullable DrawPreCodeSpan drawPreCodeSpan) {

@@ -23,12 +23,12 @@ import android.text.style.ClickableSpan;
  * that applications can access the raw table HTML and do whatever they'd like to render it (e.g.
  * show it in a WebView).
  */
-public abstract class ClickableSpecialSpan extends ClickableSpan {
+public abstract class ClickablePreCodeSpan extends ClickableSpan {
     protected String html;
 
     // This sucks, but we need this so that each table can get its own ClickableSpecialSpan.
     // Otherwise, we end up removing the clicking from earlier tables.
-    public abstract ClickableSpecialSpan newInstance();
+    public abstract ClickablePreCodeSpan newInstance();
 
     public void setHtml(String html) {
         this.html = html;

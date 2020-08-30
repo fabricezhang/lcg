@@ -131,93 +131,87 @@ class ArticleAdapter(
     ) : BaseViewHolder(view), View.OnClickListener {
 
         private var post: Post? = null
-        private val htmlHttpImageGetter: Html.ImageGetter by lazy {
-            HtmlCoilImageGetter(view.context, view.content_text_view)
-        }
+        private val htmlHttpImageGetter: Html.ImageGetter = HtmlCoilImageGetter(view.context, view.content_text_view)
 
         override fun onBind(position: Int) {
-            post = mPostList[position]
-            post?.let { p ->
-                with(itemView) {
-                    try {
-                        author_text_view.text = p.author
-                        date_text_view.text = getDateDiff(p.date)
-                        post_avatar.setOnClickListener { _ ->
-                            fragmentManager?.get()?.let {
-                                val location = IntArray(2)
-                                post_avatar.getLocationInWindow(location)
-                                val popUpInfo = PopUpProfileInfo(
-                                    location[0],
-                                    location[1],
-                                    p.avatar,
-                                    p.author,
-                                    p.extraInfo,
-                                    p.followInfo,
-                                    p.profileUrl
-                                )
-                                PopUpProfileDialog(popUpInfo).show(
-                                    it,
-                                    PopUpProfileDialog::class.java.simpleName
-                                )
-                            } ?: context.startActivity(
-                                Intent(context, ProfileActivity::class.java).also {
-                                    it.putExtra(KEY_PROFILE_URL, p.profileUrl)
-                                })
-                        }
-                        post_avatar.load(p.avatar) {
-                            transformations(RoundedCornersTransformation(4.dpToPx(context)))
-                            error(R.drawable.ic_noavatar_middle_gray)
-                        }
-                        content_text_view.run {
-                            if (AppConfig.articleHandlePreTag) {
-                                setClickableSpecialSpan(ClickableSpecialSpanImpl())
-                                val drawTableLinkSpan = DrawPreCodeSpan()
-                                    .also {
-                                        it.tableLinkText = context.getString(R.string.tap_for_code)
-                                    }
-                                setDrawPreCodeSpan(drawTableLinkSpan)
-                            } else {
-                                setClickableSpecialSpan(null)
-                                setDrawPreCodeSpan(null)
-                            }
-                            setImageTagClickListener { _: Context, imageUrl: String, _: Int ->
-                                EventBus.getDefault().post(OpenLargeImageViewEvent(imageUrl))
-                            }
-                            setOnLinkTagClickListener { c: Context?, url: String ->
-                                if (url.startsWith(SERVER_BASE_URL + "thread")) {
-                                    EventBus.getDefault()
-                                        .post(OpenArticleEvent(url.substring(SERVER_BASE_URL.length)))
-                                } else {
-                                    WebViewActivity.startWebViewWith(url, c)
-                                }
-                            }
-                            setHtml(p.content, htmlHttpImageGetter)
-                        }
-                        post_btn_capture.visibility = View.VISIBLE
-                        post_btn_capture.setOnClickListener(this@PostViewHolder)
-                        if (isLoggedIn) {
-                            post_btn_group.visibility = View.VISIBLE
-                            if (TextUtils.isEmpty(p.replyUrl)) {
-                                post_btn_reply.visibility = View.GONE
-                            } else {
-                                post_btn_reply.visibility = View.VISIBLE
-                                post_btn_reply.setOnClickListener(this@PostViewHolder)
-                            }
-                            if (TextUtils.isEmpty(p.replyAddUrl)) {
-                                post_btn_thumb_up.visibility = View.GONE
-                            } else {
-                                post_btn_thumb_up.visibility = View.VISIBLE
-                                post_btn_thumb_up.setOnClickListener(this@PostViewHolder)
-                            }
-                            post_btn_copy.setOnClickListener(this@PostViewHolder)
-                        } else {
-                            post_btn_group.visibility = View.GONE
-                        }
-                        // fix issue occurs on some manufactures os, like MIUI
-                        content_text_view.setOnLongClickListener { true }
-                    } catch (e: Exception) {
-                        Timber.e(e)
+            val p = mPostList.getOrNull(position) ?: return
+            with(itemView) {
+                try {
+                    author_text_view.text = p.author
+                    date_text_view.text = getDateDiff(p.date)
+                    post_avatar.setOnClickListener { _ ->
+                        fragmentManager?.get()?.let {
+                            val location = IntArray(2)
+                            post_avatar.getLocationInWindow(location)
+                            val popUpInfo = PopUpProfileInfo(
+                                location[0],
+                                location[1],
+                                p.avatar,
+                                p.author,
+                                p.extraInfo,
+                                p.followInfo,
+                                p.profileUrl
+                            )
+                            PopUpProfileDialog(popUpInfo).show(
+                                it,
+                                PopUpProfileDialog::class.java.simpleName
+                            )
+                        } ?: context.startActivity(
+                            Intent(context, ProfileActivity::class.java).also {
+                                it.putExtra(KEY_PROFILE_URL, p.profileUrl)
+                            })
                     }
+                    post_avatar.load(p.avatar) {
+                        transformations(RoundedCornersTransformation(4.dpToPx(context)))
+                        error(R.drawable.ic_noavatar_middle_gray)
+                    }
+                    content_text_view.run {
+                        if (AppConfig.articleHandlePreTag) {
+                            setClickablePreCodeSpan(ClickablePreCodeSpanImpl())
+                            setDrawPreCodeSpan(DrawPreCodeSpan().apply {
+                                tableLinkText = context.getString(R.string.tap_for_code)
+                            })
+                        } else {
+                            setClickablePreCodeSpan(null)
+                            setDrawPreCodeSpan(null)
+                        }
+                        setImageTagClickListener { _: Context, imageUrl: String, _: Int ->
+                            EventBus.getDefault().post(OpenLargeImageViewEvent(imageUrl))
+                        }
+                        setOnLinkTagClickListener { c: Context?, url: String ->
+                            if (url.startsWith(SERVER_BASE_URL + "thread")) {
+                                EventBus.getDefault()
+                                    .post(OpenArticleEvent(url.substring(SERVER_BASE_URL.length)))
+                            } else {
+                                WebViewActivity.startWebViewWith(url, c)
+                            }
+                        }
+                        setHtml(p.content, htmlHttpImageGetter)
+                    }
+                    post_btn_capture.visibility = View.VISIBLE
+                    post_btn_capture.setOnClickListener(this@PostViewHolder)
+                    if (isLoggedIn) {
+                        post_btn_group.visibility = View.VISIBLE
+                        if (TextUtils.isEmpty(p.replyUrl)) {
+                            post_btn_reply.visibility = View.GONE
+                        } else {
+                            post_btn_reply.visibility = View.VISIBLE
+                            post_btn_reply.setOnClickListener(this@PostViewHolder)
+                        }
+                        if (TextUtils.isEmpty(p.replyAddUrl)) {
+                            post_btn_thumb_up.visibility = View.GONE
+                        } else {
+                            post_btn_thumb_up.visibility = View.VISIBLE
+                            post_btn_thumb_up.setOnClickListener(this@PostViewHolder)
+                        }
+                        post_btn_copy.setOnClickListener(this@PostViewHolder)
+                    } else {
+                        post_btn_group.visibility = View.GONE
+                    }
+                    // fix issue occurs on some manufactures os, like MIUI
+                    content_text_view.setOnLongClickListener { true }
+                } catch (e: Exception) {
+                    Timber.e(e)
                 }
             }
         }
@@ -304,14 +298,14 @@ class ArticleAdapter(
                         }
                         reply_content_text_view.run {
                             if (AppConfig.articleHandlePreTag) {
-                                setClickableSpecialSpan(ClickableSpecialSpanImpl())
+                                setClickablePreCodeSpan(ClickablePreCodeSpanImpl())
                                 val drawTableLinkSpan = DrawPreCodeSpan()
                                     .also {
                                         it.tableLinkText = context.getString(R.string.tap_for_code)
                                     }
                                 setDrawPreCodeSpan(drawTableLinkSpan)
                             } else {
-                                setClickableSpecialSpan(null)
+                                setClickablePreCodeSpan(null)
                                 setDrawPreCodeSpan(null)
                             }
                             setImageTagClickListener { _: Context, imageUrl: String, _: Int ->

@@ -11,73 +11,52 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package top.easelink.framework.customview.htmltextview
 
-package top.easelink.framework.customview.htmltextview;
+import android.text.Html
 
-import android.text.Html.ImageGetter;
+class HtmlFormatterBuilder {
 
-import androidx.annotation.Nullable;
+    var html: String? = null
+        private set
+    var imageGetter: Html.ImageGetter? = null
+        private set
+    var clickableSpecialSpan: ClickablePreCodeSpan? = null
+        private set
+    var drawPreCodeSpan: DrawPreCodeSpan? = null
+        private set
+    var indent = 24.0f
+        private set
+    var isRemoveTrailingWhiteSpace = true
+        private set
 
-public class HtmlFormatterBuilder {
-
-    private String html;
-    private ImageGetter imageGetter;
-    private ClickableSpecialSpan clickableSpecialSpan;
-    private DrawPreCodeSpan drawPreCodeSpan;
-    private float indent = 24.0f;
-    private boolean removeTrailingWhiteSpace = true;
-
-    public String getHtml() {
-        return html;
+    fun setHtml(html: String?): HtmlFormatterBuilder {
+        this.html = html
+        return this
     }
 
-    public ImageGetter getImageGetter() {
-        return imageGetter;
+    fun setImageGetter(imageGetter: Html.ImageGetter?): HtmlFormatterBuilder {
+        this.imageGetter = imageGetter
+        return this
     }
 
-    public ClickableSpecialSpan getClickableSpecialSpan() {
-        return clickableSpecialSpan;
+    fun setClickableSpecialSpan(clickableSpecialSpan: ClickablePreCodeSpan?): HtmlFormatterBuilder {
+        this.clickableSpecialSpan = clickableSpecialSpan
+        return this
     }
 
-    public DrawPreCodeSpan getDrawPreCodeSpan() {
-        return drawPreCodeSpan;
+    fun setDrawPreCodeSpan(drawPreCodeSpan: DrawPreCodeSpan?): HtmlFormatterBuilder {
+        this.drawPreCodeSpan = drawPreCodeSpan
+        return this
     }
 
-    public float getIndent() {
-        return indent;
+    fun setIndent(indent: Float): HtmlFormatterBuilder {
+        this.indent = indent
+        return this
     }
 
-    public boolean isRemoveTrailingWhiteSpace() {
-        return removeTrailingWhiteSpace;
-    }
-
-    public HtmlFormatterBuilder setHtml(@Nullable final String html) {
-        this.html = html;
-        return this;
-    }
-
-    public HtmlFormatterBuilder setImageGetter(@Nullable final ImageGetter imageGetter) {
-        this.imageGetter = imageGetter;
-        return this;
-    }
-
-    public HtmlFormatterBuilder setClickableSpecialSpan(@Nullable final ClickableSpecialSpan clickableSpecialSpan) {
-        this.clickableSpecialSpan = clickableSpecialSpan;
-        return this;
-    }
-
-    public HtmlFormatterBuilder setDrawPreCodeSpan(@Nullable final DrawPreCodeSpan drawPreCodeSpan) {
-        this.drawPreCodeSpan = drawPreCodeSpan;
-        return this;
-    }
-
-    public HtmlFormatterBuilder setIndent(final float indent) {
-        this.indent = indent;
-        return this;
-    }
-
-    public HtmlFormatterBuilder setRemoveTrailingWhiteSpace(final boolean removeTrailingWhiteSpace) {
-        this.removeTrailingWhiteSpace = removeTrailingWhiteSpace;
-        return this;
+    fun setRemoveTrailingWhiteSpace(removeTrailingWhiteSpace: Boolean): HtmlFormatterBuilder {
+        isRemoveTrailingWhiteSpace = removeTrailingWhiteSpace
+        return this
     }
 }
