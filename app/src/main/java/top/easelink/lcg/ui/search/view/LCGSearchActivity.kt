@@ -3,7 +3,6 @@ package top.easelink.lcg.ui.search.view
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -49,11 +48,6 @@ class LCGSearchActivity : TopActivity() {
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        toolbar.visibility = View.GONE
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         EventBus.getDefault().unregister(this)
@@ -90,16 +84,16 @@ class LCGSearchActivity : TopActivity() {
     }
 
     private fun setupObserver() {
-        mSearchViewModel.totalResult.observe(this, Observer {
+        mSearchViewModel.totalResult.observe(this) {
             toolbar.title = it
-        })
-        mSearchViewModel.searchResults.observe(this@LCGSearchActivity, Observer {
+        }
+        mSearchViewModel.searchResults.observe(this@LCGSearchActivity) {
             (recycler_view.adapter as? LCGSearchResultAdapter)?.apply {
                 clearItems()
                 addItems(it)
             }
-        })
-        mSearchViewModel.isLoading.observe(this@LCGSearchActivity, Observer {
+        }
+        mSearchViewModel.isLoading.observe(this@LCGSearchActivity) {
             if (it) {
                 searching_file.visibility = View.VISIBLE
                 recycler_view.visibility = View.GONE
@@ -107,7 +101,7 @@ class LCGSearchActivity : TopActivity() {
                 searching_file.visibility = View.GONE
                 recycler_view.visibility = View.VISIBLE
             }
-        })
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -143,5 +137,6 @@ class LCGSearchActivity : TopActivity() {
             fragment,
             R.id.view_root
         )
+        toolbar.visibility = View.GONE
     }
 }
