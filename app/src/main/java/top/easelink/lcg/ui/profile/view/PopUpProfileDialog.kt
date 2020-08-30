@@ -24,7 +24,7 @@ import top.easelink.lcg.mta.EVENT_OPEN_PROFILE
 import top.easelink.lcg.mta.EVENT_OPEN_PROFILE_PAGE
 import top.easelink.lcg.mta.EVENT_SUBSCRIBE_USER
 import top.easelink.lcg.mta.sendEvent
-import top.easelink.lcg.network.Client
+import top.easelink.lcg.network.JsoupClient
 import top.easelink.lcg.ui.main.source.parseExtraUserInfoProfilePage
 import top.easelink.lcg.ui.profile.model.PopUpProfileInfo
 import top.easelink.lcg.ui.webview.view.WebViewActivity
@@ -106,7 +106,7 @@ class PopUpProfileDialog(
         sendEvent(EVENT_SUBSCRIBE_USER)
         GlobalScope.launch(IOPool){
             try {
-                Client.sendGetRequestWithQuery(url).let {
+                JsoupClient.sendGetRequestWithQuery(url).let {
                     it.getElementById("messagetext")?.text()?.let {msg ->
                         showMessage(msg)
                     }

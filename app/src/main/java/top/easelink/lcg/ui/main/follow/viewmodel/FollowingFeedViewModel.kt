@@ -7,7 +7,7 @@ import kotlinx.coroutines.launch
 import org.jsoup.Jsoup
 import timber.log.Timber
 import top.easelink.framework.threadpool.IOPool
-import top.easelink.lcg.network.Client
+import top.easelink.lcg.network.JsoupClient
 import top.easelink.lcg.ui.main.follow.model.FeedInfo
 import top.easelink.lcg.utils.WebsiteConstant.FOLLOW_FEED_QUERY
 
@@ -23,7 +23,7 @@ class FollowingFeedViewModel : ViewModel() {
         isLoading.value = true
         GlobalScope.launch(IOPool) {
             try {
-                parseFeeds(Client.sendAjaxRequest(url))
+                parseFeeds(JsoupClient.sendAjaxRequest(url))
             } catch (e: Exception) {
                 Timber.e(e)
             }
@@ -36,7 +36,7 @@ class FollowingFeedViewModel : ViewModel() {
         val url = String.format(FOLLOW_FEED_QUERY, pageNum, 1)
         GlobalScope.launch(IOPool){
             try {
-                parseFeeds(Client.sendAjaxRequest(url))
+                parseFeeds(JsoupClient.sendAjaxRequest(url))
                     .also(callBack)
                     .takeIf { it }
                     .let {

@@ -11,7 +11,7 @@ import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
 import timber.log.Timber
 import top.easelink.lcg.config.AppConfig
-import top.easelink.lcg.network.Client
+import top.easelink.lcg.network.JsoupClient
 import top.easelink.lcg.ui.main.model.BlockException
 import top.easelink.lcg.ui.main.model.LoginRequiredException
 import top.easelink.lcg.ui.main.model.NetworkException
@@ -42,7 +42,7 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
     @Throws(LoginRequiredException::class, SocketTimeoutException::class)
     override fun getForumArticles(query: String, processThreadList: Boolean): ForumPage? {
         return processForumArticlesDocument(
-            Client.sendGetRequestWithQuery(query),
+            JsoupClient.sendGetRequestWithQuery(query),
             processThreadList
         )
     }
@@ -60,7 +60,7 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
     @WorkerThread
     override fun getPostPreview(query: String): PreviewPost? {
         return try {
-            getFirstPost(Client.sendGetRequestWithQuery(query))
+            getFirstPost(JsoupClient.sendGetRequestWithQuery(query))
         } catch (e: Exception) {
             when(e) {
                 is BlockException,
@@ -75,7 +75,7 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
     @WorkerThread
     override fun getArticleDetail(query: String): ArticleDetail? {
         try {
-            val doc = Client.sendGetRequestWithQuery(query)
+            val doc = JsoupClient.sendGetRequestWithQuery(query)
             val articleAbstract: ArticleAbstractResponse? =
                 doc.selectFirst("script")?.let {
                     try {
@@ -151,7 +151,7 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
     private fun getArticles(query: String): List<Article> {
         var list: List<Article> = emptyList()
         try {
-            list = Client
+            list = JsoupClient
                 .sendGetRequestWithQuery(query)
                 .select("tbody[id^=normal]")
                 .map { e ->
@@ -467,7 +467,7 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
     @WorkerThread
     override fun addFavorites(threadId: String, formHash: String): Boolean {
         return try {
-            Client.sendGetRequestWithQuery(String.format(
+            JsoupClient.sendGetRequestWithQuery(String.format(
                 ADD_TO_FAVORITE_QUERY,
                 threadId,
                 formHash
@@ -487,7 +487,7 @@ object ArticlesRemoteDataSource: ArticlesDataSource, FavoritesRemoteDataSource {
     @WorkerThread
     fun replyAdd(query: String): String {
         return try {
-            val doc = Client.sendGetRequestWithQuery(query)
+            val doc = JsoupClient.sendGetRequestWithQuery(query)
             val message = doc.getElementsByClass("nfl").first().text()
             message
         } catch (e: Exception) {

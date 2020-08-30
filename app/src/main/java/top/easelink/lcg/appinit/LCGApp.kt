@@ -37,15 +37,13 @@ class LCGApp : Application() {
         trySignIn()
     }
 
-    private fun trySignIn() {
-        GlobalScope.launch(BackGroundPool) {
+    private fun trySignIn() = GlobalScope.launch(BackGroundPool) {
+        if (AppConfig.autoSignEnable) {
             delay(2000)
-            if (AppConfig.autoSignEnable) {
-                try {
-                    SignInWorker.sendSignInRequest()
-                } catch (e: Exception) {
-                    Timber.e(e)
-                }
+            try {
+                SignInWorker.sendSignInRequest()
+            } catch (e: Exception) {
+                Timber.e(e)
             }
         }
     }

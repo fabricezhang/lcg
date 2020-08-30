@@ -16,7 +16,7 @@ import top.easelink.lcg.ui.search.model.RequestTooOftenException
 import java.io.File
 import java.util.concurrent.TimeUnit
 
-object ApiClient: ApiRequest {
+object OkApiClient: ApiRequest {
 
     private const val TIME_OUT = 15L
     private var mClient: OkHttpClient

@@ -5,7 +5,7 @@ import android.os.Build
 import androidx.work.*
 import timber.log.Timber
 import top.easelink.lcg.BuildConfig
-import top.easelink.lcg.network.Client
+import top.easelink.lcg.network.JsoupClient
 import java.net.SocketTimeoutException
 import java.util.concurrent.TimeUnit
 
@@ -35,7 +35,7 @@ class SignInWorker(context: Context, workerParams: WorkerParameters) :
 
         @Throws(SocketTimeoutException::class)
         fun sendSignInRequest() {
-            Client.sendGetRequestWithUrl(APPLY_TASK_URL)
+            JsoupClient.sendGetRequestWithUrl(APPLY_TASK_URL)
                 .getElementsByClass("alert_info")
                 ?.first()
                 ?.selectFirst("p")
@@ -44,7 +44,7 @@ class SignInWorker(context: Context, workerParams: WorkerParameters) :
                     Timber.d(it)
                     it.contains(TASK_APPLIED)
                 }?.run {
-                    Client.sendGetRequestWithUrl(DRAW_TASK_URL)
+                    JsoupClient.sendGetRequestWithUrl(DRAW_TASK_URL)
                         .getElementsByClass("alert_info")
                         ?.first()
                         ?.selectFirst("p")

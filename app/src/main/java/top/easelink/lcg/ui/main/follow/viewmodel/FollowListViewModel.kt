@@ -7,7 +7,7 @@ import kotlinx.coroutines.launch
 import org.jsoup.nodes.Document
 import timber.log.Timber
 import top.easelink.framework.threadpool.IOPool
-import top.easelink.lcg.network.Client
+import top.easelink.lcg.network.JsoupClient
 import top.easelink.lcg.ui.main.follow.model.FollowInfo
 import top.easelink.lcg.ui.main.follow.model.FollowResult
 
@@ -25,7 +25,7 @@ class FollowListViewModel : ViewModel() {
         }
         GlobalScope.launch(IOPool) {
             try {
-                parseFollows(Client.sendGetRequestWithQuery(url))
+                parseFollows(JsoupClient.sendGetRequestWithQuery(url))
             } catch (e: Exception) {
                 Timber.e(e)
             }

@@ -7,7 +7,7 @@ import kotlinx.coroutines.launch
 import org.jsoup.nodes.Document
 import timber.log.Timber
 import top.easelink.framework.threadpool.IOPool
-import top.easelink.lcg.network.Client
+import top.easelink.lcg.network.JsoupClient
 import top.easelink.lcg.ui.main.model.Conversation
 import top.easelink.lcg.utils.WebsiteConstant
 
@@ -22,7 +22,7 @@ class ConversationListViewModel : ViewModel() {
         isLoading.value = true
         GlobalScope.launch(IOPool) {
             try {
-                parseConversations(Client.sendGetRequestWithQuery(WebsiteConstant.PRIVATE_MESSAGE_QUERY))
+                parseConversations(JsoupClient.sendGetRequestWithQuery(WebsiteConstant.PRIVATE_MESSAGE_QUERY))
             } catch (e: Exception) {
                 Timber.e(e)
             }

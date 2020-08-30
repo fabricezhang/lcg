@@ -21,7 +21,7 @@ import java.security.SecureRandom
 import java.security.cert.X509Certificate
 import javax.net.ssl.*
 
-object Client: ApiRequest {
+object JsoupClient: ApiRequest {
 
     var formHash: String? = null
         set(value) {

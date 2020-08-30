@@ -8,7 +8,7 @@ import org.jsoup.Connection
 import org.jsoup.Jsoup
 import timber.log.Timber
 import top.easelink.framework.threadpool.IOPool
-import top.easelink.lcg.network.Client
+import top.easelink.lcg.network.JsoupClient
 import top.easelink.lcg.utils.WebsiteConstant.CHECK_RULE_URL
 import top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL
 import top.easelink.lcg.utils.getCookies
@@ -43,7 +43,7 @@ class ReplyPostViewModel : ViewModel() {
                 }
             }
         try {
-            Client
+            JsoupClient
                 .sendGetRequestWithQuery(query)
                 .run {
                     val noticeauthormsg = selectFirst("input[name=noticeauthormsg]").attr("value")

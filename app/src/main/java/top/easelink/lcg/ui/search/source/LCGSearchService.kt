@@ -4,7 +4,7 @@ import android.util.ArrayMap
 import org.jsoup.nodes.Document
 import timber.log.Timber
 import top.easelink.lcg.R
-import top.easelink.lcg.network.Client
+import top.easelink.lcg.network.JsoupClient
 import top.easelink.lcg.ui.search.model.LCGSearchResultItem
 import top.easelink.lcg.ui.search.model.LCGSearchResults
 import top.easelink.lcg.utils.WebsiteConstant
@@ -34,7 +34,7 @@ object LCGSearchService {
 
             val url = "${WebsiteConstant.SERVER_BASE_URL}search.php?searchsubmit=yes"
             val form = ArrayMap<String, String>().apply {
-                put("formhash", Client.formHash)
+                put("formhash", JsoupClient.formHash)
                 put("mod", "forum")
                 put("srchtype", "title")
                 put("srhfid", "")
@@ -42,7 +42,7 @@ object LCGSearchService {
                 put("srchtxt", keyword)
                 put("searchsubmit", "true")
             }
-            val response = Client.sendPostRequestWithUrl(url, form)
+            val response = JsoupClient.sendPostRequestWithUrl(url, form)
             if (response.statusCode() in 200..299) {
                 val doc = response.parse()
                 val result = parseSearchResults(doc)
@@ -65,7 +65,7 @@ object LCGSearchService {
             return emptyResult()
         }
         try {
-            return parseSearchResults(Client.sendGetRequestWithQuery(mNextPageUrl!!))
+            return parseSearchResults(JsoupClient.sendGetRequestWithQuery(mNextPageUrl!!))
         } catch (e: SocketTimeoutException){
             showMessage(R.string.network_error)
         } catch (e: Exception) {

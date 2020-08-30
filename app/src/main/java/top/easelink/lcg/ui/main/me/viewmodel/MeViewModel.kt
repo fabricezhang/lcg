@@ -8,7 +8,7 @@ import timber.log.Timber
 import top.easelink.framework.base.BaseFragment
 import top.easelink.framework.threadpool.IOPool
 import top.easelink.lcg.R
-import top.easelink.lcg.network.Client
+import top.easelink.lcg.network.JsoupClient
 import top.easelink.lcg.spipedata.UserData
 import top.easelink.lcg.ui.main.me.model.UserInfo
 import top.easelink.lcg.ui.main.model.AntiScrapingException
@@ -51,7 +51,7 @@ class MeViewModel: ViewModel() {
         }
         GlobalScope.launch(IOPool) {
             try {
-                val userInfo = Client
+                val userInfo = JsoupClient
                     .sendGetRequestWithQuery(PROFILE_QUERY).let {
                         parseUserInfo(it)
                     }
