@@ -454,7 +454,6 @@ object ArticlesRemoteDataSource : ArticlesDataSource, FavoritesRemoteDataSource 
         element.select("script").remove()
         // convert all code
         for (e in element.getElementsByTag("pre")) {
-            e.siblingElements().remove()
             val s = e.html()
                 .replace("\r\n", "<br/>")
                 .replace("\r", "<br/>")
