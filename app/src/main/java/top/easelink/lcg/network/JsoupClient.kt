@@ -21,7 +21,7 @@ import java.security.SecureRandom
 import java.security.cert.X509Certificate
 import javax.net.ssl.*
 
-object Client: ApiRequest {
+object JsoupClient : ApiRequest {
 
     var formHash: String? = null
         set(value) {
@@ -91,7 +91,10 @@ object Client: ApiRequest {
             }
     }
 
-    override fun sendPostRequestWithUrl(url: String, form: MutableMap<String, String>?): Connection.Response {
+    override fun sendPostRequestWithUrl(
+        url: String,
+        form: MutableMap<String, String>?
+    ): Connection.Response {
         return Jsoup
             .connect(url)
             .cookies(getCookies())
@@ -108,7 +111,7 @@ object Client: ApiRequest {
             }
     }
 
-    private fun checkResponse(doc: Document) = GlobalScope.launch(BackGroundPool){
+    private fun checkResponse(doc: Document) = GlobalScope.launch(BackGroundPool) {
         // try update from hash which is used to send post request, ex: replay
         if (formHash.isNullOrEmpty()) {
             formHash = extractFormHash(doc)
@@ -137,13 +140,15 @@ object Client: ApiRequest {
                     override fun checkClientTrusted(
                         certs: Array<X509Certificate>,
                         authType: String
-                    ) { }
+                    ) {
+                    }
 
                     @SuppressLint("TrustAllX509TrustManager")
                     override fun checkServerTrusted(
                         certs: Array<X509Certificate>,
                         authType: String
-                    ) { }
+                    ) {
+                    }
                 }
                 )
             // Install the all-trusting trust manager

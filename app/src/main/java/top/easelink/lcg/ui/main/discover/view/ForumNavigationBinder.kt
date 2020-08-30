@@ -32,7 +32,7 @@ class ForumNavigationBinder : BaseNavigationBinder<ForumListModel, ForumNavigati
     }
 }
 
-class ForumNavigationVH(inflater: LayoutInflater, parentView: ViewGroup): BaseNavigationViewHolder(
+class ForumNavigationVH(inflater: LayoutInflater, parentView: ViewGroup) : BaseNavigationViewHolder(
     inflater.inflate(R.layout.fragment_forums_navigation, parentView, false)
 ) {
     fun onBind(item: ForumListModel, payloads: List<Any>?) {

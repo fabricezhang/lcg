@@ -6,16 +6,16 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.jsoup.nodes.Document
 import timber.log.Timber
-import top.easelink.framework.threadpool.ApiPool
-import top.easelink.lcg.network.Client
+import top.easelink.framework.threadpool.IOPool
+import top.easelink.lcg.network.JsoupClient
 import top.easelink.lcg.ui.main.model.BaseNotification
 import top.easelink.lcg.ui.main.model.NotificationModel
 import top.easelink.lcg.ui.main.model.SystemNotification
 import top.easelink.lcg.utils.WebsiteConstant.NOTIFICATION_HOME_QUERY
 
-class NotificationViewModel: ViewModel(){
+class NotificationViewModel : ViewModel() {
 
-    val notifications= MutableLiveData<NotificationModel>()
+    val notifications = MutableLiveData<NotificationModel>()
     val isLoading = MutableLiveData<Boolean>()
     var nextPageUrl = ""
 
@@ -24,9 +24,9 @@ class NotificationViewModel: ViewModel(){
             callback.invoke(false)
             return
         }
-        GlobalScope.launch(ApiPool) {
+        GlobalScope.launch(IOPool) {
             try {
-                Client.sendGetRequestWithQuery(nextPageUrl).let {
+                JsoupClient.sendGetRequestWithQuery(nextPageUrl).let {
                     val model = parseResponse(it)
                     notifications.postValue(model)
                 }
@@ -38,10 +38,10 @@ class NotificationViewModel: ViewModel(){
     }
 
     fun fetchNotifications() {
-        GlobalScope.launch(ApiPool) {
+        GlobalScope.launch(IOPool) {
             isLoading.postValue(true)
             try {
-                Client.sendGetRequestWithQuery(NOTIFICATION_HOME_QUERY).let {
+                JsoupClient.sendGetRequestWithQuery(NOTIFICATION_HOME_QUERY).let {
                     notifications.postValue(parseResponse(it))
                 }
             } catch (e: Exception) {

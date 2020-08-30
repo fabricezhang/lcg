@@ -33,9 +33,11 @@ object WebsiteConstant {
 
     const val MY_ARTICLES_QUERY = "forum.php?mod=guide&view=my"
     const val GET_FAVORITE_QUERY = "home.php?mod=space&do=favorite&view=me"
-    const val ADD_TO_FAVORITE_QUERY = "home.php?mod=spacecp&ac=favorite&type=thread&id=%s&formhash=%s&infloat=yes&handlekey=k_favorite&inajax=1&ajaxtarget=fwin_content_k_favorite"
+    const val ADD_TO_FAVORITE_QUERY =
+        "home.php?mod=spacecp&ac=favorite&type=thread&id=%s&formhash=%s&infloat=yes&handlekey=k_favorite&inajax=1&ajaxtarget=fwin_content_k_favorite"
 
-    const val CHECK_RULE_URL = SERVER_BASE_URL + "forum.php?mod=ajax&action=checkpostrule&inajax=yes&ac=reply&infloat=yes&handlekey=reply"
+    const val CHECK_RULE_URL =
+        SERVER_BASE_URL + "forum.php?mod=ajax&action=checkpostrule&inajax=yes&ac=reply&infloat=yes&handlekey=reply"
 
     // notifications
     const val NOTIFICATION_HOME_QUERY = "home.php?mod=space&do=notice"
@@ -44,6 +46,7 @@ object WebsiteConstant {
 
     // private message
     const val PRIVATE_MESSAGE_QUERY = "home.php?mod=space&do=pm"
+
     // home
     const val HOME_QUERY = "home.php?mod=spacecp&ac=credit&showcredit=1"
     const val PROFILE_QUERY = "home.php?mod=space&do=profile&from=space"
@@ -52,7 +55,8 @@ object WebsiteConstant {
     // follow
     const val UNFOLLOW_URL = "home.php?mod=spacecp&ac=follow&op=del&fuid=123456"
     const val FOLLOW_PAGE_URL = "home.php?mod=follow"
-    const val FOLLOW_FEED_QUERY = "home.php?mod=spacecp&ac=follow&op=getfeed&page=%d&archiver=%d&inajax=1&viewtype=follow"
+    const val FOLLOW_FEED_QUERY =
+        "home.php?mod=spacecp&ac=follow&op=getfeed&page=%d&archiver=%d&inajax=1&viewtype=follow"
     const val FOLLOWING_USERS_QUERY = "home.php?mod=follow&do=following"
     const val FOLLOWER_USERS_QUERY = "home.php?mod=follow&do=follower"
 

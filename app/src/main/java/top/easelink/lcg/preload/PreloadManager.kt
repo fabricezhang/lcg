@@ -16,7 +16,7 @@ object PreloadManager {
     }
 
     fun findDocOrNull(fileName: String): Document? {
-        val file :File? = findInDisk("$PRELOAD_FOLDER/$fileName")
+        val file: File? = findInDisk("$PRELOAD_FOLDER/$fileName")
         if (file != null) {
             try {
                 return Jsoup.parse(file, "utf-8")

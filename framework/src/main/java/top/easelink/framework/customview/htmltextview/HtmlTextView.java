@@ -39,7 +39,7 @@ public class HtmlTextView extends JellyBeanSpanFixTextView {
     public static final boolean DEBUG = false;
 
     @Nullable
-    private ClickableSpecialSpan clickableSpecialSpan;
+    private ClickablePreCodeSpan clickablePreCodeSpan;
     @Nullable
     private DrawPreCodeSpan drawPreCodeSpan;
 
@@ -95,16 +95,16 @@ public class HtmlTextView extends JellyBeanSpanFixTextView {
     public void setHtml(@NonNull String html, @Nullable Html.ImageGetter imageGetter) {
         try {
             setText(
-                    HtmlFormatter.formatHtml(
-                            html,
-                            imageGetter,
-                            clickableSpecialSpan,
-                            drawPreCodeSpan,
-                            indent,
-                            removeTrailingWhiteSpace,
-                            getContext(),
-                            onImgTagClickListener,
-                            onLinkTagClickListener)
+                HtmlFormatter.formatHtml(
+                    html,
+                    imageGetter,
+                    clickablePreCodeSpan,
+                    drawPreCodeSpan,
+                    indent,
+                    removeTrailingWhiteSpace,
+                    getContext(),
+                    onImgTagClickListener,
+                    onLinkTagClickListener)
             );
 
             // make links work
@@ -143,8 +143,8 @@ public class HtmlTextView extends JellyBeanSpanFixTextView {
         this.removeTrailingWhiteSpace = removeFromHtmlSpace;
     }
 
-    public void setClickableSpecialSpan(@Nullable ClickableSpecialSpan clickableSpecialSpan) {
-        this.clickableSpecialSpan = clickableSpecialSpan;
+    public void setClickablePreCodeSpan(@Nullable ClickablePreCodeSpan clickablePreCodeSpan) {
+        this.clickablePreCodeSpan = clickablePreCodeSpan;
     }
 
     public void setDrawPreCodeSpan(@Nullable DrawPreCodeSpan drawPreCodeSpan) {

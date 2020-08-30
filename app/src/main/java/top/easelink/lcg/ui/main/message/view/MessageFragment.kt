@@ -12,7 +12,7 @@ import top.easelink.lcg.R
 import top.easelink.lcg.spipedata.UserData
 import top.easelink.lcg.ui.main.login.view.LoginHintDialog
 
-class MessageFragment: TopFragment(), ControllableFragment{
+class MessageFragment : TopFragment(), ControllableFragment {
 
     override fun onCreateView(
         inflater: LayoutInflater,

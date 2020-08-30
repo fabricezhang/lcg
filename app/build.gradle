@@ -50,14 +50,17 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
         incremental true
     }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
+    }
     // Generate Version Info
     android.applicationVariants.all { variant ->
         variant.outputs.all {
             outputFileName = "lcg-${variant.versionName}.apk"
         }
     }
-    dataBinding {
-        enabled = true
+    buildFeatures {
+        dataBinding = true
     }
     buildToolsVersion = buildToolsVersion
 }
@@ -73,6 +76,4 @@ dependencies {
     debugImplementation "com.amitshekhar.android:debug-db:1.0.4"
     // test related
     testImplementation "junit:junit:$rootProject.junitVersion"
-    androidTestImplementation "androidx.test:runner:$rootProject.runnerVersion"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.espressoVersion"
 }

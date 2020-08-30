@@ -34,5 +34,5 @@ data class ChildForumItemInfo(
     var title: String? = null,
     @SerializedName("desc")
     var desc: String? = null
-): Serializable
+) : Serializable
 

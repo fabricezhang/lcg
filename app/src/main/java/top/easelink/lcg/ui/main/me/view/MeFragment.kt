@@ -1,29 +1,21 @@
 package top.easelink.lcg.ui.main.me.view
 
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.BitmapDrawable
-import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import coil.Coil
+import coil.load
+import coil.request.ImageRequest
 import kotlinx.android.synthetic.main.cardview_me_notifications.*
 import kotlinx.android.synthetic.main.fragment_me.*
 import kotlinx.android.synthetic.main.layout_icon_button.view.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
-import timber.log.Timber
 import top.easelink.framework.base.BaseFragment
-import top.easelink.framework.threadpool.ImmediatePool
-import top.easelink.framework.threadpool.Main
 import top.easelink.framework.utils.addFragmentInActivity
 import top.easelink.framework.utils.addFragmentInFragment
-import top.easelink.framework.utils.bitmapBlur
-import top.easelink.framework.utils.convertViewToBitmap
 import top.easelink.lcg.BR
 import top.easelink.lcg.R
 import top.easelink.lcg.databinding.FragmentMeBinding
@@ -56,7 +48,6 @@ class MeFragment : BaseFragment<FragmentMeBinding, MeViewModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.setFragment(this)
         setting_btn.setOnClickListener {
             startActivity(Intent(context, SettingActivity::class.java))
         }
@@ -65,37 +56,34 @@ class MeFragment : BaseFragment<FragmentMeBinding, MeViewModel>() {
     }
 
     private fun registerObservers() {
-        viewModel.mLoginState.observe(viewLifecycleOwner, Observer {
+        viewModel.mLoginState.observe(viewLifecycleOwner) {
             updateViewVisibility(it)
             if (!it) {
-                // add a blur effect
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    GlobalScope.launch(ImmediatePool){
-                        val bitmap = bitmapBlur(baseActivity, convertViewToBitmap(view), 20)
-                        GlobalScope.launch(Main) {
-                            try {
-                                bitmap?.let {
-                                    view?.apply {
-                                        setBackgroundColor(Color.WHITE)
-                                        foreground = BitmapDrawable(resources, it)
-                                    }
-                                }
-                            } catch (e: Exception) {
-                                Timber.e(e)
-                            } finally {
-                                if (isAdded && isVisible && baseActivity != null) {
-                                    LoginHintDialog().show(baseActivity.supportFragmentManager, null)
-                                }
-                            }
-                        }
-                    }
-                } else {
-                    if (isAdded && isVisible && baseActivity != null) {
-                        LoginHintDialog().show(baseActivity.supportFragmentManager, null)
-                    }
+                if (isAdded && isVisible && baseActivity != null) {
+                    LoginHintDialog().show(baseActivity.supportFragmentManager, null)
                 }
             }
-        })
+        }
+        viewModel.mUserInfo.observe(viewLifecycleOwner) { info ->
+            info.signInStateUrl?.let { url ->
+                ImageRequest.Builder(me_sign_in_state.context)
+                    .data(url)
+                    .allowRgb565(true)
+                    .target {
+                        me_sign_in_state.apply {
+                            layoutParams.width = it.intrinsicWidth / it.intrinsicHeight * height
+                            setImageDrawable(it)
+                        }
+                    }
+                    .build()
+                    .let { request ->
+                        Coil.imageLoader(me_sign_in_state.context).enqueue(request)
+                    }
+                me_sign_in_state.load(info.signInStateUrl) {
+
+                }
+            }
+        }
     }
 
     private fun updateIconButtons() {
@@ -111,9 +99,11 @@ class MeFragment : BaseFragment<FragmentMeBinding, MeViewModel>() {
             setOnClickListener {
                 EventBus
                     .getDefault()
-                    .post(OpenForumEvent(
-                        getString(R.string.ic_my_articles), MY_ARTICLES_QUERY, false
-                    ))
+                    .post(
+                        OpenForumEvent(
+                            getString(R.string.ic_my_articles), MY_ARTICLES_QUERY, false
+                        )
+                    )
             }
             btn_icon.setImageResource(R.drawable.ic_my_articles)
             tv_icon.setText(R.string.ic_my_articles)
@@ -136,15 +126,55 @@ class MeFragment : BaseFragment<FragmentMeBinding, MeViewModel>() {
 
     private fun updateViewVisibility(loggedIn: Boolean) {
         if (loggedIn) {
-            me_coin_icon.setColorFilter(ContextCompat.getColor(this@MeFragment.baseActivity, R.color.pojie_logo))
-            me_credit_icon.setColorFilter(ContextCompat.getColor(this@MeFragment.baseActivity, R.color.pojie_logo))
-            me_anwser_rate_icon.setColorFilter(ContextCompat.getColor(this@MeFragment.baseActivity, R.color.pojie_logo))
-            me_enthusiastic_icon.setColorFilter(ContextCompat.getColor(this@MeFragment.baseActivity, R.color.pojie_logo))
+            me_coin_icon.setColorFilter(
+                ContextCompat.getColor(
+                    this@MeFragment.baseActivity,
+                    R.color.pojie_logo
+                )
+            )
+            me_credit_icon.setColorFilter(
+                ContextCompat.getColor(
+                    this@MeFragment.baseActivity,
+                    R.color.pojie_logo
+                )
+            )
+            me_anwser_rate_icon.setColorFilter(
+                ContextCompat.getColor(
+                    this@MeFragment.baseActivity,
+                    R.color.pojie_logo
+                )
+            )
+            me_enthusiastic_icon.setColorFilter(
+                ContextCompat.getColor(
+                    this@MeFragment.baseActivity,
+                    R.color.pojie_logo
+                )
+            )
         } else {
-            me_coin_icon.setColorFilter(ContextCompat.getColor(this@MeFragment.baseActivity, R.color.semi_gray))
-            me_credit_icon.setColorFilter(ContextCompat.getColor(this@MeFragment.baseActivity, R.color.semi_gray))
-            me_anwser_rate_icon.setColorFilter(ContextCompat.getColor(this@MeFragment.baseActivity, R.color.semi_gray ))
-            me_enthusiastic_icon.setColorFilter(ContextCompat.getColor(this@MeFragment.baseActivity, R.color.semi_gray))
+            me_coin_icon.setColorFilter(
+                ContextCompat.getColor(
+                    this@MeFragment.baseActivity,
+                    R.color.semi_gray
+                )
+            )
+            me_credit_icon.setColorFilter(
+                ContextCompat.getColor(
+                    this@MeFragment.baseActivity,
+                    R.color.semi_gray
+                )
+            )
+            me_anwser_rate_icon.setColorFilter(
+                ContextCompat.getColor(
+                    this@MeFragment.baseActivity,
+                    R.color.semi_gray
+                )
+            )
+            me_enthusiastic_icon.setColorFilter(
+                ContextCompat.getColor(
+                    this@MeFragment.baseActivity,
+                    R.color.semi_gray
+                )
+            )
         }
     }
 

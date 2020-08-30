@@ -40,7 +40,8 @@ class ArticlesFragment : BaseFragment<FragmentArticlesBinding, ArticlesViewModel
     private fun scrollToTop() {
         viewDataBinding.backToTop.playAnimation()
         viewDataBinding.recyclerView.let {
-            val pos = (it.layoutManager as? LinearLayoutManager)?.findLastCompletelyVisibleItemPosition()
+            val pos =
+                (it.layoutManager as? LinearLayoutManager)?.findLastCompletelyVisibleItemPosition()
             if (pos != null && pos > 30) {
                 it.scrollToPosition(30)
                 it.smoothScrollToPosition(0)
@@ -58,7 +59,7 @@ class ArticlesFragment : BaseFragment<FragmentArticlesBinding, ArticlesViewModel
     private fun setUpView() {
         setupRecyclerView()
         arguments?.getString(ARG_PARAM)?.let {
-            viewModel.articles.observe(viewLifecycleOwner, Observer {articleList ->
+            viewModel.articles.observe(viewLifecycleOwner, Observer { articleList ->
                 if (articleList.isEmpty() && viewModel.isLoading.value == true) {
                     viewDataBinding.recyclerView.visibility = View.GONE
                 } else {
@@ -75,7 +76,7 @@ class ArticlesFragment : BaseFragment<FragmentArticlesBinding, ArticlesViewModel
             scrollToTop()
         }
         viewDataBinding.refreshLayout.run {
-            val context = context?: LCGApp.context
+            val context = context ?: LCGApp.context
             setColorSchemeColors(
                 ContextCompat.getColor(context, R.color.colorPrimary),
                 ContextCompat.getColor(context, R.color.colorAccent),
@@ -84,7 +85,7 @@ class ArticlesFragment : BaseFragment<FragmentArticlesBinding, ArticlesViewModel
             // Set the scrolling view in the custom SwipeRefreshLayout.
             setScrollUpChild(viewDataBinding.recyclerView)
             setOnRefreshListener {
-                viewModel.fetchArticles(ArticleFetcher.FetchType.FETCH_INIT){}
+                viewModel.fetchArticles(ArticleFetcher.FetchType.FETCH_INIT) {}
             }
         }
     }
@@ -128,6 +129,7 @@ class ArticlesFragment : BaseFragment<FragmentArticlesBinding, ArticlesViewModel
 
     companion object {
         private const val ARG_PARAM = "param"
+
         @JvmStatic
         fun newInstance(param: String, isControllable: Boolean = true): ArticlesFragment {
             return ArticlesFragment().apply {

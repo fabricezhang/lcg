@@ -55,18 +55,18 @@ class ArticlesAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         return when (viewType) {
-            VIEW_TYPE_NORMAL -> { ArticleViewHolder(
-                LayoutInflater.from(parent.context)
-                    .inflate(
-                        R.layout.item_article_view
-                        , parent, false
-                    ))
+            VIEW_TYPE_NORMAL -> {
+                ArticleViewHolder(
+                    LayoutInflater.from(parent.context)
+                        .inflate(
+                            R.layout.item_article_view, parent, false
+                        )
+                )
             }
             VIEW_TYPE_LOAD_MORE -> LoadMoreViewHolder(
                 LayoutInflater.from(parent.context)
                     .inflate(
-                        R.layout.item_load_more_view
-                        , parent, false
+                        R.layout.item_load_more_view, parent, false
                     )
             )
             VIEW_TYPE_EMPTY -> {
@@ -185,7 +185,7 @@ class ArticlesAdapter(
         }
 
         override fun onRetryClick() {
-            articleFetcher.fetchArticles(ArticleFetcher.FetchType.FETCH_INIT){}
+            articleFetcher.fetchArticles(ArticleFetcher.FetchType.FETCH_INIT) {}
         }
 
     }
@@ -194,7 +194,7 @@ class ArticlesAdapter(
         BaseViewHolder(view) {
         override fun onBind(position: Int) {
             view.loading.visibility = View.VISIBLE
-            articleFetcher.fetchArticles(ArticleFetcher.FetchType.FETCH_MORE){
+            articleFetcher.fetchArticles(ArticleFetcher.FetchType.FETCH_MORE) {
                 view.post {
                     view.loading.visibility = View.GONE
                 }

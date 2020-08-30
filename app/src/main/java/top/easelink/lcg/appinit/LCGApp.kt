@@ -37,22 +37,22 @@ class LCGApp : Application() {
         trySignIn()
     }
 
-    private fun trySignIn() {
-        GlobalScope.launch(BackGroundPool) {
+    private fun trySignIn() = GlobalScope.launch(BackGroundPool) {
+        if (AppConfig.autoSignEnable) {
             delay(2000)
-            if (AppConfig.autoSignEnable) {
-                try {
-                    SignInWorker.sendSignInRequest()
-                } catch (e: Exception) {
-                    Timber.e(e)
-                }
+            try {
+                SignInWorker.sendSignInRequest()
+            } catch (e: Exception) {
+                Timber.e(e)
             }
         }
     }
 
     private fun initBulgy() {
-        Bugly.init(applicationContext,
-            BuildConfig.BUGLY_APP_ID, false)
+        Bugly.init(
+            applicationContext,
+            BuildConfig.BUGLY_APP_ID, false
+        )
         Beta.largeIconId = R.drawable.ic_noavatar_middle
         Beta.smallIconId = R.drawable.ic_noavatar_middle
         Beta.enableHotfix = false
@@ -72,6 +72,7 @@ class LCGApp : Application() {
     companion object {
         lateinit var instance: LCGApp
             private set
+
         @JvmStatic
         val context: Context
             get() = instance

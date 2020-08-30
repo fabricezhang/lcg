@@ -7,7 +7,7 @@ import top.easelink.lcg.service.web.WebViewWrapper
 import top.easelink.lcg.utils.WebsiteConstant.LOGIN_QUERY
 import top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL
 
-class LoginViewModel: ViewModel() {
+class LoginViewModel : ViewModel() {
 
     fun fetchLoginPage() {
         WebViewWrapper.getInstance().loadUrl("$SERVER_BASE_URL${LOGIN_QUERY}", ::parseHtml)

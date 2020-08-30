@@ -1,7 +1,7 @@
 package top.easelink.lcg.ui.main.discover.source
 
 import org.jsoup.nodes.Document
-import top.easelink.lcg.network.Client
+import top.easelink.lcg.network.JsoupClient
 import top.easelink.lcg.ui.main.discover.model.RankListModel
 import top.easelink.lcg.ui.main.discover.model.RankModel
 import top.easelink.lcg.utils.WebsiteConstant.RANK_QUERY
@@ -9,7 +9,7 @@ import top.easelink.lcg.utils.WebsiteConstant.RANK_QUERY
 
 fun fetchRank(type: RankType, dateType: DateType): RankListModel {
     return parseRankModelInfo(
-        Client.sendGetRequestWithQuery(RANK_QUERY.format(type.value, dateType.value)), type
+        JsoupClient.sendGetRequestWithQuery(RANK_QUERY.format(type.value, dateType.value)), type
     )
 }
 

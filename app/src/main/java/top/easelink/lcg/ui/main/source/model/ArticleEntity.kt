@@ -21,8 +21,10 @@ class ArticleEntity(
     @PrimaryKey
     @ColumnInfo(name = "id")
     var id: String
+
     @ColumnInfo(name = "content")
     var content = ""
+
     @ColumnInfo(name = "timestamp")
     var timestamp: Long
 

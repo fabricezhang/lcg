@@ -8,9 +8,9 @@ import java.lang.reflect.Constructor
 
 val Main = Looper.getMainLooper().asHandler(true).asCoroutineDispatcher("EL-main")
 val ImmediatePool by lazy { ELDispacher(ELThreadPoolProvider.IMMEDIATE_EXECUTORS) }
-val CommonPool by lazy { ELDispacher(ELThreadPoolProvider.COMMON_EXECUTOR) }
+val CalcPool by lazy { ELDispacher(ELThreadPoolProvider.COMMON_EXECUTOR) }
 val BackGroundPool by lazy { ELDispacher(ELThreadPoolProvider.BACKGROUND_EXECUTOR) }
-val ApiPool by lazy { ELDispacher(ELThreadPoolProvider.API_EXECUTOR) }
+val IOPool by lazy { ELDispacher(ELThreadPoolProvider.API_EXECUTOR) }
 
 private fun Looper.asHandler(async: Boolean): Handler {
     // Async support was added since API 16

@@ -11,9 +11,9 @@ class WrapFixGridView(
     defStyle: Int
 ) : GridView(context, set, defStyle) {
 
-    constructor(context: Context, set: AttributeSet?): this(context, set, 0)
+    constructor(context: Context, set: AttributeSet?) : this(context, set, 0)
 
-    constructor(context: Context): this(context, null, 0)
+    constructor(context: Context) : this(context, null, 0)
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         val expandSpec = MeasureSpec.makeMeasureSpec(

@@ -4,15 +4,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
-import top.easelink.framework.threadpool.CommonPool
+import top.easelink.framework.threadpool.CalcPool
 import top.easelink.lcg.ui.profile.source.ProfileSource
 
-class ProfileViewModel: ViewModel() {
+class ProfileViewModel : ViewModel() {
 
     private var job = Job()
 
     fun startFetchUserInfo(query: String) {
-        val deffer = viewModelScope.async(CommonPool) {
+        val deffer = viewModelScope.async(CalcPool) {
             ProfileSource.getProfile(query)
         }
     }

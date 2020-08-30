@@ -34,9 +34,11 @@ internal class ForumsPrimaryAdapterConfig : ILinkagePrimaryAdapterConfig {
     ) {
         val tvTitle = holder.mGroupTitle as TextView
         tvTitle.text = title
-        tvTitle.setBackgroundColor(ContextCompat.getColor(
-            mContext,
-            if (selected) R.color.white else R.color.slight_light_gray)
+        tvTitle.setBackgroundColor(
+            ContextCompat.getColor(
+                mContext,
+                if (selected) R.color.white else R.color.slight_light_gray
+            )
         )
         tvTitle.setTextColor(
             ContextCompat.getColor(

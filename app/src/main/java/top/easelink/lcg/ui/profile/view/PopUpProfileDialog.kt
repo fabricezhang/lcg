@@ -10,13 +10,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import coil.load
+import coil.transform.RoundedCornersTransformation
 import kotlinx.android.synthetic.main.dialog_profile.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import top.easelink.framework.threadpool.ApiPool
+import top.easelink.framework.threadpool.IOPool
 import top.easelink.framework.utils.dpToPx
 import top.easelink.framework.utils.getStatusBarHeight
 import top.easelink.lcg.R
@@ -24,7 +24,7 @@ import top.easelink.lcg.mta.EVENT_OPEN_PROFILE
 import top.easelink.lcg.mta.EVENT_OPEN_PROFILE_PAGE
 import top.easelink.lcg.mta.EVENT_SUBSCRIBE_USER
 import top.easelink.lcg.mta.sendEvent
-import top.easelink.lcg.network.Client
+import top.easelink.lcg.network.JsoupClient
 import top.easelink.lcg.ui.main.source.parseExtraUserInfoProfilePage
 import top.easelink.lcg.ui.profile.model.PopUpProfileInfo
 import top.easelink.lcg.ui.webview.view.WebViewActivity
@@ -33,7 +33,7 @@ import top.easelink.lcg.utils.showMessage
 
 class PopUpProfileDialog(
     private val popUpInfo: PopUpProfileInfo
-): DialogFragment() {
+) : DialogFragment() {
 
     private lateinit var mContext: Context
 
@@ -52,19 +52,20 @@ class PopUpProfileDialog(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        extra_info_grid.adapter = UserInfoGridViewAdapter(view.context, R.layout.item_profile_user_info).also {
-            popUpInfo.extraUserInfo?.let { info ->
-                it.addAll(parseExtraUserInfoProfilePage(info))
+        extra_info_grid.adapter =
+            UserInfoGridViewAdapter(view.context, R.layout.item_profile_user_info).also {
+                popUpInfo.extraUserInfo?.let { info ->
+                    it.addAll(parseExtraUserInfoProfilePage(info))
+                }
             }
-        }
         username.text = popUpInfo.userName
         popUpInfo.followInfo?.let { info ->
             subscribe_btn.visibility = View.VISIBLE
             subscribe_btn.text = info.first
-            subscribe_btn.setOnClickListener{
+            subscribe_btn.setOnClickListener {
                 onSubscribeClicked(info.second)
             }
-        }?:run {
+        } ?: run {
             subscribe_btn.visibility = View.GONE
         }
 
@@ -73,11 +74,9 @@ class PopUpProfileDialog(
             WebViewActivity.startWebViewWith(SERVER_BASE_URL + popUpInfo.profileUrl, it.context)
         }
 
-        Glide.with(mContext)
-            .load(popUpInfo.imageUrl)
-            .transform(RoundedCorners(4.dpToPx(mContext).toInt()))
-            .into(profile_avatar)
-
+        profile_avatar.load(popUpInfo.imageUrl) {
+            transformations(RoundedCornersTransformation(4.dpToPx(mContext)))
+        }
     }
 
     override fun onStart() {
@@ -104,10 +103,10 @@ class PopUpProfileDialog(
 
     private fun onSubscribeClicked(url: String) {
         sendEvent(EVENT_SUBSCRIBE_USER)
-        GlobalScope.launch(ApiPool){
+        GlobalScope.launch(IOPool) {
             try {
-                Client.sendGetRequestWithQuery(url).let {
-                    it.getElementById("messagetext")?.text()?.let {msg ->
+                JsoupClient.sendGetRequestWithQuery(url).let {
+                    it.getElementById("messagetext")?.text()?.let { msg ->
                         showMessage(msg)
                     }
                 }

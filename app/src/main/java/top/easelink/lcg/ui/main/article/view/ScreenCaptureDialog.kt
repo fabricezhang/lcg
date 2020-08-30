@@ -1,13 +1,12 @@
 package top.easelink.lcg.ui.main.article.view
 
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.*
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.target.Target
+import coil.Coil
+import coil.request.CachePolicy
+import coil.request.ImageRequest
+import coil.size.OriginalSize
+import coil.size.SizeResolver
 import kotlinx.android.synthetic.main.dialog_screen_capture.*
 import kotlinx.android.synthetic.main.dialog_screen_capture.view.*
 import timber.log.Timber
@@ -21,6 +20,7 @@ class ScreenCaptureDialog : TopDialog() {
     companion object {
         val TAG: String = ScreenCaptureDialog::class.java.simpleName
         private const val IMAGE_PATH = "image_path"
+
         @JvmStatic
         fun newInstance(imagePath: String): ScreenCaptureDialog {
             return ScreenCaptureDialog().apply {
@@ -36,9 +36,11 @@ class ScreenCaptureDialog : TopDialog() {
         setStyle(STYLE_NORMAL, R.style.AppTheme_Dialog_FullScreen_BottomInOut)
     }
 
-    override fun onCreateView(inflater: LayoutInflater,
-                              container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.dialog_screen_capture, container, false)
     }
 
@@ -46,35 +48,17 @@ class ScreenCaptureDialog : TopDialog() {
         super.onViewCreated(view, savedInstanceState)
         try {
             arguments?.getString(IMAGE_PATH)?.also { path ->
-                Glide
-                    .with(view)
-                    .load(path)
-                    .skipMemoryCache(true)
-                    .listener(object : RequestListener<Drawable>{
-                        override fun onLoadFailed(
-                            e: GlideException?,
-                            model: Any?,
-                            target: Target<Drawable>?,
-                            isFirstResource: Boolean
-                        ): Boolean {
-                            return false
+                ImageRequest.Builder(view.context)
+                    .data(path)
+                    .size(SizeResolver(OriginalSize))
+                    .diskCachePolicy(CachePolicy.DISABLED)
+                    .target {
+                        img_screen_capture.post {
+                            img_screen_capture.setImageDrawable(it)
                         }
-
-                        override fun onResourceReady(
-                            resource: Drawable?,
-                            model: Any?,
-                            target: Target<Drawable>?,
-                            dataSource: DataSource?,
-                            isFirstResource: Boolean
-                        ): Boolean {
-                            img_screen_capture.post {
-                                img_screen_capture.setImageDrawable(resource)
-                            }
-                            return true
-                        }
-
-                    })
-                    .submit()
+                    }.build().let {
+                        Coil.imageLoader(view.context).enqueue(it)
+                    }
                 view.share.setOnClickListener { share ->
                     syncSystemGallery(share.context, path, path.let {
                         val p = it.lastIndexOf("/")

@@ -4,19 +4,19 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import top.easelink.framework.threadpool.ApiPool
+import top.easelink.framework.threadpool.IOPool
 import top.easelink.lcg.ui.main.source.model.Article
 import top.easelink.lcg.ui.main.source.remote.ArticlesRemoteDataSource
 
 class ArticlesViewModel : ViewModel(), ArticleFetcher {
     private var mCurrentPage = 0
-    private var mUrl: String? = null
+    private lateinit var mUrl: String
     val isLoading = MutableLiveData<Boolean>()
     val articles = MutableLiveData<List<Article>>()
 
-    fun initUrl(url: String?) {
+    fun initUrl(url: String) {
         mUrl = url
-        fetchArticles(ArticleFetcher.FetchType.FETCH_INIT){}
+        fetchArticles(ArticleFetcher.FetchType.FETCH_INIT) {}
     }
 
     override fun fetchArticles(fetchType: ArticleFetcher.FetchType, callback: (Boolean) -> Unit) {
@@ -25,8 +25,8 @@ class ArticlesViewModel : ViewModel(), ArticleFetcher {
             ArticleFetcher.FetchType.FETCH_INIT -> 1
         }
         isLoading.value = true
-        GlobalScope.launch(ApiPool){
-            ArticlesRemoteDataSource.getHomePageArticles(mUrl!!, pageNum).let {
+        GlobalScope.launch(IOPool) {
+            ArticlesRemoteDataSource.getHomePageArticles(mUrl, pageNum).let {
                 if (it.isNotEmpty().also(callback)) {
                     val list = articles.value?.toMutableList()
                     if (fetchType == ArticleFetcher.FetchType.FETCH_MORE && list != null && list.size != 0) {

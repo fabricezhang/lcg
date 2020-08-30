@@ -18,7 +18,7 @@ import top.easelink.lcg.ui.main.discover.model.ForumListModel
 import top.easelink.lcg.ui.main.discover.model.RankListModel
 import top.easelink.lcg.ui.main.discover.viewmodel.DiscoverViewModel
 
-class DiscoverFragment : TopFragment(), ControllableFragment{
+class DiscoverFragment : TopFragment(), ControllableFragment {
 
     private lateinit var mViewModel: DiscoverViewModel
 
@@ -54,11 +54,11 @@ class DiscoverFragment : TopFragment(), ControllableFragment{
 
     private fun setUpRV() {
         forum_rv.apply {
-            layoutManager =  LinearLayoutManager(context).also {
+            layoutManager = LinearLayoutManager(context).also {
                 it.orientation = RecyclerView.VERTICAL
             }
             itemAnimator = DefaultItemAnimator()
-            val multiTypeAdapter =  MultiTypeAdapter().apply {
+            val multiTypeAdapter = MultiTypeAdapter().apply {
                 register(ForumListModel::class.java, ForumNavigationBinder())
                 register(RankListModel::class.java, RankListBinder())
             }

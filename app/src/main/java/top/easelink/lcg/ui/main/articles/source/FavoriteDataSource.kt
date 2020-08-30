@@ -2,7 +2,7 @@ package top.easelink.lcg.ui.main.articles.source
 
 import androidx.annotation.WorkerThread
 import org.jsoup.nodes.Document
-import top.easelink.lcg.network.Client
+import top.easelink.lcg.network.JsoupClient
 import top.easelink.lcg.ui.main.source.model.ArticleEntity
 import top.easelink.lcg.utils.WebsiteConstant.GET_FAVORITE_QUERY
 import top.easelink.lcg.utils.toTimeStamp
@@ -13,7 +13,7 @@ object FavoriteDataSource {
         val favorites = mutableListOf<ArticleEntity>()
         var nextPageUrl: String? = GET_FAVORITE_QUERY
         while (nextPageUrl != null) {
-            val doc = Client.sendGetRequestWithQuery(nextPageUrl)
+            val doc = JsoupClient.sendGetRequestWithQuery(nextPageUrl)
             favorites.addAll(parseFavorites(doc))
             nextPageUrl = doc.selectFirst("a.nxt")?.attr("href")
         }
