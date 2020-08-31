@@ -24,6 +24,7 @@ object AppConfig {
 
     private const val CONFIG_SEARCH_ENGINE_BAIDU = 1
     private const val CONFIG_SEARCH_ENGINE_WUAI = 0
+
     // Config from Remote
     fun getAppReleaseUrl(): String {
         return StatConfig.getCustomProperty(CONFIG_APP_RELEASE_URL, "thread-1073834-1-1.html")
@@ -76,7 +77,7 @@ object AppConfig {
     }
 
     @Suppress("UNCHECKED_CAST", "IMPLICIT_CAST_TO_ANY")
-    private fun <T: Any> get(key: String, default: T): T {
+    private fun <T : Any> get(key: String, default: T): T {
         getConfigSp().let {
             val res = when (default) {
                 is String -> it.getString(key, default)
@@ -84,12 +85,12 @@ object AppConfig {
                 is Boolean -> it.getBoolean(key, default)
                 else -> null
             }
-            return res as? T?:default
+            return res as? T ?: default
         }
     }
 
     @Suppress("UNCHECKED_CAST", "IMPLICIT_CAST_TO_ANY")
-    private fun <T: Any?> put(key: String, value: T) {
+    private fun <T : Any?> put(key: String, value: T) {
         getConfigSp()
             .edit()
             .apply {

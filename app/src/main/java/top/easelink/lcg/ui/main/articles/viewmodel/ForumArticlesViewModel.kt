@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import top.easelink.framework.threadpool.ApiPool
+import top.easelink.framework.threadpool.IOPool
 import top.easelink.lcg.R
 import top.easelink.lcg.ui.main.model.LoginRequiredException
 import top.easelink.lcg.ui.main.source.model.Article
@@ -32,7 +32,11 @@ class ForumArticlesViewModel : ViewModel(), ArticleFetcher {
     val threadList = MutableLiveData<List<ForumThread>>()
     val isLoading = MutableLiveData<Boolean>()
 
-    fun initUrlAndFetch(url: String, fetchType: ArticleFetcher.FetchType, order: String = DEFAULT_ORDER) {
+    fun initUrlAndFetch(
+        url: String,
+        fetchType: ArticleFetcher.FetchType,
+        order: String = DEFAULT_ORDER
+    ) {
         //Fabrice: add a workaround to  map forum-16-1.html to forum.php?mod=forumdisplay&fid=16
         mUrl = if (url.startsWith("forum-") && url.endsWith("html")) {
             try {
@@ -46,7 +50,7 @@ class ForumArticlesViewModel : ViewModel(), ArticleFetcher {
         }
         mFetchType = fetchType
         orderType = order
-        fetchArticles(mFetchType){}
+        fetchArticles(mFetchType) {}
     }
 
     @MainThread
@@ -64,7 +68,7 @@ class ForumArticlesViewModel : ViewModel(), ArticleFetcher {
 
     override fun fetchArticles(fetchType: ArticleFetcher.FetchType, callback: (Boolean) -> Unit) {
         isLoading.value = true
-        GlobalScope.launch(ApiPool) {
+        GlobalScope.launch(IOPool) {
             try {
                 val query = composeUrlByRequestType(fetchType)
                 val forumPage = getForumArticles(

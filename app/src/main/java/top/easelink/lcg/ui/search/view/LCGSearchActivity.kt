@@ -3,7 +3,6 @@ package top.easelink.lcg.ui.search.view
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -34,8 +33,14 @@ class LCGSearchActivity : TopActivity() {
     companion object {
         const val KEY_WORD = "key_word"
     }
+
     private lateinit var mSearchViewModel: LCGSearchViewModel
-    private val threadRegex by lazy { Regex("thread-[0-9]+-[0-9]+-[0-9]+.html$", RegexOption.IGNORE_CASE) }
+    private val threadRegex by lazy {
+        Regex(
+            "thread-[0-9]+-[0-9]+-[0-9]+.html$",
+            RegexOption.IGNORE_CASE
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,14 +49,9 @@ class LCGSearchActivity : TopActivity() {
         mSearchViewModel = ViewModelProvider(this)[LCGSearchViewModel::class.java]
         setUp()
         val kw = intent.getStringExtra(KEY_WORD)
-        if (kw.isNotBlank()) {
+        if (!kw.isNullOrBlank()) {
             mSearchViewModel.setKeyword(kw)
         }
-    }
-
-    override fun onStart() {
-        super.onStart()
-        toolbar.visibility = View.GONE
     }
 
     override fun onDestroy() {
@@ -90,16 +90,16 @@ class LCGSearchActivity : TopActivity() {
     }
 
     private fun setupObserver() {
-        mSearchViewModel.totalResult.observe(this, Observer {
+        mSearchViewModel.totalResult.observe(this) {
             toolbar.title = it
-        })
-        mSearchViewModel.searchResults.observe(this@LCGSearchActivity, Observer {
+        }
+        mSearchViewModel.searchResults.observe(this@LCGSearchActivity) {
             (recycler_view.adapter as? LCGSearchResultAdapter)?.apply {
                 clearItems()
                 addItems(it)
             }
-        })
-        mSearchViewModel.isLoading.observe(this@LCGSearchActivity, Observer {
+        }
+        mSearchViewModel.isLoading.observe(this@LCGSearchActivity) {
             if (it) {
                 searching_file.visibility = View.VISIBLE
                 recycler_view.visibility = View.GONE
@@ -107,29 +107,34 @@ class LCGSearchActivity : TopActivity() {
                 searching_file.visibility = View.GONE
                 recycler_view.visibility = View.VISIBLE
             }
-        })
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageEvent(event: OpenSearchResultEvent) {
         sendEvent(EVENT_OPEN_ARTICLE)
-        if (threadRegex.containsMatchIn(event.url)) {
-            if (AppConfig.searchResultShowInWebView) {
-                WebViewActivity.startWebViewWith(SERVER_BASE_URL + event.url, this)
-            } else {
-                showFragment(ArticleFragment(event.url))
+        when {
+            threadRegex.containsMatchIn(event.url) || event.url.startsWith("forum.php") -> {
+                if (AppConfig.searchResultShowInWebView) {
+                    WebViewActivity.startWebViewWith(SERVER_BASE_URL + event.url, this)
+                } else {
+                    showFragment(ArticleFragment(event.url))
+                }
             }
-        } else if (event.url.startsWith("http") || event.url.startsWith(SERVER_BASE_URL)){
-            WebViewActivity.startWebViewWith(event.url, this)
-        } else {
-            showMessage(R.string.general_error)
+            event.url.startsWith("http") || event.url.startsWith(SERVER_BASE_URL) -> {
+                WebViewActivity.startWebViewWith(event.url, this)
+            }
+            else -> showMessage(R.string.general_error)
         }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageEvent(event: OpenLargeImageViewEvent) {
         if (event.url.isNotEmpty()) {
-            LargeImageDialog(event.url).show(supportFragmentManager, LargeImageDialog::class.java.simpleName)
+            LargeImageDialog(event.url).show(
+                supportFragmentManager,
+                LargeImageDialog::class.java.simpleName
+            )
         } else {
             showMessage(R.string.tap_for_large_image_failed)
         }
@@ -141,5 +146,6 @@ class LCGSearchActivity : TopActivity() {
             fragment,
             R.id.view_root
         )
+        toolbar.visibility = View.GONE
     }
 }

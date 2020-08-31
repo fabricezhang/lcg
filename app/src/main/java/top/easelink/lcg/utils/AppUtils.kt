@@ -18,7 +18,7 @@ fun isApplicationAvailable(context: Context, packageName: String): Boolean {
 const val WECHAT_PACKAGE_NAME = "com.tencent.mm"
 
 fun startWeChat(context: Context) {
-    if(isApplicationAvailable(context, WECHAT_PACKAGE_NAME)) {
+    if (isApplicationAvailable(context, WECHAT_PACKAGE_NAME)) {
         context.startActivity(Intent(ACTION_MAIN).apply {
             addCategory(CATEGORY_LAUNCHER)
             addFlags(FLAG_ACTIVITY_NEW_TASK)
@@ -35,3 +35,4 @@ fun getScreenWidthDp(context: Context): Int {
 }
 
 fun getScreenWidth(context: Context): Int = context.resources.displayMetrics.widthPixels
+fun getScreenHeight(context: Context): Int = context.resources.displayMetrics.heightPixels

@@ -1,10 +1,11 @@
 package top.easelink.lcg.service.work
 
 import android.content.Context
+import android.os.Build
 import androidx.work.*
 import timber.log.Timber
 import top.easelink.lcg.BuildConfig
-import top.easelink.lcg.network.Client
+import top.easelink.lcg.network.JsoupClient
 import java.net.SocketTimeoutException
 import java.util.concurrent.TimeUnit
 
@@ -34,7 +35,7 @@ class SignInWorker(context: Context, workerParams: WorkerParameters) :
 
         @Throws(SocketTimeoutException::class)
         fun sendSignInRequest() {
-            Client.sendGetRequestWithUrl(APPLY_TASK_URL)
+            JsoupClient.sendGetRequestWithUrl(APPLY_TASK_URL)
                 .getElementsByClass("alert_info")
                 ?.first()
                 ?.selectFirst("p")
@@ -43,7 +44,7 @@ class SignInWorker(context: Context, workerParams: WorkerParameters) :
                     Timber.d(it)
                     it.contains(TASK_APPLIED)
                 }?.run {
-                    Client.sendGetRequestWithUrl(DRAW_TASK_URL)
+                    JsoupClient.sendGetRequestWithUrl(DRAW_TASK_URL)
                         .getElementsByClass("alert_info")
                         ?.first()
                         ?.selectFirst("p")
@@ -56,16 +57,20 @@ class SignInWorker(context: Context, workerParams: WorkerParameters) :
 
         fun startSignInWork(): Operation {
             val constraints = Constraints.Builder()
-                .setRequiresDeviceIdle(false)
+                .apply {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        setRequiresDeviceIdle(false)
+                    }
+                }
                 .setRequiresCharging(false)
                 .setRequiredNetworkType(NetworkType.CONNECTED)
                 .setRequiresBatteryNotLow(false)
                 .build()
             val request = PeriodicWorkRequest.Builder(
-                    SignInWorker::class.java,
-                    WORK_INTERVAL,
-                    DEFAULT_TIME_UNIT
-                )
+                SignInWorker::class.java,
+                WORK_INTERVAL,
+                DEFAULT_TIME_UNIT
+            )
                 .setConstraints(constraints)
                 .addTag(TAG)
                 .setBackoffCriteria(BackoffPolicy.LINEAR, 15L, TimeUnit.MINUTES)

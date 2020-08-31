@@ -37,12 +37,10 @@ import top.easelink.lcg.ui.main.forumnav.view.ForumNavigationFragment
 import top.easelink.lcg.ui.main.largeimg.view.LargeImageDialog
 import top.easelink.lcg.ui.main.me.view.MeFragment
 import top.easelink.lcg.ui.main.message.view.MessageFragment
-import top.easelink.lcg.ui.main.model.NewMessageEvent
-import top.easelink.lcg.ui.main.model.OpenArticleEvent
-import top.easelink.lcg.ui.main.model.OpenForumEvent
-import top.easelink.lcg.ui.main.model.OpenLargeImageViewEvent
+import top.easelink.lcg.ui.main.model.*
 import top.easelink.lcg.ui.main.recommand.view.RecommendFragment
 import top.easelink.lcg.ui.setting.view.SettingActivity
+import top.easelink.lcg.ui.webview.view.HalfScreenWebViewFragment
 import top.easelink.lcg.ui.webview.view.WebViewActivity
 import top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL
 import top.easelink.lcg.utils.showMessage
@@ -89,12 +87,18 @@ class MainActivity : TopActivity(), BottomNavigationView.OnNavigationItemSelecte
         navigation_view.addHeaderView(header)
         app_version.text = BuildConfig.VERSION_NAME
         setSupportActionBar(toolbar)
-        val toggle = ActionBarDrawerToggle(this, drawer_view, toolbar, R.string.open_drawer, R.string.close_drawer)
+        val toggle = ActionBarDrawerToggle(
+            this,
+            drawer_view,
+            toolbar,
+            R.string.open_drawer,
+            R.string.close_drawer
+        )
         drawer_view.addDrawerListener(toggle)
         toggle.syncState()
-        navigation_view.setNavigationItemSelectedListener{ item: MenuItem ->
+        navigation_view.setNavigationItemSelectedListener { item: MenuItem ->
             drawer_view.closeDrawer(GravityCompat.START)
-            when(item.itemId) {
+            when (item.itemId) {
                 R.id.nav_item_about -> {
                     showFragment(AboutFragment())
                     true
@@ -188,16 +192,24 @@ class MainActivity : TopActivity(), BottomNavigationView.OnNavigationItemSelecte
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageEvent(event: OpenLargeImageViewEvent) {
         if (event.url.isNotEmpty()) {
-            LargeImageDialog(event.url).show(supportFragmentManager, LargeImageDialog::class.java.simpleName)
+            LargeImageDialog(event.url).show(
+                supportFragmentManager,
+                LargeImageDialog::class.java.simpleName
+            )
         } else {
             showMessage(R.string.tap_for_large_image_failed)
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onOpenHalfScreenWebViewEvent(event: OpenHalfWebViewFragmentEvent) {
+        HalfScreenWebViewFragment.newInstance(event.html).show(supportFragmentManager, HalfScreenWebViewFragment::class.simpleName)
+    }
+
     @Suppress("SameParameterValue")
     private fun showBubbleView(pos: Int) {
         // Try show badge on bottom nav bar
-        val menuView= bottom_navigation.getChildAt(0) as? BottomNavigationMenuView
+        val menuView = bottom_navigation.getChildAt(0) as? BottomNavigationMenuView
         val itemView = menuView?.getChildAt(pos) as? BottomNavigationItemView
         bubbleView = LayoutInflater.from(this).inflate(R.layout.menu_badge, menuView, false)
         itemView?.addView(bubbleView)
@@ -207,7 +219,7 @@ class MainActivity : TopActivity(), BottomNavigationView.OnNavigationItemSelecte
     private fun removeBubbleView(pos: Int) {
         bubbleView?.let {
             // remove bubble view
-            val menuView= bottom_navigation.getChildAt(0) as? BottomNavigationMenuView
+            val menuView = bottom_navigation.getChildAt(0) as? BottomNavigationMenuView
             val itemView = menuView?.getChildAt(pos) as? BottomNavigationItemView
             itemView?.removeView(it)
             bubbleView = null
@@ -258,7 +270,8 @@ class MainActivity : TopActivity(), BottomNavigationView.OnNavigationItemSelecte
                 R.id.action_forum_navigation -> showFragment(DiscoverFragment::class.java)
                 R.id.action_about_me -> showFragment(MeFragment::class.java)
                 R.id.action_home -> showFragment(RecommendFragment::class.java)
-                else -> { }
+                else -> {
+                }
             }
             true
         }
@@ -267,7 +280,8 @@ class MainActivity : TopActivity(), BottomNavigationView.OnNavigationItemSelecte
 
     private fun checkPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            != PERMISSION_GRANTED){
+            != PERMISSION_GRANTED
+        ) {
             ActivityCompat.requestPermissions(
                 this,
                 arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),

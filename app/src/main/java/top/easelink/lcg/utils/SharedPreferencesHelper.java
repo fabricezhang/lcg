@@ -15,6 +15,12 @@ import static top.easelink.lcg.spipedata.UserSPConstantsKt.SP_USER;
 @SuppressWarnings("unused")
 public class SharedPreferencesHelper {
 
+    private static final int VALUE_TYPE_STRING = 0;
+    private static final int VALUE_TYPE_INT = 1;
+    private static final int VALUE_TYPE_LONG = 2;
+    private static final int VALUE_TYPE_FLOAT = 3;
+    private static final int VALUE_TYPE_BOOLEAN = 4;
+
     public static SharedPreferences getUserSp() {
         return LCGApp.getContext().getSharedPreferences(SP_USER, Context.MODE_PRIVATE);
     }
@@ -83,7 +89,6 @@ public class SharedPreferencesHelper {
         return sp.getBoolean(key, defValue);
     }
 
-
     public static void remove(SharedPreferences sp, String key) {
         if (sp == null || TextUtils.isEmpty(key)) {
             return;
@@ -91,11 +96,28 @@ public class SharedPreferencesHelper {
         sp.edit().remove(key).apply();
     }
 
-    private static final int VALUE_TYPE_STRING = 0;
-    private static final int VALUE_TYPE_INT = 1;
-    private static final int VALUE_TYPE_LONG = 2;
-    private static final int VALUE_TYPE_FLOAT = 3;
-    private static final int VALUE_TYPE_BOOLEAN = 4;
+    private static void setSpItem(SharedPreferences.Editor spEditor, SpItem spItem) {
+        if (spItem == null || spEditor == null) {
+            return;
+        }
+        switch (spItem.mValueType) {
+            case VALUE_TYPE_STRING:
+                spEditor.putString(spItem.mKey, (String) spItem.mValue);
+                break;
+            case VALUE_TYPE_INT:
+                spEditor.putInt(spItem.mKey, (Integer) spItem.mValue);
+                break;
+            case VALUE_TYPE_LONG:
+                spEditor.putLong(spItem.mKey, (Long) spItem.mValue);
+                break;
+            case VALUE_TYPE_FLOAT:
+                spEditor.putFloat(spItem.mKey, (Float) spItem.mValue);
+                break;
+            case VALUE_TYPE_BOOLEAN:
+                spEditor.putBoolean(spItem.mKey, (Boolean) spItem.mValue);
+                break;
+        }
+    }
 
     public static class SpItem<T> {
         private String mKey;
@@ -122,29 +144,6 @@ public class SharedPreferencesHelper {
                 typ = VALUE_TYPE_BOOLEAN;
             }
             return typ;
-        }
-    }
-
-    private static void setSpItem(SharedPreferences.Editor spEditor, SpItem spItem) {
-        if (spItem == null || spEditor == null) {
-            return;
-        }
-        switch (spItem.mValueType) {
-            case VALUE_TYPE_STRING:
-                spEditor.putString(spItem.mKey, (String) spItem.mValue);
-                break;
-            case VALUE_TYPE_INT:
-                spEditor.putInt(spItem.mKey, (Integer) spItem.mValue);
-                break;
-            case VALUE_TYPE_LONG:
-                spEditor.putLong(spItem.mKey, (Long) spItem.mValue);
-                break;
-            case VALUE_TYPE_FLOAT:
-                spEditor.putFloat(spItem.mKey, (Float) spItem.mValue);
-                break;
-            case VALUE_TYPE_BOOLEAN:
-                spEditor.putBoolean(spItem.mKey, (Boolean) spItem.mValue);
-                break;
         }
     }
 }

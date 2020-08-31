@@ -29,7 +29,6 @@ import android.text.style.BulletSpan;
 import android.text.style.LeadingMarginSpan;
 import android.text.style.StrikethroughSpan;
 import android.text.style.TypefaceSpan;
-import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -115,7 +114,7 @@ public class HtmlTagHandler implements Html.TagHandler {
     private static final int defaultIndent = 10;
     private static final int defaultListItemIndent = defaultIndent * 2;
     private static final BulletSpan defaultBullet = new BulletSpan(defaultIndent);
-    private ClickableSpecialSpan clickableSpecialSpan;
+    private ClickablePreCodeSpan clickablePreCodeSpan;
     private DrawPreCodeSpan drawPreCodeSpan;
 
     private static class Ul {
@@ -261,21 +260,21 @@ public class HtmlTagHandler implements Html.TagHandler {
             } else if (tag.equalsIgnoreCase("td")) {
                 end(output, Td.class, false);
             } else if (tag.equalsIgnoreCase("pre")) {
-                ClickableSpecialSpan myClickableSpecialSpan = null;
-                if (clickableSpecialSpan != null) {
-                    myClickableSpecialSpan = clickableSpecialSpan.newInstance();
+                ClickablePreCodeSpan myClickablePreCodeSpan = null;
+                if (clickablePreCodeSpan != null) {
+                    myClickablePreCodeSpan = clickablePreCodeSpan.newInstance();
                     final CharSequence extractedSpanText = extractSpanText(output, Pre.class);
                     preHtmlBuilder.append(extractedSpanText);
                     preHtmlBuilder.append("</")
                             .append(tag.toLowerCase())
                             .append(">");
-                    myClickableSpecialSpan.setHtml(preHtmlBuilder.toString());
+                    myClickablePreCodeSpan.setHtml(preHtmlBuilder.toString());
                 }
                 DrawPreCodeSpan myDrawPreCodeSpan = null;
                 if (drawPreCodeSpan != null) {
                     myDrawPreCodeSpan = drawPreCodeSpan.newInstance();
                 }
-                end(output, Pre.class, false, myDrawPreCodeSpan, myClickableSpecialSpan);
+                end(output, Pre.class, false, myDrawPreCodeSpan, myClickablePreCodeSpan);
                 preStart = false;
             }
         }
@@ -384,8 +383,8 @@ public class HtmlTagHandler implements Html.TagHandler {
         userGivenIndent = Math.round(px);
     }
 
-    public void setClickableSpecialSpan(ClickableSpecialSpan clickableSpecialSpan) {
-        this.clickableSpecialSpan = clickableSpecialSpan;
+    public void setClickablePreCodeSpan(ClickablePreCodeSpan clickablePreCodeSpan) {
+        this.clickablePreCodeSpan = clickablePreCodeSpan;
     }
 
     public void setDrawPreCodeSpan(DrawPreCodeSpan drawPreCodeSpan) {

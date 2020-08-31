@@ -7,7 +7,7 @@ try {
 }
 apply from: "dependencies.gradle"
 buildscript {
-    ext.kotlin_version = '1.3.72'
+    ext.kotlin_version = '1.4.0'
     repositories {
         maven { url 'https://maven.aliyun.com/repository/public' }
         google()

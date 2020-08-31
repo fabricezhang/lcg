@@ -7,10 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.bumptech.glide.Glide
+import coil.load
 import kotlinx.android.synthetic.main.dialog_post_preview.*
 import timber.log.Timber
-import top.easelink.framework.customview.htmltextview.HtmlGlideImageGetter
+import top.easelink.framework.customview.htmltextview.HtmlCoilImageGetter
 import top.easelink.framework.topbase.TopDialog
 import top.easelink.framework.utils.dpToPx
 import top.easelink.lcg.R
@@ -25,6 +25,7 @@ class PostPreviewDialog : TopDialog() {
     companion object {
         val TAG: String = PostPreviewDialog::class.java.simpleName
         private const val ARTICLE_QUERY = "article_query"
+
         @JvmStatic
         fun newInstance(url: String): PostPreviewDialog {
             return PostPreviewDialog().apply {
@@ -40,9 +41,11 @@ class PostPreviewDialog : TopDialog() {
         mViewModel = ViewModelProvider(this)[PostPreviewViewModel::class.java]
     }
 
-    override fun onCreateView(inflater: LayoutInflater,
-                              container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.dialog_post_preview, container, false)
     }
 
@@ -62,18 +65,18 @@ class PostPreviewDialog : TopDialog() {
                 ?.takeIf { it.isNotBlank() }
                 ?.let { query ->
                     mViewModel.content.observe(viewLifecycleOwner, Observer {
-                        content_text_view.setHtml(it, HtmlGlideImageGetter(
-                            content_text_view.context,
-                            content_text_view
-                        ))
+                        content_text_view.setHtml(
+                            it, HtmlCoilImageGetter(
+                                content_text_view.context,
+                                content_text_view
+                            )
+                        )
                     })
                     mViewModel.author.observe(viewLifecycleOwner, Observer {
                         author_text_view.text = it
                     })
                     mViewModel.avatar.observe(viewLifecycleOwner, Observer {
-                        Glide.with(this)
-                            .load(it)
-                            .into(post_avatar)
+                        post_avatar.load(it)
                     })
                     mViewModel.date.observe(viewLifecycleOwner, Observer {
                         date_text_view.text = it

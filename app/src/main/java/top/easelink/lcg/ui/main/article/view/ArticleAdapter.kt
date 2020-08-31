@@ -12,10 +12,8 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.bumptech.glide.request.transition.DrawableCrossFadeFactory
+import coil.load
+import coil.transform.RoundedCornersTransformation
 import kotlinx.android.synthetic.main.item_post_view.view.*
 import kotlinx.android.synthetic.main.item_reply_view.view.*
 import kotlinx.coroutines.GlobalScope
@@ -24,10 +22,11 @@ import org.greenrobot.eventbus.EventBus
 import timber.log.Timber
 import top.easelink.framework.base.BaseViewHolder
 import top.easelink.framework.customview.htmltextview.DrawPreCodeSpan
-import top.easelink.framework.customview.htmltextview.HtmlGlideImageGetter
+import top.easelink.framework.customview.htmltextview.HtmlCoilImageGetter
 import top.easelink.framework.threadpool.Main
 import top.easelink.framework.utils.convertViewToBitmap
 import top.easelink.framework.utils.dp2px
+import top.easelink.framework.utils.dpToPx
 import top.easelink.lcg.R
 import top.easelink.lcg.config.AppConfig
 import top.easelink.lcg.mta.EVENT_CAPTURE_ARTICLE
@@ -46,6 +45,7 @@ import top.easelink.lcg.ui.profile.view.PopUpProfileDialog
 import top.easelink.lcg.ui.profile.view.ProfileActivity
 import top.easelink.lcg.ui.webview.view.WebViewActivity
 import top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL
+import top.easelink.lcg.utils.avatar.getAvatar
 import top.easelink.lcg.utils.copyContent
 import top.easelink.lcg.utils.saveImageToGallery
 import top.easelink.lcg.utils.showMessage
@@ -84,13 +84,15 @@ class ArticleAdapter(
         return when (viewType) {
             VIEW_TYPE_POST -> PostViewHolder(
                 LayoutInflater.from(parent.context)
-                    .inflate(R.layout.item_post_view,
+                    .inflate(
+                        R.layout.item_post_view,
                         parent, false
                     )
             )
             VIEW_TYPE_REPLY -> ReplyViewHolder(
                 LayoutInflater.from(parent.context)
-                    .inflate(R.layout.item_reply_view,
+                    .inflate(
+                        R.layout.item_reply_view,
                         parent, false
                     )
             )
@@ -104,8 +106,7 @@ class ArticleAdapter(
             else -> PostEmptyViewHolder(
                 LayoutInflater.from(parent.context)
                     .inflate(
-                        R.layout.layout_skelton_article
-                        , parent, false
+                        R.layout.layout_skelton_article, parent, false
                     )
             )
         }
@@ -127,94 +128,90 @@ class ArticleAdapter(
 
     inner class PostViewHolder internal constructor(
         view: View
-    ): BaseViewHolder(view), View.OnClickListener {
+    ) : BaseViewHolder(view), View.OnClickListener {
 
         private var post: Post? = null
-        private val htmlHttpImageGetter: Html.ImageGetter by lazy {
-            HtmlGlideImageGetter(view.context, view.content_text_view)
-        }
+        private val htmlHttpImageGetter: Html.ImageGetter = HtmlCoilImageGetter(view.context, view.content_text_view)
+
         override fun onBind(position: Int) {
-            post = mPostList[position]
-            post?.let { p ->
-                with(itemView){
-                    try {
-                        author_text_view.text = p.author
-                        date_text_view.text = getDateDiff(p.date)
-                        post_avatar.setOnClickListener { _ ->
-                            fragmentManager?.get()?.let {
-                                val location = IntArray(2)
-                                post_avatar.getLocationInWindow(location)
-                                val popUpInfo = PopUpProfileInfo(
-                                    location[0],
-                                    location[1],
-                                    p.avatar,
-                                    p.author,
-                                    p.extraInfo,
-                                    p.followInfo,
-                                    p.profileUrl
-                                )
-                                PopUpProfileDialog(popUpInfo).show(it, PopUpProfileDialog::class.java.simpleName)
-                            }?: context.startActivity(
-                                Intent(context, ProfileActivity::class.java).also {
-                                    it.putExtra(KEY_PROFILE_URL, p.profileUrl)
-                                })
-                        }
-                        Glide.with(context)
-                            .load(p.avatar)
-                            .transform(RoundedCorners(dp2px(context, 4f).toInt()))
-                            .placeholder(R.drawable.ic_noavatar_middle)
-                            .error(R.drawable.ic_noavatar_middle_gray)
-                            .into(post_avatar)
-                        content_text_view.run {
-                            if (AppConfig.articleHandlePreTag) {
-                                setClickableSpecialSpan(ClickableSpecialSpanImpl())
-                                val drawTableLinkSpan = DrawPreCodeSpan()
-                                    .also {
-                                        it.tableLinkText = context.getString(R.string.tap_for_code)
-                                    }
-                                setDrawPreCodeSpan(drawTableLinkSpan)
-                            } else {
-                                setClickableSpecialSpan(null)
-                                setDrawPreCodeSpan(null)
-                            }
-                            setImageTagClickListener { _: Context, imageUrl: String, _: Int ->
-                                EventBus.getDefault().post(OpenLargeImageViewEvent(imageUrl))
-                            }
-                            setOnLinkTagClickListener { c: Context?, url: String ->
-                                if (url.startsWith(SERVER_BASE_URL + "thread")) {
-                                    EventBus.getDefault()
-                                        .post(OpenArticleEvent(url.substring(SERVER_BASE_URL.length)))
-                                } else {
-                                    WebViewActivity.startWebViewWith(url, c)
-                                }
-                            }
-                            setHtml(p.content, htmlHttpImageGetter)
-                        }
-                        post_btn_capture.visibility = View.VISIBLE
-                        post_btn_capture.setOnClickListener(this@PostViewHolder)
-                        if (isLoggedIn) {
-                            post_btn_group.visibility = View.VISIBLE
-                            if (TextUtils.isEmpty(p.replyUrl)) {
-                                post_btn_reply.visibility = View.GONE
-                            } else {
-                                post_btn_reply.visibility = View.VISIBLE
-                                post_btn_reply.setOnClickListener(this@PostViewHolder)
-                            }
-                            if (TextUtils.isEmpty(p.replyAddUrl)) {
-                                post_btn_thumb_up.visibility = View.GONE
-                            } else {
-                                post_btn_thumb_up.visibility = View.VISIBLE
-                                post_btn_thumb_up.setOnClickListener(this@PostViewHolder)
-                            }
-                            post_btn_copy.setOnClickListener(this@PostViewHolder)
-                        } else {
-                            post_btn_group.visibility = View.GONE
-                        }
-                        // fix issue occurs on some manufactures os, like MIUI
-                        content_text_view.setOnLongClickListener { true }
-                    } catch (e: Exception) {
-                        Timber.e(e)
+            val p = mPostList.getOrNull(position) ?: return
+            with(itemView) {
+                try {
+                    author_text_view.text = p.author
+                    date_text_view.text = getDateDiff(p.date)
+                    post_avatar.setOnClickListener { _ ->
+                        fragmentManager?.get()?.let {
+                            val location = IntArray(2)
+                            post_avatar.getLocationInWindow(location)
+                            val popUpInfo = PopUpProfileInfo(
+                                location[0],
+                                location[1],
+                                p.avatar,
+                                p.author,
+                                p.extraInfo,
+                                p.followInfo,
+                                p.profileUrl
+                            )
+                            PopUpProfileDialog(popUpInfo).show(
+                                it,
+                                PopUpProfileDialog::class.java.simpleName
+                            )
+                        } ?: context.startActivity(
+                            Intent(context, ProfileActivity::class.java).also {
+                                it.putExtra(KEY_PROFILE_URL, p.profileUrl)
+                            })
                     }
+                    post_avatar.load(p.avatar) {
+                        transformations(RoundedCornersTransformation(4.dpToPx(context)))
+                        error(R.drawable.ic_noavatar_middle_gray)
+                    }
+                    content_text_view.run {
+                        if (AppConfig.articleHandlePreTag) {
+                            setClickablePreCodeSpan(ClickablePreCodeSpanImpl())
+                            setDrawPreCodeSpan(DrawPreCodeSpan().apply {
+                                tableLinkText = context.getString(R.string.tap_for_code)
+                            })
+                        } else {
+                            setClickablePreCodeSpan(null)
+                            setDrawPreCodeSpan(null)
+                        }
+                        setImageTagClickListener { _: Context, imageUrl: String, _: Int ->
+                            EventBus.getDefault().post(OpenLargeImageViewEvent(imageUrl))
+                        }
+                        setOnLinkTagClickListener { c: Context?, url: String ->
+                            if (url.startsWith(SERVER_BASE_URL + "thread")) {
+                                EventBus.getDefault()
+                                    .post(OpenArticleEvent(url.substring(SERVER_BASE_URL.length)))
+                            } else {
+                                WebViewActivity.startWebViewWith(url, c)
+                            }
+                        }
+                        setHtml(p.content, htmlHttpImageGetter)
+                    }
+                    post_btn_capture.visibility = View.VISIBLE
+                    post_btn_capture.setOnClickListener(this@PostViewHolder)
+                    if (isLoggedIn) {
+                        post_btn_group.visibility = View.VISIBLE
+                        if (TextUtils.isEmpty(p.replyUrl)) {
+                            post_btn_reply.visibility = View.GONE
+                        } else {
+                            post_btn_reply.visibility = View.VISIBLE
+                            post_btn_reply.setOnClickListener(this@PostViewHolder)
+                        }
+                        if (TextUtils.isEmpty(p.replyAddUrl)) {
+                            post_btn_thumb_up.visibility = View.GONE
+                        } else {
+                            post_btn_thumb_up.visibility = View.VISIBLE
+                            post_btn_thumb_up.setOnClickListener(this@PostViewHolder)
+                        }
+                        post_btn_copy.setOnClickListener(this@PostViewHolder)
+                    } else {
+                        post_btn_group.visibility = View.GONE
+                    }
+                    // fix issue occurs on some manufactures os, like MIUI
+                    content_text_view.setOnLongClickListener { true }
+                } catch (e: Exception) {
+                    Timber.e(e)
                 }
             }
         }
@@ -238,7 +235,7 @@ class ArticleAdapter(
                         convertViewToBitmap(itemView, Bitmap.Config.ARGB_8888)?.let {
                             val path = saveImageToGallery(it, System.currentTimeMillis().toString())
                             EventBus.getDefault().post(ScreenCaptureEvent(path))
-                        }?: showMessage(R.string.general_error)
+                        } ?: showMessage(R.string.general_error)
                     }
                     else -> {
                         // do nothing
@@ -248,17 +245,19 @@ class ArticleAdapter(
         }
     }
 
-    inner class ReplyViewHolder internal constructor(view: View): BaseViewHolder(view), View.OnClickListener {
+    inner class ReplyViewHolder internal constructor(view: View) : BaseViewHolder(view),
+        View.OnClickListener {
 
         private var post: Post? = null
         private val htmlHttpImageGetter: Html.ImageGetter by lazy {
-            HtmlGlideImageGetter(view.context, view.reply_content_text_view)
+            HtmlCoilImageGetter(view.context, view.reply_content_text_view)
         }
+
         @SuppressLint("SetTextI18n")
         override fun onBind(position: Int) {
             post = mPostList[position]
             post?.let { p ->
-                with(itemView){
+                with(itemView) {
                     try {
                         if (p.author == username) {
                             reply_card.strokeColor = ContextCompat.getColor(context, R.color.orange)
@@ -282,33 +281,31 @@ class ArticleAdapter(
                                     p.followInfo,
                                     p.profileUrl
                                 )
-                                PopUpProfileDialog(popUpInfo).show(it, PopUpProfileDialog::class.java.simpleName)
-                            }?: context.startActivity(
+                                PopUpProfileDialog(popUpInfo).show(
+                                    it,
+                                    PopUpProfileDialog::class.java.simpleName
+                                )
+                            } ?: context.startActivity(
                                 Intent(context, ProfileActivity::class.java).also {
                                     it.putExtra(KEY_PROFILE_URL, p.profileUrl)
                                 })
                         }
-                        val drawableCrossFadeFactory = DrawableCrossFadeFactory
-                            .Builder(150)
-                            .setCrossFadeEnabled(true)
-                            .build()
-                        Glide.with(context)
-                            .load(p.avatar)
-                            .transition(DrawableTransitionOptions.with(drawableCrossFadeFactory))
-                            .transform(RoundedCorners(dp2px(context, 6f).toInt()))
-                            .placeholder(R.drawable.ic_avatar_placeholder)
-                            .error(R.drawable.ic_noavatar_middle_gray)
-                            .into(reply_avatar)
+                        reply_avatar.load(p.avatar) {
+                            crossfade(true)
+                            transformations(RoundedCornersTransformation(6.dpToPx(context)))
+                            placeholder(R.drawable.ic_avatar_placeholder)
+                            error(getAvatar())
+                        }
                         reply_content_text_view.run {
                             if (AppConfig.articleHandlePreTag) {
-                                setClickableSpecialSpan(ClickableSpecialSpanImpl())
+                                setClickablePreCodeSpan(ClickablePreCodeSpanImpl())
                                 val drawTableLinkSpan = DrawPreCodeSpan()
                                     .also {
                                         it.tableLinkText = context.getString(R.string.tap_for_code)
                                     }
                                 setDrawPreCodeSpan(drawTableLinkSpan)
                             } else {
-                                setClickableSpecialSpan(null)
+                                setClickablePreCodeSpan(null)
                                 setDrawPreCodeSpan(null)
                             }
                             setImageTagClickListener { _: Context, imageUrl: String, _: Int ->
@@ -377,18 +374,20 @@ class ArticleAdapter(
         val tips = "发表于 "
         return date.replace(tips, "").toTimeStamp()?.let {
             val diff = System.currentTimeMillis() - it
-            when(val minutesDiff = diff/ 1000 / 60) {
+            when (val minutesDiff = diff / 1000 / 60) {
                 in 0..1 -> return "${tips}1 分钟前"
                 in 1..60 -> return "${tips}${minutesDiff} 分钟前"
-                in 60..24*60 -> {
+                in 60..24 * 60 -> {
                     val hoursDiff = diff / 1000 / 60 / 60
                     return "${tips}${hoursDiff} 小时前"
                 }
-                in 24*60..7*24*60 -> {
-                    val dayDiff = diff / 1000 /60 / 60 /24
+                in 24 * 60..7 * 24 * 60 -> {
+                    val dayDiff = diff / 1000 / 60 / 60 / 24
                     return "${tips}${dayDiff} 天前"
                 }
-                else -> { date }
+                else -> {
+                    date
+                }
             }
         } ?: date
     }

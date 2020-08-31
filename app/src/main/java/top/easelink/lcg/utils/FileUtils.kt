@@ -36,7 +36,8 @@ fun saveImageToGallery(bmp: Bitmap, bitName: String): String {
 
 fun saveBmp2Gallery(context: Context, bmp: Bitmap, picName: String) {
     var fileName: String? = null
-    val galleryPath = "${Environment.getExternalStorageDirectory()}/${Environment.DIRECTORY_DCIM}/Camera/"
+    val galleryPath =
+        "${Environment.getExternalStorageDirectory()}/${Environment.DIRECTORY_DCIM}/Camera/"
     var file: File? = null
     var outStream: FileOutputStream? = null
     try {

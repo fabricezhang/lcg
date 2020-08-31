@@ -11,13 +11,15 @@ import top.easelink.lcg.appinit.LCGApp
 import top.easelink.lcg.spipedata.UserData
 
 class LogoutHintDialog(
-    private val positive: ()-> Unit,
+    private val positive: () -> Unit,
     private val negative: () -> Unit
 ) : TopDialog() {
 
-    override fun onCreateView(inflater: LayoutInflater,
-                              container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         dialog?.window?.setWindowAnimations(R.style.FadeInOutAnim)
         return inflater.inflate(R.layout.dialog_logout_hint, container, false)
     }
@@ -29,7 +31,8 @@ class LogoutHintDialog(
             String.format(
                 getString(
                     R.string.logout_confirm_message,
-                    UserData.username)
+                    UserData.username
+                )
             )
         view.findViewById<Button>(R.id.logout_confirm_btn).setOnClickListener {
             positive.invoke()

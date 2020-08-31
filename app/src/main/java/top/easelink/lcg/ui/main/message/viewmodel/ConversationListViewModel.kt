@@ -6,8 +6,8 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.jsoup.nodes.Document
 import timber.log.Timber
-import top.easelink.framework.threadpool.ApiPool
-import top.easelink.lcg.network.Client
+import top.easelink.framework.threadpool.IOPool
+import top.easelink.lcg.network.JsoupClient
 import top.easelink.lcg.ui.main.model.Conversation
 import top.easelink.lcg.utils.WebsiteConstant
 
@@ -20,9 +20,9 @@ class ConversationListViewModel : ViewModel() {
 
     fun fetchConversations() {
         isLoading.value = true
-        GlobalScope.launch(ApiPool) {
+        GlobalScope.launch(IOPool) {
             try {
-                parseConversations(Client.sendGetRequestWithQuery(WebsiteConstant.PRIVATE_MESSAGE_QUERY))
+                parseConversations(JsoupClient.sendGetRequestWithQuery(WebsiteConstant.PRIVATE_MESSAGE_QUERY))
             } catch (e: Exception) {
                 Timber.e(e)
             }
@@ -36,7 +36,7 @@ class ConversationListViewModel : ViewModel() {
             val conversationList = select("dl[id^=pmlist]").map {
                 val avatarUrl = it.selectFirst("img[onerror]")?.attr("src")
                 val username = it.selectFirst("dd.ptm > a[target]")?.text().orEmpty()
-                val lastMessage =  it.selectFirst("dd.ptm").textNodes().let { node->
+                val lastMessage = it.selectFirst("dd.ptm").textNodes().let { node ->
                     if (node.size > 5) {
                         node[4].text()?.replaceFirst(" ", "").orEmpty()
                     } else {

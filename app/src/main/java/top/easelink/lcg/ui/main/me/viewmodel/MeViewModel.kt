@@ -5,10 +5,9 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import top.easelink.framework.base.BaseFragment
-import top.easelink.framework.threadpool.ApiPool
+import top.easelink.framework.threadpool.IOPool
 import top.easelink.lcg.R
-import top.easelink.lcg.network.Client
+import top.easelink.lcg.network.JsoupClient
 import top.easelink.lcg.spipedata.UserData
 import top.easelink.lcg.ui.main.me.model.UserInfo
 import top.easelink.lcg.ui.main.model.AntiScrapingException
@@ -16,24 +15,16 @@ import top.easelink.lcg.ui.main.source.parseUserInfo
 import top.easelink.lcg.utils.WebsiteConstant.PROFILE_QUERY
 import top.easelink.lcg.utils.clearCookies
 import top.easelink.lcg.utils.showMessage
-import java.lang.ref.WeakReference
 import java.net.SocketTimeoutException
 
-class MeViewModel: ViewModel() {
-
-    private var mFragment: WeakReference<BaseFragment<*,*>>? = null
-    private var isResolvingAntiScrapingException: Boolean = false
+class MeViewModel : ViewModel() {
 
     val mLoginState = MutableLiveData<Boolean>()
     val mUserInfo = MutableLiveData<UserInfo>()
 
-    fun setFragment(fragment: BaseFragment<*,*>) {
-        mFragment = WeakReference(fragment)
-    }
-
     @Suppress("BlockingMethodInNonBlockingContext")
     fun fetchUserInfoDirect() {
-        if(UserData.isLoggedIn) {
+        if (UserData.isLoggedIn) {
             mLoginState.postValue(true)
             UserData.apply {
                 mUserInfo.value =
@@ -49,9 +40,9 @@ class MeViewModel: ViewModel() {
                     )
             }
         }
-        GlobalScope.launch(ApiPool) {
+        GlobalScope.launch(IOPool) {
             try {
-                val userInfo = Client
+                val userInfo = JsoupClient
                     .sendGetRequestWithQuery(PROFILE_QUERY).let {
                         parseUserInfo(it)
                     }
@@ -79,7 +70,7 @@ class MeViewModel: ViewModel() {
                 }
             } catch (e: Exception) {
                 Timber.e(e)
-                when(e) {
+                when (e) {
                     is SocketTimeoutException -> showMessage(R.string.network_error) // 网络错误，不认为是登陆异常
                     is AntiScrapingException -> showMessage(R.string.anti_scraping_error) // 针对触发反爬虫机制的处理
                     else -> {

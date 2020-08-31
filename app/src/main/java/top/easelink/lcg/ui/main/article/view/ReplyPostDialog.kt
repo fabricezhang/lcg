@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.dialog_reply_post.*
 import top.easelink.framework.topbase.TopDialog
 import top.easelink.lcg.R
@@ -36,11 +36,14 @@ class ReplyPostDialog : TopDialog() {
         savedInstanceState: Bundle?
     ) {
         super.onViewCreated(view, savedInstanceState)
-        replyPostViewModel = ViewModelProviders.of(this).get(ReplyPostViewModel::class.java)
+        replyPostViewModel = ViewModelProvider(this).get(ReplyPostViewModel::class.java)
         btn_cancel.setOnClickListener {
             dismissDialog()
         }
-        reply_to.text = String.format(getString(R.string.reply_post_dialog_title), arguments?.getString(REPLY_POST_AUTHOR))
+        reply_to.text = String.format(
+            getString(R.string.reply_post_dialog_title),
+            arguments?.getString(REPLY_POST_AUTHOR)
+        )
         replyPostViewModel.sending.observe(viewLifecycleOwner, object : Observer<Boolean> {
             var lastState: Boolean = false
             override fun onChanged(newState: Boolean) {
@@ -64,9 +67,11 @@ class ReplyPostDialog : TopDialog() {
             replyPostViewModel.sendReply(
                 arguments?.getString(REPLY_POST_URL),
                 content.toString()
-            ) {view.postDelayed({
-                dismissDialog()
-            }, 1000L)}
+            ) {
+                view.postDelayed({
+                    dismissDialog()
+                }, 1000L)
+            }
 
         }
     }
@@ -88,6 +93,7 @@ class ReplyPostDialog : TopDialog() {
         private val TAG = ReplyPostDialog::class.java.simpleName
         private const val REPLY_POST_URL = "reply_post_url"
         private const val REPLY_POST_AUTHOR = "reply_post_author"
+
         @JvmStatic
         fun newInstance(replyPostUrl: String, author: String): ReplyPostDialog {
             return ReplyPostDialog().apply {

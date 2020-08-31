@@ -15,24 +15,23 @@ import top.easelink.lcg.ui.main.source.model.ArticleEntity;
  */
 @Database(entities = {ArticleEntity.class}, version = 2, exportSchema = false)
 public abstract class ArticlesDatabase extends RoomDatabase {
-    private static ArticlesDatabase mInstance;
-
     private static final Object sLock = new Object();
-
-    public abstract ArticlesDao articlesDao();
+    private static ArticlesDatabase mInstance;
 
     public static ArticlesDatabase getInstance() {
         synchronized (sLock) {
             if (mInstance == null) {
                 mInstance = Room
-                        .databaseBuilder(
-                                LCGApp.getContext(),
-                                ArticlesDatabase.class,
-                                BuildConfig.DB_NAME)
-                        .fallbackToDestructiveMigration()
-                        .build();
+                    .databaseBuilder(
+                        LCGApp.getContext(),
+                        ArticlesDatabase.class,
+                        BuildConfig.DB_NAME)
+                    .fallbackToDestructiveMigration()
+                    .build();
             }
         }
         return mInstance;
     }
+
+    public abstract ArticlesDao articlesDao();
 }

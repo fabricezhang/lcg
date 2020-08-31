@@ -7,8 +7,8 @@ import kotlinx.coroutines.launch
 import org.jsoup.Connection
 import org.jsoup.Jsoup
 import timber.log.Timber
-import top.easelink.framework.threadpool.ApiPool
-import top.easelink.lcg.network.Client
+import top.easelink.framework.threadpool.IOPool
+import top.easelink.lcg.network.JsoupClient
 import top.easelink.lcg.utils.WebsiteConstant.CHECK_RULE_URL
 import top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL
 import top.easelink.lcg.utils.getCookies
@@ -20,7 +20,7 @@ class ReplyPostViewModel : ViewModel() {
 
     fun sendReply(query: String?, content: String, callback: (Boolean) -> Unit) {
         sending.value = true
-        GlobalScope.launch(ApiPool) {
+        GlobalScope.launch(IOPool) {
             sendReplyAsync(query, content, callback)
         }
     }
@@ -43,20 +43,20 @@ class ReplyPostViewModel : ViewModel() {
                 }
             }
         try {
-            Client
+            JsoupClient
                 .sendGetRequestWithQuery(query)
                 .run {
                     val noticeauthormsg = selectFirst("input[name=noticeauthormsg]").attr("value")
                     val noticetrimstr = selectFirst("input[name=noticetrimstr]").attr("value")
                     val noticeauthor = selectFirst("input[name=noticeauthor]").attr("value")
-                    val handlekey = selectFirst("input[name=handlekey]")?.attr("value")?:"reply"
-                    val usesig = selectFirst("input[name=usesig]")?.attr("value")?:"1"
+                    val handlekey = selectFirst("input[name=handlekey]")?.attr("value") ?: "reply"
+                    val usesig = selectFirst("input[name=usesig]")?.attr("value") ?: "1"
                     val reppid = selectFirst("input[name=reppid]").attr("value")
                     val reppost = selectFirst("input[name=reppost]").attr("value")
                     val formHash = selectFirst("input[name=formhash]").attr("value")
                     var response = Jsoup
                         .connect(CHECK_RULE_URL)
-                        .timeout(60* 1000)
+                        .timeout(60 * 1000)
                         .cookies(getCookies())
                         .method(Connection.Method.GET)
                         .execute()

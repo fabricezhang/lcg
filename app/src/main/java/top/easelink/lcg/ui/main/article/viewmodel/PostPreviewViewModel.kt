@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import top.easelink.framework.threadpool.ApiPool
+import top.easelink.framework.threadpool.IOPool
 import top.easelink.lcg.R
 import top.easelink.lcg.ui.main.model.BlockException
 import top.easelink.lcg.ui.main.source.remote.ArticlesRemoteDataSource
@@ -19,7 +19,7 @@ class PostPreviewViewModel : ViewModel() {
 
     fun initUrl(query: String) {
         loadingResult.value = R.string.preview_loading
-        GlobalScope.launch(ApiPool) {
+        GlobalScope.launch(IOPool) {
             try {
                 val post = ArticlesRemoteDataSource.getPostPreview(query)
                 if (post != null) {

@@ -57,7 +57,7 @@ class SettingActivity : TopActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when(item.itemId) {
+        return when (item.itemId) {
             android.R.id.home -> {
                 onBackPressed()
                 true
@@ -77,7 +77,8 @@ class SettingActivity : TopActivity() {
                 LoginHintDialog().show(supportFragmentManager, null)
             }
         } else {
-            account_btn.text = String.format(getString(R.string.logout_confirm_message), UserData.username)
+            account_btn.text =
+                String.format(getString(R.string.logout_confirm_message), UserData.username)
             account_btn.setOnClickListener {
                 tryLogout()
             }
@@ -91,7 +92,7 @@ class SettingActivity : TopActivity() {
         auto_sign_switch.setOnCheckedChangeListener { _, isChecked ->
             mViewModel.setSyncFavorite(isChecked)
         }
-        search_engine_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+        search_engine_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
                 // do nothing
             }

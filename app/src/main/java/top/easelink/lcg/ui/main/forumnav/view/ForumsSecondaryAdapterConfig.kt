@@ -56,7 +56,8 @@ internal class ForumsSecondaryAdapterConfig :
         holder.itemView.apply {
             setOnClickListener {
                 if (item.info.pageUrl.startsWith("forum")) {
-                    EventBus.getDefault().post(OpenForumEvent(item.info.title, item.info.pageUrl, true))
+                    EventBus.getDefault()
+                        .post(OpenForumEvent(item.info.title, item.info.pageUrl, true))
                 } else {
                     WebViewActivity.startWebViewWith(item.info.pageUrl, context)
                 }
@@ -98,7 +99,8 @@ internal class ForumsSecondaryAdapterConfig :
                                                   _: Long ->
                     (parent.adapter as ChildGridViewAdapter).getItem(position)?.let {
                         if (it.pageUrl.startsWith("forum")) {
-                            EventBus.getDefault().post(OpenForumEvent(it.title.orEmpty(), it.pageUrl, true))
+                            EventBus.getDefault()
+                                .post(OpenForumEvent(it.title.orEmpty(), it.pageUrl, true))
                         } else {
                             WebViewActivity.startWebViewWith(it.pageUrl, v.context)
                         }

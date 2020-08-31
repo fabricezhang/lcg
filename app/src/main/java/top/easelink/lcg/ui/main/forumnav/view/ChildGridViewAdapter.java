@@ -29,7 +29,7 @@ public class ChildGridViewAdapter extends ArrayAdapter<ChildForumItemInfo> {
     public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
-            LayoutInflater inflater = ((Activity)getContext()).getLayoutInflater();
+            LayoutInflater inflater = ((Activity) getContext()).getLayoutInflater();
             convertView = inflater.inflate(mLayoutRes, parent, false);
             holder = new ViewHolder();
             holder.textView = convertView.findViewById(R.id.grid_title);
@@ -41,10 +41,10 @@ public class ChildGridViewAdapter extends ArrayAdapter<ChildForumItemInfo> {
         if (item == null) {
             // suppress the npe warning
             item = new ChildForumItemInfo(
-                    "",
-                    null,
-                    "PlaceHolder",
-                    null);
+                "",
+                null,
+                "PlaceHolder",
+                null);
         }
         holder.textView.setText(item.getTitle());
         return convertView;

@@ -6,8 +6,8 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.jsoup.nodes.Document
 import timber.log.Timber
-import top.easelink.framework.threadpool.ApiPool
-import top.easelink.lcg.network.Client
+import top.easelink.framework.threadpool.IOPool
+import top.easelink.lcg.network.JsoupClient
 import top.easelink.lcg.ui.main.follow.model.FollowInfo
 import top.easelink.lcg.ui.main.follow.model.FollowResult
 
@@ -20,18 +20,18 @@ class FollowListViewModel : ViewModel() {
     fun fetchData(url: String, isLoadMore: Boolean = false) {
         if (isLoadMore) {
             isLoadingForLoadMore.value = true
-        } else  {
+        } else {
             isLoading.value = true
         }
-        GlobalScope.launch(ApiPool) {
+        GlobalScope.launch(IOPool) {
             try {
-                parseFollows(Client.sendGetRequestWithQuery(url))
+                parseFollows(JsoupClient.sendGetRequestWithQuery(url))
             } catch (e: Exception) {
                 Timber.e(e)
             }
             if (isLoadMore) {
                 isLoadingForLoadMore.postValue(false)
-            } else  {
+            } else {
                 isLoading.postValue(false)
             }
         }
@@ -42,7 +42,7 @@ class FollowListViewModel : ViewModel() {
             val followInfos = select("li.cl").map {
                 val avatarUrl = it.selectFirst("img")?.attr("src").orEmpty()
                 val username = it.getElementById("edit_avt")?.attr("title").orEmpty()
-                val lastAction =  it.selectFirst("p").text()
+                val lastAction = it.selectFirst("p").text()
                 val url = it.selectFirst("a[id^=a_followmod]")?.text().orEmpty()
                 var following: Int = 0
                 var follower: Int = 0

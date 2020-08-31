@@ -18,7 +18,7 @@ import top.easelink.lcg.utils.WebsiteConstant.SEARCH_QUERY
 import top.easelink.lcg.utils.WebsiteConstant.URL_KEY
 
 
-class RecommendFragment: TopFragment(), ControllableFragment {
+class RecommendFragment : TopFragment(), ControllableFragment {
 
     override fun isControllable(): Boolean {
         return true
@@ -42,7 +42,7 @@ class RecommendFragment: TopFragment(), ControllableFragment {
         setUp()
     }
 
-    private fun setUp(){
+    private fun setUp() {
         view_pager.adapter = RecommendViewPagerAdapter(childFragmentManager, activity)
         main_tab.setupWithViewPager(view_pager)
     }
@@ -55,7 +55,7 @@ class RecommendFragment: TopFragment(), ControllableFragment {
         searchView.setOnQueryTextListener(object :
             SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
-                when(AppConfig.defaultSearchEngine) {
+                when (AppConfig.defaultSearchEngine) {
                     0 -> {
                         val intent = Intent(context, LCGSearchActivity::class.java)
                         intent.putExtra(KEY_WORD, query)
@@ -67,7 +67,7 @@ class RecommendFragment: TopFragment(), ControllableFragment {
                         context?.startActivity(intent)
                     }
                     else -> {
-                        if(BuildConfig.DEBUG) {
+                        if (BuildConfig.DEBUG) {
                             throw IllegalStateException()
                         }
                     }

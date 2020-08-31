@@ -11,7 +11,7 @@ import top.easelink.lcg.R
 import top.easelink.lcg.mta.EVENT_OPEN_FOLLOW_PAGE
 import top.easelink.lcg.mta.sendEvent
 
-class FollowFragment: TopFragment(), ControllableFragment{
+class FollowFragment : TopFragment(), ControllableFragment {
 
     override fun onCreateView(
         inflater: LayoutInflater,

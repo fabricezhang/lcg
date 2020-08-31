@@ -34,29 +34,30 @@ public class HtmlFormatter {
 
     public static Spanned formatHtml(@NonNull HtmlFormatterBuilder builder) {
         return formatHtml(
-                builder.getHtml(),
-                builder.getImageGetter(),
-                builder.getClickableSpecialSpan(),
-                builder.getDrawPreCodeSpan(),
-                builder.getIndent(),
-                builder.isRemoveTrailingWhiteSpace(),
-                null,
-                null,
-                null);
+            builder.getHtml(),
+            builder.getImageGetter(),
+            builder.getClickableSpecialSpan(),
+            builder.getDrawPreCodeSpan(),
+            builder.getIndent(),
+            builder.isRemoveTrailingWhiteSpace(),
+            null,
+            null,
+            null);
     }
 
     public static Spanned formatHtml(
-            @Nullable String html,
-            ImageGetter imageGetter,
-            ClickableSpecialSpan clickableSpecialSpan,
-            DrawPreCodeSpan drawPreCodeSpan,
-            float indent,
-            boolean removeTrailingWhiteSpace,
-            @Nullable Context context,
-            @Nullable OnImgTagClickListener onImgTagClickListener,
-            @Nullable OnLinkTagClickListener onLinkTagClickListener) {
+        @Nullable String html,
+        ImageGetter imageGetter,
+        ClickablePreCodeSpan clickablePreCodeSpan,
+        DrawPreCodeSpan drawPreCodeSpan,
+        float indent,
+        boolean removeTrailingWhiteSpace,
+        @Nullable Context context,
+        @Nullable OnImgTagClickListener onImgTagClickListener,
+        @Nullable OnLinkTagClickListener onLinkTagClickListener
+    ) {
         final HtmlTagHandler htmlTagHandler = new HtmlTagHandler();
-        htmlTagHandler.setClickableSpecialSpan(clickableSpecialSpan);
+        htmlTagHandler.setClickablePreCodeSpan(clickablePreCodeSpan);
         htmlTagHandler.setDrawPreCodeSpan(drawPreCodeSpan);
         htmlTagHandler.setListIndentPx(indent);
 

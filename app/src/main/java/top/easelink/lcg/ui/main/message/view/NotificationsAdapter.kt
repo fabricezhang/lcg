@@ -4,12 +4,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import coil.load
+import coil.transform.RoundedCornersTransformation
 import kotlinx.android.synthetic.main.item_load_more_view.view.*
 import kotlinx.android.synthetic.main.item_notification_view.view.*
 import top.easelink.framework.base.BaseViewHolder
-import top.easelink.framework.customview.htmltextview.HtmlGlideImageGetter
+import top.easelink.framework.customview.htmltextview.HtmlCoilImageGetter
 import top.easelink.framework.utils.dpToPx
 import top.easelink.lcg.R
 import top.easelink.lcg.ui.main.message.viewmodel.NotificationViewModel
@@ -46,10 +46,12 @@ class NotificationsAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         return when (viewType) {
-            VIEW_TYPE_NORMAL -> { ArticleViewHolder(
-                LayoutInflater
-                    .from(parent.context)
-                    .inflate(R.layout.item_notification_view, parent, false))
+            VIEW_TYPE_NORMAL -> {
+                ArticleViewHolder(
+                    LayoutInflater
+                        .from(parent.context)
+                        .inflate(R.layout.item_notification_view, parent, false)
+                )
             }
             VIEW_TYPE_LOAD_MORE -> LoadMoreViewHolder(
                 LayoutInflater
@@ -59,7 +61,8 @@ class NotificationsAdapter(
             else -> EmptyViewHolder(
                 LayoutInflater
                     .from(parent.context)
-                    .inflate(R.layout.item_empty_view, parent, false))
+                    .inflate(R.layout.item_empty_view, parent, false)
+            )
         }
     }
 
@@ -83,27 +86,28 @@ class NotificationsAdapter(
         override fun onBind(position: Int) {
             val notification = mNotifications[position]
             view.apply {
-                line.visibility = if(position == 0) View.GONE else View.VISIBLE
+                line.visibility = if (position == 0) View.GONE else View.VISIBLE
                 notification_title.apply {
-                    setHtml(notification.content, HtmlGlideImageGetter(
-                        context,
-                        this
-                    ))
+                    setHtml(
+                        notification.content, HtmlCoilImageGetter(
+                            context,
+                            this
+                        )
+                    )
                     linksClickable = false
                 }
                 date_time.text = notification.dateTime
-                Glide.with(notification_avatar)
-                    .load(notification.avatar)
-                    .transform(RoundedCorners(2.dpToPx(view.context).toInt()))
-                    .placeholder(R.drawable.ic_noavatar_middle_gray)
-                    .into(notification_avatar)
+                notification_avatar.load(notification.avatar) {
+                    transformations(RoundedCornersTransformation(2.dpToPx(view.context)))
+                    placeholder(R.drawable.ic_noavatar_middle_gray)
+                }
             }
         }
 
     }
 
-    inner class EmptyViewHolder(view: View) : BaseViewHolder(view){
-        override fun onBind(position: Int) { }
+    inner class EmptyViewHolder(view: View) : BaseViewHolder(view) {
+        override fun onBind(position: Int) {}
     }
 
     inner class LoadMoreViewHolder internal constructor(val view: View) :

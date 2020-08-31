@@ -7,7 +7,7 @@ apply plugin: "kotlin-kapt"
 // each version starts from 0
 def versionMajor = 1
 def versionMinor = 8
-def versionPatch = 5
+def versionPatch = 6
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -62,6 +62,7 @@ android {
         incremental true
     }
 
+
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
         exclude 'META-INF/*android*'
@@ -72,6 +73,9 @@ android {
         exclude 'META-INF/README.md'
         exclude 'META-INF/services/**'
         exclude 'META-INF/CHANGES'
+     }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
     }
     // Generate Version Info
     android.applicationVariants.all { variant ->
@@ -80,15 +84,8 @@ android {
         }
     }
 
-    // AGP 5.0后会被移除
-//    dataBinding {
-//        enabled = true
-//    }
-
     buildFeatures {
         dataBinding = true
-        // for view binding :
-        // viewBinding = true
     }
     buildToolsVersion = buildToolsVersion
 }
@@ -104,8 +101,6 @@ dependencies {
     debugImplementation "com.amitshekhar.android:debug-db:1.0.4"
     // test related
     testImplementation "junit:junit:$rootProject.junitVersion"
-    androidTestImplementation "androidx.test:runner:$rootProject.runnerVersion"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.espressoVersion"
 }
 
 apply from: "../andres.gradle"

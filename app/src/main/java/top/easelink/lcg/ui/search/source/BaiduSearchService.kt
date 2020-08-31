@@ -6,7 +6,7 @@ import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
 import timber.log.Timber
 import top.easelink.lcg.R
-import top.easelink.lcg.network.ApiClient
+import top.easelink.lcg.network.OkApiClient
 import top.easelink.lcg.ui.search.model.BaiduSearchResult
 import top.easelink.lcg.ui.search.model.BaiduSearchResults
 import top.easelink.lcg.ui.search.model.RequestTooOftenException
@@ -24,7 +24,7 @@ object BaiduSearchService {
             }
         } catch (e: RequestTooOftenException) {
             delay(1000)
-            doSearchRequest(requestUrl, retryTime+1)
+            doSearchRequest(requestUrl, retryTime + 1)
         }
     }
 
@@ -32,7 +32,7 @@ object BaiduSearchService {
     @Throws(RequestTooOftenException::class)
     fun doSearchRequest(requestUrl: String): BaiduSearchResults {
         try {
-            val doc = ApiClient.sendGetRequestWithUrl(requestUrl)
+            val doc = OkApiClient.sendGetRequestWithUrl(requestUrl)
             val list: List<BaiduSearchResult> = doc?.select("div.result")
                 ?.map {
                     try {

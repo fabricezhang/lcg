@@ -13,7 +13,7 @@ import top.easelink.lcg.R
 import top.easelink.lcg.ui.main.forumnav.model.ForumGroupedItem
 import top.easelink.lcg.utils.getJsonStringFromAssets
 
-class ForumNavigationFragment: TopFragment(), ControllableFragment {
+class ForumNavigationFragment : TopFragment(), ControllableFragment {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -50,5 +50,5 @@ class ForumNavigationFragment: TopFragment(), ControllableFragment {
         }
     }
 
-    private inline fun <reified T> genericType() = object: TypeToken<T>() {}.type
+    private inline fun <reified T> genericType() = object : TypeToken<T>() {}.type
 }

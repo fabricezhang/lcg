@@ -24,15 +24,14 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    // AGP 5.0后会被移除
-//    dataBinding {
-//        enabled = true
-//    }
 
     buildFeatures {
         dataBinding = true
         // for view binding :
         // viewBinding = true
+    }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
     }
 }
 
@@ -52,8 +51,8 @@ dependencies {
     api 'pub.devrel:easypermissions:1.0.1'
 
     // image
-    api "com.github.bumptech.glide:glide:$rootProject.glideVersion"
-    api 'com.github.chrisbanes:PhotoView:2.0.0'
+    api 'com.github.chrisbanes:PhotoView:2.2.0'
+    api "io.coil-kt:coil:0.12.0"
     // parser
     api "com.google.code.gson:gson:$rootProject.gsonVersion"
 
