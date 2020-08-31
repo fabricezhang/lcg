@@ -7,10 +7,10 @@ import kotlinx.coroutines.android.asCoroutineDispatcher
 import java.lang.reflect.Constructor
 
 val Main = Looper.getMainLooper().asHandler(true).asCoroutineDispatcher("EL-main")
-val ImmediatePool by lazy { ELDispacher(ELThreadPoolProvider.IMMEDIATE_EXECUTORS) }
-val CalcPool by lazy { ELDispacher(ELThreadPoolProvider.COMMON_EXECUTOR) }
-val BackGroundPool by lazy { ELDispacher(ELThreadPoolProvider.BACKGROUND_EXECUTOR) }
-val IOPool by lazy { ELDispacher(ELThreadPoolProvider.API_EXECUTOR) }
+val ImmediatePool by lazy { ELDispatcher(ELThreadPoolProvider.IMMEDIATE_EXECUTORS) }
+val CalcPool by lazy { ELDispatcher(ELThreadPoolProvider.COMMON_EXECUTOR) }
+val BackGroundPool by lazy { ELDispatcher(ELThreadPoolProvider.BACKGROUND_EXECUTOR) }
+val IOPool by lazy { ELDispatcher(ELThreadPoolProvider.API_EXECUTOR) }
 
 private fun Looper.asHandler(async: Boolean): Handler {
     // Async support was added since API 16
