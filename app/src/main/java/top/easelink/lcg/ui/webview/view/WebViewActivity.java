@@ -404,6 +404,8 @@ public class WebViewActivity extends AppCompatActivity {
                 ToastUtilsKt.showMessage(R.string.qq_not_support);
 //                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
                 return true;
+            } else if (url.startsWith("bdnetdisk")) {
+                ToastUtilsKt.showMessage(R.string.baidu_net_disk_not_support);
             }
             return false;
         }
