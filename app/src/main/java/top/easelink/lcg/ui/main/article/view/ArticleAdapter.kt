@@ -149,7 +149,7 @@ class ArticleAdapter(
                                     p.followInfo,
                                     p.profileUrl
                                 )
-                                PopUpProfileDialog(popUpInfo).show(
+                                PopUpProfileDialog.newInstance(popUpInfo).show(
                                     it,
                                     PopUpProfileDialog::class.java.simpleName
                                 )
@@ -282,7 +282,7 @@ class ArticleAdapter(
                                         p.followInfo,
                                         p.profileUrl
                                     )
-                                    PopUpProfileDialog(popUpInfo).show(
+                                    PopUpProfileDialog.newInstance(popUpInfo).show(
                                         it,
                                         PopUpProfileDialog::class.java.simpleName
                                     )

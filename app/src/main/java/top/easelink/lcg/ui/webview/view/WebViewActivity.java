@@ -149,14 +149,14 @@ public class WebViewActivity extends AppCompatActivity {
                             Element element = Jsoup.parse(html).selectFirst("div.avt");
                             if (element != null) {
                                 mWebView.post(() -> {
-                                    mWebView.stopLoading();
                                     try {
+                                        mWebView.stopLoading();
                                         // hold on 1.5 seconds to wait for saving user info
                                         Thread.sleep(1500);
+                                        startActivity(new Intent(mWebView.getContext(), MainActivity.class));
+                                        finish();
                                     } catch (Exception ignored) {
                                     }
-                                    startActivity(new Intent(mWebView.getContext(), MainActivity.class));
-                                    finish();
                                 });
                             }
                         } catch (Exception e) {
