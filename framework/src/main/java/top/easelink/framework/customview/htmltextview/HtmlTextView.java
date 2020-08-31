@@ -27,13 +27,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RawRes;
 
+import com.google.android.material.textview.MaterialTextView;
+
 import java.io.InputStream;
 import java.util.Scanner;
 
 import timber.log.Timber;
 import top.easelink.framework.R;
 
-public class HtmlTextView extends JellyBeanSpanFixTextView {
+public class HtmlTextView extends MaterialTextView {
 
     public static final String TAG = "HtmlTextView";
     public static final boolean DEBUG = false;
