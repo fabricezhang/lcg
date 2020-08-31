@@ -12,7 +12,7 @@ class AppGuard(
     private val mDefaultUncaughtExceptionHandler: Thread.UncaughtExceptionHandler? = null
 ): Thread.UncaughtExceptionHandler{
 
-    override fun uncaughtException(t: Thread?, e: Throwable?) {
+    override fun uncaughtException(t: Thread, e: Throwable) {
         if (!BuildConfig.DEBUG) {
             restartApp(mContext)
             mDefaultUncaughtExceptionHandler?.uncaughtException(t, e)
@@ -21,22 +21,20 @@ class AppGuard(
     }
 
     private fun restartApp(context: Context) {
-        try {
-            val packInfo =
-                context.packageManager.getPackageInfo(
-                    context.packageName, PackageManager.GET_UNINSTALLED_PACKAGES
-                            or PackageManager.GET_ACTIVITIES
-                )
-            val activities = packInfo.activities
-            if (activities != null && activities.isNotEmpty()) {
-                val startActivity = activities[0]
-                val intent = Intent()
-                intent.setClassName(context.packageName, startActivity.name)
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                context.startActivity(intent)
-            }
-        } catch (e: Exception) {
-            Timber.e(e)
+        context.runCatching {
+            packageManager
+                .getPackageInfo(context.packageName, PackageManager.GET_UNINSTALLED_PACKAGES or PackageManager.GET_ACTIVITIES)
+                .activities
+                ?.getOrNull(0)
+                ?.let {
+                    val intent = Intent().apply {
+                        setClassName(context.packageName, it.name)
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    }
+                    context.startActivity(intent)
+                }
+        }.getOrElse {
+            Timber.e(it)
         }
     }
 }
