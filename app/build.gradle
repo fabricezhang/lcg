@@ -93,8 +93,6 @@ android {
 dependencies {
     // database
     kapt "androidx.room:room-compiler:$roomVersion"
-//    kapt "com.android.databinding:compiler:$dataBindingVersion"
-
     implementation project(':framework')
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
