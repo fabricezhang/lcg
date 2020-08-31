@@ -209,7 +209,12 @@ public class WebViewActivity extends AppCompatActivity {
                 startActivity(shareIntent);
                 return true;
             case R.id.action_open_in_webview:
-                openInSystemBrowser(mWebView.getUrl());
+                String url = mWebView.getUrl();
+                if (url != null) {
+                    openInSystemBrowser(url);
+                } else {
+                    ToastUtilsKt.showMessage(R.string.general_error);
+                }
                 return true;
             case android.R.id.home:
                 finish();
