@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import coil.Coil
 import coil.load
 import coil.request.ImageRequest
+import coil.transform.RoundedCornersTransformation
 import kotlinx.android.synthetic.main.cardview_me_notifications.*
 import kotlinx.android.synthetic.main.fragment_me.*
 import kotlinx.android.synthetic.main.layout_icon_button.view.*
@@ -16,6 +17,7 @@ import org.greenrobot.eventbus.EventBus
 import top.easelink.framework.base.BaseFragment
 import top.easelink.framework.utils.addFragmentInActivity
 import top.easelink.framework.utils.addFragmentInFragment
+import top.easelink.framework.utils.dpToPx
 import top.easelink.lcg.BR
 import top.easelink.lcg.R
 import top.easelink.lcg.databinding.FragmentMeBinding
@@ -27,6 +29,7 @@ import top.easelink.lcg.ui.main.me.viewmodel.MeViewModel
 import top.easelink.lcg.ui.main.model.OpenForumEvent
 import top.easelink.lcg.ui.setting.view.SettingActivity
 import top.easelink.lcg.utils.WebsiteConstant.MY_ARTICLES_QUERY
+import top.easelink.lcg.utils.avatar.getAvatar
 
 class MeFragment : BaseFragment<FragmentMeBinding, MeViewModel>() {
 
@@ -69,6 +72,7 @@ class MeFragment : BaseFragment<FragmentMeBinding, MeViewModel>() {
                 ImageRequest.Builder(me_sign_in_state.context)
                     .data(url)
                     .allowRgb565(true)
+                    .lifecycle(this@MeFragment)
                     .target {
                         me_sign_in_state.apply {
                             layoutParams.width = it.intrinsicWidth / it.intrinsicHeight * height
@@ -79,8 +83,14 @@ class MeFragment : BaseFragment<FragmentMeBinding, MeViewModel>() {
                     .let { request ->
                         Coil.imageLoader(me_sign_in_state.context).enqueue(request)
                     }
-                me_sign_in_state.load(info.signInStateUrl) {
-
+            }
+            info.avatarUrl?.let {
+                me_user_avatar.load(it) {
+                    lifecycle(this@MeFragment)
+                    transformations(RoundedCornersTransformation(4.dpToPx(me_user_avatar.context)))
+                    error(getAvatar())
+                    crossfade(true)
+                    size(40.dpToPx(me_user_avatar.context).toInt())
                 }
             }
         }

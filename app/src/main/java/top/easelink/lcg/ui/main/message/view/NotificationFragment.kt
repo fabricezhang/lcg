@@ -41,7 +41,7 @@ class NotificationFragment : TopFragment() {
             itemAnimator = DefaultItemAnimator()
             adapter =
                 NotificationsAdapter(
-                    notificationViewModel
+                    notificationViewModel, this@NotificationFragment
                 )
             notificationViewModel.apply {
                 isLoading.observe(viewLifecycleOwner, Observer {

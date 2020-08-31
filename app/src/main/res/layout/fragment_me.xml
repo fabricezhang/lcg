@@ -31,12 +31,10 @@
 
             <ImageView
                 android:id="@+id/me_user_avatar"
-                android:minWidth="@dimen/dp_40"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/dp_40"
                 android:layout_height="0dp"
                 android:scaleType="fitCenter"
                 android:contentDescription="@null"
-                app:avatarUrl="@{viewModel.mUserInfo.avatarUrl}"
                 app:layout_constraintTop_toTopOf="@id/me_user_name"
                 app:layout_constraintBottom_toBottomOf="@id/me_user_group"
                 app:layout_constraintStart_toStartOf="parent"
