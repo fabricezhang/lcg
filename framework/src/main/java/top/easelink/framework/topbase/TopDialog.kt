@@ -24,8 +24,8 @@ abstract class TopDialog : DialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog { // the content
-        val root = RelativeLayout(mContext).also {
-            it.layoutParams = ViewGroup.LayoutParams(
+        val root = RelativeLayout(mContext).apply {
+            layoutParams = ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
             )
