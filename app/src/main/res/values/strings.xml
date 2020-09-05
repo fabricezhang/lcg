@@ -77,7 +77,7 @@
     <string name="me_tab_level_placeholder">个人信息</string>
     <string name="me_tab_username_placeholder">路人甲</string>
     <string name="me_tab_group_placeholder">游客</string>
-    <string name="me_tab_credit_placeholder">-</string>
+    <string name="me_tab_placeholder">-</string>
     <string name="me_notification_title">我的信息</string>
 
     <string name="ic_notifications">消息提醒</string>

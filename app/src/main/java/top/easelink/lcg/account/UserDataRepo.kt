@@ -65,6 +65,7 @@ object UserDataRepo {
         clearCookies()
         SharedPreferencesHelper.getUserSp().edit().clear().apply()
         isLoggedIn = false
+        updateUserInfo(UserInfo.getDefaultUserInfo())
     }
 
     @Suppress("UNCHECKED_CAST", "IMPLICIT_CAST_TO_ANY")

@@ -149,11 +149,9 @@ class SettingActivity : TopActivity() {
         LogoutHintDialog(
             positive = {
                 UserDataRepo.clearAll()
-                clearCookies()
                 showMessage(R.string.clear_cookie)
                 finish()
-            },
-            negative = { }
+            }
         ).show(supportFragmentManager, LogoutHintDialog::class.java.simpleName)
     }
 }

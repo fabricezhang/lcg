@@ -36,11 +36,11 @@ fun parseUserInfo(doc: Document): UserInfo {
                     throw AntiScrapingException()
                 } else {
                     showMessage(message)
-                    return UserInfo.emptyUserInfo()
+                    return UserInfo.getDefaultUserInfo()
                 }
             }
             userName == LCGApp.context.getString(R.string.login_or_register) -> {
-                return UserInfo.emptyUserInfo()
+                return UserInfo.getDefaultUserInfo()
             }
             else -> {
                 val avatar = selectFirst("div.avt > a > img")?.attr("src")

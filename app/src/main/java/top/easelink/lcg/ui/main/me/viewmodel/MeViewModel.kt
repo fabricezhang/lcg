@@ -36,7 +36,7 @@ class MeViewModel : ViewModel() {
             try {
                 val userInfo = UserInfoRepo.requestUserInfo()
                 // login failed
-                if (userInfo == null || userInfo.userName.isNullOrEmpty()) {
+                if (userInfo == null || userInfo == UserInfo.getDefaultUserInfo()) {
                     UserDataRepo.clearAll()
                 } else {
                     // login successfully or userInfo changed

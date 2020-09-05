@@ -1,5 +1,8 @@
 package top.easelink.lcg.account
 
+import top.easelink.lcg.R
+import top.easelink.lcg.appinit.LCGApp
+
 class UserInfo(
     userName: String?,
     groupInfo: String? = null,
@@ -50,8 +53,19 @@ class UserInfo(
 
     companion object {
 
-        fun emptyUserInfo(): UserInfo {
-            return UserInfo(userName = null)
+        fun getDefaultUserInfo(): UserInfo {
+            val context = LCGApp.context
+            val placeholder = context.getString(R.string.me_tab_placeholder)
+            return  UserInfo(
+                userName = context.getString(R.string.me_tab_group_placeholder),
+                groupInfo = context.getString(R.string.me_tab_group_placeholder),
+                avatarUrl = "",
+                wuaiCoin = placeholder,
+                credit = placeholder,
+                answerRate = placeholder,
+                enthusiasticValue = placeholder,
+                signInStateUrl = null
+            )
         }
     }
 

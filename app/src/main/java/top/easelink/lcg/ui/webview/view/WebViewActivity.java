@@ -42,10 +42,13 @@ import java.util.Objects;
 import timber.log.Timber;
 import top.easelink.framework.customview.webview.HorizontalScrollDisableWebView;
 import top.easelink.lcg.R;
+import top.easelink.lcg.account.AccountManager;
+import top.easelink.lcg.account.UserDataRepo;
+import top.easelink.lcg.account.UserInfo;
 import top.easelink.lcg.appinit.LCGApp;
 import top.easelink.lcg.mta.EventHelperKt;
 import top.easelink.lcg.service.web.HookInterface;
-import top.easelink.lcg.account.AccountManager;
+import top.easelink.lcg.ui.main.me.source.UserInfoRepo;
 import top.easelink.lcg.ui.main.view.MainActivity;
 import top.easelink.lcg.utils.ToastUtilsKt;
 
@@ -154,13 +157,21 @@ public class WebViewActivity extends AppCompatActivity {
                                     AccountManager.INSTANCE.isLoggedIn().postValue(true);
                                     try {
                                         mWebView.stopLoading();
-                                        // hold on 1.5 seconds to wait for saving user info
-                                        Thread.sleep(1500);
+                                        // hold on 0.5 seconds to wait for saving user info
+                                        Thread.sleep(500);
                                         startActivity(new Intent(mWebView.getContext(), MainActivity.class));
                                         finish();
                                     } catch (Exception ignored) {
                                     }
                                 });
+                                try {
+                                    UserInfo userInfo = UserInfoRepo.INSTANCE.requestUserInfo();
+                                    UserDataRepo.INSTANCE.updateUserInfo(
+                                        userInfo == null ? UserInfo.Companion.getDefaultUserInfo(): userInfo
+                                    );
+                                } catch (Exception e) {
+                                    Timber.e(e);
+                                }
                             }
                         } catch (Exception e) {
                             Timber.w(html);

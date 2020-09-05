@@ -75,6 +75,7 @@ class MeFragment : TopFragment(), ControllableFragment {
             me_credit.text = info.credit
             me_enthusiastic.text = info.enthusiasticValue
             info.signInStateUrl?.let { url ->
+                me_sign_in_state.visibility = View.VISIBLE
                 ImageRequest.Builder(me_sign_in_state.context)
                     .data(url)
                     .allowRgb565(true)
@@ -89,10 +90,12 @@ class MeFragment : TopFragment(), ControllableFragment {
                     .let { request ->
                         Coil.imageLoader(me_sign_in_state.context).enqueue(request)
                     }
+            } ?: run {
+                me_sign_in_state.visibility = View.GONE
             }
             info.avatarUrl?.let {
                 me_user_avatar.load(it) {
-                    lifecycle(this@MeFragment)
+                    lifecycle(viewLifecycleOwner)
                     transformations(RoundedCornersTransformation(4.dpToPx(me_user_avatar.context)))
                     error(getAvatar())
                 }
