@@ -1,6 +1,10 @@
+static String releaseTime() {
+    return new Date().format("yyyyMMdd-HHmm", TimeZone.getTimeZone("GMT+08:00"))
+}
+
 ext {
     BUGLY_APP_ID = "\"12345678\""
-
+    releaseTime = releaseTime()
     MTA_APP_KEY = "AXXXXXXXXXXX"
     MTA_CHANNEL = "GITHUB"
 

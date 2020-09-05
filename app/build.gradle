@@ -25,6 +25,11 @@ android {
                 MTA_APPKEY : rootProject.ext.MTA_APP_KEY,
                 MTA_CHANNEL: rootProject.ext.MTA_CHANNEL
         ]
+
+        ndk {
+            abiFilters 'armeabi-v7a', 'x86', 'arm64-v8a'//,'armeabi',
+        }
+        resConfigs "zh"
     }
     signingConfigs {
         releaseConfig {
@@ -35,6 +40,12 @@ android {
         }
     }
     buildTypes {
+
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.releaseConfig
+        }
         release {
             minifyEnabled true
             debuggable false
@@ -50,15 +61,29 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
         incremental true
     }
+
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/*android*'
+        exclude 'META-INF/*kotlin*'
+        exclude 'okhttp3/**'
+        exclude 'kotlin/**'
+        exclude 'META-INF/ASL2.0'
+        exclude 'META-INF/README.md'
+        exclude 'META-INF/services/**'
+        exclude 'META-INF/CHANGES'
+     }
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8
     }
     // Generate Version Info
     android.applicationVariants.all { variant ->
         variant.outputs.all {
-            outputFileName = "lcg-${variant.versionName}.apk"
+            outputFileName = "lcg-${variant.versionName}-${releaseTime}.apk"
         }
     }
+
     buildFeatures {
         dataBinding = true
     }
@@ -68,8 +93,6 @@ android {
 dependencies {
     // database
     kapt "androidx.room:room-compiler:$roomVersion"
-    kapt "com.android.databinding:compiler:$dataBindingVersion"
-
     implementation project(':framework')
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -77,3 +100,5 @@ dependencies {
     // test related
     testImplementation "junit:junit:$rootProject.junitVersion"
 }
+
+apply from: "../andres.gradle"
