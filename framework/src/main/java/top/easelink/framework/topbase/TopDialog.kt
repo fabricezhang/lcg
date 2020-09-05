@@ -53,7 +53,7 @@ abstract class TopDialog : DialogFragment() {
     private fun safelyShow(fragmentManager: FragmentManager, tag: String?) {
         //debounce
         val curTime = System.currentTimeMillis()
-        if ((curTime - lastTryShowTime) < ViewConfiguration.getDoubleTapTimeout()) {
+        if ((curTime - lastTryShowTime) < 500) {
             return
         }
         lastTryShowTime = curTime

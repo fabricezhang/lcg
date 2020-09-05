@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:clickable="true"
+    android:focusable="true"
+    android:layout_marginTop="@dimen/dp_20"
+    android:layout_marginStart="@dimen/dp_10"
+    android:layout_marginEnd="@dimen/dp_10"
+    android:layout_marginBottom="@dimen/dp_50"
+    android:background="@drawable/login_bg">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/instruction_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/slight_light_light_gray"
+        app:cardCornerRadius="@dimen/dp_8"
+        app:cardElevation="@dimen/dp_4" >
+        <top.easelink.framework.customview.htmltextview.HtmlTextView
+            android:layout_margin="@dimen/dp_10"
+            android:id="@+id/login_hint_instruction"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            tools:text="This is a Test " />
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/message_animation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="fitCenter"
+        android:layout_below="@id/login_hint_btn"
+        app:lottie_rawRes="@raw/message"
+        app:lottie_loop="false"
+        app:lottie_autoPlay="true"
+        android:layout_centerHorizontal="true"
+        />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/login_hint_btn"
+        android:layout_width="@dimen/dp_60"
+        android:layout_height="@dimen/dp_30"
+        android:textColor="@color/white"
+        android:layout_marginTop="@dimen/dp_10"
+        android:textSize="@dimen/sp_14"
+        android:text="@string/login_hint_btn"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/instruction_card"
+        android:background="@drawable/button_bg"
+        android:backgroundTint="@color/pojie_logo" />
+
+
+</RelativeLayout>
