@@ -45,6 +45,7 @@ import top.easelink.lcg.R;
 import top.easelink.lcg.appinit.LCGApp;
 import top.easelink.lcg.mta.EventHelperKt;
 import top.easelink.lcg.service.web.HookInterface;
+import top.easelink.lcg.account.AccountManager;
 import top.easelink.lcg.ui.main.view.MainActivity;
 import top.easelink.lcg.utils.ToastUtilsKt;
 
@@ -148,8 +149,9 @@ public class WebViewActivity extends AppCompatActivity {
                         try {
                             Element element = Jsoup.parse(html).selectFirst("div.avt");
                             if (element != null) {
-                                ToastUtilsKt.showMessage(R.string.login_successfully);
                                 mWebView.post(() -> {
+                                    ToastUtilsKt.showMessage(R.string.login_successfully);
+                                    AccountManager.INSTANCE.isLoggedIn().postValue(true);
                                     try {
                                         mWebView.stopLoading();
                                         // hold on 1.5 seconds to wait for saving user info

@@ -16,7 +16,10 @@ import timber.log.Timber
 abstract class TopDialog : DialogFragment() {
 
     lateinit var mContext: Context
-    private var lastTryShowTime: Long = 0L
+    companion object {
+        @Volatile
+        var lastTryShowTime: Long = 0L
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -51,9 +54,9 @@ abstract class TopDialog : DialogFragment() {
         //debounce
         val curTime = System.currentTimeMillis()
         if ((curTime - lastTryShowTime) < ViewConfiguration.getDoubleTapTimeout()) {
-            lastTryShowTime = curTime
             return
         }
+        lastTryShowTime = curTime
         val clazz = javaClass.superclass as Class<*>
         try {
             val mDismissed = clazz.getDeclaredField("mDismissed")

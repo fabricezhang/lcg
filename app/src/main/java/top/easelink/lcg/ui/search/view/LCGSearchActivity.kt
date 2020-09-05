@@ -131,7 +131,7 @@ class LCGSearchActivity : TopActivity() {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageEvent(event: OpenLargeImageViewEvent) {
         if (event.url.isNotEmpty()) {
-            LargeImageDialog(event.url).show(
+            LargeImageDialog.newInstance(event.url).show(
                 supportFragmentManager,
                 LargeImageDialog::class.java.simpleName
             )

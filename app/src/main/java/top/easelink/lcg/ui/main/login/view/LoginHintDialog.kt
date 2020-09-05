@@ -1,7 +1,5 @@
 package top.easelink.lcg.ui.main.login.view
 
-import android.app.Activity
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.*
 import android.widget.Button
@@ -50,11 +48,6 @@ class LoginHintDialog : TopDialog() {
             windowParam.gravity = Gravity.BOTTOM
             window.attributes = windowParam
         }
-    }
-
-    override fun onDismiss(dialog: DialogInterface) {
-        super.onDismiss(dialog)
-        (mContext as? Activity)?.onBackPressed()
     }
 
 }

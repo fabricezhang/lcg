@@ -31,8 +31,8 @@ import top.easelink.lcg.R
 import top.easelink.lcg.config.AppConfig
 import top.easelink.lcg.mta.EVENT_CAPTURE_ARTICLE
 import top.easelink.lcg.mta.sendEvent
-import top.easelink.lcg.spipedata.UserData.isLoggedIn
-import top.easelink.lcg.spipedata.UserData.username
+import top.easelink.lcg.account.UserDataRepo.isLoggedIn
+import top.easelink.lcg.account.UserDataRepo.username
 import top.easelink.lcg.ui.main.article.viewmodel.ArticleAdapterListener
 import top.easelink.lcg.ui.main.model.OpenArticleEvent
 import top.easelink.lcg.ui.main.model.OpenLargeImageViewEvent

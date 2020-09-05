@@ -8,7 +8,7 @@ import top.easelink.framework.topbase.TopDialog
 import top.easelink.framework.utils.dpToPx
 import top.easelink.lcg.R
 import top.easelink.lcg.appinit.LCGApp
-import top.easelink.lcg.spipedata.UserData
+import top.easelink.lcg.account.UserDataRepo
 
 class LogoutHintDialog(
     private val positive: () -> Unit,
@@ -31,7 +31,7 @@ class LogoutHintDialog(
             String.format(
                 getString(
                     R.string.logout_confirm_message,
-                    UserData.username
+                    UserDataRepo.username
                 )
             )
         view.findViewById<Button>(R.id.logout_confirm_btn).setOnClickListener {

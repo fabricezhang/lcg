@@ -192,7 +192,7 @@ class MainActivity : TopActivity(), BottomNavigationView.OnNavigationItemSelecte
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageEvent(event: OpenLargeImageViewEvent) {
         if (event.url.isNotEmpty()) {
-            LargeImageDialog(event.url).show(
+            LargeImageDialog.newInstance(event.url).show(
                 supportFragmentManager,
                 LargeImageDialog::class.java.simpleName
             )
@@ -265,15 +265,16 @@ class MainActivity : TopActivity(), BottomNavigationView.OnNavigationItemSelecte
             when (item.itemId) {
                 R.id.action_message -> {
                     removeBubbleView(PRIVATE_MESSAGE_POS)
-                    showFragment(MessageFragment::class.java)
+                    MessageFragment::class.java
                 }
-                R.id.action_forum_navigation -> showFragment(DiscoverFragment::class.java)
-                R.id.action_about_me -> showFragment(MeFragment::class.java)
-                R.id.action_home -> showFragment(RecommendFragment::class.java)
-                else -> {
-                }
-            }
-            true
+                R.id.action_forum_navigation -> DiscoverFragment::class.java
+                R.id.action_about_me -> MeFragment::class.java
+                R.id.action_home -> RecommendFragment::class.java
+                else -> { null }
+            }?.let {
+                showFragment(it)
+                true
+            }?: false
         }
     }
 

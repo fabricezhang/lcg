@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.dialog_comment_article.*
 import top.easelink.framework.topbase.TopDialog
 import top.easelink.framework.utils.CommonUtils
 import top.easelink.lcg.R
-import top.easelink.lcg.spipedata.UserData
+import top.easelink.lcg.account.UserDataRepo
 import top.easelink.lcg.ui.main.article.viewmodel.ReplyPostViewModel
 import top.easelink.lcg.ui.main.source.model.Post
 import top.easelink.lcg.utils.showMessage
@@ -77,8 +77,8 @@ class CommentArticleDialog : TopDialog() {
             val bundle = Bundle().apply {
                 putParcelable(
                     "post", Post(
-                        UserData.username,
-                        UserData.avatar,
+                        UserDataRepo.username,
+                        UserDataRepo.avatar,
                         CommonUtils.getCurrentDate(),
                         content, null, null
                     )

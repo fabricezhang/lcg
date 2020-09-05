@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.activity_settings.*
 import top.easelink.framework.topbase.TopActivity
 import top.easelink.lcg.R
 import top.easelink.lcg.config.AppConfig
-import top.easelink.lcg.spipedata.UserData
+import top.easelink.lcg.account.UserDataRepo
 import top.easelink.lcg.ui.main.login.view.LoginHintDialog
 import top.easelink.lcg.ui.main.logout.view.LogoutHintDialog
 import top.easelink.lcg.ui.setting.viewmodel.SettingViewModel
@@ -67,7 +67,7 @@ class SettingActivity : TopActivity() {
     }
 
     private fun setupComponents() {
-        if (!UserData.isLoggedIn) {
+        if (!UserDataRepo.isLoggedIn) {
             sync_favorites_switch.isEnabled = false
             auto_sign_switch.isEnabled = false
             AppConfig.autoSignEnable = false
@@ -78,7 +78,7 @@ class SettingActivity : TopActivity() {
             }
         } else {
             account_btn.text =
-                String.format(getString(R.string.logout_confirm_message), UserData.username)
+                String.format(getString(R.string.logout_confirm_message), UserDataRepo.username)
             account_btn.setOnClickListener {
                 tryLogout()
             }
@@ -148,7 +148,7 @@ class SettingActivity : TopActivity() {
     private fun tryLogout() {
         LogoutHintDialog(
             positive = {
-                UserData.clearAll()
+                UserDataRepo.clearAll()
                 clearCookies()
                 showMessage(R.string.clear_cookie)
                 finish()

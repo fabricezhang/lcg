@@ -75,9 +75,9 @@
     <!--Me Fragment-->
     <string name="me_tab_title">个人页</string>
     <string name="me_tab_level_placeholder">个人信息</string>
-    <string name="me_tab_username_placeholder">用户名</string>
-    <string name="me_tab_group_placeholder">用户群组</string>
-    <string name="me_tab_credit_placeholder">0</string>
+    <string name="me_tab_username_placeholder">路人甲</string>
+    <string name="me_tab_group_placeholder">游客</string>
+    <string name="me_tab_credit_placeholder">-</string>
     <string name="me_notification_title">我的信息</string>
 
     <string name="ic_notifications">消息提醒</string>

@@ -2,7 +2,7 @@ package top.easelink.lcg.ui.main.discover.model
 
 import android.content.Context
 import top.easelink.lcg.R
-import top.easelink.lcg.spipedata.UserData
+import top.easelink.lcg.account.UserDataRepo
 import top.easelink.lcg.utils.WebsiteConstant
 import java.util.*
 
@@ -29,7 +29,7 @@ fun generateAllForums(context: Context): List<ForumNavigationModel> {
             WebsiteConstant.ORIGINAL_RELEASE_QUERY
         )
     )
-    if (UserData.isLoggedIn) {
+    if (UserDataRepo.isLoggedIn) {
         list.add(
             ForumNavigationModel(
                 context.getString(R.string.free_chat_title),
@@ -78,7 +78,7 @@ fun generateOptionalList(context: Context): List<ForumNavigationModel> {
             WebsiteConstant.QA_QUERY
         )
     )
-    if (UserData.isLoggedIn) {
+    if (UserDataRepo.isLoggedIn) {
         list.add(
             ForumNavigationModel(
                 context.getString(R.string.forum_virus_analysis),

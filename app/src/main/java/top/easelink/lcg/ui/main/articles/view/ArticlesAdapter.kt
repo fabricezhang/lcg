@@ -14,7 +14,7 @@ import top.easelink.lcg.R
 import top.easelink.lcg.databinding.ItemArticleEmptyViewBinding
 import top.easelink.lcg.mta.EVENT_OPEN_PREVIEW
 import top.easelink.lcg.mta.sendEvent
-import top.easelink.lcg.spipedata.UserData
+import top.easelink.lcg.account.UserDataRepo
 import top.easelink.lcg.ui.main.article.view.PostPreviewDialog
 import top.easelink.lcg.ui.main.articles.viewmodel.ArticleEmptyItemViewModel
 import top.easelink.lcg.ui.main.articles.viewmodel.ArticleEmptyItemViewModel.ArticleEmptyItemViewModelListener
@@ -139,7 +139,7 @@ class ArticlesAdapter(
                 } else {
                     recommend_flag.visibility = View.GONE
                 }
-                if (article.author == UserData.username) {
+                if (article.author == UserDataRepo.username) {
                     stamp.apply {
                         visibility = View.VISIBLE
                         setStampColor(ContextCompat.getColor(context, R.color.orange))
