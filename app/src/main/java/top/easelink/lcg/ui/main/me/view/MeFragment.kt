@@ -2,6 +2,7 @@ package top.easelink.lcg.ui.main.me.view
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.SystemClock
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,6 +38,14 @@ class MeFragment : TopFragment(), ControllableFragment {
 
     private lateinit var viewModel: MeViewModel
 
+    companion object {
+        private var lastFetchInfoTime = 0L
+        private const val MINIMUM_REQUEST_INTERVAL = 30_000 // 30s
+
+        private var lastShowLoginHintTime = 0L
+        private const val MINIMUM_HINT_SHOW_INTERVAL = 120_000 // 120s
+    }
+
     override fun isControllable(): Boolean {
         return true
     }
@@ -57,13 +66,21 @@ class MeFragment : TopFragment(), ControllableFragment {
         }
         updateIconButtons()
         registerObservers()
-        viewModel.fetchUserInfoDirect()
+        if (SystemClock.elapsedRealtime() - lastFetchInfoTime > MINIMUM_REQUEST_INTERVAL) {
+            lastFetchInfoTime = SystemClock.elapsedRealtime()
+            viewModel.fetchUserInfoDirect()
+        }
     }
 
     private fun registerObservers() {
         AccountManager.isLoggedIn.observe(viewLifecycleOwner) { loggedIn ->
             updateViewState(loggedIn)
-            if (!loggedIn && isAdded && isVisible) {
+            if (!loggedIn
+                && isAdded
+                && isVisible
+                && SystemClock.elapsedRealtime() - MINIMUM_HINT_SHOW_INTERVAL > lastShowLoginHintTime
+            ) {
+                lastShowLoginHintTime = SystemClock.elapsedRealtime()
                 LoginHintDialog().show(childFragmentManager, null)
             }
         }
