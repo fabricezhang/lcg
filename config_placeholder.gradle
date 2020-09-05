@@ -3,8 +3,9 @@ static String releaseTime() {
 }
 
 ext {
-    BUGLY_APP_ID = "\"12345678\""
     releaseTime = releaseTime()
+
+    BUGLY_APP_ID = "\"12345678\""
     MTA_APP_KEY = "AXXXXXXXXXXX"
     MTA_CHANNEL = "GITHUB"
 
