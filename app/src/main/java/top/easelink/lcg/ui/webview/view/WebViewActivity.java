@@ -148,6 +148,7 @@ public class WebViewActivity extends AppCompatActivity {
                         try {
                             Element element = Jsoup.parse(html).selectFirst("div.avt");
                             if (element != null) {
+                                ToastUtilsKt.showMessage(R.string.login_successfully);
                                 mWebView.post(() -> {
                                     try {
                                         mWebView.stopLoading();
@@ -373,7 +374,6 @@ public class WebViewActivity extends AppCompatActivity {
             super.onPageCommitVisible(view, url);
             setLoading(false);
             if (isOpenLoginEvent) {
-                ToastUtilsKt.showMessage(R.string.login_successfully);
                 view.loadUrl("javascript:" + HOOK_NAME + ".processHtml(document.documentElement.outerHTML);");
             }
             setCookies(CookieManager.getInstance().getCookie(url));
