@@ -2,7 +2,9 @@ package top.easelink.lcg.ui.main.article.view
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,11 +13,9 @@ import kotlinx.android.synthetic.main.fragment_article.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import top.easelink.framework.base.BaseFragment
-import top.easelink.lcg.BR
+import top.easelink.framework.topbase.ControllableFragment
+import top.easelink.framework.topbase.TopFragment
 import top.easelink.lcg.R
-import top.easelink.lcg.config.AppConfig
-import top.easelink.lcg.databinding.FragmentArticleBinding
 import top.easelink.lcg.ui.main.article.view.DownloadLinkDialog.Companion.newInstance
 import top.easelink.lcg.ui.main.article.view.ReplyPostDialog.Companion.newInstance
 import top.easelink.lcg.ui.main.article.view.ScreenCaptureDialog.Companion.TAG
@@ -28,15 +28,24 @@ import top.easelink.lcg.ui.webview.view.WebViewActivity
 import top.easelink.lcg.utils.WebsiteConstant
 import top.easelink.lcg.utils.showMessage
 
-class ArticleFragment(private var articleUrl: String) :
-    BaseFragment<FragmentArticleBinding, ArticleViewModel>() {
-
-    // try fix no empty constructor issue
-    constructor() : this(AppConfig.getAppReleaseUrl())
+class ArticleFragment: TopFragment(), ControllableFragment {
 
     companion object {
+        fun newInstance(url: String): ArticleFragment {
+            val args = Bundle().apply {
+                putString(ARTICLE_URL, url)
+            }
+            val fragment = ArticleFragment()
+            fragment.arguments = args
+            return fragment
+        }
+
+        private const val ARTICLE_URL = "article_url"
         const val REPLY_POST_RESULT = 1000
     }
+
+    private lateinit var viewModel: ArticleViewModel
+    private var articleUrl: String = ""
 
     override fun isControllable(): Boolean {
         return true
@@ -46,29 +55,28 @@ class ArticleFragment(private var articleUrl: String) :
         return articleUrl
     }
 
-    override fun getBindingVariable(): Int {
-        return BR.viewModel
-    }
-
-    override fun getLayoutId(): Int {
-        return R.layout.fragment_article
-    }
-
-    override fun getViewModel(): ArticleViewModel {
-        return ViewModelProvider(this)[ArticleViewModel::class.java]
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        articleUrl = arguments?.getString(ARTICLE_URL).orEmpty()
         EventBus.getDefault().register(this)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_article, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel = ViewModelProvider(this)[ArticleViewModel::class.java]
+        initObserver()
         setUp()
         setupToolBar()
         viewModel.setUrl(articleUrl)
-        viewModel.fetchArticlePost(FETCH_POST_INIT) {}
+        viewModel.fetchArticlePost(FETCH_POST_INIT)
     }
 
     override fun onDetach() {
@@ -76,8 +84,27 @@ class ArticleFragment(private var articleUrl: String) :
         EventBus.getDefault().unregister(this)
     }
 
+    private fun initObserver() {
+        viewModel.articleTitle.observe(viewLifecycleOwner) {
+            article_toolbar.title = it
+        }
+        viewModel.shouldDisplayPosts.observe(viewLifecycleOwner) {
+            post_recycler_view.visibility = if (it) View.VISIBLE else View.GONE
+        }
+        viewModel.blockMessage.observe(viewLifecycleOwner) {
+            block_text.text = it
+            block_container.visibility = if (it.isNotEmpty()) View.VISIBLE else View.GONE
+        }
+        viewModel.isNotFound.observe(viewLifecycleOwner) {
+            not_found_container.visibility = if (it) View.VISIBLE else View.GONE
+        }
+        viewModel.isLoading.observe(viewLifecycleOwner) {
+            fetching_progress_bar.visibility = if (it) View.VISIBLE else View.GONE
+        }
+    }
+
     private fun setUp() {
-        viewDataBinding.postRecyclerView.apply {
+        post_recycler_view.apply {
             val mLayoutManager = LinearLayoutManager(context).also {
                 it.orientation = RecyclerView.VERTICAL
             }
@@ -87,7 +114,7 @@ class ArticleFragment(private var articleUrl: String) :
                 viewModel, this@ArticleFragment
             )
 
-            viewModel.posts.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            viewModel.posts.observe(viewLifecycleOwner) {
                 val url = it[0].replyUrl
                 if (it.size > 0 && url != null) {
                     comment.apply {
@@ -104,7 +131,7 @@ class ArticleFragment(private var articleUrl: String) :
                     clearItems()
                     addItems(it)
                 }
-            })
+            }
         }
     }
 
@@ -142,7 +169,7 @@ class ArticleFragment(private var articleUrl: String) :
                         ?.getParcelable<Post>("post")
                         ?.let {
                             viewModel.addPostToTop(it)
-                            viewDataBinding.postRecyclerView.scrollToPosition(1)
+                            post_recycler_view.scrollToPosition(1)
                         }
                     showMessage(R.string.reply_post_succeed)
                 } else {
@@ -164,9 +191,11 @@ class ArticleFragment(private var articleUrl: String) :
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageEvent(event: ScreenCaptureEvent) {
-        ScreenCaptureDialog.newInstance(event.imagePath).show(
-            if (isAdded) parentFragmentManager else childFragmentManager,
-            TAG
-        )
+        ScreenCaptureDialog
+            .newInstance(event.imagePath)
+            .show(
+                fragmentManager = if (isAdded) parentFragmentManager else childFragmentManager,
+                tag = TAG
+            )
     }
 }

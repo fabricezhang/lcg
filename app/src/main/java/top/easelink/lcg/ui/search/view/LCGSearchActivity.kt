@@ -118,7 +118,7 @@ class LCGSearchActivity : TopActivity() {
                 if (AppConfig.searchResultShowInWebView) {
                     WebViewActivity.startWebViewWith(SERVER_BASE_URL + event.url, this)
                 } else {
-                    showFragment(ArticleFragment(event.url))
+                    showFragment(ArticleFragment.newInstance(event.url))
                 }
             }
             event.url.startsWith("http") || event.url.startsWith(SERVER_BASE_URL) -> {

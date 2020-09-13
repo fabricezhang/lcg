@@ -163,7 +163,7 @@ class MainActivity : TopActivity(), BottomNavigationView.OnNavigationItemSelecte
         if (AppConfig.articleShowInWebView) {
             WebViewActivity.startWebViewWith(SERVER_BASE_URL + event.url, this)
         } else {
-            showFragment(ArticleFragment(event.url))
+            showFragment(ArticleFragment.newInstance(event.url))
         }
     }
 

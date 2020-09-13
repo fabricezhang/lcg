@@ -1,7 +1,7 @@
 package top.easelink.lcg.ui.main.article.viewmodel
 
 interface ArticleAdapterListener {
-    fun fetchArticlePost(type: Int, callback: (Boolean) -> Unit)
+    fun fetchArticlePost(type: Int, callback: ((Boolean) -> Unit)? = null)
     fun replyAdd(url: String)
 
     companion object {

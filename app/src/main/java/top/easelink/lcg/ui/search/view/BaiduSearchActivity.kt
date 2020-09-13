@@ -106,7 +106,7 @@ class BaiduSearchActivity : TopActivity() {
 
     private fun openAsArticle(url: String) {
         sendEvent(EVENT_OPEN_ARTICLE)
-        showFragment(ArticleFragment(url))
+        showFragment(ArticleFragment.newInstance(url))
     }
 
     private fun showFragment(fragment: Fragment) {

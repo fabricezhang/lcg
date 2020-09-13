@@ -68,8 +68,12 @@ class FavoriteArticlesViewModel : ViewModel(), ArticleFetcher {
         GlobalScope.launch(IOPool) {
             try {
                 val articleEntities = getAllRemoteFavorites()
-                if (ArticlesLocalDataSource.addAllArticleToFavorite(articleEntities)) {
-                    articles.postValue(ArticlesLocalDataSource.getAllFavoriteArticles())
+                if (articleEntities.isEmpty()) {
+                    showMessage(R.string.sync_favorite_failed_empty_favorites)
+                } else {
+                    if (ArticlesLocalDataSource.addAllArticleToFavorite(articleEntities)) {
+                        articles.postValue(ArticlesLocalDataSource.getAllFavoriteArticles())
+                    }
                 }
             } catch (e: Exception) {
                 Timber.e(e)

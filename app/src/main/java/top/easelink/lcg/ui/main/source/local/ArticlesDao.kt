@@ -1,10 +1,8 @@
 package top.easelink.lcg.ui.main.source.local
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import top.easelink.lcg.ui.main.source.model.ArticleEntity
+import top.easelink.lcg.ui.main.source.model.HistoryEntity
 
 /**
  * author : junzhang
@@ -13,6 +11,8 @@ import top.easelink.lcg.ui.main.source.model.ArticleEntity
  */
 @Dao
 interface ArticlesDao {
+
+    // region Articles Management
     /**
      * Insert an article in the database.
      * If the article already exists, replace it.
@@ -47,4 +47,22 @@ interface ArticlesDao {
      */
     @Query("DELETE FROM articles")
     fun deleteArticles()
+
+    //endregion
+
+    //region History Management
+    @Query("SELECT * FROM history ORDER BY timestamp DESC")
+    suspend fun getHistories(): List<HistoryEntity>
+
+    @Insert
+    suspend fun insertHistory(vararg historyEntity: HistoryEntity)
+
+    @Delete
+    suspend fun deleteHistory(vararg historyEntity: HistoryEntity)
+
+    @Query("DELETE FROM history")
+    suspend fun deleteHistories()
+
+    //endregion
+
 }

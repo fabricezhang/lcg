@@ -123,6 +123,7 @@
     <string name="add_to_favorite_failed">收藏本地失败</string>
     <string name="sync_favorite_successfully">同步网络收藏成功</string>
     <string name="sync_favorite_failed">同步网络收藏失败</string>
+    <string name="sync_favorite_failed_empty_favorites">同步网络收藏失败:网络收藏为空</string>
     <string name="remove_all_favorites_successfully">清空收藏成功</string>
     <string name="remove_all_favorites_failed">清空收藏失败</string>
 
