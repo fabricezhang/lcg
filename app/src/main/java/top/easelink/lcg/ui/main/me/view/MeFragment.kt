@@ -27,12 +27,12 @@ import top.easelink.lcg.account.AccountManager
 import top.easelink.lcg.ui.main.about.view.AboutFragment
 import top.easelink.lcg.ui.main.articles.view.FavoriteArticlesFragment
 import top.easelink.lcg.ui.main.follow.view.FollowFragment
-import top.easelink.lcg.ui.main.login.view.LoginHintDialog
 import top.easelink.lcg.ui.main.me.viewmodel.MeViewModel
 import top.easelink.lcg.ui.main.model.OpenForumEvent
 import top.easelink.lcg.ui.setting.view.SettingActivity
 import top.easelink.lcg.utils.WebsiteConstant.MY_ARTICLES_QUERY
 import top.easelink.lcg.utils.avatar.getAvatar
+import top.easelink.lcg.utils.showMessage
 
 class MeFragment : TopFragment(), ControllableFragment {
 
@@ -81,7 +81,7 @@ class MeFragment : TopFragment(), ControllableFragment {
                 && SystemClock.elapsedRealtime() - MINIMUM_HINT_SHOW_INTERVAL > lastShowLoginHintTime
             ) {
                 lastShowLoginHintTime = SystemClock.elapsedRealtime()
-                LoginHintDialog().show(childFragmentManager, null)
+                showMessage(R.string.login_hint_message)
             }
         }
         AccountManager.userInfo.observe(viewLifecycleOwner) { info ->

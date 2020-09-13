@@ -9,6 +9,7 @@
     <string name="qq_not_support">暂不支持QQ登陆</string>
     <string name="baidu_net_disk_not_support">暂不支持百度网盘唤起</string>
     <string name="login_or_register">登录或注册</string>
+    <string name="login_hint_message">登陆开启更多功能</string>
 
     <!--  Error messages  -->
     <string name="io_error_mark_invalid">页面解析失败，请使用网页打开</string>
