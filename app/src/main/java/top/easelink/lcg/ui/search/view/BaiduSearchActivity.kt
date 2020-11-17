@@ -16,8 +16,8 @@ import top.easelink.framework.topbase.TopActivity
 import top.easelink.framework.utils.addFragmentInActivity
 import top.easelink.lcg.R
 import top.easelink.lcg.config.AppConfig.searchResultShowInWebView
-import top.easelink.lcg.mta.EVENT_OPEN_ARTICLE
-import top.easelink.lcg.mta.sendEvent
+import top.easelink.lcg.event.EVENT_OPEN_ARTICLE
+import top.easelink.lcg.event.sendEvent
 import top.easelink.lcg.ui.main.article.view.ArticleFragment
 import top.easelink.lcg.ui.search.model.OpenBaiduSearchResultEvent
 import top.easelink.lcg.ui.search.viewmodel.BaiduSearchResultAdapter

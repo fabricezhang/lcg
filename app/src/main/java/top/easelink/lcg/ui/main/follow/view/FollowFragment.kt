@@ -8,8 +8,8 @@ import kotlinx.android.synthetic.main.fragment_follow.*
 import top.easelink.framework.topbase.ControllableFragment
 import top.easelink.framework.topbase.TopFragment
 import top.easelink.lcg.R
-import top.easelink.lcg.mta.EVENT_OPEN_FOLLOW_PAGE
-import top.easelink.lcg.mta.sendEvent
+import top.easelink.lcg.event.EVENT_OPEN_FOLLOW_PAGE
+import top.easelink.lcg.event.sendEvent
 
 class FollowFragment : TopFragment(), ControllableFragment {
 

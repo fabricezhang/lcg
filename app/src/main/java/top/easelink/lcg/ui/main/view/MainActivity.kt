@@ -28,7 +28,7 @@ import top.easelink.framework.utils.popBackFragmentUntil
 import top.easelink.lcg.BuildConfig
 import top.easelink.lcg.R
 import top.easelink.lcg.config.AppConfig
-import top.easelink.lcg.mta.*
+import top.easelink.lcg.event.*
 import top.easelink.lcg.ui.main.about.view.AboutFragment
 import top.easelink.lcg.ui.main.article.view.ArticleFragment
 import top.easelink.lcg.ui.main.articles.view.ForumArticlesFragment.Companion.newInstance

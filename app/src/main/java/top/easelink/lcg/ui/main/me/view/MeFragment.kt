@@ -24,9 +24,9 @@ import top.easelink.framework.utils.addFragmentInFragment
 import top.easelink.framework.utils.dpToPx
 import top.easelink.lcg.R
 import top.easelink.lcg.account.AccountManager
-import top.easelink.lcg.ui.main.about.view.AboutFragment
 import top.easelink.lcg.ui.main.articles.view.FavoriteArticlesFragment
 import top.easelink.lcg.ui.main.follow.view.FollowFragment
+import top.easelink.lcg.ui.main.history.view.HistoryArticlesFragment
 import top.easelink.lcg.ui.main.me.viewmodel.MeViewModel
 import top.easelink.lcg.ui.main.model.OpenForumEvent
 import top.easelink.lcg.ui.setting.view.SettingActivity
@@ -152,12 +152,12 @@ class MeFragment : TopFragment(), ControllableFragment {
             btn_icon.setImageResource(R.drawable.ic_follow)
             tv_icon.setText(R.string.ic_follow)
         }
-        icon_feedback?.apply {
+        icon_history?.apply {
             setOnClickListener {
-                showFragment(AboutFragment())
+                showFragment(HistoryArticlesFragment.newInstance())
             }
-            btn_icon.setImageResource(R.drawable.ic_about)
-            tv_icon.setText(R.string.ic_feedback)
+            btn_icon.setImageResource(R.drawable.ic_history)
+            tv_icon.setText(R.string.ic_history)
         }
     }
 

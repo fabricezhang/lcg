@@ -10,6 +10,10 @@
     <string name="baidu_net_disk_not_support">暂不支持百度网盘唤起</string>
     <string name="login_or_register">登录或注册</string>
     <string name="login_hint_message">登陆开启更多功能</string>
+    <string name="history_articles_empty_tips">看过的文章才有记录哦</string>
+
+    <!--  History  -->
+    <string name="btn_clear_histories">全部删除</string>
 
     <!--  Error messages  -->
     <string name="io_error_mark_invalid">页面解析失败，请使用网页打开</string>
@@ -81,6 +85,7 @@
     <string name="me_tab_placeholder">-</string>
     <string name="me_notification_title">我的信息</string>
 
+    <string name="ic_history">阅读记录</string>
     <string name="ic_notifications">消息提醒</string>
     <string name="ic_feedback">问题反馈</string>
     <string name="ic_follow">我的收听</string>

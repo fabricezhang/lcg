@@ -9,7 +9,7 @@ class HistoryEntity(
     @field:ColumnInfo(name = "title") var title: String,
     @field:ColumnInfo(name = "author") var author: String,
     @field:ColumnInfo(name = "url") var url: String,
-    content: String,
+    content: String = "",
     timestamp: Long
 ) {
     @PrimaryKey

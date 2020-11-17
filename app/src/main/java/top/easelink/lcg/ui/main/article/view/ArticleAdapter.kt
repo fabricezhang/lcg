@@ -29,8 +29,8 @@ import top.easelink.framework.utils.dp2px
 import top.easelink.framework.utils.dpToPx
 import top.easelink.lcg.R
 import top.easelink.lcg.config.AppConfig
-import top.easelink.lcg.mta.EVENT_CAPTURE_ARTICLE
-import top.easelink.lcg.mta.sendEvent
+import top.easelink.lcg.event.EVENT_CAPTURE_ARTICLE
+import top.easelink.lcg.event.sendEvent
 import top.easelink.lcg.account.UserDataRepo.isLoggedIn
 import top.easelink.lcg.account.UserDataRepo.username
 import top.easelink.lcg.ui.main.article.viewmodel.ArticleAdapterListener

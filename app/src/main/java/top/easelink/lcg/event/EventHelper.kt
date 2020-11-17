@@ -1,4 +1,4 @@
-package top.easelink.lcg.mta
+package top.easelink.lcg.event
 
 import com.tencent.stat.StatService
 import top.easelink.lcg.appinit.LCGApp

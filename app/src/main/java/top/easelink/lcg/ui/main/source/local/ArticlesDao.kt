@@ -1,5 +1,6 @@
 package top.easelink.lcg.ui.main.source.local
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import top.easelink.lcg.ui.main.source.model.ArticleEntity
 import top.easelink.lcg.ui.main.source.model.HistoryEntity
@@ -52,13 +53,16 @@ interface ArticlesDao {
 
     //region History Management
     @Query("SELECT * FROM history ORDER BY timestamp DESC")
-    suspend fun getHistories(): List<HistoryEntity>
+    fun getHistories(): LiveData<List<HistoryEntity>>
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertHistory(vararg historyEntity: HistoryEntity)
 
     @Delete
     suspend fun deleteHistory(vararg historyEntity: HistoryEntity)
+
+    @Query("DELETE FROM history WHERE url = :url")
+    suspend fun deleteHistory(url: String): Int
 
     @Query("DELETE FROM history")
     suspend fun deleteHistories()

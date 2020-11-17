@@ -20,10 +20,10 @@ import top.easelink.framework.threadpool.IOPool
 import top.easelink.framework.utils.dpToPx
 import top.easelink.framework.utils.getStatusBarHeight
 import top.easelink.lcg.R
-import top.easelink.lcg.mta.EVENT_OPEN_PROFILE
-import top.easelink.lcg.mta.EVENT_OPEN_PROFILE_PAGE
-import top.easelink.lcg.mta.EVENT_SUBSCRIBE_USER
-import top.easelink.lcg.mta.sendEvent
+import top.easelink.lcg.event.EVENT_OPEN_PROFILE
+import top.easelink.lcg.event.EVENT_OPEN_PROFILE_PAGE
+import top.easelink.lcg.event.EVENT_SUBSCRIBE_USER
+import top.easelink.lcg.event.sendEvent
 import top.easelink.lcg.network.JsoupClient
 import top.easelink.lcg.ui.main.source.parseExtraUserInfoProfilePage
 import top.easelink.lcg.ui.profile.model.PopUpProfileInfo

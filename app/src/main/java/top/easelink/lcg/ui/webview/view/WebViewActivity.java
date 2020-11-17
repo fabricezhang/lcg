@@ -46,13 +46,13 @@ import top.easelink.lcg.account.AccountManager;
 import top.easelink.lcg.account.UserDataRepo;
 import top.easelink.lcg.account.UserInfo;
 import top.easelink.lcg.appinit.LCGApp;
-import top.easelink.lcg.mta.EventHelperKt;
+import top.easelink.lcg.event.EventHelperKt;
 import top.easelink.lcg.service.web.HookInterface;
 import top.easelink.lcg.ui.main.me.source.UserInfoRepo;
 import top.easelink.lcg.ui.main.view.MainActivity;
 import top.easelink.lcg.utils.ToastUtilsKt;
 
-import static top.easelink.lcg.mta.MTAConstantKt.EVENT_SHARE_ARTICLE_URL;
+import static top.easelink.lcg.event.MTAConstantKt.EVENT_SHARE_ARTICLE_URL;
 import static top.easelink.lcg.ui.webview.WebViewConstantsKt.FORCE_ENABLE_JS_KEY;
 import static top.easelink.lcg.ui.webview.WebViewConstantsKt.OPEN_LOGIN_PAGE;
 import static top.easelink.lcg.ui.webview.WebViewConstantsKt.TITLE_KEY;
