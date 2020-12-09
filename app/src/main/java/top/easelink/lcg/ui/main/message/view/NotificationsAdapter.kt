@@ -3,6 +3,7 @@ package top.easelink.lcg.ui.main.message.view
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import coil.transform.RoundedCornersTransformation
@@ -17,7 +18,8 @@ import top.easelink.lcg.ui.main.model.BaseNotification
 
 
 class NotificationsAdapter(
-    val notificationViewModel: NotificationViewModel
+    private val notificationViewModel: NotificationViewModel,
+    private val mFragment: Fragment
 ) : RecyclerView.Adapter<BaseViewHolder>() {
 
     private val mNotifications: MutableList<BaseNotification> = mutableListOf()

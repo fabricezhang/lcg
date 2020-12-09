@@ -38,8 +38,7 @@ object ELThreadPoolProvider {
         ElThreadFactory("EL-common", ELThreadPriority.NORMAL)
     )
 
-    val BACKGROUND_EXECUTOR: ExecutorService =
-        Executors.newSingleThreadExecutor(
-            ElThreadFactory("EL-background", ELThreadPriority.LOW)
-        )
+    val BACKGROUND_EXECUTOR: ExecutorService = Executors.newSingleThreadExecutor(
+        ElThreadFactory("EL-background", ELThreadPriority.LOW)
+    )
 }

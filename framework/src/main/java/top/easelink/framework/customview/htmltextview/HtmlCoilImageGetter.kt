@@ -7,6 +7,7 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.text.Html
 import android.widget.TextView
+import androidx.lifecycle.LifecycleOwner
 import coil.Coil
 import coil.request.ImageRequest
 import kotlinx.coroutines.GlobalScope
@@ -15,7 +16,8 @@ import top.easelink.framework.threadpool.IOPool
 
 class HtmlCoilImageGetter(
     private val context: Context,
-    private val textView: TextView
+    private val textView: TextView,
+    private val lifecycleOwner: LifecycleOwner? = null
 ) : Html.ImageGetter {
 
     override fun getDrawable(url: String): Drawable {
@@ -23,6 +25,7 @@ class HtmlCoilImageGetter(
         GlobalScope.launch(IOPool) {
             Coil.imageLoader(context).enqueue(
                 ImageRequest.Builder(context)
+                    .lifecycle(lifecycleOwner)
                     .data(url)
                     .target {
                         holder.setDrawable(it)

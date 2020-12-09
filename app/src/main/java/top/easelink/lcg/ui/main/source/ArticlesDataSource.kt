@@ -16,7 +16,7 @@ interface ArticlesDataSource {
     fun getForumArticles(query: String, processThreadList: Boolean): ForumPage?
 
     @WorkerThread
-    fun getArticleDetail(query: String): ArticleDetail?
+    fun getArticleDetail(query: String, isFirstFetch: Boolean): ArticleDetail?
 
     @WorkerThread
     fun getPostPreview(query: String): PreviewPost?

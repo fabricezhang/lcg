@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_width="0dp" />
         <include layout="@layout/layout_icon_button"
-            android:id="@+id/icon_feedback"
+            android:id="@+id/icon_history"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_width="0dp" />

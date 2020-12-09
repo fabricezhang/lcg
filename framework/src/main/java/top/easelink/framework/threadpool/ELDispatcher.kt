@@ -9,7 +9,7 @@ import java.util.concurrent.RejectedExecutionException
 import kotlin.coroutines.ContinuationInterceptor
 import kotlin.coroutines.CoroutineContext
 
-class ELDispacher constructor(private val executor: ExecutorService): CoroutineDispatcher() {
+class ELDispatcher constructor(private val executor: ExecutorService): CoroutineDispatcher() {
 
 
     override fun dispatch(context: CoroutineContext, block: Runnable) {

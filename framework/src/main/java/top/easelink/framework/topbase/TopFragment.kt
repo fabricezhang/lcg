@@ -2,8 +2,11 @@ package top.easelink.framework.topbase
 
 import android.content.Context
 import androidx.fragment.app.Fragment
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.cancel
 
-abstract class TopFragment : Fragment() {
+abstract class TopFragment : Fragment(), CoroutineScope by MainScope() {
 
     lateinit var mContext: Context
 
@@ -14,6 +17,11 @@ abstract class TopFragment : Fragment() {
                 (it as? Callback)?.onFragmentAttached(this.getBackStackTag())
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        cancel()
     }
 
     interface Callback {

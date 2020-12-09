@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.tencent.stat.StatConfig
 import top.easelink.lcg.appinit.LCGApp
-import top.easelink.lcg.spipedata.UserData
+import top.easelink.lcg.account.UserDataRepo
 
 object AppConfig {
 
@@ -59,7 +59,7 @@ object AppConfig {
     var defaultSearchEngine: Int
         get() = get(
             CONFIG_DEFAULT_SEARCH_ENGINE,
-            if (UserData.isLoggedIn) CONFIG_SEARCH_ENGINE_WUAI else CONFIG_SEARCH_ENGINE_BAIDU
+            if (UserDataRepo.isLoggedIn) CONFIG_SEARCH_ENGINE_WUAI else CONFIG_SEARCH_ENGINE_BAIDU
         )
         set(value) = put(CONFIG_DEFAULT_SEARCH_ENGINE, value)
 

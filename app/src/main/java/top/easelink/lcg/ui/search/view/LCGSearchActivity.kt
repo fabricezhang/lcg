@@ -15,8 +15,8 @@ import top.easelink.framework.topbase.TopActivity
 import top.easelink.framework.utils.addFragmentInActivity
 import top.easelink.lcg.R
 import top.easelink.lcg.config.AppConfig
-import top.easelink.lcg.mta.EVENT_OPEN_ARTICLE
-import top.easelink.lcg.mta.sendEvent
+import top.easelink.lcg.event.EVENT_OPEN_ARTICLE
+import top.easelink.lcg.event.sendEvent
 import top.easelink.lcg.ui.main.article.view.ArticleFragment
 import top.easelink.lcg.ui.main.largeimg.view.LargeImageDialog
 import top.easelink.lcg.ui.main.model.OpenLargeImageViewEvent
@@ -118,7 +118,7 @@ class LCGSearchActivity : TopActivity() {
                 if (AppConfig.searchResultShowInWebView) {
                     WebViewActivity.startWebViewWith(SERVER_BASE_URL + event.url, this)
                 } else {
-                    showFragment(ArticleFragment(event.url))
+                    showFragment(ArticleFragment.newInstance(event.url))
                 }
             }
             event.url.startsWith("http") || event.url.startsWith(SERVER_BASE_URL) -> {
@@ -131,7 +131,7 @@ class LCGSearchActivity : TopActivity() {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageEvent(event: OpenLargeImageViewEvent) {
         if (event.url.isNotEmpty()) {
-            LargeImageDialog(event.url).show(
+            LargeImageDialog.newInstance(event.url).show(
                 supportFragmentManager,
                 LargeImageDialog::class.java.simpleName
             )

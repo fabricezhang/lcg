@@ -9,10 +9,19 @@ import kotlinx.android.synthetic.main.dialog_large_image.*
 import top.easelink.framework.topbase.TopDialog
 import top.easelink.lcg.R
 
-class LargeImageDialog(private val imageUrl: String) : TopDialog() {
+class LargeImageDialog : TopDialog() {
 
-    // try fix no empty constructor issue
-    constructor() : this("")
+    companion object {
+        private const val IMAGE_URL = "image_url"
+
+        fun newInstance(imageUrl: String): LargeImageDialog {
+            return LargeImageDialog().also {
+                it.arguments = Bundle().apply {
+                    putString(IMAGE_URL, imageUrl)
+                }
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -26,8 +35,10 @@ class LargeImageDialog(private val imageUrl: String) : TopDialog() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        photo.load(imageUrl) {
-            size(SizeResolver(OriginalSize))
+        arguments?.getString(IMAGE_URL)?.let {
+            photo.load(it) {
+                size(SizeResolver(OriginalSize))
+            }
         }
         exit.setOnClickListener {
             dismissDialog()

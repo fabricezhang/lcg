@@ -10,7 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import coil.transform.RoundedCornersTransformation
@@ -29,10 +29,10 @@ import top.easelink.framework.utils.dp2px
 import top.easelink.framework.utils.dpToPx
 import top.easelink.lcg.R
 import top.easelink.lcg.config.AppConfig
-import top.easelink.lcg.mta.EVENT_CAPTURE_ARTICLE
-import top.easelink.lcg.mta.sendEvent
-import top.easelink.lcg.spipedata.UserData.isLoggedIn
-import top.easelink.lcg.spipedata.UserData.username
+import top.easelink.lcg.event.EVENT_CAPTURE_ARTICLE
+import top.easelink.lcg.event.sendEvent
+import top.easelink.lcg.account.UserDataRepo.isLoggedIn
+import top.easelink.lcg.account.UserDataRepo.username
 import top.easelink.lcg.ui.main.article.viewmodel.ArticleAdapterListener
 import top.easelink.lcg.ui.main.model.OpenArticleEvent
 import top.easelink.lcg.ui.main.model.OpenLargeImageViewEvent
@@ -50,15 +50,14 @@ import top.easelink.lcg.utils.copyContent
 import top.easelink.lcg.utils.saveImageToGallery
 import top.easelink.lcg.utils.showMessage
 import top.easelink.lcg.utils.toTimeStamp
-import java.lang.ref.WeakReference
 import java.util.*
 
 class ArticleAdapter(
-    private val mListener: ArticleAdapterListener
+    private val mListener: ArticleAdapterListener,
+    private val mFragment: Fragment
 ) : RecyclerView.Adapter<BaseViewHolder>() {
 
     private val mPostList: MutableList<Post> = ArrayList()
-    private var fragmentManager: WeakReference<FragmentManager>? = null
 
     override fun getItemCount() = when {
         mPostList.isEmpty() -> 1 // show empty view
@@ -122,16 +121,12 @@ class ArticleAdapter(
         notifyDataSetChanged()
     }
 
-    fun setFragmentManager(fragmentManager: FragmentManager) {
-        this.fragmentManager = WeakReference(fragmentManager)
-    }
-
     inner class PostViewHolder internal constructor(
         view: View
     ) : BaseViewHolder(view), View.OnClickListener {
 
         private var post: Post? = null
-        private val htmlHttpImageGetter: Html.ImageGetter = HtmlCoilImageGetter(view.context, view.content_text_view)
+        private val htmlHttpImageGetter: Html.ImageGetter = HtmlCoilImageGetter(view.context, view.content_text_view, mFragment)
 
         override fun onBind(position: Int) {
             val p = mPostList.getOrNull(position) ?: return
@@ -140,28 +135,32 @@ class ArticleAdapter(
                     author_text_view.text = p.author
                     date_text_view.text = getDateDiff(p.date)
                     post_avatar.setOnClickListener { _ ->
-                        fragmentManager?.get()?.let {
-                            val location = IntArray(2)
-                            post_avatar.getLocationInWindow(location)
-                            val popUpInfo = PopUpProfileInfo(
-                                location[0],
-                                location[1],
-                                p.avatar,
-                                p.author,
-                                p.extraInfo,
-                                p.followInfo,
-                                p.profileUrl
-                            )
-                            PopUpProfileDialog(popUpInfo).show(
-                                it,
-                                PopUpProfileDialog::class.java.simpleName
-                            )
-                        } ?: context.startActivity(
-                            Intent(context, ProfileActivity::class.java).also {
-                                it.putExtra(KEY_PROFILE_URL, p.profileUrl)
-                            })
+                        mFragment.runCatching { parentFragmentManager }
+                            .getOrNull()
+                            ?.let {
+                                val location = IntArray(2)
+                                post_avatar.getLocationInWindow(location)
+                                val popUpInfo = PopUpProfileInfo(
+                                    location[0],
+                                    location[1],
+                                    p.avatar,
+                                    p.author,
+                                    p.extraInfo,
+                                    p.followInfo,
+                                    p.profileUrl
+                                )
+                                PopUpProfileDialog.newInstance(popUpInfo).show(
+                                    it,
+                                    PopUpProfileDialog::class.java.simpleName
+                                )
+                            }
+                            ?: context.startActivity(
+                                Intent(context, ProfileActivity::class.java).also {
+                                    it.putExtra(KEY_PROFILE_URL, p.profileUrl)
+                                })
                     }
                     post_avatar.load(p.avatar) {
+                        lifecycle(mFragment)
                         transformations(RoundedCornersTransformation(4.dpToPx(context)))
                         error(R.drawable.ic_noavatar_middle_gray)
                     }
@@ -250,7 +249,7 @@ class ArticleAdapter(
 
         private var post: Post? = null
         private val htmlHttpImageGetter: Html.ImageGetter by lazy {
-            HtmlCoilImageGetter(view.context, view.reply_content_text_view)
+            HtmlCoilImageGetter(view.context, view.reply_content_text_view, mFragment)
         }
 
         @SuppressLint("SetTextI18n")
@@ -269,23 +268,25 @@ class ArticleAdapter(
                         reply_author_text_view.text = p.author
                         reply_date_text_view.text = getDateDiff(p.date)
                         reply_avatar.setOnClickListener { _ ->
-                            fragmentManager?.get()?.let {
-                                val location = IntArray(2)
-                                reply_avatar.getLocationInWindow(location)
-                                val popUpInfo = PopUpProfileInfo(
-                                    location[0],
-                                    location[1],
-                                    p.avatar,
-                                    p.author,
-                                    p.extraInfo,
-                                    p.followInfo,
-                                    p.profileUrl
-                                )
-                                PopUpProfileDialog(popUpInfo).show(
-                                    it,
-                                    PopUpProfileDialog::class.java.simpleName
-                                )
-                            } ?: context.startActivity(
+                            mFragment.runCatching { parentFragmentManager }
+                                .getOrNull()
+                                ?.let {
+                                    val location = IntArray(2)
+                                    reply_avatar.getLocationInWindow(location)
+                                    val popUpInfo = PopUpProfileInfo(
+                                        location[0],
+                                        location[1],
+                                        p.avatar,
+                                        p.author,
+                                        p.extraInfo,
+                                        p.followInfo,
+                                        p.profileUrl
+                                    )
+                                    PopUpProfileDialog.newInstance(popUpInfo).show(
+                                        it,
+                                        PopUpProfileDialog::class.java.simpleName
+                                    )
+                                } ?: context.startActivity(
                                 Intent(context, ProfileActivity::class.java).also {
                                     it.putExtra(KEY_PROFILE_URL, p.profileUrl)
                                 })

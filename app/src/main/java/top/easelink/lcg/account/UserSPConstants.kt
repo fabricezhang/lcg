@@ -1,4 +1,4 @@
-package top.easelink.lcg.spipedata
+package top.easelink.lcg.account
 
 const val SP_USER = "sp_user"
 const val SP_COOKIE = "sp_cookie"

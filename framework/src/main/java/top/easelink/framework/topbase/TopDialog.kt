@@ -16,7 +16,10 @@ import timber.log.Timber
 abstract class TopDialog : DialogFragment() {
 
     lateinit var mContext: Context
-    private var lastTryShowTime: Long = 0L
+    companion object {
+        @Volatile
+        var lastTryShowTime: Long = 0L
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -24,8 +27,8 @@ abstract class TopDialog : DialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog { // the content
-        val root = RelativeLayout(mContext).also {
-            it.layoutParams = ViewGroup.LayoutParams(
+        val root = RelativeLayout(mContext).apply {
+            layoutParams = ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
             )
@@ -50,10 +53,10 @@ abstract class TopDialog : DialogFragment() {
     private fun safelyShow(fragmentManager: FragmentManager, tag: String?) {
         //debounce
         val curTime = System.currentTimeMillis()
-        if ((curTime - lastTryShowTime) < ViewConfiguration.getDoubleTapTimeout()) {
-            lastTryShowTime = curTime
+        if ((curTime - lastTryShowTime) < 500) {
             return
         }
+        lastTryShowTime = curTime
         val clazz = javaClass.superclass as Class<*>
         try {
             val mDismissed = clazz.getDeclaredField("mDismissed")

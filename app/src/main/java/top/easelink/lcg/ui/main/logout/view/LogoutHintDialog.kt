@@ -2,17 +2,16 @@ package top.easelink.lcg.ui.main.logout.view
 
 import android.os.Bundle
 import android.view.*
-import android.widget.Button
-import android.widget.TextView
+import kotlinx.android.synthetic.main.dialog_logout_hint.*
 import top.easelink.framework.topbase.TopDialog
 import top.easelink.framework.utils.dpToPx
 import top.easelink.lcg.R
+import top.easelink.lcg.account.UserDataRepo
 import top.easelink.lcg.appinit.LCGApp
-import top.easelink.lcg.spipedata.UserData
 
 class LogoutHintDialog(
-    private val positive: () -> Unit,
-    private val negative: () -> Unit
+    private val positive: (() -> Unit)? = null,
+    private val negative: (() -> Unit)? = null
 ) : TopDialog() {
 
     override fun onCreateView(
@@ -27,19 +26,13 @@ class LogoutHintDialog(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        view.findViewById<TextView>(R.id.logout_message).text =
-            String.format(
-                getString(
-                    R.string.logout_confirm_message,
-                    UserData.username
-                )
-            )
-        view.findViewById<Button>(R.id.logout_confirm_btn).setOnClickListener {
-            positive.invoke()
+        logout_message.text = String.format(getString(R.string.logout_confirm_message, UserDataRepo.username))
+        logout_confirm_btn.setOnClickListener {
+            positive?.invoke()
             dismissDialog()
         }
-        view.findViewById<Button>(R.id.cancel_btn).setOnClickListener {
-            negative.invoke()
+        cancel_btn.setOnClickListener {
+            negative?.invoke()
             dismissDialog()
         }
     }

@@ -42,13 +42,17 @@ import java.util.Objects;
 import timber.log.Timber;
 import top.easelink.framework.customview.webview.HorizontalScrollDisableWebView;
 import top.easelink.lcg.R;
+import top.easelink.lcg.account.AccountManager;
+import top.easelink.lcg.account.UserDataRepo;
+import top.easelink.lcg.account.UserInfo;
 import top.easelink.lcg.appinit.LCGApp;
-import top.easelink.lcg.mta.EventHelperKt;
+import top.easelink.lcg.event.EventHelperKt;
 import top.easelink.lcg.service.web.HookInterface;
+import top.easelink.lcg.ui.main.me.source.UserInfoRepo;
 import top.easelink.lcg.ui.main.view.MainActivity;
 import top.easelink.lcg.utils.ToastUtilsKt;
 
-import static top.easelink.lcg.mta.MTAConstantKt.EVENT_SHARE_ARTICLE_URL;
+import static top.easelink.lcg.event.MTAConstantKt.EVENT_SHARE_ARTICLE_URL;
 import static top.easelink.lcg.ui.webview.WebViewConstantsKt.FORCE_ENABLE_JS_KEY;
 import static top.easelink.lcg.ui.webview.WebViewConstantsKt.OPEN_LOGIN_PAGE;
 import static top.easelink.lcg.ui.webview.WebViewConstantsKt.TITLE_KEY;
@@ -149,15 +153,25 @@ public class WebViewActivity extends AppCompatActivity {
                             Element element = Jsoup.parse(html).selectFirst("div.avt");
                             if (element != null) {
                                 mWebView.post(() -> {
-                                    mWebView.stopLoading();
+                                    ToastUtilsKt.showMessage(R.string.login_successfully);
+                                    AccountManager.INSTANCE.isLoggedIn().postValue(true);
                                     try {
-                                        // hold on 1.5 seconds to wait for saving user info
-                                        Thread.sleep(1500);
+                                        mWebView.stopLoading();
+                                        // hold on 0.5 seconds to wait for saving user info
+                                        Thread.sleep(500);
+                                        startActivity(new Intent(mWebView.getContext(), MainActivity.class));
+                                        finish();
                                     } catch (Exception ignored) {
                                     }
-                                    startActivity(new Intent(mWebView.getContext(), MainActivity.class));
-                                    finish();
                                 });
+                                try {
+                                    UserInfo userInfo = UserInfoRepo.INSTANCE.requestUserInfo();
+                                    UserDataRepo.INSTANCE.updateUserInfo(
+                                        userInfo == null ? UserInfo.Companion.getDefaultUserInfo(): userInfo
+                                    );
+                                } catch (Exception e) {
+                                    Timber.e(e);
+                                }
                             }
                         } catch (Exception e) {
                             Timber.w(html);
@@ -209,7 +223,12 @@ public class WebViewActivity extends AppCompatActivity {
                 startActivity(shareIntent);
                 return true;
             case R.id.action_open_in_webview:
-                openInSystemBrowser(mWebView.getUrl());
+                String url = mWebView.getUrl();
+                if (url != null) {
+                    openInSystemBrowser(url);
+                } else {
+                    ToastUtilsKt.showMessage(R.string.general_error);
+                }
                 return true;
             case android.R.id.home:
                 finish();
@@ -368,7 +387,6 @@ public class WebViewActivity extends AppCompatActivity {
             super.onPageCommitVisible(view, url);
             setLoading(false);
             if (isOpenLoginEvent) {
-                ToastUtilsKt.showMessage(R.string.login_successfully);
                 view.loadUrl("javascript:" + HOOK_NAME + ".processHtml(document.documentElement.outerHTML);");
             }
             setCookies(CookieManager.getInstance().getCookie(url));
@@ -399,6 +417,8 @@ public class WebViewActivity extends AppCompatActivity {
                 ToastUtilsKt.showMessage(R.string.qq_not_support);
 //                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
                 return true;
+            } else if (url.startsWith("bdnetdisk")) {
+                ToastUtilsKt.showMessage(R.string.baidu_net_disk_not_support);
             }
             return false;
         }

@@ -9,8 +9,8 @@ import java.util.List;
 
 import top.easelink.lcg.appinit.LCGApp;
 
-import static top.easelink.lcg.spipedata.UserSPConstantsKt.SP_COOKIE;
-import static top.easelink.lcg.spipedata.UserSPConstantsKt.SP_USER;
+import static top.easelink.lcg.account.UserSPConstantsKt.SP_COOKIE;
+import static top.easelink.lcg.account.UserSPConstantsKt.SP_USER;
 
 @SuppressWarnings("unused")
 public class SharedPreferencesHelper {

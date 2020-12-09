@@ -24,13 +24,7 @@ class DiscoverViewModel : ViewModel() {
 
     @MainThread
     fun initOptions(context: Context) {
-        val list = generateAllForums(context)
-            .fold(mutableListOf<ForumNavigationModel>()) { acc, model ->
-                acc.also {
-                    it.add(model)
-                }
-            }
-        aggregationModels.value = mutableListOf(ForumListModel(list))
+        aggregationModels.value = mutableListOf(ForumListModel(generateAllForums(context)))
         GlobalScope.launch(IOPool) {
             runCatching {
                 fetchRank(RankType.HEAT, DateType.TODAY).let { ranks ->
