@@ -1,6 +1,10 @@
 # LCG
 开源吾爱破解论坛APP
 
+> 广告插播， 字节跳动国际化社区团队急需各级别工程师
+> 1. 移动端：https://job.toutiao.com/s/JvcRMAE
+> 2. 服务端：https://job.toutiao.com/s/JvTXrUR
+
 UI参考了知乎、虎扑App及头条系各app的展示, 架构参考了Google官方的MVVM代码结构.
 代码基本以kotlin为主，还有一些历史代码会逐渐切换到kotlin上来。
 
