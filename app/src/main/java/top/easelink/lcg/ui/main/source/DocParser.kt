@@ -8,28 +8,12 @@ import org.jsoup.nodes.Element
 import timber.log.Timber
 import top.easelink.lcg.R
 import top.easelink.lcg.appinit.LCGApp
-import top.easelink.lcg.spipedata.UserData
-import top.easelink.lcg.ui.main.me.model.UserInfo
+import top.easelink.lcg.account.UserInfo
 import top.easelink.lcg.ui.main.model.AntiScrapingException
 import top.easelink.lcg.ui.main.model.NewMessageEvent
 import top.easelink.lcg.ui.main.model.NotificationInfo
 import top.easelink.lcg.ui.profile.model.ExtraUserInfo
-
-@WorkerThread
-fun checkLoginState(doc: Document) {
-    try {
-        val userInfo = parseUserInfo(doc)
-        if (userInfo.errorMessage?.isNotEmpty() == true) {
-            Timber.e(userInfo.errorMessage)
-        }
-        if (userInfo.errorMessage != null) {
-            UserData.isLoggedIn = false
-        }
-    } catch (e: NullPointerException) {
-        // for some page, can't extract user info
-        Timber.w(e)
-    }
-}
+import top.easelink.lcg.utils.showMessage
 
 @WorkerThread
 fun parseExtraUserInfoProfilePage(content: String): List<ExtraUserInfo> {
@@ -45,18 +29,18 @@ fun parseExtraUserInfoProfilePage(content: String): List<ExtraUserInfo> {
 fun parseUserInfo(doc: Document): UserInfo {
     with(doc) {
         val userName = doc.selectFirst("h2.mt")?.text()
-        val notif = LCGApp.context.getString(R.string.login_or_register)
         when {
             userName.isNullOrEmpty() -> {
                 val message = getElementById("messagetext")?.text()
                 if (message.isNullOrEmpty()) {
                     throw AntiScrapingException()
                 } else {
-                    return UserInfo(message)
+                    showMessage(message)
+                    return UserInfo.getDefaultUserInfo()
                 }
             }
-            userName == notif -> {
-                return UserInfo(notif)
+            userName == LCGApp.context.getString(R.string.login_or_register) -> {
+                return UserInfo.getDefaultUserInfo()
             }
             else -> {
                 val avatar = selectFirst("div.avt > a > img")?.attr("src")

@@ -17,8 +17,8 @@ import top.easelink.lcg.BR
 import top.easelink.lcg.R
 import top.easelink.lcg.appinit.LCGApp
 import top.easelink.lcg.databinding.FragmentForumArticlesBinding
-import top.easelink.lcg.mta.CHANGE_THREAD
-import top.easelink.lcg.mta.sendEvent
+import top.easelink.lcg.event.CHANGE_THREAD
+import top.easelink.lcg.event.sendEvent
 import top.easelink.lcg.ui.main.articles.viewmodel.*
 import top.easelink.lcg.ui.main.source.model.ForumThread
 

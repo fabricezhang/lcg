@@ -1,4 +1,4 @@
-package top.easelink.lcg.mta
+package top.easelink.lcg.event
 
 // Article
 const val EVENT_OPEN_ARTICLE = "open_article"

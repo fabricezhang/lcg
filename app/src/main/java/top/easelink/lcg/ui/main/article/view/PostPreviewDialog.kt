@@ -68,7 +68,8 @@ class PostPreviewDialog : TopDialog() {
                         content_text_view.setHtml(
                             it, HtmlCoilImageGetter(
                                 content_text_view.context,
-                                content_text_view
+                                content_text_view,
+                                this
                             )
                         )
                     })

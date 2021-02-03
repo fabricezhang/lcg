@@ -5,10 +5,8 @@ import com.tencent.stat.StatService
 import org.greenrobot.eventbus.EventBus
 import top.easelink.framework.customview.htmltextview.ClickablePreCodeSpan
 import top.easelink.lcg.R
-import top.easelink.lcg.mta.EVENT_TAP_FOR_CODE
+import top.easelink.lcg.event.EVENT_TAP_FOR_CODE
 import top.easelink.lcg.ui.main.model.OpenHalfWebViewFragmentEvent
-import top.easelink.lcg.ui.webview.view.HalfScreenWebViewFragment
-import top.easelink.lcg.ui.webview.view.WebViewActivity
 import top.easelink.lcg.utils.showMessage
 
 internal class ClickablePreCodeSpanImpl : ClickablePreCodeSpan {

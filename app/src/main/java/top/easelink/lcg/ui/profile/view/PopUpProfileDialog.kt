@@ -20,10 +20,10 @@ import top.easelink.framework.threadpool.IOPool
 import top.easelink.framework.utils.dpToPx
 import top.easelink.framework.utils.getStatusBarHeight
 import top.easelink.lcg.R
-import top.easelink.lcg.mta.EVENT_OPEN_PROFILE
-import top.easelink.lcg.mta.EVENT_OPEN_PROFILE_PAGE
-import top.easelink.lcg.mta.EVENT_SUBSCRIBE_USER
-import top.easelink.lcg.mta.sendEvent
+import top.easelink.lcg.event.EVENT_OPEN_PROFILE
+import top.easelink.lcg.event.EVENT_OPEN_PROFILE_PAGE
+import top.easelink.lcg.event.EVENT_SUBSCRIBE_USER
+import top.easelink.lcg.event.sendEvent
 import top.easelink.lcg.network.JsoupClient
 import top.easelink.lcg.ui.main.source.parseExtraUserInfoProfilePage
 import top.easelink.lcg.ui.profile.model.PopUpProfileInfo
@@ -31,9 +31,20 @@ import top.easelink.lcg.ui.webview.view.WebViewActivity
 import top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL
 import top.easelink.lcg.utils.showMessage
 
-class PopUpProfileDialog(
-    private val popUpInfo: PopUpProfileInfo
-) : DialogFragment() {
+class PopUpProfileDialog: DialogFragment() {
+
+    companion object {
+        private const val POPUP_INFO = "popup_info"
+
+        fun newInstance(popUpInfo: PopUpProfileInfo): PopUpProfileDialog {
+            val args = Bundle().apply {
+                putParcelable(POPUP_INFO, popUpInfo)
+            }
+            val fragment = PopUpProfileDialog()
+            fragment.arguments = args
+            return fragment
+        }
+    }
 
     private lateinit var mContext: Context
 
@@ -52,6 +63,7 @@ class PopUpProfileDialog(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val popUpInfo = arguments?.getParcelable<PopUpProfileInfo>(POPUP_INFO) ?: return
         extra_info_grid.adapter =
             UserInfoGridViewAdapter(view.context, R.layout.item_profile_user_info).also {
                 popUpInfo.extraUserInfo?.let { info ->
@@ -81,6 +93,7 @@ class PopUpProfileDialog(
 
     override fun onStart() {
         super.onStart()
+        val popUpInfo = arguments?.getParcelable<PopUpProfileInfo>(POPUP_INFO) ?: return
         dialog?.window?.let {
             it.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             it.setGravity(Gravity.START or Gravity.TOP)

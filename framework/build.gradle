@@ -33,6 +33,11 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8
     }
+
+    configurations.all {
+        resolutionStrategy.force "org.antlr:antlr4-runtime:4.7.1"
+        resolutionStrategy.force "org.antlr:antlr4-tool:4.7.1"
+    }
 }
 
 dependencies {
@@ -52,7 +57,7 @@ dependencies {
 
     // image
     api 'com.github.chrisbanes:PhotoView:2.2.0'
-    api "io.coil-kt:coil:0.12.0"
+    api 'io.coil-kt:coil:1.0.0'
     // parser
     api "com.google.code.gson:gson:$rootProject.gsonVersion"
 
@@ -82,6 +87,7 @@ dependencies {
 //    api "com.squareup.retrofit2:retrofit:2.7.1"
     // database
     api "androidx.room:room-runtime:$rootProject.roomVersion"
+    api "androidx.room:room-ktx:$rootProject.roomVersion"
     // event-bus
     api "org.greenrobot:eventbus:$rootProject.eventbusVersion"
     // bugly

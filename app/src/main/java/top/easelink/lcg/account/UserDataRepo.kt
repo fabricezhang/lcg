@@ -1,12 +1,9 @@
-package top.easelink.lcg.spipedata
+package top.easelink.lcg.account
 
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import top.easelink.framework.threadpool.CalcPool
-import top.easelink.lcg.ui.main.source.local.ArticlesLocalDataSource
 import top.easelink.lcg.utils.SharedPreferencesHelper
+import top.easelink.lcg.utils.clearCookies
 
-object UserData {
+object UserDataRepo {
 
     var avatar: String
         get() = get(SP_KEY_USER_AVATAR, "")
@@ -38,19 +35,37 @@ object UserData {
 
     var signInState: String
         get() = get(SP_KEY_SIGN_IN_STATE, "")
-        set(value) = put(SP_KEY_SIGN_IN_STATE, value)
+        set(value) {
+            put(SP_KEY_SIGN_IN_STATE, value)
+            AccountManager.isSignedToday.postValue(true)
+        }
 
     var isLoggedIn: Boolean
         get() = get(SP_KEY_LOGGED_IN, false)
         set(value) {
             put(SP_KEY_LOGGED_IN, value)
+            AccountManager.isLoggedIn.postValue(value)
         }
 
-    fun clearAll() {
-        SharedPreferencesHelper.getUserSp().edit().clear().apply()
-        GlobalScope.launch(CalcPool) {
-            ArticlesLocalDataSource.delAllArticlesFromFavorite()
+    fun updateUserInfo(userInfo: UserInfo) {
+        UserDataRepo.apply {
+            username = userInfo.userName.toString()
+            avatar = userInfo.avatarUrl.orEmpty()
+            coin = userInfo.wuaiCoin.orEmpty()
+            credit = userInfo.credit.orEmpty()
+            group = userInfo.groupInfo.orEmpty()
+            enthusiasticValue = userInfo.enthusiasticValue.orEmpty()
+            answerRate = userInfo.answerRate.orEmpty()
+            signInState = userInfo.signInStateUrl.orEmpty()
         }
+        AccountManager.userInfo.postValue(userInfo)
+    }
+
+    fun clearAll() {
+        clearCookies()
+        SharedPreferencesHelper.getUserSp().edit().clear().apply()
+        isLoggedIn = false
+        updateUserInfo(UserInfo.getDefaultUserInfo())
     }
 
     @Suppress("UNCHECKED_CAST", "IMPLICIT_CAST_TO_ANY")

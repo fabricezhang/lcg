@@ -16,8 +16,8 @@ import top.easelink.framework.threadpool.BackGroundPool
 import top.easelink.lcg.BuildConfig
 import top.easelink.lcg.R
 import top.easelink.lcg.config.AppConfig
-import top.easelink.lcg.mta.EVENT_APP_LAUNCH
-import top.easelink.lcg.mta.sendEvent
+import top.easelink.lcg.event.EVENT_APP_LAUNCH
+import top.easelink.lcg.event.sendEvent
 import top.easelink.lcg.service.work.SignInWorker
 
 

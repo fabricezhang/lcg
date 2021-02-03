@@ -9,8 +9,8 @@ import timber.log.Timber
 import top.easelink.framework.threadpool.IOPool
 import top.easelink.lcg.R
 import top.easelink.lcg.config.AppConfig
-import top.easelink.lcg.mta.EVENT_ADD_TO_FAVORITE
-import top.easelink.lcg.mta.sendEvent
+import top.easelink.lcg.event.EVENT_ADD_TO_FAVORITE
+import top.easelink.lcg.event.sendEvent
 import top.easelink.lcg.ui.main.article.viewmodel.ArticleAdapterListener.Companion.FETCH_POST_INIT
 import top.easelink.lcg.ui.main.article.viewmodel.ArticleAdapterListener.Companion.FETCH_POST_MORE
 import top.easelink.lcg.ui.main.model.BlockException
@@ -27,7 +27,7 @@ import java.util.*
 
 class ArticleViewModel : ViewModel(), ArticleAdapterListener {
     val posts = MutableLiveData<MutableList<Post>>()
-    val isBlocked = MutableLiveData<String>()
+    val blockMessage = MutableLiveData<String>()
     val isNotFound = MutableLiveData<Boolean>()
     val shouldDisplayPosts = MutableLiveData<Boolean>()
     val articleTitle = MutableLiveData<String>()
@@ -44,7 +44,7 @@ class ArticleViewModel : ViewModel(), ArticleAdapterListener {
         mUrl = url
     }
 
-    override fun fetchArticlePost(type: Int, callback: (Boolean) -> Unit) {
+    override fun fetchArticlePost(type: Int, callback: ((Boolean) -> Unit)?) {
         isLoading.value = true
         val query: String? =
             when (type) {
@@ -59,7 +59,9 @@ class ArticleViewModel : ViewModel(), ArticleAdapterListener {
         }
         GlobalScope.launch(IOPool) {
             try {
-                ArticlesRemoteDataSource.getArticleDetail(query)?.let {
+                ArticlesRemoteDataSource.getArticleDetail(
+                    query, type == FETCH_POST_INIT
+                )?.let {
                     articleAbstract = it.articleAbstractResponse
                     if (it.articleTitle.isNotBlank()) {
                         articleTitle.postValue(it.articleTitle)
@@ -78,7 +80,7 @@ class ArticleViewModel : ViewModel(), ArticleAdapterListener {
                         }
                     }
                     nextPageUrl = it.nextPageUrl.also { url ->
-                        callback.invoke(url.isEmpty())
+                        callback?.invoke(url.isEmpty())
                     }
                     mFormHash = it.fromHash
                     shouldDisplayPosts.postValue(true)
@@ -109,7 +111,7 @@ class ArticleViewModel : ViewModel(), ArticleAdapterListener {
     }
 
     fun extractDownloadUrl(): ArrayList<String>? {
-        val patternLanzous = "https://.*?lanzous.com/[a-zA-Z0-9]{4,10}"
+        val patternLanzous = "https://.*?lanzou[a-z]{1}.com/[a-zA-Z0-9]{4,10}"
         val patternBaidu = "https://pan.baidu.com/s/.{23}"
         val patternT = "http://t.cn/[a-zA-Z0-9]{8}"
         val list: List<Post>? = posts.value
@@ -188,7 +190,7 @@ class ArticleViewModel : ViewModel(), ArticleAdapterListener {
     }
 
     private fun setArticleBlocked(message: String) {
-        isBlocked.postValue(message)
+        blockMessage.postValue(message)
         shouldDisplayPosts.postValue(false)
     }
 

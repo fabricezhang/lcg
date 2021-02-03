@@ -5,11 +5,14 @@ import android.util.ArrayMap
 import androidx.annotation.WorkerThread
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.jsoup.HttpStatusException
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
 import timber.log.Timber
+import top.easelink.framework.threadpool.BackGroundPool
 import top.easelink.lcg.config.AppConfig
 import top.easelink.lcg.network.JsoupClient
 import top.easelink.lcg.ui.main.model.BlockException
@@ -17,6 +20,7 @@ import top.easelink.lcg.ui.main.model.LoginRequiredException
 import top.easelink.lcg.ui.main.model.NetworkException
 import top.easelink.lcg.ui.main.source.ArticlesDataSource
 import top.easelink.lcg.ui.main.source.FavoritesRemoteDataSource
+import top.easelink.lcg.ui.main.source.local.ArticlesDatabase
 import top.easelink.lcg.ui.main.source.model.*
 import top.easelink.lcg.utils.WebsiteConstant.ADD_TO_FAVORITE_QUERY
 import top.easelink.lcg.utils.WebsiteConstant.FORUM_BASE_QUERY
@@ -73,7 +77,7 @@ object ArticlesRemoteDataSource : ArticlesDataSource, FavoritesRemoteDataSource 
 
     @Throws(BlockException::class, NetworkException::class)
     @WorkerThread
-    override fun getArticleDetail(query: String): ArticleDetail? {
+    override fun getArticleDetail(query: String, isFirstFetch: Boolean): ArticleDetail? {
         try {
             val doc = JsoupClient.sendGetRequestWithQuery(query)
             val articleAbstract: ArticleAbstractResponse? =
@@ -99,6 +103,21 @@ object ArticlesRemoteDataSource : ArticlesDataSource, FavoritesRemoteDataSource 
             val replyAddUrls = getReplyAddUrl(doc)
             val userInfos = getUserInfo(doc)
             val contents = getContents(doc)
+            // save current article to history
+            if (isFirstFetch) {
+                GlobalScope.launch(BackGroundPool) {
+                    addToHistory(
+                        url = query,
+                        title = title,
+                        author = userInfos
+                            .getOrNull(0)
+                            ?.getOrElse(USER_NAME) {
+                                ""
+                            } ?: "",
+//                    content = doc.html() // FIXME use doc.html() as JsoupClient return Document not String
+                    )
+                }
+            }
             val dateTimes = getDateTime(doc)
             val replyUrls = getReplyUrls(doc)
             val postList: MutableList<Post> = ArrayList(userInfos.size)
@@ -141,6 +160,26 @@ object ArticlesRemoteDataSource : ArticlesDataSource, FavoritesRemoteDataSource 
                 else -> throw e
             }
         }
+    }
+
+    private suspend fun addToHistory(
+        url: String,
+        title: String,
+        author: String,
+        content: String? = null
+    ) {
+        ArticlesDatabase
+            .getInstance()
+            .articlesDao()
+            .insertHistory(
+                HistoryEntity(
+                    url = url,
+                    title = title,
+                    author = author,
+                    content = content.orEmpty(),
+                    timestamp = System.currentTimeMillis()
+                )
+            )
     }
 
     private const val HOT_PATTERN = "热度"

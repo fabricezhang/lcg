@@ -1,241 +1,234 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:id="@+id/me_fragment_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:focusable="true"
+    android:background="@color/white">
 
-    <data>
-        <import type="android.view.View" />
-        <variable
-            name="viewModel"
-            type="top.easelink.lcg.ui.main.me.viewmodel.MeViewModel" />
-
-    </data>
-    <RelativeLayout
-        android:orientation="vertical"
-        android:id="@+id/me_fragment_container"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/me_user_info_card"
+        android:clickable="false"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clickable="true"
-        android:focusable="true"
-        android:background="@color/white">
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dp_16"
+        android:layout_alignParentTop="true">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/me_user_info_card"
-            android:clickable="false"
-            app:cardBackgroundColor="@color/white"
-            android:layout_width="match_parent"
+        <ImageView
+            android:id="@+id/me_user_avatar"
+            android:layout_width="@dimen/dp_40"
+            android:layout_height="0dp"
+            android:scaleType="fitCenter"
+            android:contentDescription="@null"
+            android:background="@color/transparent"
+            android:src="@drawable/ic_avatar_m_2"
+            app:layout_constraintTop_toTopOf="@id/me_user_name"
+            app:layout_constraintBottom_toBottomOf="@id/me_user_group"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:src="@drawable/ic_noavatar_middle_gray"
+            />
+
+        <TextView
+            style="@style/TextStyle.Heading"
+            android:layout_marginStart="@dimen/dp_15"
+            android:id="@+id/me_user_name"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/dp_16"
-            android:layout_alignParentTop="true">
+            android:textColor="@color/black_effective"
+            android:textSize="@dimen/sp_16"
+            android:ellipsize="end"
+            android:maxEms="10"
+            android:hint="@string/me_tab_username_placeholder"
+            tools:text="Fabrice"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/me_user_avatar" />
 
-            <ImageView
-                android:id="@+id/me_user_avatar"
-                android:minWidth="@dimen/dp_40"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:scaleType="fitCenter"
-                android:contentDescription="@null"
-                app:avatarUrl="@{viewModel.mUserInfo.avatarUrl}"
-                app:layout_constraintTop_toTopOf="@id/me_user_name"
-                app:layout_constraintBottom_toBottomOf="@id/me_user_group"
-                app:layout_constraintStart_toStartOf="parent"
-                tools:src="@drawable/ic_noavatar_middle_gray"
-                />
-
-            <TextView
-                style="@style/TextStyle.Heading"
-                android:layout_marginStart="@dimen/dp_15"
-                android:id="@+id/me_user_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black_effective"
-                android:textSize="@dimen/sp_16"
-                android:text="@{viewModel.mUserInfo.userName}"
-                android:ellipsize="end"
-                android:maxEms="10"
-                android:hint="@string/me_tab_username_placeholder"
-                tools:text="Fabrice"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toEndOf="@id/me_user_avatar" />
-
-            <TextView
-                android:id="@+id/setting_btn"
-                android:layout_margin="@dimen/dp_2"
-                android:layout_width="@dimen/dp_20"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:drawableTop="@drawable/ic_setting_light"
-                android:text="@string/setting_title"
-                android:textSize="@dimen/sp_8"
-                android:textColor="@color/gray"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                />
-
-            <ImageView
-                android:id="@+id/me_sign_in_state"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_marginStart="@dimen/dp_10"
-                android:layout_marginTop="@dimen/dp_2"
-                android:scaleType="fitCenter"
-                android:padding="@dimen/dp_4"
-                android:contentDescription="@null"
-                app:layout_constraintBottom_toBottomOf="@id/me_user_name"
-                app:layout_constraintStart_toEndOf="@id/me_user_name"
-                app:layout_constraintTop_toTopOf="@id/me_user_name" />
-            <TextView
-                android:layout_marginTop="@dimen/dp_5"
-                android:id="@+id/me_user_group"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/semi_gray"
-                android:textSize="@dimen/sp_14"
-                android:text="@{viewModel.mUserInfo.groupInfo}"
-                android:maxEms="10"
-                android:ellipsize="end"
-                android:hint="@string/me_tab_group_placeholder"
-                tools:text="锋芒毕露"
-                app:layout_constraintTop_toBottomOf="@id/me_user_name"
-                app:layout_constraintStart_toStartOf="@id/me_user_name"
-                />
-
-            <ImageView
-                android:padding="@dimen/dp_1"
-                android:id="@+id/me_coin_icon"
-                android:layout_width="@dimen/dp_20"
-                android:layout_height="@dimen/dp_20"
-                android:scaleType="fitCenter"
-                android:tint="@color/semi_gray"
-                android:layout_marginTop="@dimen/dp_15"
-                android:src="@drawable/ic_coin"
-                app:layout_constraintTop_toBottomOf="@id/me_user_avatar"
-                app:layout_constraintStart_toStartOf="@id/me_user_avatar" />
-
-            <TextView
-                android:gravity="center_vertical|start"
-                android:id="@+id/me_wuaicoin"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_marginStart="@dimen/dp_8"
-                android:textColor="@color/gray"
-                android:textSize="@dimen/sp_12"
-                android:text="@{viewModel.mUserInfo.wuaiCoin}"
-                android:hint="@string/me_tab_credit_placeholder"
-                tools:text="吾爱币：1115CB"
-                app:layout_constraintTop_toTopOf="@id/me_coin_icon"
-                app:layout_constraintBottom_toBottomOf="@id/me_coin_icon"
-                app:layout_constraintStart_toEndOf="@id/me_coin_icon"
-                />
-
-            <ImageView
-                android:padding="@dimen/dp_3"
-                android:id="@+id/me_credit_icon"
-                android:layout_width="@dimen/dp_20"
-                android:layout_height="@dimen/dp_20"
-                android:scaleType="fitCenter"
-                android:tint="@color/semi_gray"
-                android:src="@drawable/ic_credit_v2"
-                android:layout_marginStart="@dimen/dp_130"
-                app:layout_constraintTop_toTopOf="@id/me_coin_icon"
-                app:layout_constraintBottom_toBottomOf="@id/me_coin_icon"
-                app:layout_constraintStart_toEndOf="@id/me_coin_icon" />
-
-
-            <TextView
-                android:gravity="center_vertical|start"
-                android:id="@+id/me_credit"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:textColor="@color/gray"
-                android:textSize="@dimen/sp_12"
-                android:maxWidth="@dimen/dp_80"
-                android:layout_marginStart="@dimen/dp_8"
-                android:hint="@string/me_tab_credit_placeholder"
-                android:text="@{viewModel.mUserInfo.credit}"
-                tools:text="积分：10"
-                app:layout_constraintTop_toTopOf="@id/me_coin_icon"
-                app:layout_constraintBottom_toBottomOf="@id/me_coin_icon"
-                app:layout_constraintStart_toEndOf="@id/me_credit_icon"
-                />
-
-            <ImageView
-                android:padding="@dimen/dp_1"
-                android:id="@+id/me_anwser_rate_icon"
-                android:layout_width="@dimen/dp_20"
-                android:layout_height="@dimen/dp_20"
-                android:scaleType="fitCenter"
-                android:tint="@color/semi_gray"
-                android:layout_marginTop="@dimen/dp_15"
-                android:src="@drawable/ic_anwser_rate"
-                app:layout_constraintTop_toBottomOf="@id/me_coin_icon"
-                app:layout_constraintStart_toStartOf="@id/me_coin_icon" />
-
-            <TextView
-                android:gravity="center_vertical|start"
-                android:id="@+id/me_anwser_rate"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:textColor="@color/gray"
-                android:textSize="@dimen/sp_12"
-                android:maxWidth="@dimen/dp_80"
-                android:layout_marginStart="@dimen/dp_8"
-                android:hint="@string/me_tab_credit_placeholder"
-                android:text="@{viewModel.mUserInfo.answerRate}"
-                tools:text="采纳率：10%"
-                app:layout_constraintTop_toTopOf="@id/me_anwser_rate_icon"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@id/me_anwser_rate_icon"
-                />
-
-            <ImageView
-                android:padding="@dimen/dp_3"
-                android:id="@+id/me_enthusiastic_icon"
-                android:layout_width="@dimen/dp_20"
-                android:layout_height="@dimen/dp_20"
-                android:scaleType="fitCenter"
-                android:tint="@color/semi_gray"
-                android:src="@drawable/ic_heart"
-                android:layout_marginStart="@dimen/dp_130"
-                app:layout_constraintTop_toTopOf="@id/me_anwser_rate_icon"
-                app:layout_constraintBottom_toBottomOf="@id/me_anwser_rate_icon"
-                app:layout_constraintStart_toEndOf="@id/me_anwser_rate_icon" />
-
-
-            <TextView
-                android:gravity="center_vertical|start"
-                android:id="@+id/me_enthusiastic"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:textColor="@color/gray"
-                android:textSize="@dimen/sp_12"
-                android:layout_marginStart="@dimen/dp_8"
-                android:hint="@string/me_tab_credit_placeholder"
-                android:text="@{viewModel.mUserInfo.enthusiasticValue}"
-                tools:text="热心值：100点"
-                app:layout_constraintTop_toTopOf="@id/me_enthusiastic_icon"
-                app:layout_constraintBottom_toBottomOf="@id/me_enthusiastic_icon"
-                app:layout_constraintStart_toEndOf="@id/me_enthusiastic_icon"
-                />
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <include
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/setting_btn"
+            android:layout_margin="@dimen/dp_2"
+            android:layout_width="@dimen/dp_20"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_10"
-            android:layout_below="@id/me_user_info_card"
-            android:id="@+id/cardview_me_notifications"
-            layout="@layout/cardview_me_notifications"/>
+            android:gravity="center"
+            android:text="@string/setting_title"
+            android:textSize="@dimen/sp_8"
+            android:textColor="@color/gray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:drawableTopCompat="@drawable/ic_setting_light" />
 
-        <FrameLayout
-            android:id="@+id/child_root"
-            android:layout_width="match_parent"
+        <ImageView
+            android:id="@+id/me_sign_in_state"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_2"
+            android:scaleType="fitCenter"
+            android:padding="@dimen/dp_4"
+            android:contentDescription="@null"
+            app:layout_constraintBottom_toBottomOf="@id/me_user_name"
+            app:layout_constraintStart_toEndOf="@id/me_user_name"
+            app:layout_constraintTop_toTopOf="@id/me_user_name" />
+        <TextView
+            android:layout_marginTop="@dimen/dp_5"
+            android:id="@+id/me_user_group"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/cardview_me_notifications"/>
+            android:textColor="@color/semi_gray"
+            android:textSize="@dimen/sp_14"
+            android:maxEms="10"
+            android:ellipsize="end"
+            android:hint="@string/me_tab_group_placeholder"
+            tools:text="锋芒毕露"
+            app:layout_constraintTop_toBottomOf="@id/me_user_name"
+            app:layout_constraintStart_toStartOf="@id/me_user_name"
+            />
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/icon_group"
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="@dimen/dp_0"
+            app:constraint_referenced_ids="me_anwser_rate,me_anwser_rate_icon, me_wuaicoin, me_coin_icon, me_credit, me_credit_icon, me_enthusiastic, me_enthusiastic_icon"
+            />
 
-    </RelativeLayout>
+        <ImageView
+            android:padding="@dimen/dp_1"
+            android:id="@+id/me_coin_icon"
+            android:layout_width="@dimen/dp_20"
+            android:layout_height="@dimen/dp_20"
+            android:scaleType="fitCenter"
+            android:layout_marginTop="@dimen/dp_15"
+            android:src="@drawable/ic_coin"
+            app:layout_constraintTop_toBottomOf="@id/me_user_avatar"
+            app:layout_constraintStart_toStartOf="@id/me_user_avatar"
+            app:tint="@color/pojie_logo"
+            android:contentDescription="@null" />
 
-</layout>
+        <TextView
+            android:gravity="center_vertical|start"
+            android:id="@+id/me_wuaicoin"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/dp_8"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/sp_12"
+            android:hint="@string/me_tab_placeholder"
+            tools:text="吾爱币：1115CB"
+            app:layout_constraintTop_toTopOf="@id/me_coin_icon"
+            app:layout_constraintBottom_toBottomOf="@id/me_coin_icon"
+            app:layout_constraintStart_toEndOf="@id/me_coin_icon"
+            />
+
+        <ImageView
+            android:padding="@dimen/dp_3"
+            android:id="@+id/me_credit_icon"
+            android:layout_width="@dimen/dp_20"
+            android:layout_height="@dimen/dp_20"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_credit_v2"
+            android:layout_marginStart="@dimen/dp_130"
+            app:layout_constraintTop_toTopOf="@id/me_coin_icon"
+            app:layout_constraintBottom_toBottomOf="@id/me_coin_icon"
+            app:layout_constraintStart_toEndOf="@id/me_coin_icon"
+            app:tint="@color/pojie_logo"
+            android:contentDescription="@null" />
+
+
+        <TextView
+            android:gravity="center_vertical|start"
+            android:id="@+id/me_credit"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/sp_12"
+            android:maxWidth="@dimen/dp_80"
+            android:layout_marginStart="@dimen/dp_8"
+            android:hint="@string/me_tab_placeholder"
+            tools:text="积分：10"
+            app:layout_constraintTop_toTopOf="@id/me_coin_icon"
+            app:layout_constraintBottom_toBottomOf="@id/me_coin_icon"
+            app:layout_constraintStart_toEndOf="@id/me_credit_icon"
+            />
+
+        <ImageView
+            android:padding="@dimen/dp_1"
+            android:id="@+id/me_anwser_rate_icon"
+            android:layout_width="@dimen/dp_20"
+            android:layout_height="@dimen/dp_20"
+            android:scaleType="fitCenter"
+            android:layout_marginTop="@dimen/dp_15"
+            android:src="@drawable/ic_anwser_rate"
+            app:layout_constraintTop_toBottomOf="@id/me_coin_icon"
+            app:layout_constraintStart_toStartOf="@id/me_coin_icon"
+            app:tint="@color/pojie_logo"
+            android:contentDescription="@null" />
+
+        <TextView
+            android:gravity="center_vertical|start"
+            android:id="@+id/me_anwser_rate"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/sp_12"
+            android:maxWidth="@dimen/dp_80"
+            android:layout_marginStart="@dimen/dp_8"
+            android:hint="@string/me_tab_placeholder"
+            tools:text="采纳率：10%"
+            app:layout_constraintTop_toTopOf="@id/me_anwser_rate_icon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/me_anwser_rate_icon"
+            />
+
+        <ImageView
+            android:padding="@dimen/dp_3"
+            android:id="@+id/me_enthusiastic_icon"
+            android:layout_width="@dimen/dp_20"
+            android:layout_height="@dimen/dp_20"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_heart"
+            android:layout_marginStart="@dimen/dp_130"
+            app:layout_constraintTop_toTopOf="@id/me_anwser_rate_icon"
+            app:layout_constraintBottom_toBottomOf="@id/me_anwser_rate_icon"
+            app:layout_constraintStart_toEndOf="@id/me_anwser_rate_icon"
+            app:tint="@color/pojie_logo"
+            android:contentDescription="@null" />
+
+
+        <TextView
+            android:gravity="center_vertical|start"
+            android:id="@+id/me_enthusiastic"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/sp_12"
+            android:layout_marginStart="@dimen/dp_8"
+            android:hint="@string/me_tab_placeholder"
+            tools:text="热心值：100点"
+            app:layout_constraintTop_toTopOf="@id/me_enthusiastic_icon"
+            app:layout_constraintBottom_toBottomOf="@id/me_enthusiastic_icon"
+            app:layout_constraintStart_toEndOf="@id/me_enthusiastic_icon"
+            />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_below="@id/me_user_info_card"
+        android:id="@+id/cardview_me_notifications"
+        layout="@layout/cardview_me_notifications"/>
+
+    <FrameLayout
+        android:id="@+id/child_root"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/cardview_me_notifications"
+        />
+
+</RelativeLayout>
