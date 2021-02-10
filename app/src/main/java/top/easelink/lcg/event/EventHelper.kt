@@ -1,13 +1,13 @@
 package top.easelink.lcg.event
 
-import com.tencent.stat.StatService
+import com.umeng.analytics.MobclickAgent
 import top.easelink.lcg.appinit.LCGApp
 import java.util.*
 
 fun sendEvent(key: String) {
-    StatService.trackCustomEvent(LCGApp.context, key)
+    MobclickAgent.onEventObject(LCGApp.context, key, emptyMap())
 }
 
 fun sendKVEvent(key: String, prop: Properties) {
-    StatService.trackCustomKVEvent(LCGApp.context, key, prop)
+
 }

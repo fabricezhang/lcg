@@ -2,9 +2,8 @@ package top.easelink.lcg.config
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.tencent.stat.StatConfig
-import top.easelink.lcg.appinit.LCGApp
 import top.easelink.lcg.account.UserDataRepo
+import top.easelink.lcg.appinit.LCGApp
 
 object AppConfig {
 
@@ -27,15 +26,15 @@ object AppConfig {
 
     // Config from Remote
     fun getAppReleaseUrl(): String {
-        return StatConfig.getCustomProperty(CONFIG_APP_RELEASE_URL, "thread-1073834-1-1.html")
+        return "thread-1073834-1-1.html"
     }
 
     fun followRedirectsEnable(): Boolean {
-        return "enable" == StatConfig.getCustomProperty(CONFIG_ENABLE_FOLLOW_REDIRECTS, "enable")
+        return false
     }
 
     fun getJrsUrl(): String {
-        return StatConfig.getCustomProperty(CONFIG_JRS_URL, "http://www.jrskq.com/")
+        return "http://www.jrskq.com/"
     }
 
     // open search result method, true -> WebView false -> try parse to native

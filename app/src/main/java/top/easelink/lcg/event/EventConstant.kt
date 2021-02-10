@@ -18,7 +18,6 @@ const val PROP_FORUM_NAME = "prop_forum_name"
 const val CHANGE_THREAD = "change_thread"
 
 // App
-const val EVENT_APP_LAUNCH = "app_launch"
 const val EVENT_AUTO_SIGN = "auto_sign"
 const val PROP_IS_AUTO_SIGN_ENABLE = "is_auto_sign_enable"
 

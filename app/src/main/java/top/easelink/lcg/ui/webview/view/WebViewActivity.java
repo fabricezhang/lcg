@@ -52,7 +52,7 @@ import top.easelink.lcg.ui.main.me.source.UserInfoRepo;
 import top.easelink.lcg.ui.main.view.MainActivity;
 import top.easelink.lcg.utils.ToastUtilsKt;
 
-import static top.easelink.lcg.event.MTAConstantKt.EVENT_SHARE_ARTICLE_URL;
+import static top.easelink.lcg.event.EventConstantKt.EVENT_SHARE_ARTICLE_URL;
 import static top.easelink.lcg.ui.webview.WebViewConstantsKt.FORCE_ENABLE_JS_KEY;
 import static top.easelink.lcg.ui.webview.WebViewConstantsKt.OPEN_LOGIN_PAGE;
 import static top.easelink.lcg.ui.webview.WebViewConstantsKt.TITLE_KEY;

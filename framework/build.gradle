@@ -99,11 +99,10 @@ dependencies {
     api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$rootProject.coroutineVersion"
     api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$rootProject.coroutineVersion"
 
-    // mta qq
-    //MTA主包
-    api "com.qq.mta:mta:$rootProject.mtaVersion"
-    //MID基础包
-    api "com.tencent.mid:mid:$rootProject.midVersion"
+    api "com.umeng.umsdk:common:9.3.6"
+    api "com.umeng.umsdk:asms:1.2.0"
+    api "com.umeng.umsdk:abtest:1.0.0" // ABTest功能依赖(可选)
+    api "com.umeng.umsdk:apm:1.1.1" // 应用性能监控SDK依赖(可选)
 
     // test related
     // java script engine

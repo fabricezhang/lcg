@@ -2,7 +2,7 @@
 try {
     apply from: "config.gradle"
 } catch (Exception ignored) {
-    System.out.print("config_placeholder.gradleolder.gradle contains mta/bugly/keystore")
+    System.out.print("config_placeholder.gradleolder.gradle contains umeng/bugly/keystore")
     apply from: "config_placeholder.gradle"
 }
 apply from: "dependencies.gradle"
@@ -12,10 +12,10 @@ buildscript {
         maven { url 'https://maven.aliyun.com/repository/public' }
         google()
         jcenter()
-
+        maven { url 'https://dl.bintray.com/umsdk/release' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.1'
+        classpath 'com.android.tools.build:gradle:4.1.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'com.tencent.mm:AndResGuard-gradle-plugin:1.2.18'
         // NOTE: Do not place your application dependencies here; they belong
@@ -29,6 +29,7 @@ allprojects {
         maven { url "https://jitpack.io" }
         google()
         jcenter()
+        maven { url 'https://dl.bintray.com/umsdk/release' }
     }
 }
 

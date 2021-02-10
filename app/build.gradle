@@ -17,14 +17,11 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode versionMajor * 10000 + versionMinor * 100 + versionPatch
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
+        // apply build configs
         buildConfigField("String", "DB_NAME", "\"articles.db\"")
         buildConfigField("String", "BUGLY_APP_ID", rootProject.ext.BUGLY_APP_ID)
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
-        manifestPlaceholders = [
-                MTA_APPKEY : rootProject.ext.MTA_APP_KEY,
-                MTA_CHANNEL: rootProject.ext.MTA_CHANNEL
-        ]
+        buildConfigField("String", "UMENG_APP_KEY", rootProject.ext.UMENG_APP_KEY)
+        buildConfigField("String", "CHANNEL", rootProject.ext.UMENG_CHANNEL)
 
         ndk {
             abiFilters 'armeabi-v7a', 'x86', 'arm64-v8a'//,'armeabi',
@@ -72,7 +69,7 @@ android {
         exclude 'META-INF/README.md'
         exclude 'META-INF/services/**'
         exclude 'META-INF/CHANGES'
-     }
+    }
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8
     }
