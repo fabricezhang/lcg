@@ -41,7 +41,7 @@ android {
 }
 
 dependencies {
-    api fileTree(dir: 'libs', include: ['*.jar'])
+    api fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
 
     // android support libraries
     api "androidx.appcompat:appcompat:$rootProject.supportLibraryVersion"
@@ -99,10 +99,11 @@ dependencies {
     api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$rootProject.coroutineVersion"
     api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$rootProject.coroutineVersion"
 
-    api "com.umeng.umsdk:common:9.3.6"
-    api "com.umeng.umsdk:asms:1.2.0"
-    api "com.umeng.umsdk:abtest:1.0.0" // ABTest功能依赖(可选)
-    api "com.umeng.umsdk:apm:1.1.1" // 应用性能监控SDK依赖(可选)
+    api(name:"umeng-common-9.3.8")
+    api(name:"umeng-asms-armeabi-v1.2.2", ext:'aar')
+    api(name:"umeng-apm-armeabi-v1.2.0", ext:'aar')
+    // 应用性能监控SDK依赖(可选)
+    api(name:"umeng-abtest-v1.0.0", ext:'aar')// ABTest功能依赖(可选)
 
     // test related
     // java script engine

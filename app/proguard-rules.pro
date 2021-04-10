@@ -121,17 +121,16 @@
 -keep public class com.tencent.bugly.**{*;}
 -keep class android.support.**{*;}
 
--keep class com.umeng.** {*;}
-
-# 您如果使用了稳定性模块可以加入该混淆
--keep class com.uc.** {*;}
-
--keepclassmembers class * {
-   public <init> (org.json.JSONObject);
+# UMeng
+-keep class com.umeng.** { *; }
+-keep class com.uc.** { *; }
+-keep class com.efs.** { *; }
+-keepclassmembers class*{
+     public<init>(org.json.JSONObject);
 }
--keepclassmembers enum * {
-    public static **[] values();
-    public static ** valueOf(java.lang.String);
+-keepclassmembers enum*{
+      publicstatic**[] values();
+      publicstatic** valueOf(java.lang.String);
 }
 
 -keep public class top.easelink.lcg.R$*{

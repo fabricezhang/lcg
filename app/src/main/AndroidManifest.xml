@@ -25,6 +25,7 @@
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme"
+        android:requestLegacyExternalStorage="true"
         tools:ignore="LockedOrientationActivity,UnusedAttribute" >
         <uses-library android:name="org.apache.http.legacy" android:required="false" />
         <activity

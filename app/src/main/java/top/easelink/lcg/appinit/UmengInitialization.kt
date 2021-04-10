@@ -5,6 +5,7 @@ import com.umeng.analytics.MobclickAgent
 import com.umeng.cconfig.RemoteConfigSettings
 import com.umeng.cconfig.UMRemoteConfig
 import com.umeng.commonsdk.UMConfigure
+import top.easelink.framework.utils.debugDo
 import top.easelink.lcg.BuildConfig
 
 
@@ -16,7 +17,7 @@ object UmengInitialization {
     }
 
     private fun initUmengStatistic(context: Context) {
-        UMConfigure.setLogEnabled(BuildConfig.DEBUG)
+        debugDo { UMConfigure.setLogEnabled(BuildConfig.DEBUG) }
         MobclickAgent.setPageCollectionMode(MobclickAgent.PageMode.AUTO)
         UMConfigure.init(
             context,

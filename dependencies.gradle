@@ -37,8 +37,10 @@ ext {
     jsoupVersion = '1.13.1' // 1.12.2 出现rewind错误暂时不升级
 
     // Statistics
-    mtaVersion = '3.4.2'
-    midVersion = '3.73-release'
+    umeng_common = '9.3.8'
+    umeng_asm = '1.2.2'
+    umeng_apm = '1.0.0'
+    umeng_abtest = '1.1.1'
 
     // Test dependencies
     junitVersion = '4.13'
