@@ -2,6 +2,7 @@
 try {
     apply from: "config.gradle"
 } catch (Exception ignored) {
+    System.out.print(ignored)
     System.out.print("config_placeholder.gradleolder.gradle contains umeng/bugly/keystore")
     apply from: "config_placeholder.gradle"
 }

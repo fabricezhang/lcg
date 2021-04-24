@@ -4,6 +4,10 @@ import android.content.Context
 import android.content.SharedPreferences
 import top.easelink.lcg.account.UserDataRepo
 import top.easelink.lcg.appinit.LCGApp
+import com.umeng.cconfig.UMRemoteConfig
+
+
+
 
 object AppConfig {
 
@@ -24,17 +28,21 @@ object AppConfig {
     private const val CONFIG_SEARCH_ENGINE_BAIDU = 1
     private const val CONFIG_SEARCH_ENGINE_WUAI = 0
 
+    private fun getConfig(key: String, default: String): String {
+        return UMRemoteConfig.getInstance().getConfigValue(key) ?: default
+    }
+
     // Config from Remote
     fun getAppReleaseUrl(): String {
-        return "thread-1073834-1-1.html"
+        return getConfig(CONFIG_APP_RELEASE_URL, "thread-1073834-1-1.html")
     }
 
     fun followRedirectsEnable(): Boolean {
-        return false
+        return getConfig(CONFIG_ENABLE_FOLLOW_REDIRECTS, "false") == "true"
     }
 
     fun getJrsUrl(): String {
-        return "http://www.jrskq.com/"
+        return getConfig(CONFIG_JRS_URL, "http://www.jrskq.com/")
     }
 
     // open search result method, true -> WebView false -> try parse to native
