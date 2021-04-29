@@ -1,6 +1,5 @@
 package top.easelink.lcg.ui.main.view
 
-import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.os.Bundle
@@ -10,8 +9,6 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
@@ -23,6 +20,7 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import top.easelink.framework.topbase.TopActivity
 import top.easelink.framework.topbase.TopFragment
+import top.easelink.framework.utils.WRITE_EXTERNAL_CODE
 import top.easelink.framework.utils.addFragmentInActivity
 import top.easelink.framework.utils.popBackFragmentUntil
 import top.easelink.lcg.BuildConfig
@@ -74,7 +72,6 @@ class MainActivity : TopActivity(), BottomNavigationView.OnNavigationItemSelecte
         setupDrawer(toolbar)
         setupBottomNavMenu()
         showFragment(RecommendFragment::class.java)
-        checkPermission()
     }
 
     override fun onDestroy() {
@@ -169,8 +166,9 @@ class MainActivity : TopActivity(), BottomNavigationView.OnNavigationItemSelecte
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageEvent(event: OpenForumEvent) {
-        val prop = Properties()
-        prop.setProperty(PROP_FORUM_NAME, event.title)
+        val prop = mutableMapOf<String, String>().apply {
+            put(PROP_FORUM_NAME, event.title)
+        }
         sendKVEvent(EVENT_OPEN_FORUM, prop)
         showFragment(newInstance(event.title, event.url, event.showTab))
     }
@@ -278,19 +276,6 @@ class MainActivity : TopActivity(), BottomNavigationView.OnNavigationItemSelecte
         }
     }
 
-
-    private fun checkPermission() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            != PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                WRITE_EXTERNAL_CODE
-            )
-        }
-    }
-
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -305,8 +290,6 @@ class MainActivity : TopActivity(), BottomNavigationView.OnNavigationItemSelecte
     }
 
     companion object {
-        const val WRITE_EXTERNAL_CODE = 1
-
         private const val PRIVATE_MESSAGE_POS = 2
     }
 }

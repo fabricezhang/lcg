@@ -35,7 +35,7 @@ class SettingViewModel : ViewModel() {
         } else {
             WorkManager.getInstance().cancelAllWorkByTag(SignInWorker.TAG)
         }
-        sendKVEvent(EVENT_AUTO_SIGN, mutableMapOf<String, Any>().apply {
+        sendKVEvent(EVENT_AUTO_SIGN, mutableMapOf<String, String>().apply {
             put(PROP_IS_AUTO_SIGN_ENABLE, enable.toString())
         })
     }

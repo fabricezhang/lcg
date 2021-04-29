@@ -8,7 +8,7 @@ fun sendEvent(key: String) {
     MobclickAgent.onEvent(LCGApp.context, key)
 }
 
-fun sendKVEvent(key: String, params: MutableMap<String, Any>) {
+fun sendKVEvent(key: String, params: MutableMap<String, out Any>) {
     if (params.isEmpty()) {
         debugDo { throw IllegalArgumentException("params should not be empty") }
         MobclickAgent.onEvent(LCGApp.context, key)
