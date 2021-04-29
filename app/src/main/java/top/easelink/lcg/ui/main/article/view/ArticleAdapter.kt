@@ -45,6 +45,7 @@ import top.easelink.lcg.ui.profile.view.PopUpProfileDialog
 import top.easelink.lcg.ui.profile.view.ProfileActivity
 import top.easelink.lcg.ui.webview.view.WebViewActivity
 import top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL
+import top.easelink.lcg.utils.avatar.PlaceholderDrawable
 import top.easelink.lcg.utils.avatar.getAvatar
 import top.easelink.lcg.utils.copyContent
 import top.easelink.lcg.utils.saveImageToGallery
@@ -292,10 +293,11 @@ class ArticleAdapter(
                                     it.putExtra(KEY_PROFILE_URL, p.profileUrl)
                                 })
                         }
+                        reply_avatar.setImageDrawable(null)
                         reply_avatar.load(p.avatar) {
-                            crossfade(true)
+                            crossfade(false)
                             transformations(RoundedCornersTransformation(6.dpToPx(context)))
-                            placeholder(R.drawable.ic_avatar_placeholder)
+                            placeholder(PlaceholderDrawable)
                             error(getAvatar())
                         }
                         reply_content_text_view.run {
