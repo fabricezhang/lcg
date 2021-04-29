@@ -2,11 +2,9 @@ package top.easelink.lcg.config
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.umeng.cconfig.UMRemoteConfig
 import top.easelink.lcg.account.UserDataRepo
 import top.easelink.lcg.appinit.LCGApp
-import com.umeng.cconfig.UMRemoteConfig
-
-
 
 
 object AppConfig {
@@ -38,7 +36,7 @@ object AppConfig {
     }
 
     fun followRedirectsEnable(): Boolean {
-        return getConfig(CONFIG_ENABLE_FOLLOW_REDIRECTS, "false") == "true"
+        return true
     }
 
     fun getJrsUrl(): String {

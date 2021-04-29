@@ -28,11 +28,11 @@ import top.easelink.framework.utils.convertViewToBitmap
 import top.easelink.framework.utils.dp2px
 import top.easelink.framework.utils.dpToPx
 import top.easelink.lcg.R
+import top.easelink.lcg.account.UserDataRepo.isLoggedIn
+import top.easelink.lcg.account.UserDataRepo.username
 import top.easelink.lcg.config.AppConfig
 import top.easelink.lcg.event.EVENT_CAPTURE_ARTICLE
 import top.easelink.lcg.event.sendEvent
-import top.easelink.lcg.account.UserDataRepo.isLoggedIn
-import top.easelink.lcg.account.UserDataRepo.username
 import top.easelink.lcg.ui.main.article.viewmodel.ArticleAdapterListener
 import top.easelink.lcg.ui.main.model.OpenArticleEvent
 import top.easelink.lcg.ui.main.model.OpenLargeImageViewEvent
@@ -160,6 +160,7 @@ class ArticleAdapter(
                                 })
                     }
                     post_avatar.load(p.avatar) {
+                        crossfade(false)
                         lifecycle(mFragment)
                         transformations(RoundedCornersTransformation(4.dpToPx(context)))
                         error(R.drawable.ic_noavatar_middle_gray)

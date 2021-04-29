@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit
 
 object OkApiClient : ApiRequest {
 
-    private const val TIME_OUT = 15L
+    private const val TIME_OUT = 5L
     private var mClient: OkHttpClient
 
     init {
