@@ -53,6 +53,7 @@
         android:layout_marginTop="@dimen/dp_10"
         android:textIsSelectable="true"
         android:focusableInTouchMode="true"
+        android:textColorHighlight="@color/translucent_white"
         android:focusable="true"
         android:textSize="@dimen/sp_14"
         android:lineSpacingExtra="@dimen/dp_4"

@@ -166,6 +166,7 @@ class ArticleAdapter(
                         error(R.drawable.ic_noavatar_middle_gray)
                     }
                     content_text_view.run {
+                        requestFocus()
                         if (AppConfig.articleHandlePreTag) {
                             setClickablePreCodeSpan(ClickablePreCodeSpanImpl())
                             setDrawPreCodeSpan(DrawPreCodeSpan().apply {
