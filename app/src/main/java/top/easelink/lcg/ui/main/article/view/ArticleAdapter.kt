@@ -24,9 +24,7 @@ import top.easelink.framework.base.BaseViewHolder
 import top.easelink.framework.customview.htmltextview.DrawPreCodeSpan
 import top.easelink.framework.customview.htmltextview.HtmlCoilImageGetter
 import top.easelink.framework.threadpool.Main
-import top.easelink.framework.utils.convertViewToBitmap
-import top.easelink.framework.utils.dp2px
-import top.easelink.framework.utils.dpToPx
+import top.easelink.framework.utils.*
 import top.easelink.lcg.R
 import top.easelink.lcg.account.UserDataRepo.isLoggedIn
 import top.easelink.lcg.account.UserDataRepo.username
