@@ -131,6 +131,7 @@ class ArticleAdapter(
 
         override fun onBind(position: Int) {
             val p = mPostList.getOrNull(position) ?: return
+            post = p
             with(itemView) {
                 try {
                     author_text_view.text = p.author

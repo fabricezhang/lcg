@@ -84,39 +84,43 @@
         android:layout_marginTop="@dimen/dp_3"
         android:layout_marginBottom="@dimen/dp_1"
         android:layout_marginEnd="@dimen/dp_8" >
-        <ImageButton
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/post_btn_capture"
-            android:layout_width="@dimen/dp_15"
-            android:layout_height="@dimen/dp_15"
-            android:background="@drawable/btn_selector_capture"
-            android:backgroundTint="@color/btn_color"
+            android:padding="@dimen/dp_4"
+            android:layout_width="@dimen/dp_25"
+            android:layout_height="@dimen/dp_25"
+            android:src="@drawable/btn_selector_capture"
+            android:tint="@color/btn_color"
             android:layout_marginEnd="@dimen/dp_25"
             android:contentDescription="@null" />
 
-        <ImageButton
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/post_btn_thumb_up"
-            android:layout_width="@dimen/dp_15"
-            android:layout_height="@dimen/dp_15"
-            android:background="@drawable/btn_selector_thubm_up"
-            android:backgroundTint="@color/btn_color"
+            android:padding="@dimen/dp_4"
+            android:layout_width="@dimen/dp_25"
+            android:layout_height="@dimen/dp_25"
+            android:src="@drawable/btn_selector_thubm_up"
+            android:tint="@color/btn_color"
             android:layout_marginEnd="@dimen/dp_25"
             android:contentDescription="@null" />
 
-        <ImageButton
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/post_btn_reply"
-            android:layout_width="@dimen/dp_15"
-            android:layout_height="@dimen/dp_15"
-            android:background="@drawable/btn_selector_reply"
-            android:backgroundTint="@color/btn_color"
+            android:padding="@dimen/dp_4"
+            android:layout_width="@dimen/dp_25"
+            android:layout_height="@dimen/dp_25"
+            android:src="@drawable/btn_selector_reply"
+            android:tint="@color/btn_color"
             android:layout_marginEnd="@dimen/dp_25"
             android:contentDescription="@null" />
 
-        <ImageButton
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/post_btn_copy"
-            android:layout_width="@dimen/dp_15"
-            android:layout_height="@dimen/dp_15"
-            android:background="@drawable/btn_selector_copy"
-            android:backgroundTint="@color/btn_color"
+            android:padding="@dimen/dp_4"
+            android:layout_width="@dimen/dp_25"
+            android:layout_height="@dimen/dp_25"
+            android:src="@drawable/btn_selector_copy"
+            android:tint="@color/btn_color"
             android:contentDescription="@null" />
     </LinearLayout>
 
