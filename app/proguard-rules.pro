@@ -120,3 +120,22 @@
 -dontwarn com.tencent.bugly.**
 -keep public class com.tencent.bugly.**{*;}
 -keep class android.support.**{*;}
+
+# UMeng
+-keep class com.umeng.** { *; }
+-keep class com.uc.** { *; }
+-keep class com.efs.** { *; }
+-keepclassmembers class*{
+     public<init>(org.json.JSONObject);
+}
+-keepclassmembers enum*{
+      publicstatic**[] values();
+      publicstatic** valueOf(java.lang.String);
+}
+
+-keep public class top.easelink.lcg.R$*{
+    public static final int *;
+}
+-keep public class top.easelink.framework.R$*{
+    public static final int *;
+}

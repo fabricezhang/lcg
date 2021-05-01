@@ -2,11 +2,16 @@ package top.easelink.framework.topbase
 
 import android.content.Context
 import androidx.fragment.app.Fragment
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.cancel
+import kotlinx.coroutines.*
+import timber.log.Timber
+import top.easelink.framework.threadpool.Main
+import kotlin.coroutines.CoroutineContext
 
-abstract class TopFragment : Fragment(), CoroutineScope by MainScope() {
+abstract class TopFragment : Fragment(), CoroutineScope {
+
+    override val coroutineContext: CoroutineContext = SupervisorJob() + Main + CoroutineExceptionHandler { _, throwable ->
+        Timber.e(throwable)
+    }
 
     lateinit var mContext: Context
 

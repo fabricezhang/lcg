@@ -24,15 +24,13 @@ import top.easelink.framework.base.BaseViewHolder
 import top.easelink.framework.customview.htmltextview.DrawPreCodeSpan
 import top.easelink.framework.customview.htmltextview.HtmlCoilImageGetter
 import top.easelink.framework.threadpool.Main
-import top.easelink.framework.utils.convertViewToBitmap
-import top.easelink.framework.utils.dp2px
-import top.easelink.framework.utils.dpToPx
+import top.easelink.framework.utils.*
 import top.easelink.lcg.R
+import top.easelink.lcg.account.UserDataRepo.isLoggedIn
+import top.easelink.lcg.account.UserDataRepo.username
 import top.easelink.lcg.config.AppConfig
 import top.easelink.lcg.event.EVENT_CAPTURE_ARTICLE
 import top.easelink.lcg.event.sendEvent
-import top.easelink.lcg.account.UserDataRepo.isLoggedIn
-import top.easelink.lcg.account.UserDataRepo.username
 import top.easelink.lcg.ui.main.article.viewmodel.ArticleAdapterListener
 import top.easelink.lcg.ui.main.model.OpenArticleEvent
 import top.easelink.lcg.ui.main.model.OpenLargeImageViewEvent
@@ -45,6 +43,7 @@ import top.easelink.lcg.ui.profile.view.PopUpProfileDialog
 import top.easelink.lcg.ui.profile.view.ProfileActivity
 import top.easelink.lcg.ui.webview.view.WebViewActivity
 import top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL
+import top.easelink.lcg.utils.avatar.PlaceholderDrawable
 import top.easelink.lcg.utils.avatar.getAvatar
 import top.easelink.lcg.utils.copyContent
 import top.easelink.lcg.utils.saveImageToGallery
@@ -130,6 +129,7 @@ class ArticleAdapter(
 
         override fun onBind(position: Int) {
             val p = mPostList.getOrNull(position) ?: return
+            post = p
             with(itemView) {
                 try {
                     author_text_view.text = p.author
@@ -160,11 +160,13 @@ class ArticleAdapter(
                                 })
                     }
                     post_avatar.load(p.avatar) {
+                        crossfade(false)
                         lifecycle(mFragment)
                         transformations(RoundedCornersTransformation(4.dpToPx(context)))
                         error(R.drawable.ic_noavatar_middle_gray)
                     }
                     content_text_view.run {
+                        requestFocus()
                         if (AppConfig.articleHandlePreTag) {
                             setClickablePreCodeSpan(ClickablePreCodeSpanImpl())
                             setDrawPreCodeSpan(DrawPreCodeSpan().apply {
@@ -291,10 +293,11 @@ class ArticleAdapter(
                                     it.putExtra(KEY_PROFILE_URL, p.profileUrl)
                                 })
                         }
+                        reply_avatar.setImageDrawable(null)
                         reply_avatar.load(p.avatar) {
-                            crossfade(true)
+                            crossfade(false)
                             transformations(RoundedCornersTransformation(6.dpToPx(context)))
-                            placeholder(R.drawable.ic_avatar_placeholder)
+                            placeholder(PlaceholderDrawable)
                             error(getAvatar())
                         }
                         reply_content_text_view.run {

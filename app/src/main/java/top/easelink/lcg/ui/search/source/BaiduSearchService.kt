@@ -6,7 +6,7 @@ import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
 import timber.log.Timber
 import top.easelink.lcg.R
-import top.easelink.lcg.network.OkApiClient
+import top.easelink.lcg.network.JsoupClient
 import top.easelink.lcg.ui.search.model.BaiduSearchResult
 import top.easelink.lcg.ui.search.model.BaiduSearchResults
 import top.easelink.lcg.ui.search.model.RequestTooOftenException
@@ -32,8 +32,8 @@ object BaiduSearchService {
     @Throws(RequestTooOftenException::class)
     fun doSearchRequest(requestUrl: String): BaiduSearchResults {
         try {
-            val doc = OkApiClient.sendGetRequestWithUrl(requestUrl)
-            val list: List<BaiduSearchResult> = doc?.select("div.result")
+            val doc = JsoupClient.sendGetRequestWithUrl(requestUrl)
+            val list: List<BaiduSearchResult> = doc.select("div.result")
                 ?.map {
                     try {
                         val title = extractFrom(it, "h3.c-title", "a")

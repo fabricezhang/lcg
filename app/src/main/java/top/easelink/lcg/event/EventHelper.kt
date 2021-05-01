@@ -1,13 +1,18 @@
 package top.easelink.lcg.event
 
-import com.tencent.stat.StatService
+import com.umeng.analytics.MobclickAgent
+import top.easelink.framework.utils.debugDo
 import top.easelink.lcg.appinit.LCGApp
-import java.util.*
 
 fun sendEvent(key: String) {
-    StatService.trackCustomEvent(LCGApp.context, key)
+    MobclickAgent.onEvent(LCGApp.context, key)
 }
 
-fun sendKVEvent(key: String, prop: Properties) {
-    StatService.trackCustomKVEvent(LCGApp.context, key, prop)
+fun sendKVEvent(key: String, params: MutableMap<String, out Any>) {
+    if (params.isEmpty()) {
+        debugDo { throw IllegalArgumentException("params should not be empty") }
+        MobclickAgent.onEvent(LCGApp.context, key)
+    } else {
+        MobclickAgent.onEventObject(LCGApp.context, key, params)
+    }
 }

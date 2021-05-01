@@ -1,5 +1,7 @@
 package top.easelink.lcg.utils.avatar
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import top.easelink.lcg.R
 import kotlin.random.Random
 
@@ -15,3 +17,5 @@ private val maleAvatarPool = listOf(
 fun getAvatar(): Int {
     return maleAvatarPool[Random.nextInt(maleAvatarPool.size - 1)]
 }
+
+val PlaceholderDrawable = ColorDrawable(Color.LTGRAY)

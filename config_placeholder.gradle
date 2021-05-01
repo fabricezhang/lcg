@@ -6,8 +6,9 @@ ext {
     releaseTime = releaseTime()
 
     BUGLY_APP_ID = "\"12345678\""
-    MTA_APP_KEY = "AXXXXXXXXXXX"
-    MTA_CHANNEL = "GITHUB"
+
+    UMENG_CHANNEL = "\"GITHUB\""
+    UMENG_APP_KEY = "\"12345642f1eb4f3f9b8461d3\""
 
     RELEASE_KEY_ALIAS = "placeholder"
     RELEASE_KEY_PWD = "placeholder"

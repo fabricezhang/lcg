@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Process
+import com.umeng.analytics.MobclickAgent
 import timber.log.Timber
 import top.easelink.framework.BuildConfig
 
@@ -16,6 +17,8 @@ class AppGuard(
         if (!BuildConfig.DEBUG) {
             restartApp(mContext)
             mDefaultUncaughtExceptionHandler?.uncaughtException(t, e)
+            // save statistic
+            MobclickAgent.onKillProcess(mContext.applicationContext)
             Process.killProcess(Process.myPid())
         }
     }

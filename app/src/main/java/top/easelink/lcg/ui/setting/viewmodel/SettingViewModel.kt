@@ -6,7 +6,6 @@ import androidx.work.WorkManager
 import top.easelink.lcg.config.AppConfig
 import top.easelink.lcg.event.*
 import top.easelink.lcg.service.work.SignInWorker
-import java.util.*
 
 class SettingViewModel : ViewModel() {
     val autoSignInEnable = MutableLiveData<Boolean>()
@@ -36,18 +35,15 @@ class SettingViewModel : ViewModel() {
         } else {
             WorkManager.getInstance().cancelAllWorkByTag(SignInWorker.TAG)
         }
-        sendKVEvent(EVENT_AUTO_SIGN, Properties().apply {
-            setProperty(PROP_IS_AUTO_SIGN_ENABLE, enable.toString())
+        sendKVEvent(EVENT_AUTO_SIGN, mutableMapOf<String, String>().apply {
+            put(PROP_IS_AUTO_SIGN_ENABLE, enable.toString())
         })
     }
 
     fun setSyncFavorite(enable: Boolean) {
         AppConfig.syncFavorites = enable
-        sendKVEvent(EVENT_SYNC_FAVORITE, Properties().apply {
-            setProperty(
-                PROP_IS_SYNC_FAVORITE_ENABLE,
-                enable.toString()
-            )
+        sendKVEvent(EVENT_SYNC_FAVORITE, mutableMapOf<String, Any>().apply {
+            put(PROP_IS_SYNC_FAVORITE_ENABLE, enable.toString())
         })
     }
 
