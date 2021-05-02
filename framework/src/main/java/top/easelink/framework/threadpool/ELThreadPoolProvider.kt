@@ -20,7 +20,7 @@ object ELThreadPoolProvider {
         ElThreadFactory("EL-immediate", ELThreadPriority.IMMEDIATE)
     )
 
-    val API_EXECUTOR = ELThreadPoolExecutor(
+    val IO_EXECUTOR = ELThreadPoolExecutor(
         3,
         3,
         KEEP_ALIVE_SECONDS,
@@ -29,7 +29,7 @@ object ELThreadPoolProvider {
         ElThreadFactory("EL-api", ELThreadPriority.HIGH)
     )
 
-    val COMMON_EXECUTOR = ELThreadPoolExecutor(
+    val CALCULATE_EXECUTOR = ELThreadPoolExecutor(
         CORE_POOL_SIZE,
         MAXIMUM_POOL_SIZE,
         KEEP_ALIVE_SECONDS,

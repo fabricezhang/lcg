@@ -30,7 +30,7 @@ import top.easelink.lcg.account.UserDataRepo.isLoggedIn
 import top.easelink.lcg.account.UserDataRepo.username
 import top.easelink.lcg.config.AppConfig
 import top.easelink.lcg.event.EVENT_CAPTURE_ARTICLE
-import top.easelink.lcg.event.sendEvent
+import top.easelink.lcg.event.sendSingleEvent
 import top.easelink.lcg.ui.main.article.viewmodel.ArticleAdapterListener
 import top.easelink.lcg.ui.main.model.OpenArticleEvent
 import top.easelink.lcg.ui.main.model.OpenLargeImageViewEvent
@@ -232,7 +232,7 @@ class ArticleAdapter(
                         mListener.replyAdd(it)
                     }
                     R.id.post_btn_capture -> {
-                        sendEvent(EVENT_CAPTURE_ARTICLE)
+                        sendSingleEvent(EVENT_CAPTURE_ARTICLE)
                         convertViewToBitmap(itemView, Bitmap.Config.ARGB_8888)?.let {
                             val path = saveImageToGallery(it, System.currentTimeMillis().toString())
                             EventBus.getDefault().post(ScreenCaptureEvent(path))

@@ -10,7 +10,7 @@ import top.easelink.framework.threadpool.IOPool
 import top.easelink.lcg.R
 import top.easelink.lcg.config.AppConfig
 import top.easelink.lcg.event.EVENT_ADD_TO_FAVORITE
-import top.easelink.lcg.event.sendEvent
+import top.easelink.lcg.event.sendSingleEvent
 import top.easelink.lcg.ui.main.article.viewmodel.ArticleAdapterListener.Companion.FETCH_POST_INIT
 import top.easelink.lcg.ui.main.article.viewmodel.ArticleAdapterListener.Companion.FETCH_POST_MORE
 import top.easelink.lcg.ui.main.model.BlockException
@@ -128,7 +128,7 @@ class ArticleViewModel : ViewModel(), ArticleAdapterListener {
     }
 
     fun addToFavorite() {
-        sendEvent(EVENT_ADD_TO_FAVORITE)
+        sendSingleEvent(EVENT_ADD_TO_FAVORITE)
         val posts: MutableList<Post> = posts.value ?: mutableListOf()
         if (posts.isEmpty()) {
             showMessage(R.string.add_to_favorite_failed)

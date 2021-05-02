@@ -13,8 +13,7 @@ import top.easelink.framework.base.BaseViewHolder
 import top.easelink.framework.threadpool.IOPool
 import top.easelink.lcg.R
 import top.easelink.lcg.databinding.ItemArticleEmptyViewBinding
-import top.easelink.lcg.event.EVENT_OPEN_PREVIEW
-import top.easelink.lcg.event.sendEvent
+import top.easelink.lcg.event.business.STOpenArticleEvent
 import top.easelink.lcg.ui.main.article.view.PostPreviewDialog
 import top.easelink.lcg.ui.main.articles.viewmodel.ArticleEmptyItemViewModel
 import top.easelink.lcg.ui.main.articles.viewmodel.ArticleEmptyItemViewModel.ArticleEmptyItemViewModelListener
@@ -103,7 +102,7 @@ class HistoryArticlesAdapter : RecyclerView.Adapter<BaseViewHolder>() {
             val article = mHistoryList[position]
             view.title_text_view.apply {
                 setOnLongClickListener {
-                    sendEvent(EVENT_OPEN_PREVIEW)
+                    STOpenArticleEvent(isPreview = true)
                     mFragmentManager?.get()?.let {
                         PostPreviewDialog.newInstance(
                             mHistoryList[position].url

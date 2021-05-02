@@ -26,7 +26,8 @@ import top.easelink.framework.utils.popBackFragmentUntil
 import top.easelink.lcg.BuildConfig
 import top.easelink.lcg.R
 import top.easelink.lcg.config.AppConfig
-import top.easelink.lcg.event.*
+import top.easelink.lcg.event.business.STOpenArticleEvent
+import top.easelink.lcg.event.business.STOpenForumEvent
 import top.easelink.lcg.ui.main.about.view.AboutFragment
 import top.easelink.lcg.ui.main.article.view.ArticleFragment
 import top.easelink.lcg.ui.main.articles.view.ForumArticlesFragment.Companion.newInstance
@@ -156,7 +157,7 @@ class MainActivity : TopActivity(), BottomNavigationView.OnNavigationItemSelecte
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageEvent(event: OpenArticleEvent) {
-        sendEvent(EVENT_OPEN_ARTICLE)
+        STOpenArticleEvent().send()
         if (AppConfig.articleShowInWebView) {
             WebViewActivity.startWebViewWith(SERVER_BASE_URL + event.url, this)
         } else {
@@ -166,10 +167,7 @@ class MainActivity : TopActivity(), BottomNavigationView.OnNavigationItemSelecte
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageEvent(event: OpenForumEvent) {
-        val prop = mutableMapOf<String, String>().apply {
-            put(PROP_FORUM_NAME, event.title)
-        }
-        sendKVEvent(EVENT_OPEN_FORUM, prop)
+        STOpenForumEvent(forumName = event.title).send()
         showFragment(newInstance(event.title, event.url, event.showTab))
     }
 

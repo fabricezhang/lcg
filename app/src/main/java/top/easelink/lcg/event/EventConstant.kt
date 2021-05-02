@@ -3,7 +3,6 @@ package top.easelink.lcg.event
 // Article
 const val EVENT_OPEN_ARTICLE = "open_article"
 const val EVENT_TAP_FOR_CODE = "tap_for_code" // 点击文章Code排版
-const val EVENT_OPEN_PREVIEW = "open_preview" // 打开文章预览页面
 const val EVENT_SHARE_ARTICLE_URL = "share_article_url" // 分享文章链接
 const val EVENT_CAPTURE_ARTICLE = "capture_article" // 文章截图
 
@@ -28,3 +27,6 @@ const val PROP_IS_SYNC_FAVORITE_ENABLE = "is_sync_favorite_enable"
 
 // Follow
 const val EVENT_OPEN_FOLLOW_PAGE = "open_follow_page"
+
+// 单独Key的事件，为避免增加过多key，导致超出免费限额，使用Event中的key字段作为区分
+const val EVENT_SINGLE_KEY_EVENT = "single_key_event"

@@ -23,7 +23,7 @@ import top.easelink.lcg.R
 import top.easelink.lcg.event.EVENT_OPEN_PROFILE
 import top.easelink.lcg.event.EVENT_OPEN_PROFILE_PAGE
 import top.easelink.lcg.event.EVENT_SUBSCRIBE_USER
-import top.easelink.lcg.event.sendEvent
+import top.easelink.lcg.event.sendSingleEvent
 import top.easelink.lcg.network.JsoupClient
 import top.easelink.lcg.ui.main.source.parseExtraUserInfoProfilePage
 import top.easelink.lcg.ui.profile.model.PopUpProfileInfo
@@ -82,7 +82,7 @@ class PopUpProfileDialog: DialogFragment() {
         }
 
         profile_btn.setOnClickListener {
-            sendEvent(EVENT_OPEN_PROFILE_PAGE)
+            sendSingleEvent(EVENT_OPEN_PROFILE_PAGE)
             WebViewActivity.startWebViewWith(SERVER_BASE_URL + popUpInfo.profileUrl, it.context)
         }
 
@@ -111,11 +111,11 @@ class PopUpProfileDialog: DialogFragment() {
 
     override fun show(manager: FragmentManager, tag: String?) {
         super.show(manager, tag)
-        sendEvent(EVENT_OPEN_PROFILE)
+        sendSingleEvent(EVENT_OPEN_PROFILE)
     }
 
     private fun onSubscribeClicked(url: String) {
-        sendEvent(EVENT_SUBSCRIBE_USER)
+        sendSingleEvent(EVENT_SUBSCRIBE_USER)
         GlobalScope.launch(IOPool) {
             try {
                 JsoupClient.sendGetRequestWithQuery(url).let {

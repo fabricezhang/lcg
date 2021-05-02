@@ -16,7 +16,7 @@ import top.easelink.framework.utils.addFragmentInActivity
 import top.easelink.lcg.R
 import top.easelink.lcg.config.AppConfig
 import top.easelink.lcg.event.EVENT_OPEN_ARTICLE
-import top.easelink.lcg.event.sendEvent
+import top.easelink.lcg.event.sendSingleEvent
 import top.easelink.lcg.ui.main.article.view.ArticleFragment
 import top.easelink.lcg.ui.main.largeimg.view.LargeImageDialog
 import top.easelink.lcg.ui.main.model.OpenLargeImageViewEvent
@@ -112,7 +112,7 @@ class LCGSearchActivity : TopActivity() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageEvent(event: OpenSearchResultEvent) {
-        sendEvent(EVENT_OPEN_ARTICLE)
+        sendSingleEvent(EVENT_OPEN_ARTICLE)
         when {
             threadRegex.containsMatchIn(event.url) || event.url.startsWith("forum.php") -> {
                 if (AppConfig.searchResultShowInWebView) {

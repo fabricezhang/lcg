@@ -218,7 +218,7 @@ public class WebViewActivity extends AppCompatActivity {
         }
         switch (item.getItemId()) {
             case R.id.action_share:
-                EventHelperKt.sendEvent(EVENT_SHARE_ARTICLE_URL);
+                EventHelperKt.sendSingleEvent(EVENT_SHARE_ARTICLE_URL);
                 Intent shareIntent = getShareIntent();
                 startActivity(shareIntent);
                 return true;

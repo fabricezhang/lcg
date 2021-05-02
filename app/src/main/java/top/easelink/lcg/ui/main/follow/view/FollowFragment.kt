@@ -9,7 +9,7 @@ import top.easelink.framework.topbase.ControllableFragment
 import top.easelink.framework.topbase.TopFragment
 import top.easelink.lcg.R
 import top.easelink.lcg.event.EVENT_OPEN_FOLLOW_PAGE
-import top.easelink.lcg.event.sendEvent
+import top.easelink.lcg.event.sendSingleEvent
 
 class FollowFragment : TopFragment(), ControllableFragment {
 
@@ -34,6 +34,6 @@ class FollowFragment : TopFragment(), ControllableFragment {
             )
         follow_view_pager.offscreenPageLimit = 0
         follow_tab.setupWithViewPager(follow_view_pager)
-        sendEvent(EVENT_OPEN_FOLLOW_PAGE)
+        sendSingleEvent(EVENT_OPEN_FOLLOW_PAGE)
     }
 }
