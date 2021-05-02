@@ -111,7 +111,7 @@ class ArticleViewModel : ViewModel(), ArticleAdapterListener {
     }
 
     fun extractDownloadUrl(): ArrayList<String>? {
-        val patternLanzous = "https://*lanzou[a-z]{1}.com/[a-zA-Z0-9]{4,10}"
+        val patternLanzous = "https://*lanzou[a-z]{1}.com/[a-zA-Z0-9]{4,11}"
         val patternBaidu = "https://pan.baidu.com/s/.{23}"
         val patternT = "http://t.cn/[a-zA-Z0-9]{8}"
         val list: List<Post>? = posts.value
