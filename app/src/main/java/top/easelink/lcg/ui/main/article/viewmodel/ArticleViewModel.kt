@@ -122,6 +122,7 @@ class ArticleViewModel : ViewModel(), ArticleAdapterListener {
         val patternBaidu = "https://pan.baidu.com/s/.{23}"
         val patternT = "http://t.cn/[a-zA-Z0-9]{8}"
         val pattern189 = "https://cloud.189.cn/t/[a-zA-Z0-9]{4,12}"
+        val patternXunlei = "https://pan.xunlei.com/s/[a-zA-Z0-9_]{1,20}"
         val list: List<Post>? = posts.value
         var resSet: HashSet<String>? = null
         if (list != null && list.isNotEmpty()) {
@@ -130,6 +131,7 @@ class ArticleViewModel : ViewModel(), ArticleAdapterListener {
             resSet.addAll(RegexUtils.extractInfoFrom(content, patternBaidu))
             resSet.addAll(RegexUtils.extractInfoFrom(content, patternT))
             resSet.addAll(RegexUtils.extractInfoFrom(content, pattern189))
+            resSet.addAll(RegexUtils.extractInfoFrom(content, patternXunlei))
         }
         return resSet?.let {
             ArrayList(it)
