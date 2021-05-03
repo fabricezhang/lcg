@@ -23,11 +23,10 @@
         <ImageView
             android:id="@+id/me_user_avatar"
             android:layout_width="@dimen/dp_40"
-            android:layout_height="0dp"
+            android:layout_height="@dimen/dp_40"
             android:scaleType="fitCenter"
             android:contentDescription="@null"
             android:background="@color/transparent"
-            android:src="@drawable/ic_avatar_m_2"
             app:layout_constraintTop_toTopOf="@id/me_user_name"
             app:layout_constraintBottom_toBottomOf="@id/me_user_group"
             app:layout_constraintStart_toStartOf="parent"
