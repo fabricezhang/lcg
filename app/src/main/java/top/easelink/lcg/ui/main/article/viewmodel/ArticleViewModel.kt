@@ -118,9 +118,10 @@ class ArticleViewModel : ViewModel(), ArticleAdapterListener {
     }
 
     fun extractDownloadUrl(): ArrayList<String>? {
-        val patternLanzous = "https://*lanzou[a-z]{1}.com/[a-zA-Z0-9]{4,11}"
+        val patternLanzous = "https://[a-zA-Z0-9.]{0,11}lanzou[a-z]{1}.com/[a-zA-Z0-9]{4,12}"
         val patternBaidu = "https://pan.baidu.com/s/.{23}"
         val patternT = "http://t.cn/[a-zA-Z0-9]{8}"
+        val pattern189 = "https://cloud.189.cn/t/[a-zA-Z0-9]{4,12}"
         val list: List<Post>? = posts.value
         var resSet: HashSet<String>? = null
         if (list != null && list.isNotEmpty()) {
@@ -128,6 +129,7 @@ class ArticleViewModel : ViewModel(), ArticleAdapterListener {
             resSet = RegexUtils.extractInfoFrom(content, patternLanzous)
             resSet.addAll(RegexUtils.extractInfoFrom(content, patternBaidu))
             resSet.addAll(RegexUtils.extractInfoFrom(content, patternT))
+            resSet.addAll(RegexUtils.extractInfoFrom(content, pattern189))
         }
         return resSet?.let {
             ArrayList(it)
