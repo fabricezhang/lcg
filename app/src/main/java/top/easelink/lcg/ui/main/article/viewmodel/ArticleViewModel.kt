@@ -8,6 +8,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import top.easelink.framework.threadpool.IOPool
 import top.easelink.lcg.R
+import top.easelink.lcg.account.UserDataRepo
 import top.easelink.lcg.config.AppConfig
 import top.easelink.lcg.event.EVENT_ADD_TO_FAVORITE
 import top.easelink.lcg.event.sendSingleEvent
@@ -153,14 +154,14 @@ class ArticleViewModel : ViewModel(), ArticleAdapterListener {
                     content = content,
                     timestamp = System.currentTimeMillis()
                 )
-                if (AppConfig.syncFavorites) {
+                if (AppConfig.syncFavorites && UserDataRepo.isLoggedIn) {
                     if (threadId != null && mFormHash != null) {
                         ArticlesRemoteDataSource.addFavorites(threadId, mFormHash!!).let {
-                            if (it)
-                                showMessage(R.string.sync_favorite_successfully)
-                            else
-                                showMessage(R.string.sync_favorite_failed)
+                            if (it) showMessage(R.string.sync_favorite_successfully)
+                            else showMessage(R.string.sync_favorite_failed)
                         }
+                    } else {
+                        showMessage(R.string.sync_favorite_failed)
                     }
                 }
                 try {

@@ -12,12 +12,11 @@ import com.tencent.bugly.beta.Beta
 import kotlinx.android.synthetic.main.activity_settings.*
 import top.easelink.framework.topbase.TopActivity
 import top.easelink.lcg.R
-import top.easelink.lcg.config.AppConfig
 import top.easelink.lcg.account.UserDataRepo
+import top.easelink.lcg.config.AppConfig
 import top.easelink.lcg.ui.main.login.view.LoginHintDialog
 import top.easelink.lcg.ui.main.logout.view.LogoutHintDialog
 import top.easelink.lcg.ui.setting.viewmodel.SettingViewModel
-import top.easelink.lcg.utils.clearCookies
 import top.easelink.lcg.utils.showMessage
 
 
@@ -70,8 +69,6 @@ class SettingActivity : TopActivity() {
         if (!UserDataRepo.isLoggedIn) {
             sync_favorites_switch.isEnabled = false
             auto_sign_switch.isEnabled = false
-            AppConfig.autoSignEnable = false
-            AppConfig.syncFavorites = false
             account_btn.text = getString(R.string.login_btn)
             account_btn.setOnClickListener {
                 LoginHintDialog().show(supportFragmentManager, null)
@@ -123,10 +120,10 @@ class SettingActivity : TopActivity() {
 
     private fun setupObserver() {
         mViewModel.syncFavoriteEnable.observe(this, Observer {
-            sync_favorites_switch.isChecked = it
+            sync_favorites_switch.isChecked = (UserDataRepo.isLoggedIn && it)
         })
         mViewModel.autoSignInEnable.observe(this, Observer {
-            auto_sign_switch.isChecked = it
+            auto_sign_switch.isChecked = (UserDataRepo.isLoggedIn && it)
         })
         mViewModel.searchEngineSelected.observe(this, Observer {
             search_engine_spinner.setSelection(it, true)
