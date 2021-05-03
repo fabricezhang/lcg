@@ -31,7 +31,7 @@ import top.easelink.lcg.ui.main.me.viewmodel.MeViewModel
 import top.easelink.lcg.ui.main.model.OpenForumEvent
 import top.easelink.lcg.ui.setting.view.SettingActivity
 import top.easelink.lcg.utils.WebsiteConstant.MY_ARTICLES_QUERY
-import top.easelink.lcg.utils.avatar.getAvatar
+import top.easelink.lcg.utils.avatar.getDefaultAvatar
 import top.easelink.lcg.utils.showMessage
 
 class MeFragment : TopFragment(), ControllableFragment {
@@ -114,7 +114,7 @@ class MeFragment : TopFragment(), ControllableFragment {
                 me_user_avatar.load(it) {
                     lifecycle(viewLifecycleOwner)
                     transformations(RoundedCornersTransformation(4.dpToPx(me_user_avatar.context)))
-                    error(getAvatar())
+                    error(getDefaultAvatar(it))
                 }
             }
         }
