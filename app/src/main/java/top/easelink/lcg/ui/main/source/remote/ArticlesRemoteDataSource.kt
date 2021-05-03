@@ -13,9 +13,9 @@ import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
 import timber.log.Timber
 import top.easelink.framework.threadpool.BackGroundPool
+import top.easelink.lcg.cache.PreviewCacheManager
 import top.easelink.lcg.config.AppConfig
 import top.easelink.lcg.network.JsoupClient
-import top.easelink.lcg.preload.PreviewCacheManager
 import top.easelink.lcg.ui.main.model.BlockException
 import top.easelink.lcg.ui.main.model.LoginRequiredException
 import top.easelink.lcg.ui.main.model.NetworkException

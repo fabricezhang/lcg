@@ -1,8 +1,9 @@
-package top.easelink.lcg.preload
+package top.easelink.lcg.cache
 
 import android.content.Context
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import timber.log.Timber
@@ -10,7 +11,7 @@ import top.easelink.framework.threadpool.IOPool
 import top.easelink.lcg.appinit.LCGApp
 import java.io.File
 
-object PreviewCacheManager {
+object PreviewCacheManager: ICacheManager {
 
     private val PREVIEW_CACHE_FOLDER = "${LCGApp.context.cacheDir}/preview_articles"
     private const val CONFIG_FILE_NAME = "PreviewCacheConfig"
@@ -49,7 +50,7 @@ object PreviewCacheManager {
     /**
      * 清楚磁盘缓存
      */
-    suspend fun clearAllCaches() {
+    override suspend fun clearAllCaches() = withContext(IOPool) {
         if (checkShouldCache()) {
             File(PREVIEW_CACHE_FOLDER).deleteRecursively()
         }

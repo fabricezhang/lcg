@@ -1,16 +1,30 @@
 package top.easelink.lcg.ui.main.discover.source
 
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.jsoup.nodes.Document
+import top.easelink.framework.threadpool.BackGroundPool
+import top.easelink.lcg.cache.HotTopicCacheManager
 import top.easelink.lcg.network.JsoupClient
 import top.easelink.lcg.ui.main.discover.model.RankListModel
 import top.easelink.lcg.ui.main.discover.model.RankModel
 import top.easelink.lcg.utils.WebsiteConstant.RANK_QUERY
 
 
-fun fetchRank(type: RankType, dateType: DateType): RankListModel {
-    return parseRankModelInfo(
-        JsoupClient.sendGetRequestWithQuery(RANK_QUERY.format(type.value, dateType.value)), type
-    )
+fun fetchRank(rankType: RankType, dateType: DateType): RankListModel {
+    var doc = HotTopicCacheManager.findTodayHotTopic(rankType = rankType.value, dateType = dateType.value)
+    if (doc == null) {
+        doc = JsoupClient.sendGetRequestWithQuery(RANK_QUERY.format(rankType.value, dateType.value))
+        GlobalScope.launch(BackGroundPool) {
+            HotTopicCacheManager.saveToDisk(
+                rankType = rankType.value,
+                dateType = dateType.value,
+                timeStamp = System.currentTimeMillis(),
+                content = doc.html()
+            )
+        }
+    }
+    return parseRankModelInfo(doc, rankType)
 }
 
 fun parseRankModelInfo(document: Document, rankType: RankType): RankListModel {

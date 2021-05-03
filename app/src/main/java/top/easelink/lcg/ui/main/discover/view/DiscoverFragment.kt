@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.drakeet.multitype.MultiTypeAdapter
 import kotlinx.android.synthetic.main.fragment_discover.*
+import kotlinx.coroutines.launch
+import top.easelink.framework.threadpool.IOPool
 import top.easelink.framework.topbase.ControllableFragment
 import top.easelink.framework.topbase.TopFragment
 import top.easelink.lcg.R
@@ -49,7 +51,9 @@ class DiscoverFragment : TopFragment(), ControllableFragment {
 
     private fun setUp() {
         setUpRV()
-        mViewModel.initOptions(mContext)
+        launch(IOPool) {
+            mViewModel.initOptions(mContext)
+        }
     }
 
     private fun setUpRV() {
