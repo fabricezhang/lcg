@@ -14,8 +14,8 @@ import top.easelink.framework.customview.htmltextview.HtmlCoilImageGetter
 import top.easelink.framework.topbase.TopDialog
 import top.easelink.framework.utils.dpToPx
 import top.easelink.lcg.R
-import top.easelink.lcg.appinit.LCGApp
 import top.easelink.lcg.ui.main.article.viewmodel.PostPreviewViewModel
+import top.easelink.lcg.utils.getScreenHeightDp
 import top.easelink.lcg.utils.getScreenWidthDp
 
 class PostPreviewDialog : TopDialog() {
@@ -100,10 +100,9 @@ class PostPreviewDialog : TopDialog() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         dialog?.window?.attributes?.apply {
-            width = (getScreenWidthDp(this@PostPreviewDialog.mContext)
-                .dpToPx(this@PostPreviewDialog.mContext) * 0.95)
-                .toInt()
-            height = 400.dpToPx(LCGApp.context).toInt()
+            val context = this@PostPreviewDialog.mContext
+            width = (getScreenWidthDp(context).dpToPx(context) * 0.95).toInt()
+            height = (getScreenHeightDp(context).dpToPx(context) * 0.75).toInt()
             gravity = Gravity.CENTER
         }
     }
