@@ -87,7 +87,13 @@ class ArticleViewModel : ViewModel(), ArticleAdapterListener {
                 }
             } catch (e: Exception) {
                 when (e) {
-                    is BlockException -> setArticleBlocked(e.alertMessage)
+                    is BlockException -> {
+                        if (posts.value?.isNotEmpty() == true) {
+                            showMessage(e.alertMessage)
+                        } else {
+                            setArticleBlocked(e.alertMessage)
+                        }
+                    }
                     is NetworkException -> setArticleNotFound()
                     is IOException -> showMessage(R.string.io_error_mark_invalid)
                     else -> showMessage(R.string.error)

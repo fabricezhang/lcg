@@ -29,6 +29,7 @@ class LCGApp : Application() {
         BuglyInitialization.init(this)
         UmengInitialization.init(this)
         trySignIn()
+        CacheCleanerTask.clearCachesIfNeeded()
     }
 
     private fun trySignIn() = GlobalScope.launch(BackGroundPool) {
