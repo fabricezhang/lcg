@@ -1,10 +1,11 @@
 package top.easelink.lcg.ui.main.discover.viewmodel
 
 import android.content.Context
+import androidx.annotation.MainThread
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.ensureActive
-import kotlinx.coroutines.withContext
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 import top.easelink.framework.threadpool.IOPool
 import top.easelink.lcg.R
 import top.easelink.lcg.ui.main.discover.model.DiscoverModel
@@ -19,12 +20,12 @@ import java.net.SocketTimeoutException
 class DiscoverViewModel : ViewModel() {
     val aggregationModels = MutableLiveData<MutableList<DiscoverModel>>()
 
-    suspend fun initOptions(context: Context) {
-        aggregationModels.postValue(mutableListOf(ForumListModel(generateAllForums(context))))
-        withContext(IOPool) {
+    @MainThread
+    fun initOptions(context: Context) {
+        aggregationModels.value = mutableListOf(ForumListModel(generateAllForums(context)))
+        viewModelScope.launch(IOPool) {
             runCatching {
                 fetchRank(RankType.HEAT, DateType.TODAY).let { ranks ->
-                    ensureActive()
                     aggregationModels.value?.let {
                         it.add(ranks)
                         aggregationModels.postValue(it)
