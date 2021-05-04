@@ -24,7 +24,7 @@ class LoginHintFragment : TopFragment() {
         super.onViewCreated(view, savedInstanceState)
         login_hint_instruction.setHtml(R.raw.login_instruction)
         login_hint_btn.setOnClickListener {
-            WebViewActivity.openLoginPage(context)
+            WebViewActivity.openLoginPage(mContext)
         }
         message_animation.setOnClickListener {
             message_animation.playAnimation()

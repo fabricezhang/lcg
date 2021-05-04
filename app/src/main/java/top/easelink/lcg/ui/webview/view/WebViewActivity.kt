@@ -1,425 +1,386 @@
-package top.easelink.lcg.ui.webview.view;
+package top.easelink.lcg.ui.webview.view
 
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.content.res.Configuration;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Animatable;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
-import android.net.http.SslError;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.webkit.CookieManager;
-import android.webkit.JavascriptInterface;
-import android.webkit.SslErrorHandler;
-import android.webkit.WebChromeClient;
-import android.webkit.WebResourceRequest;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
-import android.widget.FrameLayout;
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
+import android.content.pm.ActivityInfo
+import android.content.res.Configuration
+import android.graphics.Bitmap
+import android.graphics.drawable.Animatable
+import android.net.Uri
+import android.net.http.SslError
+import android.os.Bundle
+import android.text.TextUtils
+import android.view.*
+import android.webkit.*
+import android.widget.FrameLayout
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.core.app.ShareCompat
+import com.airbnb.lottie.LottieAnimationView
+import kotlinx.coroutines.*
+import org.jsoup.Jsoup
+import timber.log.Timber
+import top.easelink.framework.customview.webview.HorizontalScrollDisableWebView
+import top.easelink.framework.threadpool.CalcPool
+import top.easelink.framework.threadpool.IOPool
+import top.easelink.framework.threadpool.Main
+import top.easelink.lcg.R
+import top.easelink.lcg.account.AccountManager.isLoggedIn
+import top.easelink.lcg.account.UserDataRepo.updateUserInfo
+import top.easelink.lcg.appinit.LCGApp
+import top.easelink.lcg.event.EVENT_SHARE_ARTICLE_URL
+import top.easelink.lcg.event.sendSingleEvent
+import top.easelink.lcg.service.web.HookInterface
+import top.easelink.lcg.ui.main.me.source.UserInfoRepo.requestUserInfo
+import top.easelink.lcg.ui.main.view.MainActivity
+import top.easelink.lcg.ui.webview.FORCE_ENABLE_JS_KEY
+import top.easelink.lcg.ui.webview.OPEN_LOGIN_PAGE
+import top.easelink.lcg.ui.webview.TITLE_KEY
+import top.easelink.lcg.utils.WebsiteConstant.EXTRA_TABLE_HTML
+import top.easelink.lcg.utils.WebsiteConstant.LOGIN_QUERY
+import top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL
+import top.easelink.lcg.utils.WebsiteConstant.URL_KEY
+import top.easelink.lcg.utils.showMessage
+import top.easelink.lcg.utils.updateCookies
+import kotlin.coroutines.CoroutineContext
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ShareCompat;
+class WebViewActivity : AppCompatActivity(), CoroutineScope {
 
-import com.airbnb.lottie.LottieAnimationView;
+    private lateinit var mWebView: WebView
+    private lateinit var animationView: LottieAnimationView
+    private lateinit var videoLayout: FrameLayout
 
-import org.jetbrains.annotations.NotNull;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Element;
+    private var mUrl: String? = null
+    private var mHtml: String? = null
+    private var mForceEnableJs = true
+    private var isOpenLoginEvent = false
 
-import java.util.Objects;
-
-import timber.log.Timber;
-import top.easelink.framework.customview.webview.HorizontalScrollDisableWebView;
-import top.easelink.framework.threadpool.ELThreadPoolProvider;
-import top.easelink.lcg.R;
-import top.easelink.lcg.account.AccountManager;
-import top.easelink.lcg.account.UserDataRepo;
-import top.easelink.lcg.account.UserInfo;
-import top.easelink.lcg.appinit.LCGApp;
-import top.easelink.lcg.event.EventHelperKt;
-import top.easelink.lcg.service.web.HookInterface;
-import top.easelink.lcg.ui.main.me.source.UserInfoRepo;
-import top.easelink.lcg.ui.main.view.MainActivity;
-import top.easelink.lcg.utils.ToastUtilsKt;
-
-import static top.easelink.lcg.event.EventConstantKt.EVENT_SHARE_ARTICLE_URL;
-import static top.easelink.lcg.ui.webview.WebViewConstantsKt.FORCE_ENABLE_JS_KEY;
-import static top.easelink.lcg.ui.webview.WebViewConstantsKt.OPEN_LOGIN_PAGE;
-import static top.easelink.lcg.ui.webview.WebViewConstantsKt.TITLE_KEY;
-import static top.easelink.lcg.utils.CookieUtilsKt.setCookies;
-import static top.easelink.lcg.utils.WebsiteConstant.EXTRA_TABLE_HTML;
-import static top.easelink.lcg.utils.WebsiteConstant.LOGIN_QUERY;
-import static top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL;
-import static top.easelink.lcg.utils.WebsiteConstant.URL_KEY;
-
-public class WebViewActivity extends AppCompatActivity {
-
-    private static final String HOOK_NAME = "hook";
-    protected String mUrl;
-    protected String mHtml;
-    private boolean mForceEnableJs = true;
-    private boolean isOpenLoginEvent = false;
-    private WebView mWebView;
-    private LottieAnimationView animationView;
-    private FrameLayout videoLayout;
-
-    public static void startWebViewWith(String url, Context context) {
-        Intent intent = new Intent(context, WebViewActivity.class);
-        intent.putExtra(URL_KEY, url);
-        intent.putExtra(FORCE_ENABLE_JS_KEY, true);
-        context = context == null ? LCGApp.getContext() : context;
-        context.startActivity(intent);
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        initData()
+        initContentView()
+        initActionBar()
+        initWebView()
     }
 
-    public static void startWebViewWithHtml(String html, Context context) {
-        context = context == null ? LCGApp.getContext() : context;
-        Intent intent = new Intent(context, WebViewActivity.class);
-        intent.putExtra(EXTRA_TABLE_HTML, html);
-        context.startActivity(intent);
-    }
-
-    public static void openLoginPage(Context context) {
-        Intent intent = new Intent(context, WebViewActivity.class);
-        intent.putExtra(URL_KEY, SERVER_BASE_URL + LOGIN_QUERY);
-        intent.putExtra(FORCE_ENABLE_JS_KEY, true);
-        intent.putExtra(OPEN_LOGIN_PAGE, true);
-        context = context == null ? LCGApp.getContext() : context;
-        context.startActivity(intent);
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        initData();
-        initContentView();
-        initActionBar();
-        initWebView();
-    }
-
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        if (Intent.ACTION_VIEW.equals(intent.getAction()) && intent.getData() != null) {
-            String url = intent.getData().toString();
-            mWebView.loadUrl(url);
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        if (Intent.ACTION_VIEW == intent.action && intent.data != null) {
+            val url = intent.data.toString()
+            mWebView.loadUrl(url)
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
+    override fun onDestroy() {
+        super.onDestroy()
         // safe remove webview refers : https://stackoverflow.com/questions/5267639/how-to-safely-turn-webview-zooming-on-and-off-as-needed
-        if (mWebView != null && mWebView.getParent() != null) {
-            ((ViewGroup) mWebView.getParent()).removeView(mWebView);
-            mWebView.destroy();
-            mWebView = null;
+        (mWebView.parent as? ViewGroup)?.removeView(mWebView)
+        mWebView.destroy()
+    }
+
+    private fun initContentView() {
+        setContentView(R.layout.activity_web_view)
+        mWebView = findViewById(R.id.web_view)
+        animationView = findViewById(R.id.searching_file)
+        videoLayout = findViewById(R.id.container)
+    }
+
+    private fun openInSystemBrowser(url: String) {
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.addCategory(Intent.CATEGORY_BROWSABLE)
+        intent.data = Uri.parse(url)
+        startActivity(intent)
+    }
+
+    private fun initWebView() {
+        mWebView.webViewClient = webViewClient
+        mWebView.webChromeClient = InnerChromeClient()
+        mWebView.setDownloadListener { url: String, _: String?, _: String?, _: String?, _: Long ->
+            openInSystemBrowser(url)
         }
-    }
-
-    protected void initContentView() {
-        setContentView(R.layout.activity_web_view);
-        mWebView = findViewById(R.id.web_view);
-        animationView = findViewById(R.id.searching_file);
-        videoLayout = findViewById(R.id.container);
-    }
-
-    private void openInSystemBrowser(String url) {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.addCategory(Intent.CATEGORY_BROWSABLE);
-        intent.setData(Uri.parse(url));
-        startActivity(intent);
-    }
-
-    protected void initWebView() {
-        mWebView.setWebViewClient(getWebViewClient());
-        mWebView.setWebChromeClient(new InnerChromeClient());
-        mWebView.setDownloadListener((url, userAgent, contentDisposition, mimetype, contentLength)
-                -> openInSystemBrowser(url));
-        Intent intent = getIntent();
+        val intent = intent
         // load url from intent data
-        isOpenLoginEvent = getIntent().getBooleanExtra(OPEN_LOGIN_PAGE, false);
-        mForceEnableJs = intent.getBooleanExtra(FORCE_ENABLE_JS_KEY, false);
+        isOpenLoginEvent = getIntent().getBooleanExtra(OPEN_LOGIN_PAGE, false)
+        mForceEnableJs = intent.getBooleanExtra(FORCE_ENABLE_JS_KEY, false)
         if (!TextUtils.isEmpty(mUrl)) {
-            updateWebViewSettingsRemote();
+            updateWebViewSettingsRemote()
             if (isOpenLoginEvent) {
-                mWebView.removeJavascriptInterface(HOOK_NAME);
-                mWebView.addJavascriptInterface(new HookInterface() {
-                    @Override
-                    @JavascriptInterface
-                    public void processHtml(String html) {
-                        try {
-                            Element element = Jsoup.parse(html).selectFirst("div.avt");
-                            if (element != null) {
-                                AccountManager.INSTANCE.isLoggedIn().postValue(true);
-                                mWebView.postDelayed(() -> {
-                                    ToastUtilsKt.showMessage(R.string.login_successfully);
-                                    try {
-                                        // hold on 1 seconds to wait for saving user info
-                                        Thread.sleep(1_000);
-                                        startActivity(new Intent(mWebView.getContext(), MainActivity.class));
-                                        finish();
-                                    } catch (Exception ignored) {
-                                    }
-                                }, 300);
-                                ELThreadPoolProvider.INSTANCE.getIO_EXECUTOR().execute(() -> {
-                                    try {
-                                        UserInfo userInfo = UserInfoRepo.INSTANCE.requestUserInfo();
-                                        UserDataRepo.INSTANCE.updateUserInfo(
-                                                userInfo == null ? UserInfo.Companion.getDefaultUserInfo(): userInfo
-                                        );
-                                    } catch (Exception e) {
-                                        Timber.e(e);
-                                    }
-                                });
-                            }
-                        } catch (Exception e) {
-                            Timber.w(html);
-                        }
-                    }
-                }, HOOK_NAME);
-
+                mWebView.removeJavascriptInterface(HOOK_NAME)
+                mWebView.addJavascriptInterface(WebViewHook(), HOOK_NAME)
             }
-            mWebView.loadUrl(mUrl);
+            mWebView.loadUrl(mUrl)
         } else if (!TextUtils.isEmpty(mHtml)) {
-            updateWebViewSettingsLocal();
-            mWebView.loadDataWithBaseURL("", mHtml, "text/html","UTF-8", "");
+            updateWebViewSettingsLocal()
+            mWebView.loadDataWithBaseURL("", mHtml, "text/html", "UTF-8", "")
         }
     }
 
-    protected void initData() {
-        Intent intent = getIntent();
-        Uri uri = intent.getData();
-        if (uri != null && Objects.equals(uri.getScheme(), "lcg")) {
-            mUrl = uri.toString().replace("lcg:", SERVER_BASE_URL);
-            return;
-        }
-        mUrl = intent.getStringExtra(URL_KEY);
-        if (TextUtils.isEmpty(mUrl) && uri != null) {
-            mUrl = uri.toString();
-        }
-
-        mHtml = intent.getStringExtra(EXTRA_TABLE_HTML);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        menu.clear();
-        getMenuInflater().inflate(R.menu.webview, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        Drawable drawable = item.getIcon();
-        if (drawable instanceof Animatable) {
-            ((Animatable) drawable).start();
-        }
-        switch (item.getItemId()) {
-            case R.id.action_share:
-                EventHelperKt.sendSingleEvent(EVENT_SHARE_ARTICLE_URL);
-                Intent shareIntent = getShareIntent();
-                startActivity(shareIntent);
-                return true;
-            case R.id.action_open_in_webview:
-                String url = mWebView.getUrl();
-                if (url != null) {
-                    openInSystemBrowser(url);
-                } else {
-                    ToastUtilsKt.showMessage(R.string.general_error);
+    inner class WebViewHook: HookInterface {
+        @JavascriptInterface
+        override fun processHtml(html: String?) {
+            if (html.isNullOrBlank()) return
+            launch(CalcPool) {
+                val doc = Jsoup.parse(html)
+                doc.selectFirst("div.avt") ?: return@launch
+                isLoggedIn.postValue(true)
+                doc.getElementById("messagetext")?.text()?.let {
+                    showMessage(it)
+                } ?: showMessage(R.string.login_successfully)
+                delay(1000)
+                withContext(IOPool) {
+                    requestUserInfo()?.let(::updateUserInfo)
                 }
-                return true;
-            case android.R.id.home:
-                finish();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    private Intent getShareIntent() {
-        return ShareCompat.IntentBuilder.from(this)
-                .setText(getString(R.string.share_template, mWebView.getTitle(), mWebView.getUrl()))
-                .setSubject(mWebView.getTitle())
-                .setChooserTitle(getString(R.string.share_title))
-                .setType("text/plain")
-                .createChooserIntent();
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (mWebView.canGoBack()) {
-            mWebView.goBack();
-        } else {
-            finish();
-        }
-    }
-
-    protected void initActionBar() {
-        Toolbar toolbar = findViewById(R.id.web_view_toolbar);
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setHomeButtonEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-            int title = getIntent().getIntExtra(TITLE_KEY, 0);
-            if (title != 0) {
-                getSupportActionBar().setTitle(title);
+                launch(Main) {
+                    startActivity(Intent(mWebView.context, MainActivity::class.java))
+                    finish()
+                }
             }
         }
     }
 
-    @Override
-    public void onConfigurationChanged(@NotNull Configuration config) {
-        super.onConfigurationChanged(config);
-        switch (config.orientation) {
-            case Configuration.ORIENTATION_LANDSCAPE:
-                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-                getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-                break;
-            case Configuration.ORIENTATION_PORTRAIT:
-                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-                getWindow().addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-                break;
+    private fun initData() {
+        val intent = intent
+        val uri = intent.data
+        if (uri != null && uri.scheme == "lcg") {
+            mUrl = uri.toString().replace("lcg:", SERVER_BASE_URL)
+            return
+        }
+        mUrl = intent.getStringExtra(URL_KEY)
+        if (TextUtils.isEmpty(mUrl) && uri != null) {
+            mUrl = uri.toString()
+        }
+        mHtml = intent.getStringExtra(EXTRA_TABLE_HTML)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        super.onCreateOptionsMenu(menu)
+        menu.clear()
+        menuInflater.inflate(R.menu.webview, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val drawable = item.icon
+        if (drawable is Animatable) {
+            (drawable as Animatable).start()
+        }
+        when (item.itemId) {
+            R.id.action_share -> {
+                sendSingleEvent(EVENT_SHARE_ARTICLE_URL)
+                val shareIntent = shareIntent
+                startActivity(shareIntent)
+                return true
+            }
+            R.id.action_open_in_webview -> {
+                val url = mWebView.url
+                if (url != null) {
+                    openInSystemBrowser(url)
+                } else {
+                    showMessage(R.string.general_error)
+                }
+                return true
+            }
+            android.R.id.home -> {
+                finish()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private val shareIntent: Intent
+        get() = ShareCompat.IntentBuilder.from(this)
+            .setText(getString(R.string.share_template, mWebView.title, mWebView.url))
+            .setSubject(mWebView.title)
+            .setChooserTitle(getString(R.string.share_title))
+            .setType("text/plain")
+            .createChooserIntent()
+
+    override fun onBackPressed() {
+        if (mWebView.canGoBack()) {
+            mWebView.goBack()
+        } else {
+            finish()
         }
     }
 
-    protected WebViewClient getWebViewClient() {
-        return new InnerWebViewClient();
+    private fun initActionBar() {
+        val toolbar = findViewById<Toolbar>(R.id.web_view_toolbar)
+        setSupportActionBar(toolbar)
+        if (supportActionBar != null) {
+            supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+            supportActionBar!!.setHomeButtonEnabled(true)
+            supportActionBar!!.setDisplayShowHomeEnabled(true)
+            val title = intent.getIntExtra(TITLE_KEY, 0)
+            if (title != 0) {
+                supportActionBar!!.setTitle(title)
+            }
+        }
     }
 
-    protected void setLoading(boolean isLoading) {
-        animationView.setVisibility(isLoading ? View.VISIBLE : View.GONE);
-        mWebView.setVisibility(isLoading ? View.INVISIBLE : View.VISIBLE);
+    override fun onConfigurationChanged(config: Configuration) {
+        super.onConfigurationChanged(config)
+        when (config.orientation) {
+            Configuration.ORIENTATION_LANDSCAPE -> {
+                window.clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN)
+                window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+            }
+            Configuration.ORIENTATION_PORTRAIT -> {
+                window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+                window.addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN)
+            }
+        }
+    }
+
+    private val webViewClient: WebViewClient
+        get() = InnerWebViewClient()
+
+    private fun setLoading(isLoading: Boolean) {
+        animationView.visibility = if (isLoading) View.VISIBLE else View.GONE
+        mWebView.visibility = if (isLoading) View.INVISIBLE else View.VISIBLE
     }
 
     @SuppressLint("SetJavaScriptEnabled")
-    private void updateWebViewSettingsLocal() {
-        WebSettings settings = mWebView.getSettings();
-        if (mWebView instanceof HorizontalScrollDisableWebView) {
-            ((HorizontalScrollDisableWebView) mWebView).setScrollEnable(true);
+    private fun updateWebViewSettingsLocal() {
+        val settings = mWebView.settings
+        if (mWebView is HorizontalScrollDisableWebView) {
+            (mWebView as HorizontalScrollDisableWebView).setScrollEnable(true)
         }
-        settings.setJavaScriptEnabled(mForceEnableJs);
+        settings.javaScriptEnabled = mForceEnableJs
         // Zoom Setting
-        settings.setSupportZoom(true);
-        settings.setBuiltInZoomControls(true);
-        settings.setDisplayZoomControls(false);
-
-        settings.setBlockNetworkImage(false);
-        settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
-        settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
-        settings.setDefaultTextEncodingName("UTF-8");
-        settings.setBuiltInZoomControls(true);
-        settings.setAppCacheEnabled(true);
-        settings.setSupportZoom(true);
-        settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+        settings.setSupportZoom(true)
+        settings.builtInZoomControls = true
+        settings.displayZoomControls = false
+        settings.blockNetworkImage = false
+        settings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
+        settings.layoutAlgorithm = WebSettings.LayoutAlgorithm.SINGLE_COLUMN
+        settings.defaultTextEncodingName = "UTF-8"
+        settings.builtInZoomControls = true
+        settings.setAppCacheEnabled(true)
+        settings.setSupportZoom(true)
+        settings.cacheMode = WebSettings.LOAD_NO_CACHE
     }
 
     @SuppressLint("SetJavaScriptEnabled")
-    private void updateWebViewSettingsRemote() {
-        WebSettings settings = mWebView.getSettings();
-        settings.setJavaScriptEnabled(mForceEnableJs);
-        settings.setDomStorageEnabled(true);
-        settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
-        settings.setUseWideViewPort(true);
-        settings.setLoadWithOverviewMode(true);
-        settings.setDefaultTextEncodingName("UTF-8");
-        settings.setBuiltInZoomControls(false);
-        settings.setAppCacheEnabled(true);
-        settings.setSupportZoom(false);
-        settings.setCacheMode(WebSettings.LOAD_DEFAULT);
-        settings.setBlockNetworkImage(true);
+    private fun updateWebViewSettingsRemote() {
+        val settings = mWebView.settings
+        settings.javaScriptEnabled = mForceEnableJs
+        settings.domStorageEnabled = true
+        settings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
+        settings.useWideViewPort = true
+        settings.loadWithOverviewMode = true
+        settings.defaultTextEncodingName = "UTF-8"
+        settings.builtInZoomControls = false
+        settings.setAppCacheEnabled(true)
+        settings.setSupportZoom(false)
+        settings.cacheMode = WebSettings.LOAD_DEFAULT
+        settings.blockNetworkImage = true
     }
 
-    @SuppressLint("SourceLockedOrientationActivity")
-    private class InnerChromeClient extends WebChromeClient {
-        private CustomViewCallback mCustomViewCallback;
-        //  横屏时，显示视频的view
-        private View mCustomView;
+    private inner class InnerChromeClient : WebChromeClient() {
+        private var mCustomViewCallback: CustomViewCallback? = null
 
-        @Override
-        public void onShowCustomView(View view, CustomViewCallback callback) {
-            super.onShowCustomView(view, callback);
+        //  横屏时，显示视频的view
+        private var mCustomView: View? = null
+
+        override fun onShowCustomView(view: View, callback: CustomViewCallback) {
+            super.onShowCustomView(view, callback)
             //如果view 已经存在，则隐藏
             if (mCustomView != null) {
-                callback.onCustomViewHidden();
-                return;
+                callback.onCustomViewHidden()
+                return
             }
-            mCustomView = view;
-            mCustomView.setVisibility(View.VISIBLE);
-            mCustomViewCallback = callback;
-            videoLayout.addView(mCustomView);
-            videoLayout.bringToFront();
+            mCustomView = view
+            view.visibility = View.VISIBLE
+            mCustomViewCallback = callback
+            videoLayout.addView(view)
+            videoLayout.bringToFront()
 
             //设置横屏
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
         }
 
-        @Override
-        public void onHideCustomView() {
-            super.onHideCustomView();
-            if (mCustomView == null) {
-                return;
-            }
-            mCustomView.setVisibility(View.GONE);
-            videoLayout.removeView(mCustomView);
-            mCustomView = null;
+        override fun onHideCustomView() {
+            super.onHideCustomView()
+            if (mCustomView == null) return
+            mCustomView?.visibility = View.GONE
+            videoLayout.removeView(mCustomView)
+            mCustomView = null
             try {
-                mCustomViewCallback.onCustomViewHidden();
-            } catch (Exception ignored) {
+                mCustomViewCallback?.onCustomViewHidden()
+            } catch (ignored: Exception) {
             }
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//竖屏
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT //竖屏
         }
     }
 
-    private class InnerWebViewClient extends WebViewClient {
-
-        @Override
-        public void onPageCommitVisible(WebView view, String url) {
-            super.onPageCommitVisible(view, url);
-            setLoading(false);
+    private inner class InnerWebViewClient : WebViewClient() {
+        override fun onPageCommitVisible(view: WebView, url: String) {
+            super.onPageCommitVisible(view, url)
+            setLoading(false)
+            CookieManager.getInstance().getCookie(url)?.let {
+                updateCookies(it, isOpenLoginEvent)
+            }
             if (isOpenLoginEvent) {
-                view.loadUrl("javascript:" + HOOK_NAME + ".processHtml(document.documentElement.outerHTML);");
+                view.loadUrl("javascript:$HOOK_NAME.processHtml(document.documentElement.outerHTML);")
             }
-            setCookies(CookieManager.getInstance().getCookie(url));
-            view.getSettings().setBlockNetworkImage(false);
+            view.settings.blockNetworkImage = false
         }
 
-        @Override
-        public void onPageStarted(WebView view, String url, Bitmap favicon) {
-            super.onPageStarted(view, url, favicon);
-            view.getSettings().setBlockNetworkImage(true);
-            setLoading(true);
+        override fun onPageStarted(view: WebView, url: String?, favicon: Bitmap?) {
+            super.onPageStarted(view, url, favicon)
+            view.settings.blockNetworkImage = true
+            setLoading(true)
         }
 
-        @Override
-        public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-            handler.proceed();
+        override fun onReceivedSslError(view: WebView, handler: SslErrorHandler, error: SslError) {
+            handler.proceed()
         }
 
-        @Override
-        public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-            String url = request.getUrl().toString();
-            if (TextUtils.isEmpty(url)) {
-                return false;
-            } else if (url.startsWith("wtloginmqq://ptlogin/qlogin")) {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
-                return true;
-            } else if (url.startsWith("bdnetdisk")) {
-                ToastUtilsKt.showMessage(R.string.baidu_net_disk_not_support);
+        override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
+            val url = request.url.toString()
+            when {
+                TextUtils.isEmpty(url) -> return false
+                url.startsWith("wtloginmqq://ptlogin/qlogin") -> {
+                    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+                    return true
+                }
+                url.startsWith("bdnetdisk") -> {
+                    showMessage(R.string.baidu_net_disk_not_support)
+                }
             }
-            return false;
+            return false
         }
     }
+
+    companion object {
+        private const val HOOK_NAME = "hook"
+        fun startWebViewWith(url: String, context: Context?) {
+            val intent = Intent(context, WebViewActivity::class.java)
+            intent.putExtra(URL_KEY, url)
+            intent.putExtra(FORCE_ENABLE_JS_KEY, true)
+            val c = context ?: LCGApp.context
+            c.startActivity(intent)
+        }
+
+        fun startWebViewWithHtml(html: String, context: Context) {
+            val intent = Intent(context, WebViewActivity::class.java)
+            intent.putExtra(EXTRA_TABLE_HTML, html)
+            context.startActivity(intent)
+        }
+
+        fun openLoginPage(context: Context) {
+            val intent = Intent(context, WebViewActivity::class.java)
+            intent.putExtra(URL_KEY, SERVER_BASE_URL + LOGIN_QUERY)
+            intent.putExtra(FORCE_ENABLE_JS_KEY, true)
+            intent.putExtra(OPEN_LOGIN_PAGE, true)
+            context.startActivity(intent)
+        }
+    }
+
+    override val coroutineContext: CoroutineContext
+        get() = SupervisorJob() + CoroutineExceptionHandler { _, throwable ->
+            Timber.e(throwable)
+        }
 }

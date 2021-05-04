@@ -77,6 +77,18 @@ public class SharedPreferencesHelper {
         spEditor.apply();
     }
 
+    //批量put数据
+    public static void commitPreferenceWithList(SharedPreferences sp, List<SpItem> spItemList) {
+        if (sp == null || spItemList == null || spItemList.isEmpty()) {
+            return;
+        }
+        SharedPreferences.Editor spEditor = sp.edit();
+        for (SpItem item : spItemList) {
+            setSpItem(spEditor, item);
+        }
+        spEditor.commit();
+    }
+
     public static void setPreference(SharedPreferences sp, String key, long value) {
         sp.edit().putLong(key, value).apply();
     }

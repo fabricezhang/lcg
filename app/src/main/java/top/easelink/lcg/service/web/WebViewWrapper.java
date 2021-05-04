@@ -14,7 +14,7 @@ import android.webkit.WebViewClient;
 import timber.log.Timber;
 import top.easelink.lcg.appinit.LCGApp;
 
-import static top.easelink.lcg.utils.CookieUtilsKt.setCookies;
+import static top.easelink.lcg.utils.CookieUtilsKt.updateCookies;
 
 /**
  * author : junzhang
@@ -101,7 +101,9 @@ public class WebViewWrapper {
             CookieManager cookieManager = CookieManager.getInstance();
             String cookieUrl = cookieManager.getCookie(url);
             Timber.i("Cookie : %s", cookieUrl);
-            setCookies(cookieUrl);
+            if (cookieUrl != null) {
+                updateCookies(cookieUrl, false);
+            }
             view.loadUrl("javascript:" + HOOK_NAME + ".processHtml(document.documentElement.outerHTML);");
             super.onPageFinished(view, url);
         }
