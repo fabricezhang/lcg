@@ -39,6 +39,7 @@ import top.easelink.lcg.ui.webview.OPEN_LOGIN_PAGE
 import top.easelink.lcg.ui.webview.TITLE_KEY
 import top.easelink.lcg.utils.WebsiteConstant.EXTRA_TABLE_HTML
 import top.easelink.lcg.utils.WebsiteConstant.LOGIN_QUERY
+import top.easelink.lcg.utils.WebsiteConstant.QQ_LOGIN_URL
 import top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL
 import top.easelink.lcg.utils.WebsiteConstant.URL_KEY
 import top.easelink.lcg.utils.showMessage
@@ -373,6 +374,14 @@ class WebViewActivity : AppCompatActivity(), CoroutineScope {
         fun openLoginPage(context: Context) {
             val intent = Intent(context, WebViewActivity::class.java)
             intent.putExtra(URL_KEY, SERVER_BASE_URL + LOGIN_QUERY)
+            intent.putExtra(FORCE_ENABLE_JS_KEY, true)
+            intent.putExtra(OPEN_LOGIN_PAGE, true)
+            context.startActivity(intent)
+        }
+
+        fun openQQLoginPage(context: Context) {
+            val intent = Intent(context, WebViewActivity::class.java)
+            intent.putExtra(URL_KEY, QQ_LOGIN_URL)
             intent.putExtra(FORCE_ENABLE_JS_KEY, true)
             intent.putExtra(OPEN_LOGIN_PAGE, true)
             context.startActivity(intent)

@@ -63,4 +63,7 @@ object WebsiteConstant {
     // rank
     const val RANK_QUERY = "misc.php?mod=ranklist&type=thread&view=%s&orderby=%s"
 
+    // QQ
+    const val QQ_LOGIN_URL = SERVER_BASE_URL + "connect.php?mod=login&op=init&referer=index.php&statfrom=login_simple"
+
 }

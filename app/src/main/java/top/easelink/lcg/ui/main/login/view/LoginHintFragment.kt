@@ -26,6 +26,9 @@ class LoginHintFragment : TopFragment() {
         login_hint_btn.setOnClickListener {
             WebViewActivity.openLoginPage(mContext)
         }
+        qq_login.setOnClickListener {
+            WebViewActivity.openQQLoginPage(mContext)
+        }
         message_animation.setOnClickListener {
             message_animation.playAnimation()
         }

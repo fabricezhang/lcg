@@ -23,7 +23,7 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/login_hint_btn"
-        android:layout_width="@dimen/dp_60"
+        android:layout_width="@dimen/dp_64"
         android:layout_height="@dimen/dp_30"
         android:textColor="@color/white"
         android:layout_marginTop="@dimen/dp_10"
@@ -36,6 +36,19 @@
         app:layout_constraintTop_toBottomOf="@id/login_hint_instruction"
         app:layout_constraintStart_toEndOf="@id/login_cancel_btn"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/qq_login"
+        android:layout_width="@dimen/dp_30"
+        android:layout_height="@dimen/dp_30"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_marginBottom="@dimen/dp_5"
+        app:srcCompat="@drawable/ic_qq"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/login_hint_instruction"
+        app:layout_constraintStart_toEndOf="@id/login_hint_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="@null" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/login_cancel_btn"
