@@ -41,6 +41,7 @@ import java.util.Objects;
 
 import timber.log.Timber;
 import top.easelink.framework.customview.webview.HorizontalScrollDisableWebView;
+import top.easelink.framework.threadpool.ELThreadPoolProvider;
 import top.easelink.lcg.R;
 import top.easelink.lcg.account.AccountManager;
 import top.easelink.lcg.account.UserDataRepo;
@@ -107,6 +108,15 @@ public class WebViewActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if (Intent.ACTION_VIEW.equals(intent.getAction()) && intent.getData() != null) {
+            String url = intent.getData().toString();
+            mWebView.loadUrl(url);
+        }
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
 
@@ -136,7 +146,7 @@ public class WebViewActivity extends AppCompatActivity {
         mWebView.setWebViewClient(getWebViewClient());
         mWebView.setWebChromeClient(new InnerChromeClient());
         mWebView.setDownloadListener((url, userAgent, contentDisposition, mimetype, contentLength)
-            -> openInSystemBrowser(url));
+                -> openInSystemBrowser(url));
         Intent intent = getIntent();
         // load url from intent data
         isOpenLoginEvent = getIntent().getBooleanExtra(OPEN_LOGIN_PAGE, false);
@@ -152,26 +162,27 @@ public class WebViewActivity extends AppCompatActivity {
                         try {
                             Element element = Jsoup.parse(html).selectFirst("div.avt");
                             if (element != null) {
-                                mWebView.post(() -> {
+                                AccountManager.INSTANCE.isLoggedIn().postValue(true);
+                                mWebView.postDelayed(() -> {
                                     ToastUtilsKt.showMessage(R.string.login_successfully);
-                                    AccountManager.INSTANCE.isLoggedIn().postValue(true);
                                     try {
-                                        mWebView.stopLoading();
-                                        // hold on 0.5 seconds to wait for saving user info
-                                        Thread.sleep(500);
+                                        // hold on 1 seconds to wait for saving user info
+                                        Thread.sleep(1_000);
                                         startActivity(new Intent(mWebView.getContext(), MainActivity.class));
                                         finish();
                                     } catch (Exception ignored) {
                                     }
+                                }, 300);
+                                ELThreadPoolProvider.INSTANCE.getIO_EXECUTOR().execute(() -> {
+                                    try {
+                                        UserInfo userInfo = UserInfoRepo.INSTANCE.requestUserInfo();
+                                        UserDataRepo.INSTANCE.updateUserInfo(
+                                                userInfo == null ? UserInfo.Companion.getDefaultUserInfo(): userInfo
+                                        );
+                                    } catch (Exception e) {
+                                        Timber.e(e);
+                                    }
                                 });
-                                try {
-                                    UserInfo userInfo = UserInfoRepo.INSTANCE.requestUserInfo();
-                                    UserDataRepo.INSTANCE.updateUserInfo(
-                                        userInfo == null ? UserInfo.Companion.getDefaultUserInfo(): userInfo
-                                    );
-                                } catch (Exception e) {
-                                    Timber.e(e);
-                                }
                             }
                         } catch (Exception e) {
                             Timber.w(html);
@@ -239,11 +250,11 @@ public class WebViewActivity extends AppCompatActivity {
 
     private Intent getShareIntent() {
         return ShareCompat.IntentBuilder.from(this)
-            .setText(getString(R.string.share_template, mWebView.getTitle(), mWebView.getUrl()))
-            .setSubject(mWebView.getTitle())
-            .setChooserTitle(getString(R.string.share_title))
-            .setType("text/plain")
-            .createChooserIntent();
+                .setText(getString(R.string.share_template, mWebView.getTitle(), mWebView.getUrl()))
+                .setSubject(mWebView.getTitle())
+                .setChooserTitle(getString(R.string.share_title))
+                .setType("text/plain")
+                .createChooserIntent();
     }
 
     @Override
@@ -299,11 +310,7 @@ public class WebViewActivity extends AppCompatActivity {
         if (mWebView instanceof HorizontalScrollDisableWebView) {
             ((HorizontalScrollDisableWebView) mWebView).setScrollEnable(true);
         }
-        if (mForceEnableJs) {
-            settings.setJavaScriptEnabled(true);
-        } else {
-            settings.setJavaScriptEnabled(false);
-        }
+        settings.setJavaScriptEnabled(mForceEnableJs);
         // Zoom Setting
         settings.setSupportZoom(true);
         settings.setBuiltInZoomControls(true);
@@ -322,11 +329,7 @@ public class WebViewActivity extends AppCompatActivity {
     @SuppressLint("SetJavaScriptEnabled")
     private void updateWebViewSettingsRemote() {
         WebSettings settings = mWebView.getSettings();
-        if (mForceEnableJs) {
-            settings.setJavaScriptEnabled(true);
-        } else {
-            settings.setJavaScriptEnabled(false);
-        }
+        settings.setJavaScriptEnabled(mForceEnableJs);
         settings.setDomStorageEnabled(true);
         settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         settings.setUseWideViewPort(true);
@@ -410,12 +413,8 @@ public class WebViewActivity extends AppCompatActivity {
             String url = request.getUrl().toString();
             if (TextUtils.isEmpty(url)) {
                 return false;
-            } else if (url.startsWith("https://www.52pojie.cn/connect.php?mod=login&op=init&referer=https%3A%2F%2Fwww.52pojie.cn%2F&statfrom=login")) {
-                ToastUtilsKt.showMessage(R.string.qq_not_support);
-                return true;
             } else if (url.startsWith("wtloginmqq://ptlogin/qlogin")) {
-                ToastUtilsKt.showMessage(R.string.qq_not_support);
-//                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
                 return true;
             } else if (url.startsWith("bdnetdisk")) {
                 ToastUtilsKt.showMessage(R.string.baidu_net_disk_not_support);
