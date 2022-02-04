@@ -228,25 +228,12 @@
     }
   },
   {
-    "header": "疫情报道",
-    "isHeader": true
-  },
-  {
     "isHeader": false,
     "info": {
-      "page_url": "https://ncov.dxy.cn/ncovh5/view/pneumonia?from=singlemessage&isappinstalled=0",
-      "group": "疫情报道",
-      "title": "丁香医生",
-      "desc": "来自丁香园-丁香医生的疫情实时统计报告"
-    }
-  },
-  {
-    "isHeader": false,
-    "info": {
-      "page_url": "http://news.163.com/special/epidemic/",
-      "group": "疫情报道",
-      "title": "网易新闻",
-      "desc": "来自网易新闻的疫情实时统计报告"
+      "page_url": "forum-48-%d.html",
+      "group": "管理",
+      "title": "『高级会员区』 ",
+      "desc": "限定注册满两年、无违规、热心超过100的会员组：\n初级以上级别的会员、荣誉会员、原创精英、LCG成员、LSG成员、巡查、版主、超级版主和管理员访问【严禁在论坛或外部讨论、泄漏本区内容违者封号处理】"
     }
   }
 ]
