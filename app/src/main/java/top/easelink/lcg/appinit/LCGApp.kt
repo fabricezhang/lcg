@@ -11,6 +11,7 @@ import top.easelink.framework.guard.AppGuardStarter
 import top.easelink.framework.log.ErrorReportTree
 import top.easelink.framework.threadpool.BackGroundPool
 import top.easelink.lcg.BuildConfig
+import top.easelink.lcg.account.UserDataRepo
 import top.easelink.lcg.config.AppConfig
 import top.easelink.lcg.service.work.SignInWorker
 
@@ -29,10 +30,11 @@ class LCGApp : Application() {
         BuglyInitialization.init(this)
         UmengInitialization.init(this)
         trySignIn()
+        CacheCleanerTask.clearCachesIfNeeded()
     }
 
     private fun trySignIn() = GlobalScope.launch(BackGroundPool) {
-        if (AppConfig.autoSignEnable) {
+        if (AppConfig.autoSignEnable && UserDataRepo.isLoggedIn) {
             delay(2000)
             try {
                 SignInWorker.sendSignInRequest()

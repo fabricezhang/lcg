@@ -1,9 +1,10 @@
 package top.easelink.lcg.utils.avatar
 
-import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import androidx.core.content.ContextCompat
 import top.easelink.lcg.R
-import kotlin.random.Random
+import top.easelink.lcg.appinit.LCGApp
+import kotlin.math.abs
 
 private val maleAvatarPool = listOf(
     R.drawable.ic_avatar_m_1,
@@ -14,8 +15,9 @@ private val maleAvatarPool = listOf(
     R.drawable.ic_avatar_m_6
 )
 
-fun getAvatar(): Int {
-    return maleAvatarPool[Random.nextInt(maleAvatarPool.size - 1)]
+fun getDefaultAvatar(url: String): Int {
+    val target = abs(url.hashCode()) % maleAvatarPool.size
+    return maleAvatarPool[target]
 }
 
-val PlaceholderDrawable = ColorDrawable(Color.LTGRAY)
+val PlaceholderDrawable = ColorDrawable(ContextCompat.getColor(LCGApp.context, R.color.slight_light_gray))

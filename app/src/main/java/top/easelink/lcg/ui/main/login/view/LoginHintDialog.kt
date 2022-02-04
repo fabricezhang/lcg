@@ -31,6 +31,10 @@ class LoginHintDialog : TopDialog() {
             WebViewActivity.openLoginPage(mContext)
             dismissDialog()
         }
+        qq_login.setOnClickListener {
+            WebViewActivity.openQQLoginPage(mContext)
+            dismissDialog()
+        }
         login_cancel_btn.setOnClickListener {
             dismissDialog()
         }

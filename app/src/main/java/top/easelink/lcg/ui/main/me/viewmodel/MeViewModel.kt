@@ -10,7 +10,6 @@ import top.easelink.lcg.account.UserDataRepo
 import top.easelink.lcg.account.UserInfo
 import top.easelink.lcg.ui.main.me.source.UserInfoRepo
 import top.easelink.lcg.ui.main.model.AntiScrapingException
-import top.easelink.lcg.utils.clearCookies
 import top.easelink.lcg.utils.showMessage
 import java.net.SocketTimeoutException
 

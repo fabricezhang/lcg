@@ -8,6 +8,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import top.easelink.framework.threadpool.IOPool
 import top.easelink.lcg.R
+import top.easelink.lcg.account.UserDataRepo
 import top.easelink.lcg.config.AppConfig
 import top.easelink.lcg.event.EVENT_ADD_TO_FAVORITE
 import top.easelink.lcg.event.sendSingleEvent
@@ -87,7 +88,13 @@ class ArticleViewModel : ViewModel(), ArticleAdapterListener {
                 }
             } catch (e: Exception) {
                 when (e) {
-                    is BlockException -> setArticleBlocked(e.alertMessage)
+                    is BlockException -> {
+                        if (posts.value?.isNotEmpty() == true) {
+                            showMessage(e.alertMessage)
+                        } else {
+                            setArticleBlocked(e.alertMessage)
+                        }
+                    }
                     is NetworkException -> setArticleNotFound()
                     is IOException -> showMessage(R.string.io_error_mark_invalid)
                     else -> showMessage(R.string.error)
@@ -111,9 +118,11 @@ class ArticleViewModel : ViewModel(), ArticleAdapterListener {
     }
 
     fun extractDownloadUrl(): ArrayList<String>? {
-        val patternLanzous = "https://*lanzou[a-z]{1}.com/[a-zA-Z0-9]{4,10}"
+        val patternLanzous = "https://[a-zA-Z0-9.]{0,20}lanzou[a-z]{1}.com/[a-zA-Z0-9]{4,12}"
         val patternBaidu = "https://pan.baidu.com/s/.{23}"
         val patternT = "http://t.cn/[a-zA-Z0-9]{8}"
+        val pattern189 = "https://cloud.189.cn/t/[a-zA-Z0-9]{4,12}"
+        val patternXunlei = "https://pan.xunlei.com/s/[a-zA-Z0-9_]{1,20}"
         val list: List<Post>? = posts.value
         var resSet: HashSet<String>? = null
         if (list != null && list.isNotEmpty()) {
@@ -121,6 +130,8 @@ class ArticleViewModel : ViewModel(), ArticleAdapterListener {
             resSet = RegexUtils.extractInfoFrom(content, patternLanzous)
             resSet.addAll(RegexUtils.extractInfoFrom(content, patternBaidu))
             resSet.addAll(RegexUtils.extractInfoFrom(content, patternT))
+            resSet.addAll(RegexUtils.extractInfoFrom(content, pattern189))
+            resSet.addAll(RegexUtils.extractInfoFrom(content, patternXunlei))
         }
         return resSet?.let {
             ArrayList(it)
@@ -147,14 +158,14 @@ class ArticleViewModel : ViewModel(), ArticleAdapterListener {
                     content = content,
                     timestamp = System.currentTimeMillis()
                 )
-                if (AppConfig.syncFavorites) {
+                if (AppConfig.syncFavorites && UserDataRepo.isLoggedIn) {
                     if (threadId != null && mFormHash != null) {
                         ArticlesRemoteDataSource.addFavorites(threadId, mFormHash!!).let {
-                            if (it)
-                                showMessage(R.string.sync_favorite_successfully)
-                            else
-                                showMessage(R.string.sync_favorite_failed)
+                            if (it) showMessage(R.string.sync_favorite_successfully)
+                            else showMessage(R.string.sync_favorite_failed)
                         }
+                    } else {
+                        showMessage(R.string.sync_favorite_failed)
                     }
                 }
                 try {

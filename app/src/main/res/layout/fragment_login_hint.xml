@@ -57,5 +57,17 @@
         android:background="@drawable/button_bg"
         android:backgroundTint="@color/pojie_logo" />
 
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/qq_login"
+        android:layout_width="@dimen/dp_30"
+        android:layout_height="@dimen/dp_30"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_marginBottom="@dimen/dp_5"
+        app:srcCompat="@drawable/ic_qq"
+        android:layout_marginStart="@dimen/dp_20"
+        android:layout_below="@id/instruction_card"
+        android:layout_toEndOf="@id/login_hint_btn"
+        android:contentDescription="@null" />
+
 
 </RelativeLayout>

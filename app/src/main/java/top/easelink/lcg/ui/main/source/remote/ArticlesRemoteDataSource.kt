@@ -13,6 +13,7 @@ import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
 import timber.log.Timber
 import top.easelink.framework.threadpool.BackGroundPool
+import top.easelink.lcg.cache.PreviewCacheManager
 import top.easelink.lcg.config.AppConfig
 import top.easelink.lcg.network.JsoupClient
 import top.easelink.lcg.ui.main.model.BlockException
@@ -64,7 +65,12 @@ object ArticlesRemoteDataSource : ArticlesDataSource, FavoritesRemoteDataSource 
     @WorkerThread
     override fun getPostPreview(query: String): PreviewPost? {
         return try {
-            getFirstPost(JsoupClient.sendGetRequestWithQuery(query))
+            val doc = PreviewCacheManager.findDocOrNull(query) ?: let {
+                JsoupClient.sendGetRequestWithQuery(query).also {
+                    PreviewCacheManager.saveToDisk(query, it.html())
+                }
+            }
+            getFirstPost(doc)
         } catch (e: Exception) {
             when (e) {
                 is BlockException,
@@ -94,7 +100,6 @@ object ArticlesRemoteDataSource : ArticlesDataSource, FavoritesRemoteDataSource 
             if (title.isEmpty()) {
                 val message = doc
                     .getElementById("messagetext")
-                    ?.nextElementSibling()
                     ?.text()
                     .orEmpty()
                 throw BlockException(message)
@@ -434,7 +439,6 @@ object ArticlesRemoteDataSource : ArticlesDataSource, FavoritesRemoteDataSource 
             ?: run {
                 val message = document
                     .getElementById("messagetext")
-                    ?.nextElementSibling()
                     ?.text()
                     .orEmpty()
                 throw BlockException(message)

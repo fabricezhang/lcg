@@ -11,15 +11,24 @@ fun getCookies() = SharedPreferencesHelper
     }
 
 
-fun setCookies(cookieUrl: String?) {
-    if (cookieUrl != null) {
-        val cookies = cookieUrl.split(";")
-            .dropLastWhile { it.isEmpty() }
-        val itemList = ArrayList<SharedPreferencesHelper.SpItem<*>>()
-        for (cookie in cookies) {
-            val cookiePair = cookie.split("=".toRegex(), 2).toTypedArray()
-            itemList.add(SharedPreferencesHelper.SpItem<String>(cookiePair[0], cookiePair[1]))
-        }
+/**
+ * 更新cookie
+ * @param commit true -> 同步更新，false -> 异步更新
+ */
+fun updateCookies(cookieUrl: String, commit: Boolean) {
+    val cookies = cookieUrl.split(";")
+        .dropLastWhile { it.isEmpty() }
+    val itemList = ArrayList<SharedPreferencesHelper.SpItem<*>>()
+    for (cookie in cookies) {
+        val cookiePair = cookie.split("=".toRegex(), 2).toTypedArray()
+        itemList.add(SharedPreferencesHelper.SpItem<String>(cookiePair[0], cookiePair[1]))
+    }
+    if (commit) {
+        SharedPreferencesHelper.commitPreferenceWithList(
+            SharedPreferencesHelper.getCookieSp(),
+            itemList
+        )
+    } else {
         SharedPreferencesHelper.setPreferenceWithList(
             SharedPreferencesHelper.getCookieSp(),
             itemList
@@ -27,7 +36,7 @@ fun setCookies(cookieUrl: String?) {
     }
 }
 
-fun setCookies(cookies: Map<String, String>) {
+fun updateCookies(cookies: Map<String, String>) {
     val itemList = ArrayList<SharedPreferencesHelper.SpItem<*>>()
     cookies.keys.forEach {
         itemList.add(SharedPreferencesHelper.SpItem<String>(it, cookies[it]))

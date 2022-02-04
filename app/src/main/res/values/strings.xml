@@ -97,9 +97,10 @@
     <string name="login_password">密码</string>
     <string name="login_verify_code">验证码</string>
     <string name="login_btn">登陆</string>
-    <string name="login_hint_btn">去登陆</string>
+    <string name="login_hint_btn">账号登陆</string>
+    <string name="login_qq">QQ</string>
     <string name="cancel_btn">取消</string>
-    <string name="login_successfully">登陆成功</string>
+    <string name="login_successfully">登陆成功，处理数据中请稍等…</string>
 
     <!--Logout Dialog-->
     <string name="logout_confirm_message">退出账号@%s？</string>

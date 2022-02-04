@@ -14,7 +14,7 @@ import top.easelink.lcg.ui.main.source.checkMessages
 import top.easelink.lcg.ui.main.source.extractFormHash
 import top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL
 import top.easelink.lcg.utils.getCookies
-import top.easelink.lcg.utils.setCookies
+import top.easelink.lcg.utils.updateCookies
 import java.io.IOException
 import java.net.SocketTimeoutException
 import java.security.SecureRandom
@@ -51,7 +51,7 @@ object JsoupClient : ApiRequest {
             .followRedirects(followRedirectsEnable())
             .execute()
             .let {
-                setCookies(it.cookies())
+                updateCookies(it.cookies())
                 it.parse().also { doc ->
                     checkResponse(doc)
                 }
@@ -68,7 +68,7 @@ object JsoupClient : ApiRequest {
             .followRedirects(false)
             .execute()
             .let {
-                setCookies(it.cookies())
+                updateCookies(it.cookies())
                 it.body()
             }
     }
@@ -84,7 +84,7 @@ object JsoupClient : ApiRequest {
             .followRedirects(followRedirectsEnable())
             .execute()
             .let {
-                setCookies(it.cookies())
+                updateCookies(it.cookies())
                 it.parse().also { doc ->
                     checkResponse(doc)
                 }
@@ -107,7 +107,7 @@ object JsoupClient : ApiRequest {
             .method(Connection.Method.POST)
             .execute()
             .also {
-                setCookies(it.cookies())
+                updateCookies(it.cookies())
             }
     }
 

@@ -44,7 +44,7 @@ import top.easelink.lcg.ui.profile.view.ProfileActivity
 import top.easelink.lcg.ui.webview.view.WebViewActivity
 import top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL
 import top.easelink.lcg.utils.avatar.PlaceholderDrawable
-import top.easelink.lcg.utils.avatar.getAvatar
+import top.easelink.lcg.utils.avatar.getDefaultAvatar
 import top.easelink.lcg.utils.copyContent
 import top.easelink.lcg.utils.saveImageToGallery
 import top.easelink.lcg.utils.showMessage
@@ -298,7 +298,7 @@ class ArticleAdapter(
                             crossfade(false)
                             transformations(RoundedCornersTransformation(6.dpToPx(context)))
                             placeholder(PlaceholderDrawable)
-                            error(getAvatar())
+                            error(getDefaultAvatar(p.avatar))
                         }
                         reply_content_text_view.run {
                             if (AppConfig.articleHandlePreTag) {

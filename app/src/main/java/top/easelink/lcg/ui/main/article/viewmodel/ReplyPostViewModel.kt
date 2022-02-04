@@ -12,7 +12,7 @@ import top.easelink.lcg.network.JsoupClient
 import top.easelink.lcg.utils.WebsiteConstant.CHECK_RULE_URL
 import top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL
 import top.easelink.lcg.utils.getCookies
-import top.easelink.lcg.utils.setCookies
+import top.easelink.lcg.utils.updateCookies
 
 class ReplyPostViewModel : ViewModel() {
 
@@ -61,7 +61,7 @@ class ReplyPostViewModel : ViewModel() {
                         .method(Connection.Method.GET)
                         .execute()
                     if (response.statusCode() in 200 until 300) {
-                        setCookies(response.cookies())
+                        updateCookies(response.cookies())
                         val url = "${SERVER_BASE_URL}forum.php?mod=post&infloat=yes&action=reply" +
                                 "&fid=${queryMap["fid"]}&extra=${queryMap["extra"]}&tid=${queryMap["tid"]}&replysubmit=yes&inajax=1"
                         response = Jsoup
@@ -82,7 +82,7 @@ class ReplyPostViewModel : ViewModel() {
                             .postDataCharset("gbk")
                             .method(Connection.Method.POST)
                             .execute()
-                        setCookies(response.cookies())
+                        updateCookies(response.cookies())
                         callback.invoke(response.statusCode() in 200 until 300)
                     } else {
                         Timber.e(response.body())
