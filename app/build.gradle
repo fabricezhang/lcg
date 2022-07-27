@@ -90,10 +90,9 @@ dependencies {
     kapt "androidx.room:room-compiler:$roomVersion"
     implementation project(':framework')
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-
+    // 依赖androidx, 已升级AndroidX的项目集成下面的依赖
+    implementation "com.bytedance.tools.codelocator:codelocator-core:2.0.0"
     debugImplementation "com.amitshekhar.android:debug-db:1.0.4"
-    // test related
-    testImplementation "junit:junit:$rootProject.junitVersion"
 }
 
 apply from: "../andres.gradle"

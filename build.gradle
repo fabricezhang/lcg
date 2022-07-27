@@ -31,7 +31,7 @@ allprojects {
         maven { url 'https://maven.aliyun.com/repository/public' }
         maven { url "https://jitpack.io" }
         google()
-        jcenter()
+        mavenCentral()
         flatDir {
             dirs new File(rootProject.projectDir.getAbsolutePath() + '/libs')
         }
