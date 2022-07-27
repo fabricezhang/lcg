@@ -138,9 +138,9 @@
 
     <style name="AppTab.TextAppearance" parent="TextAppearance.Design.Tab">
         <item name="textAllCaps">false</item>
-        <item name="android:textSize">@dimen/sp_12</item>
+        <item name="android:textSize">@dimen/sp_14</item>
         <item name="android:textAllCaps">false</item>
-        <item name="android:textStyle">normal</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="ReplyEditText" parent="Theme.AppCompat.Light">

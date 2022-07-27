@@ -45,6 +45,7 @@ class RecommendFragment : TopFragment(), ControllableFragment {
     private fun setUp() {
         view_pager.adapter = RecommendViewPagerAdapter(childFragmentManager, activity)
         main_tab.setupWithViewPager(view_pager)
+        main_tab.selectTab(main_tab.getTabAt(2))
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
