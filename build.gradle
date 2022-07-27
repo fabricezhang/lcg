@@ -12,7 +12,7 @@ buildscript {
     repositories {
         maven { url 'https://maven.aliyun.com/repository/public' }
         google()
-        jcenter()
+        mavenCentral()
         flatDir {
             dirs new File(rootProject.projectDir.getAbsolutePath() + '/libs')
         }
