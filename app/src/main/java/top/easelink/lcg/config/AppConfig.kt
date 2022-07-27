@@ -39,10 +39,6 @@ object AppConfig {
         return true
     }
 
-    fun getJrsUrl(): String {
-        return getConfig(CONFIG_JRS_URL, "http://www.jrskq.com/")
-    }
-
     // open search result method, true -> WebView false -> try parse to native
     var searchResultShowInWebView: Boolean
         get() = get(CONFIG_SEARCH_OPEN_RESULT_IN_WEBVIEW, false)
