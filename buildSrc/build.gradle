@@ -1,0 +1,18 @@
+plugins {
+    id("org.jetbrains.kotlin.jvm") version "1.4.32"
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
+dependencies {
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.4.32")
+}
+
+repositories {
+    maven { url = "https://plugins.gradle.org/m2/" }
+    maven { url 'https://maven.aliyun.com/repository/public' }
+    maven { url "https://jitpack.io" }
+}
