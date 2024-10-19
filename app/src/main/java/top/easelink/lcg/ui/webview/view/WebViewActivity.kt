@@ -33,7 +33,7 @@ import top.easelink.lcg.event.EVENT_SHARE_ARTICLE_URL
 import top.easelink.lcg.event.sendSingleEvent
 import top.easelink.lcg.service.web.HookInterface
 import top.easelink.lcg.ui.main.me.source.UserInfoRepo.requestUserInfo
-import top.easelink.lcg.ui.main.view.MainActivity
+import top.easelink.lcg.ui.main.MainActivity
 import top.easelink.lcg.ui.webview.FORCE_ENABLE_JS_KEY
 import top.easelink.lcg.ui.webview.OPEN_LOGIN_PAGE
 import top.easelink.lcg.ui.webview.TITLE_KEY
@@ -344,7 +344,9 @@ class WebViewActivity : AppCompatActivity(), CoroutineScope {
             when {
                 TextUtils.isEmpty(url) -> return false
                 url.startsWith("wtloginmqq://ptlogin/qlogin") -> {
-                    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+                    runCatching {
+                        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+                    }
                     return true
                 }
                 url.startsWith("bdnetdisk") -> {

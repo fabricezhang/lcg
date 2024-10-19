@@ -26,6 +26,7 @@ class LCGApp : Application() {
         } else {
             Timber.plant(ErrorReportTree())
         }
+        initCoil()
         AppGuardStarter.init(this)
         BuglyInitialization.init(this)
         UmengInitialization.init(this)

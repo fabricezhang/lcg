@@ -30,6 +30,7 @@
         <uses-library android:name="org.apache.http.legacy" android:required="false" />
         <activity
             android:name=".ui.splash.view.SplashActivity"
+            android:exported="true"
             android:theme="@style/SplashTheme"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait">
@@ -40,10 +41,11 @@
         </activity>
         <activity
             android:launchMode="singleTask"
-            android:name=".ui.main.view.MainActivity"
+            android:name=".ui.main.MainActivity"
             android:screenOrientation="portrait">
         </activity>
         <activity android:name=".ui.webview.view.WebViewActivity"
+            android:exported="true"
             android:launchMode="singleInstance"
             android:configChanges="orientation|keyboardHidden|navigation|screenSize"
             android:hardwareAccelerated="true"

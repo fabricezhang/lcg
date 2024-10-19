@@ -1,4 +1,4 @@
-package top.easelink.lcg.ui.main.view
+package top.easelink.lcg.ui.main
 
 import android.content.Intent
 import android.content.pm.PackageManager.PERMISSION_GRANTED
@@ -14,7 +14,11 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main.app_version
+import kotlinx.android.synthetic.main.activity_main.bottom_navigation
+import kotlinx.android.synthetic.main.activity_main.drawer_view
+import kotlinx.android.synthetic.main.activity_main.navigation_view
+import kotlinx.android.synthetic.main.activity_main.toolbar
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -36,14 +40,18 @@ import top.easelink.lcg.ui.main.forumnav.view.ForumNavigationFragment
 import top.easelink.lcg.ui.main.largeimg.view.LargeImageDialog
 import top.easelink.lcg.ui.main.me.view.MeFragment
 import top.easelink.lcg.ui.main.message.view.MessageFragment
-import top.easelink.lcg.ui.main.model.*
+import top.easelink.lcg.ui.main.model.NewMessageEvent
+import top.easelink.lcg.ui.main.model.OpenArticleEvent
+import top.easelink.lcg.ui.main.model.OpenForumEvent
+import top.easelink.lcg.ui.main.model.OpenHalfWebViewFragmentEvent
+import top.easelink.lcg.ui.main.model.OpenLargeImageViewEvent
 import top.easelink.lcg.ui.main.recommand.view.RecommendFragment
 import top.easelink.lcg.ui.setting.view.SettingActivity
 import top.easelink.lcg.ui.webview.view.HalfScreenWebViewFragment
 import top.easelink.lcg.ui.webview.view.WebViewActivity
 import top.easelink.lcg.utils.WebsiteConstant.SERVER_BASE_URL
 import top.easelink.lcg.utils.showMessage
-import java.util.*
+import java.util.EmptyStackException
 import kotlin.system.exitProcess
 
 class MainActivity : TopActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
