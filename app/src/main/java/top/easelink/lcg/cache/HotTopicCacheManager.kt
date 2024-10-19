@@ -11,7 +11,7 @@ import java.io.File
 object HotTopicCacheManager: ICacheManager {
 
     private const val SPLITERATOR = "-"
-    private const val TIME_INTERVAL = 24 * 60 * 60 * 1000
+    private const val TIME_INTERVAL = 6 * 60 * 60 * 1000
     private val HOT_TOPIC_CACHE_FOLDER = "${LCGApp.context.cacheDir}/hot_topic_articles"
 
     /**
@@ -36,7 +36,7 @@ object HotTopicCacheManager: ICacheManager {
             .list { _, name ->
                 name.contains(rankType)
                         && name.contains(dateType)
-                        && (name.getTimeStamp() - System.currentTimeMillis() <= TIME_INTERVAL)
+                        && (System.currentTimeMillis() - name.getTimeStamp() <= TIME_INTERVAL)
             }
             ?.firstOrNull()
             ?.let {

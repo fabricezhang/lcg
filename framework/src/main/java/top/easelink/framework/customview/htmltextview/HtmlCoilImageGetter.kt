@@ -12,6 +12,7 @@ import coil.Coil
 import coil.request.ImageRequest
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import top.easelink.framework.threadpool.IOPool
 
 class HtmlCoilImageGetter(
@@ -30,6 +31,14 @@ class HtmlCoilImageGetter(
                     .target {
                         holder.setDrawable(it)
                     }
+                    .listener(
+                        onStart = { request ->
+                            Timber.d(request.toString())
+                        },
+                        onError = { request, throwable ->
+                            Timber.e(throwable, request.toString())
+                        }
+                    )
                     .build()
             )
         }
