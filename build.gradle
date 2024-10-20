@@ -13,6 +13,7 @@ buildscript {
         maven { url 'https://maven.aliyun.com/repository/public' }
         google()
         mavenCentral()
+        maven { url "https://tencent-tds-maven.pkg.coding.net/repository/shiply/repo" }
         flatDir {
             dirs new File(rootProject.projectDir.getAbsolutePath() + '/libs')
         }
@@ -32,6 +33,7 @@ allprojects {
         maven { url "https://jitpack.io" }
         google()
         mavenCentral()
+        maven { url "https://tencent-tds-maven.pkg.coding.net/repository/shiply/repo" }
         flatDir {
             dirs new File(rootProject.projectDir.getAbsolutePath() + '/libs')
         }

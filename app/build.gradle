@@ -20,6 +20,8 @@ android {
         // apply build configs
         buildConfigField("String", "DB_NAME", "\"articles.db\"")
         buildConfigField("String", "BUGLY_APP_ID", rootProject.ext.BUGLY_APP_ID)
+        buildConfigField("String", "SHIPLY_APP_ID", rootProject.ext.SHIPLY_APP_ID)
+        buildConfigField("String", "SHIPLY_APP_KEY", rootProject.ext.SHIPLY_APP_KEY)
         buildConfigField("String", "UMENG_APP_KEY", rootProject.ext.UMENG_APP_KEY)
         buildConfigField("String", "CHANNEL", rootProject.ext.UMENG_CHANNEL)
 
@@ -93,6 +95,8 @@ dependencies {
     // 依赖androidx, 已升级AndroidX的项目集成下面的依赖
     implementation "com.bytedance.tools.codelocator:codelocator-core:2.0.0"
     debugImplementation "com.amitshekhar.android:debug-db:1.0.4"
+    implementation("com.tencent.shiply:upgrade:2.2.0")
+    implementation("com.tencent.shiply:upgrade-ui:2.2.0")
 }
 
 apply from: "../andres.gradle"

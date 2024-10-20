@@ -28,8 +28,9 @@ class LCGApp : Application() {
         }
         initCoil()
         AppGuardStarter.init(this)
-        BuglyInitialization.init(this)
-        UmengInitialization.init(this)
+        ShiplyInitialization.init(this@LCGApp)
+        BuglyInitialization.init(this@LCGApp)
+        UmengInitialization.init(this@LCGApp)
         trySignIn()
         CacheCleanerTask.clearCachesIfNeeded()
     }

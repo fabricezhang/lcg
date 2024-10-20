@@ -9,6 +9,9 @@ import android.widget.AdapterView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.tencent.bugly.beta.Beta
+import com.tencent.upgrade.core.DefaultUpgradeStrategyRequestCallback
+import com.tencent.upgrade.core.UpgradeManager
+import com.tencent.upgrade.core.UpgradeReqCallbackForUserManualCheck
 import kotlinx.android.synthetic.main.activity_settings.*
 import top.easelink.framework.topbase.TopActivity
 import top.easelink.lcg.R
@@ -81,7 +84,21 @@ class SettingActivity : TopActivity() {
             }
         }
         check_update_btn.setOnClickListener {
-            Beta.checkUpgrade()
+            runCatching {
+                UpgradeManager
+                    .getInstance()
+                    .checkUpgrade(false, null, object: UpgradeReqCallbackForUserManualCheck(){
+                        override fun onFail(p0: Int, p1: String?) {
+                            showMessage(R.string.check_app_update_error)
+                        }
+
+                        override fun onReceivedNoStrategy() {
+                            showMessage(R.string.app_is_latest)
+                        }
+                    })
+            }.getOrElse {
+                showMessage(R.string.check_app_update_error)
+            }
         }
         sync_favorites_switch.setOnCheckedChangeListener { _, isChecked ->
             mViewModel.scheduleJob(isChecked)

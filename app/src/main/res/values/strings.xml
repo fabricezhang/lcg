@@ -76,6 +76,8 @@
     <string name="sync_favorites_instruction">（默认仅收藏到本地）</string>
     <string name="app_setting">应用</string>
     <string name="check_app_update">检查最新版本</string>
+    <string name="app_is_latest">已经是最新版本了</string>
+    <string name="check_app_update_error">检查版本失败</string>
 
     <!--Me Fragment-->
     <string name="me_tab_title">个人页</string>

@@ -6,6 +6,8 @@ ext {
     releaseTime = releaseTime()
 
     BUGLY_APP_ID = "\"12345678\""
+    SHIPLY_APP_ID = '\"12345678\"'
+    SHIPLY_APP_KEY = "\"12345642f1eb4f3f9b8461d3\""
 
     UMENG_CHANNEL = "\"GITHUB\""
     UMENG_APP_KEY = "\"12345642f1eb4f3f9b8461d3\""
