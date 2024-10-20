@@ -14,14 +14,19 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.tencent.upgrade.core.DefaultUpgradeStrategyRequestCallback
+import com.tencent.upgrade.core.UpgradeManager
 import kotlinx.android.synthetic.main.activity_main.app_version
 import kotlinx.android.synthetic.main.activity_main.bottom_navigation
 import kotlinx.android.synthetic.main.activity_main.drawer_view
 import kotlinx.android.synthetic.main.activity_main.navigation_view
 import kotlinx.android.synthetic.main.activity_main.toolbar
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import top.easelink.framework.threadpool.BackGroundPool
 import top.easelink.framework.topbase.TopActivity
 import top.easelink.framework.topbase.TopFragment
 import top.easelink.framework.utils.WRITE_EXTERNAL_CODE
@@ -81,6 +86,11 @@ class MainActivity : TopActivity(), BottomNavigationView.OnNavigationItemSelecte
         setupDrawer(toolbar)
         setupBottomNavMenu()
         showFragment(RecommendFragment::class.java)
+        GlobalScope.launch(BackGroundPool) {
+            UpgradeManager
+                .getInstance()
+                .checkUpgrade(false, null, DefaultUpgradeStrategyRequestCallback())
+        }
     }
 
     override fun onDestroy() {

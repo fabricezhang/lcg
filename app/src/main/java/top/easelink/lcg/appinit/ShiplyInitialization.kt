@@ -4,12 +4,8 @@ import android.content.Context
 import android.os.Build
 import com.tencent.upgrade.bean.UpgradeConfig
 import com.tencent.upgrade.callback.Logger
-import com.tencent.upgrade.core.DefaultUpgradeStrategyRequestCallback
 import com.tencent.upgrade.core.UpgradeManager
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import timber.log.Timber
-import top.easelink.framework.threadpool.BackGroundPool
 import top.easelink.lcg.BuildConfig
 import top.easelink.lcg.account.UserDataRepo
 
@@ -71,8 +67,5 @@ object ShiplyInitialization {
             .systemVersion(Build.VERSION.SDK_INT.toString())
             .build()
         UpgradeManager.getInstance().init(context, config)
-        GlobalScope.launch(BackGroundPool) {
-            UpgradeManager.getInstance().checkUpgrade(false, null, DefaultUpgradeStrategyRequestCallback())
-        }
     }
 }
